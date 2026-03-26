@@ -22,39 +22,39 @@ function useInView(threshold=0.15){
   },[threshold])
   return{ref,v}
 }
-function useCounter(target:number,active:boolean,duration=1600){
+function useCounter(target:number,active:boolean){
   const[val,setVal]=useState(0)
   useEffect(()=>{
     if(!active)return
     let raf:number
-    const start=performance.now()
-    const step=(now:number)=>{
-      const p=Math.min((now-start)/duration,1),e=1-Math.pow(1-p,3)
-      setVal(Math.round(e*target))
-      if(p<1)raf=requestAnimationFrame(step)
-    }
+    const s=performance.now()
+    const step=(now:number)=>{const p=Math.min((now-s)/1600,1),e=1-Math.pow(1-p,3);setVal(Math.round(e*target));if(p<1)raf=requestAnimationFrame(step)}
     raf=requestAnimationFrame(step)
     return()=>cancelAnimationFrame(raf)
-  },[active,target,duration])
+  },[active,target])
   return val
 }
 
-// colour tokens
-const G='#1B5E37',G2='#2A7D4F',G3='#3DA16A'
-const GLT='#E8F5EE',GXLT='#F2FAF5'
-const AMB='#D97706',AMBL='#FEF3C7'
-const TX='#111827',TX2='#4B5563',TX3='#9CA3AF'
+const G='#1B5E37',G2='#2A7D4F',G3='#3DA16A',GLT='#E8F5EE',GXLT='#F2FAF5'
+const AMB='#D97706',AMBL='#FEF3C7',TX='#111827',TX2='#4B5563',TX3='#9CA3AF'
 const BDR='#E5E7EB',BG='#F8F9FA'
 const SH='0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.04)'
 const SHL='0 4px 6px rgba(0,0,0,.05),0 16px 48px rgba(0,0,0,.1)'
 
 function Tag({bg,color,text}:{bg:string,color:string,text:string}){
-  return(
-    <span style={{display:'inline-block',background:bg,color,fontSize:11,fontWeight:700,
-      letterSpacing:'.1em',textTransform:'uppercase',padding:'5px 12px',borderRadius:100,marginBottom:16}}>
-      {text}
-    </span>
-  )
+  return <span style={{display:'inline-block',background:bg,color,fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',padding:'5px 12px',borderRadius:100,marginBottom:16}}>{text}</span>
+}
+
+// ── real unsplash images ──
+const IMGS = {
+  hero:    'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80',
+  wp1:     'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80',
+  wp2:     'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80',
+  wp3:     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+  tech:    'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80',
+  house:   'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80',
+  family:  'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+  money:   'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=800&q=80',
 }
 
 export default function Home(){
@@ -68,20 +68,14 @@ export default function Home(){
   const[fl,setFl]=useState(130),[hz,setHz]=useState('erdgas'),[bj,setBj]=useState('1979_1994')
   const r=calc(fl,hz,bj)
 
-  const statsRef=useInView(0.1)
-  const stepsRef=useInView()
-  const calcRef=useInView()
-  const foerdRef=useInView(0.1)
-  const testiRef=useInView()
+  const statsRef=useInView(0.1), stepsRef=useInView(), calcRef=useInView()
+  const foerdRef=useInView(0.1), testiRef=useInView(), whyRef=useInView()
 
-  const c1=useCounter(299000,statsRef.v)
-  const c2=useCounter(70,statsRef.v)
-  const c3=useCounter(21000,statsRef.v)
-  const c4=useCounter(25,statsRef.v)
+  const c1=useCounter(299000,statsRef.v),c2=useCounter(70,statsRef.v)
+  const c3=useCounter(21000,statsRef.v),c4=useCounter(25,statsRef.v)
 
   return(
     <div style={{fontFamily:"'DM Sans',sans-serif",background:BG,color:TX,overflowX:'hidden'}}>
-      {/* fonts + resets */}
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet"/>
@@ -96,7 +90,7 @@ export default function Home(){
         .mono{font-family:'JetBrains Mono',monospace}
         .c{max-width:1220px;margin:0 auto;padding:0 40px}
         .sec{padding:88px 0}
-        .fu{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+        .fu{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
         .fv{opacity:1!important;transform:none!important}
         input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:#E5E7EB;border-radius:4px;outline:none;cursor:pointer}
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:#1B5E37;border-radius:50%;box-shadow:0 2px 6px rgba(27,94,55,.3);cursor:pointer}
@@ -106,9 +100,10 @@ export default function Home(){
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         @media(max-width:960px){
           .c{padding:0 20px!important}
-          .hero-g,.g2,.g3,.g4,.foerd-g{grid-template-columns:1fr!important}
+          .hero-g,.g2,.g3,.g4,.foerd-g,.why-g{grid-template-columns:1fr!important}
           .hero-card{display:none!important}
           .stats-g{grid-template-columns:1fr 1fr!important}
+          .img-hide{display:none!important}
         }
       `}</style>
 
@@ -116,8 +111,7 @@ export default function Home(){
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:999,height:68,display:'flex',alignItems:'center',
         background:scrolled?'rgba(255,255,255,.96)':'transparent',
         borderBottom:scrolled?`1px solid ${BDR}`:'none',
-        backdropFilter:scrolled?'blur(14px)':'none',
-        transition:'all .3s'}}>
+        backdropFilter:scrolled?'blur(14px)':'none',transition:'all .3s'}}>
         <div className="c" style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <a href="/" style={{display:'flex',alignItems:'center',gap:9,textDecoration:'none'}}>
             <div style={{width:34,height:34,background:G,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -126,22 +120,31 @@ export default function Home(){
                 <path d="M10 9s-3 3-3 5a3 3 0 006 0c0-2-3-5-3-5z" fill="white" opacity=".5"/>
               </svg>
             </div>
-            <span style={{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:15,color:TX}}>
-              Wärmepumpenbegleiter<span style={{color:G2}}>.de</span>
+            <span style={{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:15,color:scrolled?TX:'white'}}>
+              Wärmepumpenbegleiter<span style={{color:scrolled?G2:'#4CAF7D'}}>.de</span>
             </span>
           </a>
           <div style={{display:'flex',alignItems:'center',gap:28}}>
-            {['Wie es funktioniert','Rechner','Förderung','Ratgeber'].map(l=>(
-              <a key={l} href="#" style={{fontSize:14,fontWeight:500,color:TX2,textDecoration:'none',transition:'color .15s'}}
-                onMouseEnter={e=>(e.currentTarget.style.color=G)}
-                onMouseLeave={e=>(e.currentTarget.style.color=TX2)}>{l}</a>
+            {[
+              {label:'Wie es funktioniert',href:'/#steps'},
+              {label:'Rechner',href:'/rechner'},
+              {label:'Förderung',href:'/#foerderung'},
+              {label:'Ratgeber',href:'/ratgeber'},
+              {label:'Über uns',href:'/ueber-uns'},
+            ].map(l=>(
+              <a key={l.label} href={l.href}
+                style={{fontSize:14,fontWeight:500,color:scrolled?TX2:'rgba(255,255,255,.82)',textDecoration:'none',transition:'color .15s'}}
+                onMouseEnter={e=>(e.currentTarget.style.color=scrolled?G:'white')}
+                onMouseLeave={e=>(e.currentTarget.style.color=scrolled?TX2:'rgba(255,255,255,.82)')}>
+                {l.label}
+              </a>
             ))}
           </div>
-          <a href="#calculator" style={{padding:'10px 20px',background:G,color:'white',borderRadius:'10px',
+          <a href="/rechner" style={{padding:'10px 20px',background:G,color:'white',borderRadius:'10px',
             fontFamily:'Outfit,sans-serif',fontSize:14,fontWeight:600,textDecoration:'none',
             boxShadow:'0 2px 8px rgba(27,94,55,.3)',transition:'all .18s'}}
-            onMouseEnter={e=>{(e.currentTarget as HTMLAnchorElement).style.background='#154d2c'}}
-            onMouseLeave={e=>{(e.currentTarget as HTMLAnchorElement).style.background=G}}>
+            onMouseEnter={e=>(e.currentTarget as HTMLAnchorElement).style.background='#154d2c'}
+            onMouseLeave={e=>(e.currentTarget as HTMLAnchorElement).style.background=G}>
             Kostenloses Angebot
           </a>
         </div>
@@ -149,25 +152,12 @@ export default function Home(){
 
       {/* ── HERO ── */}
       <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',overflow:'hidden',paddingTop:68}}>
-        {/* background photo */}
-        <img
-          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80"
-          alt=""
-          style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}
-        />
-        {/* dark overlay */}
-        <div style={{position:'absolute',inset:0,zIndex:1,
-          background:'linear-gradient(105deg,rgba(10,25,16,.94) 0%,rgba(10,25,16,.85) 45%,rgba(10,25,16,.3) 100%)'}}/>
-
+        <img src={IMGS.hero} alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}/>
+        <div style={{position:'absolute',inset:0,zIndex:1,background:'linear-gradient(105deg,rgba(10,25,16,.94) 0%,rgba(10,25,16,.85) 45%,rgba(10,25,16,.3) 100%)'}}/>
         <div className="c" style={{position:'relative',zIndex:2,width:'100%',padding:'96px 40px 80px'}}>
           <div className="hero-g" style={{display:'grid',gridTemplateColumns:'54% 46%',gap:60,alignItems:'center'}}>
-
-            {/* left */}
             <div>
-              <div style={{display:'inline-flex',alignItems:'center',gap:7,
-                background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.15)',
-                borderRadius:100,padding:'6px 14px',fontSize:13,fontWeight:500,
-                color:'rgba(255,255,255,.88)',marginBottom:24}}>
+              <div style={{display:'inline-flex',alignItems:'center',gap:7,background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.15)',borderRadius:100,padding:'6px 14px',fontSize:13,fontWeight:500,color:'rgba(255,255,255,.88)',marginBottom:24}}>
                 <span style={{width:7,height:7,background:G3,borderRadius:'50%',display:'inline-block',animation:'pulse 2s infinite'}}/>
                 GEG 2026 — Jetzt informieren
               </div>
@@ -176,22 +166,16 @@ export default function Home(){
                 <span style={{color:'#4CAF7D'}}>und bis zu<br/>€ 21.000</span><br/>
                 sparen.
               </h1>
-              <p style={{fontSize:18,color:'rgba(255,255,255,.72)',maxWidth:480,marginBottom:36,lineHeight:1.75,fontFamily:"'DM Sans',sans-serif"}}>
+              <p style={{fontSize:18,color:'rgba(255,255,255,.72)',maxWidth:480,marginBottom:36,lineHeight:1.75}}>
                 Wir begleiten Hausbesitzer durch den Wärmepumpen-Umstieg — kostenlos, herstellerunabhängig, mit geprüften Fachbetrieben.
               </p>
               <div style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:40}}>
-                <a href="#calculator" style={{display:'inline-flex',alignItems:'center',padding:'15px 30px',
-                  background:G,color:'white',borderRadius:'10px',fontFamily:'Outfit,sans-serif',
-                  fontSize:16,fontWeight:600,textDecoration:'none',
-                  boxShadow:'0 2px 12px rgba(27,94,55,.45)',transition:'all .18s'}}
+                <a href="/rechner" style={{display:'inline-flex',alignItems:'center',padding:'15px 30px',background:G,color:'white',borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:600,textDecoration:'none',boxShadow:'0 2px 12px rgba(27,94,55,.45)',transition:'all .18s'}}
                   onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.background='#154d2c';el.style.transform='translateY(-1px)'}}
                   onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.background=G;el.style.transform=''}}>
                   Kosten berechnen →
                 </a>
-                <a href="#foerderung" style={{display:'inline-flex',alignItems:'center',padding:'15px 30px',
-                  background:'rgba(255,255,255,.1)',color:'white',
-                  border:'1.5px solid rgba(255,255,255,.25)',borderRadius:'10px',
-                  fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:600,textDecoration:'none',transition:'all .18s'}}
+                <a href="/#foerderung" style={{display:'inline-flex',alignItems:'center',padding:'15px 30px',background:'rgba(255,255,255,.1)',color:'white',border:'1.5px solid rgba(255,255,255,.25)',borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:600,textDecoration:'none',transition:'all .18s'}}
                   onMouseEnter={e=>(e.currentTarget as HTMLAnchorElement).style.background='rgba(255,255,255,.18)'}
                   onMouseLeave={e=>(e.currentTarget as HTMLAnchorElement).style.background='rgba(255,255,255,.1)'}>
                   Förderung prüfen
@@ -206,60 +190,26 @@ export default function Home(){
                 ))}
               </div>
             </div>
-
-            {/* right — card */}
+            {/* hero card */}
             <div className="hero-card" style={{display:'flex',justifyContent:'flex-end'}}>
-              <div style={{width:'100%',maxWidth:420,background:'white',borderRadius:16,
-                overflow:'hidden',boxShadow:SHL,animation:'float 6s ease-in-out infinite'}}>
-                <div style={{background:GXLT,padding:28,borderBottom:`1px solid ${BDR}`}}>
-                  <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',height:'auto'}}>
-                    <rect x="90" y="90" width="180" height="120" fill="white" stroke="#E5E7EB" strokeWidth="1.5"/>
-                    <polygon points="75,90 180,20 285,90" fill="#1B5E37"/>
-                    <rect x="108" y="108" width="48" height="38" fill="#E8F5EE" stroke="#E5E7EB" strokeWidth="1"/>
-                    <line x1="132" y1="108" x2="132" y2="146" stroke="#E5E7EB"/>
-                    <line x1="108" y1="127" x2="156" y2="127" stroke="#E5E7EB"/>
-                    <rect x="204" y="108" width="48" height="38" fill="#E8F5EE" stroke="#E5E7EB" strokeWidth="1"/>
-                    <line x1="228" y1="108" x2="228" y2="146" stroke="#E5E7EB"/>
-                    <line x1="204" y1="127" x2="252" y2="127" stroke="#E5E7EB"/>
-                    <rect x="157" y="154" width="46" height="56" fill="#F2FAF5" stroke="#E5E7EB" strokeWidth="1" rx="2"/>
-                    <circle cx="197" cy="184" r="3" fill="#D97706"/>
-                    <rect x="14" y="158" width="60" height="48" fill="white" stroke="#1B5E37" strokeWidth="1.5" rx="7"/>
-                    <rect x="20" y="165" width="18" height="34" fill="#E8F5EE" rx="3"/>
-                    <circle cx="53" cy="182" r="12" fill="#F2FAF5" stroke="#3DA16A" strokeWidth="1.5"/>
-                    <path d="M53 170v24M41 182h24" stroke="#1B5E37" strokeWidth="1.5" strokeLinecap="round"/>
-                    <path d="M45 174l16 16M45 190l16-16" stroke="#1B5E37" strokeWidth="1" strokeLinecap="round" opacity=".35"/>
-                    <rect x="10" y="210" width="68" height="15" fill="#1B5E37" rx="4"/>
-                    <text x="44" y="221" fontFamily="sans-serif" fontSize="8" fontWeight="600" fill="white" textAnchor="middle">Wärmepumpe</text>
-                    <path d="M74 177Q106 177 106 157Q106 137 126 137" stroke="#3DA16A" strokeWidth="2" strokeDasharray="5,4" fill="none">
-                      <animate attributeName="stroke-dashoffset" values="0;-18" dur="1.5s" repeatCount="indefinite"/>
-                    </path>
-                    <path d="M74 173Q100 173 100 153Q100 133 120 133" stroke="#3DA16A" strokeWidth="1.2" strokeDasharray="4,5" fill="none" opacity=".4">
-                      <animate attributeName="stroke-dashoffset" values="0;-18" dur="2.1s" repeatCount="indefinite"/>
-                    </path>
-                    <rect x="276" y="144" width="72" height="28" fill="white" stroke="#E5E7EB" rx="7"/>
-                    <text x="288" y="162" fontFamily="monospace" fontSize="13" fontWeight="700" fill="#1B5E37">21°C</text>
-                    <text x="325" y="162" fontFamily="sans-serif" fontSize="9" fill="#9CA3AF">innen</text>
-                    <rect x="276" y="179" width="72" height="26" fill="#F2FAF5" stroke="#E5E7EB" rx="7"/>
-                    <text x="288" y="196" fontFamily="monospace" fontSize="12" fontWeight="600" fill="#4B5563">-3°C</text>
-                    <text x="326" y="196" fontFamily="sans-serif" fontSize="9" fill="#9CA3AF">außen</text>
-                    <rect x="148" y="44" width="64" height="22" fill="#1B5E37" rx="5"/>
-                    <text x="180" y="59" fontFamily="monospace" fontSize="10" fontWeight="700" fill="#4CAF7D" textAnchor="middle">A+++</text>
-                  </svg>
-                </div>
-                <div style={{padding:'20px 24px'}}>
-                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:16}}>
-                    <div>
-                      <div style={{fontSize:12,color:TX3,marginBottom:3}}>Jährl. Ersparnis</div>
-                      <div className="mono" style={{fontSize:22,fontWeight:700,color:AMB}}>€ 959 / Jahr</div>
+              <div style={{width:'100%',maxWidth:420,background:'white',borderRadius:16,overflow:'hidden',boxShadow:SHL,animation:'float 6s ease-in-out infinite'}}>
+                <div style={{position:'relative',height:240}}>
+                  <img src={IMGS.wp2} alt="Haus mit Wärmepumpe" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.5) 0%,transparent 60%)'}}/>
+                  <div style={{position:'absolute',bottom:16,left:16,right:16,display:'flex',justifyContent:'space-between'}}>
+                    <div style={{background:'rgba(255,255,255,.95)',borderRadius:8,padding:'8px 12px'}}>
+                      <div style={{fontSize:11,color:TX3,marginBottom:2}}>Jährl. Ersparnis</div>
+                      <div className="mono" style={{fontSize:18,fontWeight:700,color:AMB}}>€ 959</div>
                     </div>
-                    <div style={{textAlign:'right'}}>
-                      <div style={{fontSize:12,color:TX3,marginBottom:3}}>KfW-Förderung</div>
-                      <div className="mono" style={{fontSize:22,fontWeight:700,color:G}}>bis 70%</div>
+                    <div style={{background:'rgba(255,255,255,.95)',borderRadius:8,padding:'8px 12px',textAlign:'right'}}>
+                      <div style={{fontSize:11,color:TX3,marginBottom:2}}>KfW-Förderung</div>
+                      <div className="mono" style={{fontSize:18,fontWeight:700,color:G}}>bis 70%</div>
                     </div>
                   </div>
-                  <a href="#calculator" style={{display:'flex',alignItems:'center',justifyContent:'center',
-                    padding:'12px',background:G,color:'white',borderRadius:'10px',
-                    fontFamily:'Outfit,sans-serif',fontSize:14,fontWeight:600,textDecoration:'none',transition:'background .18s'}}
+                </div>
+                <div style={{padding:'18px 22px'}}>
+                  <p style={{fontSize:14,color:TX2,lineHeight:1.55,marginBottom:14}}>Luft-Wasser-Wärmepumpe für 120 m² EFH — inklusive KfW-Förderung und Installation.</p>
+                  <a href="/rechner" style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'12px',background:G,color:'white',borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:14,fontWeight:600,textDecoration:'none',transition:'background .18s'}}
                     onMouseEnter={e=>(e.currentTarget as HTMLAnchorElement).style.background='#154d2c'}
                     onMouseLeave={e=>(e.currentTarget as HTMLAnchorElement).style.background=G}>
                     Jetzt berechnen →
@@ -291,11 +241,8 @@ export default function Home(){
               {val:'\u20AC\u202F'+c3.toLocaleString('de-DE'),suf:'',lbl:'Maximaler Förderbetrag (EFH)'},
               {val:c4,suf:'+ J.',lbl:'Lebensdauer einer Wärmepumpe'},
             ].map((s,i)=>(
-              <div key={i} style={{textAlign:'center',padding:'10px 20px',
-                borderRight:i<3?'1px solid rgba(255,255,255,.14)':'none'}}>
-                <div className="mono" style={{fontSize:42,fontWeight:700,color:'white',lineHeight:1,marginBottom:6}}>
-                  {s.val}{s.suf}
-                </div>
+              <div key={i} style={{textAlign:'center',padding:'10px 20px',borderRight:i<3?'1px solid rgba(255,255,255,.14)':'none'}}>
+                <div className="mono" style={{fontSize:42,fontWeight:700,color:'white',lineHeight:1,marginBottom:6}}>{s.val}{s.suf}</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,.55)',lineHeight:1.4}}>{s.lbl}</div>
               </div>
             ))}
@@ -303,8 +250,49 @@ export default function Home(){
         </div>
       </div>
 
+      {/* ── WHY NOW — image + text ── */}
+      <section ref={whyRef.ref} className="sec" style={{background:'white'}}>
+        <div className="c">
+          <div className="why-g" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
+            <div className={'why-g fu '+(whyRef.v?'fv':'')} style={{position:'relative',borderRadius:16,overflow:'hidden',boxShadow:SHL}}>
+              <img src={IMGS.house} alt="Einfamilienhaus" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
+              {/* floating badge */}
+              <div style={{position:'absolute',bottom:24,left:24,background:'white',borderRadius:12,padding:'14px 18px',boxShadow:'0 4px 20px rgba(0,0,0,.15)'}}>
+                <div style={{fontSize:11,fontWeight:700,color:TX3,textTransform:'uppercase',letterSpacing:'.06em',marginBottom:3}}>GEG Frist</div>
+                <div className="mono" style={{fontSize:20,fontWeight:700,color:AMB}}>30.06.2026</div>
+                <div style={{fontSize:13,color:TX2,marginTop:2}}>Großstädte: 65%-EE-Pflicht</div>
+              </div>
+            </div>
+            <div className={'fu '+(whyRef.v?'fv':'')} style={{transitionDelay:'.12s'}}>
+              <Tag bg={AMBL} color="#92400E" text="Warum jetzt?"/>
+              <h2 style={{marginBottom:18}}>Das GEG 2024 macht die Entscheidung unausweichlich</h2>
+              <p style={{fontSize:16,color:TX2,lineHeight:1.75,marginBottom:32}}>
+                Seit dem 1. Januar 2024 gilt: Jede neue Heizung muss 65% erneuerbare Energie nutzen. Für Bestandsgebäude in Großstädten wird das ab dem 30. Juni 2026 verpflichtend — das betrifft rund 80 Städte bundesweit.
+              </p>
+              {[
+                {year:'2024',text:'GEG in Kraft — 65%-Pflicht für Neubauten',c:G,urgent:false},
+                {year:'30.06.2026',text:'Bestandsgebäude in Städten >100.000 EW',c:AMB,urgent:true},
+                {year:'30.06.2028',text:'Alle Kommunen — flächendeckende Pflicht',c:TX2,urgent:false},
+                {year:'2045',text:'Fossile Heizungen vollständig verboten',c:TX3,urgent:false},
+              ].map((t,i)=>(
+                <div key={i} style={{display:'flex',gap:16,marginBottom:18,alignItems:'flex-start'}}>
+                  <div style={{width:10,height:10,marginTop:5,background:t.c,borderRadius:'50%',flexShrink:0,boxShadow:`0 0 0 4px ${t.c}22`}}/>
+                  <div>
+                    <div className="mono" style={{fontSize:12,fontWeight:700,color:t.c,marginBottom:2,display:'flex',alignItems:'center',gap:8}}>
+                      {t.year}
+                      {t.urgent&&<span style={{background:AMBL,color:'#92400E',fontSize:10,fontWeight:700,padding:'2px 7px',borderRadius:4}}>In 15 Monaten!</span>}
+                    </div>
+                    <div style={{fontSize:15,color:TX2}}>{t.text}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── STEPS ── */}
-      <section ref={stepsRef.ref} className="sec" style={{background:'white'}}>
+      <section ref={stepsRef.ref} id="steps" className="sec" style={{background:BG}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 52px'}}>
             <Tag bg={GLT} color={G} text="So funktioniert es"/>
@@ -312,30 +300,28 @@ export default function Home(){
           </div>
           <div className="g3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
             {[
-              {n:'01',title:'Daten eingeben',body:'Gebäudetyp, Baujahr, PLZ — in unter 2 Minuten. Kein Vorwissen nötig.',badge:'2 Minuten',accent:G,
+              {n:'01',title:'Daten eingeben',body:'Gebäudetyp, Baujahr, PLZ — in unter 2 Minuten. Kein Vorwissen nötig.',badge:'2 Minuten',accent:G,img:IMGS.money,
                 path:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'},
-              {n:'02',title:'Angebote erhalten',body:'Bis zu 3 geprüfte Fachbetriebe melden sich innerhalb von 48 Stunden — kostenlos.',badge:'Kostenlos',accent:AMB,
+              {n:'02',title:'Angebote erhalten',body:'Bis zu 3 geprüfte Fachbetriebe melden sich innerhalb von 48 Stunden — kostenlos.',badge:'Kostenlos',accent:AMB,img:IMGS.tech,
                 path:'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0'},
-              {n:'03',title:'Förderung sichern',body:'Bis zu €21.000 KfW-Zuschuss — wir begleiten Sie durch den Antragsprozess.',badge:'Bis €21.000',accent:G2,
+              {n:'03',title:'Förderung sichern',body:'Bis zu €21.000 KfW-Zuschuss — wir begleiten Sie durch den Antragsprozess.',badge:'Bis €21.000',accent:G2,img:IMGS.family,
                 path:'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'},
             ].map((s,i)=>(
               <div key={i} className={'fu '+(stepsRef.v?'fv':'')}
-                style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,
-                  padding:28,transitionDelay:`${i*.1}s`,borderTop:`3px solid ${s.accent}`,
-                  transition:'all .25s ease, opacity .65s ease, transform .65s ease'}}
+                style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,overflow:'hidden',transitionDelay:`${i*.1}s`,transition:'all .25s ease, opacity .65s ease, transform .65s ease'}}
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
-                <div style={{width:44,height:44,borderRadius:10,background:GLT,
-                  display:'flex',alignItems:'center',justifyContent:'center',marginBottom:16}}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={G} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={s.path}/>
-                  </svg>
+                {/* image */}
+                <div style={{height:160,overflow:'hidden',position:'relative'}}>
+                  <img src={s.img} alt={s.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <div style={{position:'absolute',inset:0,background:`linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.45) 100%)`}}/>
+                  <div style={{position:'absolute',top:12,left:12,background:s.accent,color:'white',fontFamily:'Outfit,sans-serif',fontSize:11,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'4px 10px',borderRadius:100}}>{s.badge}</div>
+                  <div style={{position:'absolute',bottom:12,left:16,fontFamily:'Outfit,sans-serif',fontSize:32,fontWeight:800,color:'rgba(255,255,255,.2)',lineHeight:1}}>{s.n}</div>
                 </div>
-                <div style={{fontFamily:'Outfit,sans-serif',fontSize:12,fontWeight:700,color:TX3,letterSpacing:'.06em',marginBottom:7}}>{s.n}</div>
-                <h3 style={{fontSize:20,marginBottom:9}}>{s.title}</h3>
-                <p style={{fontSize:14,color:TX2,lineHeight:1.65,marginBottom:16}}>{s.body}</p>
-                <span style={{display:'inline-block',background:GLT,color:G,fontSize:11,fontWeight:700,
-                  letterSpacing:'.06em',textTransform:'uppercase',padding:'4px 10px',borderRadius:100}}>{s.badge}</span>
+                <div style={{padding:'20px 22px',borderTop:`3px solid ${s.accent}`}}>
+                  <h3 style={{fontSize:19,marginBottom:8}}>{s.title}</h3>
+                  <p style={{fontSize:14,color:TX2,lineHeight:1.65}}>{s.body}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -343,70 +329,66 @@ export default function Home(){
       </section>
 
       {/* ── CALCULATOR ── */}
-      <section ref={calcRef.ref} id="calculator" className="sec" style={{background:BG}}>
+      <section ref={calcRef.ref} id="calculator" className="sec" style={{background:'white'}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 48px'}}>
             <Tag bg={GLT} color={G} text="Kostenrechner"/>
             <h2>Was kostet Ihre alte Heizung wirklich?</h2>
-            <p style={{fontSize:16,color:TX2,marginTop:12,lineHeight:1.65}}>Gebäudedaten eingeben — Ersparnis, Förderung und Amortisation auf einen Blick.</p>
+            <p style={{fontSize:16,color:TX2,marginTop:12,lineHeight:1.65}}>Gebäudedaten eingeben — Ersparnis, Förderung und Amortisation sofort sehen.</p>
           </div>
           <div className="g2" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,alignItems:'start'}}>
-            {/* inputs */}
-            <div className={'fu '+(calcRef.v?'fv':'')}
-              style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,padding:28}}>
-              {[
-                {label:'Wohnfläche',content:(
-                  <div style={{display:'flex',alignItems:'center',gap:14}}>
-                    <input type="range" min={60} max={350} step={5} value={fl} onChange={e=>setFl(+e.target.value)}/>
-                    <span className="mono" style={{fontSize:15,fontWeight:700,color:G,minWidth:62,textAlign:'right'}}>{fl} m²</span>
+            <div className={'fu '+(calcRef.v?'fv':'')} style={{background:BG,border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,overflow:'hidden'}}>
+              <img src={IMGS.tech} alt="Fachbetrieb" style={{width:'100%',height:200,objectFit:'cover',display:'block'}}/>
+              <div style={{padding:28}}>
+                {[
+                  {label:'Wohnfläche',content:(
+                    <div style={{display:'flex',alignItems:'center',gap:14}}>
+                      <input type="range" min={60} max={350} step={5} value={fl} onChange={e=>setFl(+e.target.value)}/>
+                      <span className="mono" style={{fontSize:15,fontWeight:700,color:G,minWidth:62,textAlign:'right'}}>{fl} m²</span>
+                    </div>
+                  )},
+                  {label:'Aktuelle Heizung',content:(
+                    <select value={hz} onChange={e=>setHz(e.target.value)}>
+                      <option value="erdgas">Erdgas-Brennwert</option>
+                      <option value="heizoel">Heizöl</option>
+                      <option value="nachtspeicher">Nachtspeicher</option>
+                    </select>
+                  )},
+                  {label:'Baujahr Gebäude',content:(
+                    <select value={bj} onChange={e=>setBj(e.target.value)}>
+                      <option value="vor_1978">vor 1978</option>
+                      <option value="1979_1994">1979 – 1994</option>
+                      <option value="1995_2009">1995 – 2009</option>
+                      <option value="2010_plus">2010 und neuer</option>
+                    </select>
+                  )},
+                ].map((f,i)=>(
+                  <div key={i} style={{marginBottom:i<2?20:0}}>
+                    <label style={{display:'block',fontSize:13,fontWeight:600,color:TX2,marginBottom:9}}>{f.label}</label>
+                    {f.content}
                   </div>
-                )},
-                {label:'Aktuelle Heizung',content:(
-                  <select value={hz} onChange={e=>setHz(e.target.value)}>
-                    <option value="erdgas">Erdgas-Brennwert</option>
-                    <option value="heizoel">Heizöl</option>
-                    <option value="nachtspeicher">Nachtspeicher</option>
-                  </select>
-                )},
-                {label:'Baujahr Gebäude',content:(
-                  <select value={bj} onChange={e=>setBj(e.target.value)}>
-                    <option value="vor_1978">vor 1978</option>
-                    <option value="1979_1994">1979 – 1994</option>
-                    <option value="1995_2009">1995 – 2009</option>
-                    <option value="2010_plus">2010 und neuer</option>
-                  </select>
-                )},
-              ].map((f,i)=>(
-                <div key={i} style={{marginBottom:i<2?22:0}}>
-                  <label style={{display:'block',fontSize:13,fontWeight:600,color:TX2,marginBottom:9}}>{f.label}</label>
-                  {f.content}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-            {/* results */}
             <div className={'fu '+(calcRef.v?'fv':'')} style={{transitionDelay:'.12s'}}>
               <div style={{background:G,borderRadius:16,padding:'24px 28px',marginBottom:14}}>
                 <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginBottom:5}}>Jährliche Ersparnis</div>
                 <div className="mono" style={{fontSize:46,fontWeight:700,color:'white',lineHeight:1,marginBottom:3}}>{fmt(r.ers)}</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,.45)'}}>pro Jahr mit Wärmepumpe</div>
               </div>
-              <div style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,padding:20,marginBottom:12}}>
+              <div style={{background:BG,border:`1px solid ${BDR}`,borderRadius:16,padding:20,marginBottom:12}}>
                 {[
                   {lbl:'Heizkosten heute',val:fmt(r.alt)+' / Jahr',c:AMB},
                   {lbl:'Mit Wärmepumpe (JAZ 3,5)',val:fmt(r.wp)+' / Jahr',c:G},
                   {lbl:'Amortisation (55% Förderung)',val:r.amort+' Jahre',c:TX},
                 ].map((row,i)=>(
-                  <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',
-                    padding:'10px 0',borderBottom:i<2?`1px solid ${BDR}`:'none'}}>
+                  <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 0',borderBottom:i<2?`1px solid ${BDR}`:'none'}}>
                     <span style={{fontSize:14,color:TX2}}>{row.lbl}</span>
                     <span className="mono" style={{fontSize:15,fontWeight:700,color:row.c}}>{row.val}</span>
                   </div>
                 ))}
               </div>
-              <a href="/rechner" style={{display:'flex',alignItems:'center',justifyContent:'center',
-                padding:'15px',background:AMB,color:'white',borderRadius:'10px',
-                fontFamily:'Outfit,sans-serif',fontSize:15,fontWeight:600,textDecoration:'none',
-                boxShadow:'0 2px 8px rgba(217,119,6,.3)',transition:'background .18s'}}
+              <a href="/rechner" style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'15px',background:AMB,color:'white',borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:15,fontWeight:600,textDecoration:'none',boxShadow:'0 2px 8px rgba(217,119,6,.3)',transition:'background .18s'}}
                 onMouseEnter={e=>(e.currentTarget as HTMLAnchorElement).style.background='#b45309'}
                 onMouseLeave={e=>(e.currentTarget as HTMLAnchorElement).style.background=AMB}>
                 Detailliertes Angebot anfordern →
@@ -418,14 +400,14 @@ export default function Home(){
       </section>
 
       {/* ── FÖRDERUNG ── */}
-      <section ref={foerdRef.ref} id="foerderung" className="sec" style={{background:'white'}}>
+      <section ref={foerdRef.ref} id="foerderung" className="sec" style={{background:BG}}>
         <div className="c">
           <div className="foerd-g" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
             <div className={'fu '+(foerdRef.v?'fv':'')}>
               <Tag bg={GLT} color={G} text="KfW-Programm 458"/>
               <h2 style={{marginBottom:16}}>Bis zu €21.000<br/>Zuschuss vom Staat</h2>
               <p style={{fontSize:16,color:TX2,lineHeight:1.72,marginBottom:28}}>
-                Der Zuschuss ist nicht rückzahlbar und wird direkt ausgezahlt. Maximal €30.000 Investitionskosten werden bezuschusst — kumulierbar bis 70%.
+                Der Zuschuss ist nicht rückzahlbar. Maximal €30.000 werden bezuschusst — kumulierbar bis 70%.
               </p>
               {[
                 {lbl:'Grundförderung',pct:30,w:43,c:G3},
@@ -438,38 +420,36 @@ export default function Home(){
                     <span style={{fontSize:14,color:TX2}}>{b.lbl}</span>
                     <span className="mono" style={{fontSize:14,fontWeight:700,color:b.c}}>+{b.pct}%</span>
                   </div>
-                  <div style={{height:7,background:BG,borderRadius:8,overflow:'hidden',border:`1px solid ${BDR}`}}>
-                    <div style={{height:'100%',background:b.c,borderRadius:8,
-                      width:foerdRef.v?`${b.w}%`:'0%',
-                      transition:`width 1.2s cubic-bezier(.16,1,.3,1) ${i*.12}s`}}/>
+                  <div style={{height:7,background:'white',borderRadius:8,overflow:'hidden',border:`1px solid ${BDR}`}}>
+                    <div style={{height:'100%',background:b.c,borderRadius:8,width:foerdRef.v?`${b.w}%`:'0%',transition:`width 1.2s cubic-bezier(.16,1,.3,1) ${i*.12}s`}}/>
                   </div>
                 </div>
               ))}
-              <div style={{marginTop:20,padding:'14px 18px',background:GLT,borderRadius:10,
-                display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <div style={{marginTop:20,padding:'14px 18px',background:GLT,borderRadius:10,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <span style={{fontSize:15,fontWeight:600,color:G}}>Gesamt möglich</span>
                 <span className="mono" style={{fontSize:22,fontWeight:700,color:G}}>bis 70% = €21.000</span>
               </div>
             </div>
-            {/* example calc */}
+            {/* foerderung image + example */}
             <div className={'fu '+(foerdRef.v?'fv':'')} style={{transitionDelay:'.15s'}}>
-              <div style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,overflow:'hidden'}}>
-                <div style={{background:G,padding:'24px 28px'}}>
-                  <div style={{fontSize:13,color:'rgba(255,255,255,.55)',marginBottom:4}}>Beispielrechnung: 120 m² EFH</div>
-                  <div style={{fontFamily:'Outfit,sans-serif',fontSize:26,fontWeight:700,color:'white',marginBottom:4}}>Ihr Eigenanteil nur</div>
-                  <div className="mono" style={{fontSize:50,fontWeight:700,color:'#4CAF7D',lineHeight:1}}>€ 11.250</div>
-                  <div style={{fontSize:13,color:'rgba(255,255,255,.45)',marginTop:4}}>statt €25.000 Gesamtinvestition</div>
+              <div style={{borderRadius:16,overflow:'hidden',boxShadow:SHL}}>
+                <div style={{position:'relative',height:200}}>
+                  <img src={IMGS.money} alt="Förderung" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <div style={{position:'absolute',inset:0,background:'rgba(27,94,55,.6)'}}/>
+                  <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
+                    <div style={{fontFamily:'Outfit,sans-serif',fontSize:18,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:4}}>Beispiel: 120 m² EFH</div>
+                    <div className="mono" style={{fontSize:52,fontWeight:700,color:'white',lineHeight:1}}>€ 11.250</div>
+                    <div style={{fontSize:14,color:'rgba(255,255,255,.65)',marginTop:4}}>Eigenanteil statt €25.000</div>
+                  </div>
                 </div>
-                <div style={{padding:'20px 28px'}}>
+                <div style={{background:'white',padding:'20px 24px'}}>
                   {[
                     {lbl:'Gesamtinvestition',val:'€ 25.000',c:TX,bold:false},
                     {lbl:'− Grundförderung (30%)',val:'− € 7.500',c:G,bold:false},
                     {lbl:'− Klima-Speed-Bonus (20%)',val:'− € 5.000',c:AMB,bold:false},
-                    {lbl:'− Einkommens-Bonus (0%)*',val:'€ 0',c:TX3,bold:false},
                     {lbl:'Ihr Eigenanteil',val:'€ 11.250',c:G,bold:true},
                   ].map((row,i)=>(
-                    <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'10px 0',
-                      borderBottom:i<4?`1px solid ${BDR}`:'none'}}>
+                    <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'9px 0',borderBottom:i<3?`1px solid ${BDR}`:'none'}}>
                       <span style={{fontSize:14,color:row.bold?TX:TX2,fontWeight:row.bold?600:400}}>{row.lbl}</span>
                       <span className="mono" style={{fontSize:14,fontWeight:row.bold?700:600,color:row.c}}>{row.val}</span>
                     </div>
@@ -482,36 +462,7 @@ export default function Home(){
         </div>
       </section>
 
-      {/* ── GEG TIMELINE ── */}
-      <section className="sec" style={{background:BG}}>
-        <div className="c">
-          <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 48px'}}>
-            <Tag bg={AMBL} color="#92400E" text="Regulatorischer Druck"/>
-            <h2>Das GEG macht den Wechsel unausweichlich</h2>
-          </div>
-          <div className="g4" style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16}}>
-            {[
-              {year:'2024',title:'GEG in Kraft',body:'Jede neue Heizung muss 65% erneuerbare Energie nutzen.',c:G,urgent:false},
-              {year:'30.06.2026',title:'Großstädte',body:'65%-Pflicht für Bestandsgebäude in Kommunen über 100.000 EW.',c:AMB,urgent:true},
-              {year:'30.06.2028',title:'Alle Kommunen',body:'Die 65%-Pflicht gilt flächendeckend in ganz Deutschland.',c:G2,urgent:false},
-              {year:'2045',title:'Vollverbot',body:'Fossile Heizungen werden vollständig verboten.',c:TX3,urgent:false},
-            ].map((t,i)=>(
-              <div key={i} style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,
-                boxShadow:SH,padding:'20px 18px',borderTop:`3px solid ${t.c}`}}>
-                <div className="mono" style={{fontSize:13,fontWeight:700,color:t.c,marginBottom:6,
-                  display:'flex',alignItems:'center',gap:7}}>
-                  {t.year}
-                  {t.urgent&&<span style={{background:AMBL,color:'#92400E',fontSize:10,fontWeight:700,padding:'2px 6px',borderRadius:4}}>Bald!</span>}
-                </div>
-                <div style={{fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:600,marginBottom:6}}>{t.title}</div>
-                <p style={{fontSize:13,color:TX2,lineHeight:1.55}}>{t.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── WP TYPEN ── */}
+      {/* ── WP TYPEN mit Bildern ── */}
       <section className="sec" style={{background:'white'}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:480,margin:'0 auto 48px'}}>
@@ -520,26 +471,30 @@ export default function Home(){
           </div>
           <div className="g3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
             {[
-              {type:'Luft-Wasser',share:'92% Marktanteil',jaz:'3,2–4,0',install:'€3.000–6.000',
-                pros:['Keine Erdarbeiten nötig','Auch im Altbau geeignet','Montage in 1–2 Tagen'],hi:true},
-              {type:'Sole-Wasser',share:'6% Marktanteil',jaz:'4,0–5,0',install:'€6.000–12.000',
-                pros:['+5% KfW-Bonus','Konstante Effizienz','Unabhängig von Außentemp.'],hi:false},
-              {type:'Wasser-Wasser',share:'2% Marktanteil',jaz:'5,0–6,0+',install:'€8.000–15.000',
-                pros:['+5% KfW-Bonus','Höchste Jahresarbeitszahl','Niedrigste Betriebskosten'],hi:false},
+              {type:'Luft-Wasser',share:'92%',jaz:'3,2–4,0',install:'€3.000–6.000',
+                pros:['Keine Erdarbeiten nötig','Auch im Altbau geeignet','Montage in 1–2 Tagen'],
+                hi:true,img:IMGS.wp1},
+              {type:'Sole-Wasser',share:'6%',jaz:'4,0–5,0',install:'€6.000–12.000',
+                pros:['+5% KfW-Bonus','Konstante Effizienz','Unabhängig von Außentemp.'],
+                hi:false,img:IMGS.wp3},
+              {type:'Wasser-Wasser',share:'2%',jaz:'5,0–6,0+',install:'€8.000–15.000',
+                pros:['+5% KfW-Bonus','Höchste Jahresarbeitszahl','Niedrigste Betriebskosten'],
+                hi:false,img:IMGS.house},
             ].map((t,i)=>(
-              <div key={i} style={{background:'white',
-                border:t.hi?`2px solid ${G}`:`1px solid ${BDR}`,
-                borderRadius:16,boxShadow:SH,overflow:'hidden',
-                transition:'all .22s'}}
+              <div key={i} style={{background:'white',border:t.hi?`2px solid ${G}`:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,overflow:'hidden',transition:'all .22s'}}
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
-                {t.hi&&<div style={{background:G,padding:'6px 16px',fontSize:11,fontWeight:700,color:'white',fontFamily:'Outfit,sans-serif',letterSpacing:'.06em',textTransform:'uppercase'}}>Meistgewählt</div>}
-                <div style={{padding:22}}>
-                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:16}}>
-                    <h3 style={{fontSize:18}}>{t.type}</h3>
-                    <span style={{background:GLT,color:G,fontSize:11,fontWeight:700,padding:'3px 9px',borderRadius:100,whiteSpace:'nowrap'}}>{t.share}</span>
+                <div style={{position:'relative',height:180}}>
+                  <img src={t.img} alt={t.type} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 60%)'}}/>
+                  {t.hi&&<div style={{position:'absolute',top:0,left:0,right:0,background:G,padding:'5px 16px',fontSize:11,fontWeight:700,color:'white',fontFamily:'Outfit,sans-serif',letterSpacing:'.06em',textTransform:'uppercase',textAlign:'center'}}>Meistgewählt</div>}
+                  <div style={{position:'absolute',bottom:10,right:12}}>
+                    <span style={{background:'rgba(255,255,255,.92)',color:G,fontSize:11,fontWeight:700,padding:'3px 9px',borderRadius:100}}>{t.share} Marktanteil</span>
                   </div>
-                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:16}}>
+                </div>
+                <div style={{padding:20}}>
+                  <h3 style={{fontSize:18,marginBottom:12}}>{t.type}</h3>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:14}}>
                     {[{l:'JAZ',v:t.jaz},{l:'Installation',v:t.install}].map(s=>(
                       <div key={s.l} style={{background:BG,borderRadius:8,padding:'9px 11px'}}>
                         <div style={{fontSize:11,color:TX3,fontWeight:600,marginBottom:3}}>{s.l}</div>
@@ -548,7 +503,7 @@ export default function Home(){
                     ))}
                   </div>
                   {t.pros.map(p=>(
-                    <div key={p} style={{display:'flex',gap:8,fontSize:13,color:TX2,marginBottom:7,alignItems:'center'}}>
+                    <div key={p} style={{display:'flex',gap:8,fontSize:13,color:TX2,marginBottom:6,alignItems:'center'}}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={G} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>
                       {p}
                     </div>
@@ -574,19 +529,16 @@ export default function Home(){
               {i:'M',name:'Thomas Müller',city:'Freiburg',tag:'Sole-Wasser · 65% Förderung',
                 text:'„Den KfW-Antrag hätte ich alleine nie geschafft. Hier wurde ich Schritt für Schritt begleitet. Sehr empfehlenswert."',d:'.12s'},
               {i:'K',name:'Sabine Kröger',city:'Münster',tag:'Luft-Wasser · 3 Angebote',
-                text:'„Als Vermieterin war ich skeptisch. Die Berechnung hat gezeigt, dass es sich eindeutig lohnt. Keine Druckverkäufe."',d:'.24s'},
+                text:'„Als Vermieterin war ich skeptisch. Die Berechnung hat gezeigt, dass es sich lohnt. Keine Druckverkäufe, sehr seriös."',d:'.24s'},
             ].map((t,i)=>(
               <div key={i} className={'fu '+(testiRef.v?'fv':'')}
-                style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,
-                  padding:24,transitionDelay:t.d,transition:'all .22s ease, opacity .65s ease, transform .65s ease'}}
+                style={{background:'white',border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,padding:24,transitionDelay:t.d,transition:'all .22s ease, opacity .65s ease, transform .65s ease'}}
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
                 <div style={{color:'#F59E0B',fontSize:14,letterSpacing:3,marginBottom:14}}>★★★★★</div>
                 <p style={{fontSize:14,color:TX2,lineHeight:1.72,fontStyle:'italic',marginBottom:18}}>{t.text}</p>
                 <div style={{display:'flex',alignItems:'center',gap:12}}>
-                  <div style={{width:40,height:40,borderRadius:'50%',background:GLT,
-                    display:'flex',alignItems:'center',justifyContent:'center',
-                    fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:700,color:G,flexShrink:0}}>{t.i}</div>
+                  <div style={{width:40,height:40,borderRadius:'50%',background:GLT,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:700,color:G,flexShrink:0}}>{t.i}</div>
                   <div>
                     <div style={{fontSize:14,fontWeight:600,color:TX}}>{t.name} · {t.city}</div>
                     <div style={{fontSize:12,color:TX3,marginTop:2}}>{t.tag}</div>
@@ -599,26 +551,20 @@ export default function Home(){
       </section>
 
       {/* ── CTA ── */}
-      <section style={{background:G,padding:'96px 0',textAlign:'center',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',inset:0,opacity:.035,
-          backgroundImage:'radial-gradient(circle at 20% 50%, white 0%, transparent 55%), radial-gradient(circle at 80% 50%, white 0%, transparent 55%)'}}/>
-        <div className="c" style={{position:'relative'}}>
+      <section style={{position:'relative',overflow:'hidden',padding:'0'}}>
+        <img src={IMGS.wp3} alt="" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
+        <div style={{position:'absolute',inset:0,background:'rgba(10,25,16,.82)'}}/>
+        <div className="c" style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
           <Tag bg="rgba(255,255,255,.1)" color="rgba(255,255,255,.8)" text="Jetzt starten"/>
           <h2 style={{color:'white',fontSize:'clamp(32px,4vw,52px)',marginBottom:14}}>Bereit für die Heizungswende?</h2>
-          <p style={{fontSize:18,color:'rgba(255,255,255,.65)',marginBottom:36}}>Kostenloses Angebot in 2 Minuten — ohne Vertragsbindung.</p>
-          <a href="/rechner" style={{display:'inline-flex',alignItems:'center',gap:8,
-            padding:'16px 36px',background:'white',color:G,borderRadius:'10px',
-            fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:700,textDecoration:'none',
-            boxShadow:'0 4px 20px rgba(0,0,0,.18)',transition:'all .18s'}}
-            onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.transform='translateY(-1px)';el.style.boxShadow='0 8px 28px rgba(0,0,0,.24)'}}
-            onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.transform='';el.style.boxShadow='0 4px 20px rgba(0,0,0,.18)'}}>
+          <p style={{fontSize:18,color:'rgba(255,255,255,.65)',marginBottom:36,maxWidth:480}}>Kostenloses Angebot in 2 Minuten — ohne Vertragsbindung.</p>
+          <a href="/rechner" style={{display:'inline-flex',alignItems:'center',gap:8,padding:'16px 36px',background:'white',color:G,borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:700,textDecoration:'none',boxShadow:'0 4px 20px rgba(0,0,0,.2)',transition:'all .18s'}}
+            onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.transform='translateY(-1px)';el.style.boxShadow='0 8px 28px rgba(0,0,0,.25)'}}
+            onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.transform='';el.style.boxShadow='0 4px 20px rgba(0,0,0,.2)'}}>
             Kostenloses Angebot anfordern →
           </a>
-          <div style={{fontSize:13,color:'rgba(255,255,255,.4)',marginTop:18,
-            display:'flex',justifyContent:'center',gap:20,flexWrap:'wrap'}}>
-            <span>✓ Kein Spam</span>
-            <span>✓ Keine Weitergabe ohne Zustimmung</span>
-            <span>✓ 100% kostenlos</span>
+          <div style={{fontSize:13,color:'rgba(255,255,255,.4)',marginTop:18,display:'flex',gap:20,flexWrap:'wrap',justifyContent:'center'}}>
+            <span>✓ Kein Spam</span><span>✓ Keine Weitergabe ohne Zustimmung</span><span>✓ 100% kostenlos</span>
           </div>
         </div>
       </section>
@@ -637,24 +583,21 @@ export default function Home(){
               <p style={{fontSize:13,color:'rgba(255,255,255,.33)',lineHeight:1.65,maxWidth:210}}>Ihr unabhängiger Begleiter für die Heizungswende.</p>
             </div>
             {[
-              {h:'Navigation',links:['Rechner','Ratgeber','Über uns','Kontakt']},
-              {h:'Städte',links:['Berlin','Hamburg','München','Köln','Frankfurt','Stuttgart']},
-              {h:'Rechtliches',links:['Impressum','Datenschutz','AGB']},
+              {h:'Navigation',links:[{l:'Rechner',href:'/rechner'},{l:'Ratgeber',href:'/ratgeber'},{l:'Über uns',href:'/ueber-uns'},{l:'Kontakt',href:'/kontakt'}]},
+              {h:'Städte',links:[{l:'Berlin',href:'#'},{l:'Hamburg',href:'#'},{l:'München',href:'#'},{l:'Köln',href:'#'},{l:'Frankfurt',href:'#'},{l:'Stuttgart',href:'#'}]},
+              {h:'Rechtliches',links:[{l:'Impressum',href:'/impressum'},{l:'Datenschutz',href:'/datenschutz'},{l:'AGB',href:'/agb'}]},
             ].map(col=>(
               <div key={col.h}>
-                <div style={{fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',
-                  color:'rgba(255,255,255,.22)',marginBottom:14}}>{col.h}</div>
+                <div style={{fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',color:'rgba(255,255,255,.22)',marginBottom:14}}>{col.h}</div>
                 {col.links.map(l=>(
-                  <a key={l} href="#" style={{display:'block',fontSize:13,color:'rgba(255,255,255,.42)',
-                    textDecoration:'none',marginBottom:8,transition:'color .15s'}}
+                  <a key={l.l} href={l.href} style={{display:'block',fontSize:13,color:'rgba(255,255,255,.42)',textDecoration:'none',marginBottom:8,transition:'color .15s'}}
                     onMouseEnter={e=>e.currentTarget.style.color='white'}
-                    onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,.42)'}>{l}</a>
+                    onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,.42)'}>{l.l}</a>
                 ))}
               </div>
             ))}
           </div>
-          <div style={{borderTop:'1px solid rgba(255,255,255,.07)',paddingTop:20,
-            display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
+          <div style={{borderTop:'1px solid rgba(255,255,255,.07)',paddingTop:20,display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
             <span style={{fontSize:12,color:'rgba(255,255,255,.2)'}}>© 2026 Wärmepumpenbegleiter.de</span>
             <span style={{fontSize:12,color:'rgba(255,255,255,.2)'}}>Wir erhalten eine Vermittlungsprovision. Für Sie kostenlos.</span>
           </div>
