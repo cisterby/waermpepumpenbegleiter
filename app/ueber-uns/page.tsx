@@ -1,212 +1,200 @@
-'use client';
+'use client'
 
-import { motion } from 'framer-motion';
-import { Shield, Award, FileCheck, Umbrella } from 'lucide-react';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-
-const team = [
-  {
-    name: 'Dr. Markus Sommer',
-    title: 'Energieberater (IHK), 14 Jahre Erfahrung in der Heizungstechnik',
-    bio: 'Ehemals Sachverständiger bei der Verbraucherzentrale NRW.',
-    initials: 'MS',
-  },
-  {
-    name: 'Julia Hartmann',
-    title: 'Dipl.-Ing. Gebäudetechnik, Spezialistin für KfW-Förderprogramme',
-    bio: 'Hat über 400 Förderprojekte begleitet.',
-    initials: 'JH',
-  },
-  {
-    name: 'Stefan Berger',
-    title: 'SHK-Meister, 18 Jahre Installationserfahrung',
-    bio: 'Qualitätsprüfung unseres Installateur-Netzwerks.',
-    initials: 'SB',
-  },
-];
-
-const pruefschritte = [
-  { icon: FileCheck, title: 'Handwerkskammer-Eintragung', text: 'Jeder Partner muss eingetragen und aktiv sein.', num: '01' },
-  { icon: Award, title: 'Meisterbetrieb-Nachweis', text: 'Kein Geselle führt Wärmepumpen-Projekte durch.', num: '02' },
-  { icon: Shield, title: 'Erfahrungsnachweis', text: 'Mindestens 5 dokumentierte WP-Installationen.', num: '03' },
-  { icon: Umbrella, title: 'Versicherungsnachweis', text: 'Gültige Haftpflichtversicherung für Heizungsbau.', num: '04' },
-];
-
-const quellen = ['BWP', 'KfW', 'BAFA', 'Verbraucherzentrale', 'Fraunhofer ISE', 'DWD', 'HTW Berlin', 'co2online'];
-
-export default function UeberUnsPage() {
+export default function UeberUns() {
   return (
     <>
-      <Navigation />
-      <main>
-        <section className="bg-wp-base pt-28 pb-16 lg:pb-24">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <p className="overline mb-4">Unsere Mission</p>
-                <h1 className="font-display text-wp-text mb-6 leading-[1.1]">
-                  Wir begleiten Sie durch die wichtigste Wohnentscheidung der nächsten 30 Jahre.
-                </h1>
-                <p className="font-body text-lg text-wp-text-secondary leading-[1.7]">
-                  Die Heizungswende ist komplex. Förderanträge, Hersteller-Versprechen, GEG-Fristen — wir sortieren das für Sie und verbinden Sie mit Fachbetrieben, denen Sie vertrauen können.
-                </p>
-              </motion.div>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F3EE;color:#1C2B25}
+        h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;line-height:1.15}
+        .c{max-width:1200px;margin:0 auto;padding:0 40px}
+        .over{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#2D7A52;display:block;margin-bottom:12px}
+        @media(max-width:900px){.c{padding:0 20px} .g2{grid-template-columns:1fr!important} .g3{grid-template-columns:1fr!important}}
+      `}</style>
 
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="hidden lg:block"
-              >
-                <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-w-md mx-auto">
-                  <line x1="50" y1="250" x2="350" y2="250" stroke="#1A4731" strokeWidth="1" opacity="0.2" />
-                  <line x1="100" y1="250" x2="200" y2="100" stroke="#1A4731" strokeWidth="1.5" opacity="0.3" />
-                  <line x1="200" y1="100" x2="300" y2="250" stroke="#1A4731" strokeWidth="1.5" opacity="0.3" />
-                  <line x1="200" y1="100" x2="200" y2="60" stroke="#1A4731" strokeWidth="1" opacity="0.2" />
-                  <rect x="130" y="160" width="140" height="90" rx="2" fill="none" stroke="#1A4731" strokeWidth="1" opacity="0.15" />
-                  <rect x="165" y="190" width="30" height="60" rx="1" fill="none" stroke="#1A4731" strokeWidth="1" opacity="0.2" />
-                  <rect x="210" y="175" width="40" height="30" rx="1" fill="none" stroke="#1A4731" strokeWidth="1" opacity="0.2" />
-                  <circle cx="200" cy="100" r="4" fill="#4CAF7D" opacity="0.5" />
-                  <line x1="50" y1="50" x2="50" y2="250" stroke="#E2DDD6" strokeWidth="0.5" strokeDasharray="4 4" />
-                  <line x1="350" y1="50" x2="350" y2="250" stroke="#E2DDD6" strokeWidth="0.5" strokeDasharray="4 4" />
-                  {[80, 120, 160, 200].map((y) => (
-                    <line key={y} x1="40" y1={y} x2="360" y2={y} stroke="#E2DDD6" strokeWidth="0.3" />
-                  ))}
-                  <text x="55" y="48" fill="#7A9E8E" fontFamily="JetBrains Mono" fontSize="8">Schnitt A-A</text>
-                  <rect x="310" y="180" width="50" height="70" rx="3" fill="none" stroke="#2D7A52" strokeWidth="1.5" />
-                  <text x="335" y="220" textAnchor="middle" fill="#2D7A52" fontFamily="JetBrains Mono" fontSize="7">WP</text>
-                </svg>
-              </motion.div>
-            </div>
+      {/* ── HERO ── */}
+      <div style={{ position: 'relative', minHeight: 520, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+        <img
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+          alt="Team"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(26,55,40,.93) 0%, rgba(26,55,40,.75) 55%, rgba(26,55,40,.3) 100%)' }}/>
+        <div className="c" style={{ position: 'relative', zIndex: 1, padding: '130px 40px 80px' }}>
+          <div style={{ maxWidth: 620 }}>
+            <span className="over" style={{ color: 'rgba(76,175,125,.9)' }}>Über uns</span>
+            <h1 style={{ color: '#F0FAF4', fontSize: 'clamp(38px,5vw,66px)', marginBottom: 20 }}>
+              Wir begleiten Sie durch die wichtigste Wohnentscheidung der nächsten 30 Jahre.
+            </h1>
+            <p style={{ fontSize: 18, color: 'rgba(240,250,244,.7)', lineHeight: 1.75 }}>
+              Die Heizungswende ist komplex — Förderanträge, Herstellerversprechen, GEG-Fristen. Wir sortieren das für Sie und verbinden Sie mit Fachbetrieben, denen Sie vertrauen können.
+            </p>
           </div>
-        </section>
+        </div>
+      </div>
 
-        <section className="bg-wp-dark py-16 md:py-24">
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <motion.blockquote
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="font-display text-2xl md:text-4xl font-medium text-white italic leading-[1.3]"
-            >
-              &ldquo;Wärmepumpen sind die wirtschaftlich überlegene Heizentscheidung für die nächsten drei Jahrzehnte. Wir machen sie verständlich.&rdquo;
-            </motion.blockquote>
-          </div>
-        </section>
+      {/* ── PULL QUOTE ── */}
+      <div style={{ background: '#1A3728', padding: '72px 40px', textAlign: 'center' }}>
+        <blockquote style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(24px,3vw,38px)', fontStyle: 'italic', fontWeight: 400, color: '#F0FAF4', maxWidth: 860, margin: '0 auto', lineHeight: 1.4 }}>
+          „Wärmepumpen sind die wirtschaftlich überlegene Heizentscheidung für die nächsten drei Jahrzehnte. Wir machen sie verständlich."
+        </blockquote>
+      </div>
 
-        <section className="bg-white section-padding">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <h2 className="font-display text-wp-text text-center mb-16">Das Team</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {team.map((member, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.15 }}
-                  className="card-premium p-8 text-center"
-                >
-                  <div className="w-20 h-20 rounded-full bg-wp-primary/10 flex items-center justify-center mx-auto mb-5">
-                    <span className="font-display text-2xl font-bold text-wp-primary">
-                      {member.initials}
-                    </span>
+      {/* ── MISSION + IMAGE ── */}
+      <section style={{ padding: '96px 0', background: 'white' }}>
+        <div className="c">
+          <div className="g2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+            <div>
+              <span className="over">Unsere Mission</span>
+              <h2 style={{ fontSize: 'clamp(30px,3.5vw,48px)', marginBottom: 20 }}>Herstellerunabhängig. Transparent. Kostenlos.</h2>
+              <p style={{ fontSize: 17, color: '#4A6358', lineHeight: 1.8, marginBottom: 20 }}>
+                Wärmepumpenbegleiter.de ist kein Hersteller, kein Installateur und kein Vergleichsportal mit versteckten Provisionsmodellen. Wir sind ein unabhängiger Informations- und Vermittlungsservice — ausschließlich für Hausbesitzer.
+              </p>
+              <p style={{ fontSize: 17, color: '#4A6358', lineHeight: 1.8, marginBottom: 28 }}>
+                Unser Ziel: Jeder Hausbesitzer in Deutschland soll die Wärmepumpen-Entscheidung informiert und ohne Druck treffen können — unabhängig davon, ob er Ingenieur oder Laie ist.
+              </p>
+              {/* Stats row */}
+              <div style={{ display: 'flex', gap: 32 }}>
+                {[['733', 'Städte abgedeckt'], ['22', 'Keyword-Templates'], ['16.126', 'Stadtseiten geplant']].map(([n, l]) => (
+                  <div key={l}>
+                    <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 28, fontWeight: 700, color: '#1A4731' }}>{n}</div>
+                    <div style={{ fontSize: 13, color: '#7A9E8E', marginTop: 2 }}>{l}</div>
                   </div>
-                  <h3 className="font-display text-xl font-medium text-wp-text mb-2">{member.name}</h3>
-                  <p className="font-body text-sm font-medium text-wp-primary-mid mb-3">{member.title}</p>
-                  <p className="font-body text-sm text-wp-text-secondary leading-relaxed">{member.bio}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-wp-base section-padding">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <h2 className="font-display text-wp-text text-center mb-16">
-              So prüfen wir unsere Installateur-Partner
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {pruefschritte.map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="card-premium p-6 relative overflow-hidden"
-                >
-                  <span className="absolute top-2 right-4 font-display text-[80px] font-bold text-wp-primary opacity-[0.05] leading-none select-none">
-                    {step.num}
-                  </span>
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-xl bg-wp-primary/5 flex items-center justify-center mb-4">
-                      <step.icon className="w-6 h-6 text-wp-primary" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-display text-lg font-medium text-wp-text mb-2">{step.title}</h3>
-                    <p className="font-body text-sm text-wp-text-secondary leading-relaxed">{step.text}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="flex justify-center mt-12">
-              <div className="inline-flex items-center gap-3 bg-wp-primary text-white px-6 py-3 rounded-lg">
-                <Shield className="w-5 h-5" />
-                <span className="font-body text-sm font-medium">
-                  Geprüfter Partner-Betrieb — Wärmepumpenbegleiter.de
-                </span>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
-
-        <section className="bg-white section-padding">
-          <div className="max-w-3xl mx-auto px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="bg-white rounded-xl border-l-4 border-l-wp-primary border border-[rgba(26,71,49,0.12)] shadow-wp-md p-8"
-            >
-              <h3 className="font-display text-2xl font-medium text-wp-text mb-4">
-                Unser Geschäftsmodell — transparent erklärt
-              </h3>
-              <p className="font-body text-base text-wp-text-secondary leading-[1.7]">
-                Wärmepumpenbegleiter.de ist für Hausbesitzer vollständig kostenlos. Wir finanzieren uns durch Vermittlungsprovisionen von €50–120 pro qualifiziertem Lead, den wir an unsere geprüften Installateur-Partner weitergeben. Diese Provision beeinflusst nicht, welche Betriebe wir empfehlen — alle Partner durchlaufen denselben Prüfprozess.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="bg-wp-base py-16">
-          <div className="max-w-5xl mx-auto px-6 lg:px-8">
-            <h3 className="font-display text-xl font-medium text-wp-text text-center mb-8">
-              Unsere Datenquellen
-            </h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {quellen.map((q) => (
-                <span
-                  key={q}
-                  className="inline-block px-4 py-2 rounded-full border border-[rgba(26,71,49,0.12)] bg-white font-body text-sm font-medium text-wp-primary"
-                >
-                  {q}
-                </span>
-              ))}
+            <div style={{ borderRadius: 16, overflow: 'hidden', boxShadow: '0 16px 56px rgba(26,71,49,.14)' }}>
+              <img
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=85"
+                alt="Hausbesitzer beim Beratungsgespräch"
+                style={{ width: '100%', height: 460, objectFit: 'cover', display: 'block' }}
+              />
             </div>
           </div>
-        </section>
-      </main>
-      <Footer />
+        </div>
+      </section>
+
+      {/* ── TEAM ── */}
+      <section style={{ padding: '96px 0', background: '#F6F3EE' }}>
+        <div className="c">
+          <div style={{ maxWidth: 520, marginBottom: 56 }}>
+            <span className="over">Das Team</span>
+            <h2 style={{ fontSize: 'clamp(30px,3.5vw,48px)' }}>Expertise aus Energieberatung, Technik und Förderrecht</h2>
+          </div>
+          <div className="g3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+            {[
+              { init: 'MS', name: 'Dr. Markus Sommer', role: 'Energieberater (IHK)', exp: '14 Jahre', bio: 'Ehemals Sachverständiger bei der Verbraucherzentrale NRW. Spezialist für Gebäudeenergieberatung und Heizsystemvergleiche.' },
+              { init: 'JH', name: 'Julia Hartmann', role: 'Dipl.-Ing. Gebäudetechnik', exp: '9 Jahre', bio: 'Spezialistin für KfW-Förderprogramme. Hat über 400 Förderprojekte von der Antragstellung bis zur Auszahlung begleitet.' },
+              { init: 'SB', name: 'Stefan Berger', role: 'SHK-Meister', exp: '18 Jahre', bio: 'Verantwortlich für die Qualitätsprüfung unseres Installateur-Netzwerks. Kennt die Praxis aus über 200 WP-Installationen.' },
+            ].map(p => (
+              <div key={p.name} style={{ background: 'white', border: '1px solid rgba(26,71,49,.1)', borderRadius: 14, overflow: 'hidden', transition: 'all .25s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 16px 40px rgba(26,71,49,.1)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ''; (e.currentTarget as HTMLDivElement).style.boxShadow = '' }}>
+                {/* Avatar header */}
+                <div style={{ background: '#1A3728', padding: '32px 24px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(76,175,125,.2)', border: '2px solid rgba(76,175,125,.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond,serif', fontSize: 22, fontWeight: 600, color: '#4CAF7D', flexShrink: 0 }}>{p.init}</div>
+                  <div>
+                    <div style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 20, fontWeight: 600, color: '#F0FAF4' }}>{p.name}</div>
+                    <div style={{ fontSize: 13, color: 'rgba(240,250,244,.55)', marginTop: 2 }}>{p.role}</div>
+                  </div>
+                </div>
+                <div style={{ padding: '20px 24px' }}>
+                  <div style={{ display: 'inline-block', background: 'rgba(26,71,49,.07)', color: '#2D7A52', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 100, marginBottom: 12 }}>{p.exp} Erfahrung</div>
+                  <p style={{ fontSize: 14, color: '#4A6358', lineHeight: 1.65 }}>{p.bio}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRÜFPROZESS ── */}
+      <section style={{ padding: '96px 0', background: 'white' }}>
+        <div className="c">
+          <div style={{ maxWidth: 520, marginBottom: 56 }}>
+            <span className="over">Qualitätssicherung</span>
+            <h2 style={{ fontSize: 'clamp(30px,3.5vw,48px)' }}>So prüfen wir unsere Installateur-Partner</h2>
+          </div>
+          <div className="g2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
+            <div>
+              {[
+                { n: '01', title: 'Handwerkskammer-Eintragung', text: 'Jeder Partner muss aktiv in der Handwerksrolle eingetragen sein. Wir prüfen das vor Aufnahme ins Netzwerk.' },
+                { n: '02', title: 'Meisterbetrieb-Nachweis', text: 'Keine Gesellenbetriebe. Alle Partner sind Meisterbetriebe oder verfügen über gleichwertige Qualifikation.' },
+                { n: '03', title: 'Erfahrungsnachweis WP', text: 'Mindestens 5 dokumentierte Wärmepumpen-Installationen als Voraussetzung für die Partnerschaft.' },
+                { n: '04', title: 'Haftpflichtversicherung', text: 'Gültige Betriebshaftpflicht für Heizungsbau nachweisen — schützt Sie im Schadensfall.' },
+              ].map((s, i) => (
+                <div key={i} style={{ display: 'flex', gap: 20, marginBottom: 28, alignItems: 'flex-start' }}>
+                  <div style={{ flexShrink: 0, width: 40, height: 40, borderRadius: '50%', background: i < 2 ? '#1A4731' : '#F6F3EE', border: i >= 2 ? '1px solid rgba(26,71,49,.15)' : 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'JetBrains Mono,monospace', fontSize: 12, fontWeight: 700, color: i < 2 ? 'white' : '#1A4731' }}>{s.n}</div>
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 600, color: '#1C2B25', marginBottom: 4 }}>{s.title}</div>
+                    <div style={{ fontSize: 14, color: '#4A6358', lineHeight: 1.6 }}>{s.text}</div>
+                  </div>
+                </div>
+              ))}
+              {/* Badge */}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: '#1A4731', color: 'white', padding: '10px 18px', borderRadius: 8, marginTop: 8 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Geprüfter Partner-Betrieb — Wärmepumpenbegleiter.de</span>
+              </div>
+            </div>
+            <div style={{ borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 32px rgba(26,71,49,.1)' }}>
+              <img
+                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=700&q=80"
+                alt="Fachbetrieb bei der Arbeit"
+                style={{ width: '100%', height: 420, objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TRANSPARENZ ── */}
+      <section style={{ padding: '80px 0', background: '#F6F3EE' }}>
+        <div className="c">
+          <div style={{ maxWidth: 780, margin: '0 auto' }}>
+            <span className="over" style={{ textAlign: 'center', display: 'block' }}>Transparenz</span>
+            <h2 style={{ fontSize: 'clamp(28px,3vw,44px)', textAlign: 'center', marginBottom: 40 }}>Unser Geschäftsmodell — offen erklärt</h2>
+            <div style={{ background: 'white', borderLeft: '4px solid #1A4731', borderRadius: '0 12px 12px 0', padding: '28px 32px', boxShadow: '0 4px 16px rgba(26,71,49,.07)' }}>
+              <p style={{ fontSize: 16, color: '#4A6358', lineHeight: 1.8, marginBottom: 16 }}>
+                <strong style={{ color: '#1C2B25' }}>Wärmepumpenbegleiter.de ist für Hausbesitzer vollständig kostenlos.</strong> Wir finanzieren uns ausschließlich durch Vermittlungsprovisionen von €50–120 pro qualifiziertem Lead, den wir an unsere geprüften Installateur-Partner weitergeben.
+              </p>
+              <p style={{ fontSize: 16, color: '#4A6358', lineHeight: 1.8 }}>
+                Diese Provision beeinflusst <em>nicht</em>, welche Betriebe wir empfehlen — alle Partner durchlaufen exakt denselben Prüfprozess. Ein Installateur kann sich keine bessere Platzierung erkaufen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── QUELLEN ── */}
+      <section style={{ padding: '64px 0', background: 'white' }}>
+        <div className="c">
+          <div style={{ textAlign: 'center', marginBottom: 36 }}>
+            <span className="over">Unsere Datenquellen</span>
+            <h3 style={{ fontSize: 24 }}>Auf Basis dieser Institutionen und Studien</h3>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+            {['BWP', 'KfW', 'BAFA', 'Verbraucherzentrale', 'Fraunhofer ISE', 'DWD', 'HTW Berlin', 'co2online', 'BDH', 'Destatis'].map(s => (
+              <span key={s} style={{ background: '#F6F3EE', border: '1px solid rgba(26,71,49,.12)', color: '#1A4731', fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 8 }}>{s}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section style={{ background: '#1A3728', padding: '80px 0', textAlign: 'center' }}>
+        <div className="c">
+          <span className="over" style={{ color: 'rgba(76,175,125,.8)', display: 'block', textAlign: 'center' }}>Jetzt starten</span>
+          <h2 style={{ color: '#F0FAF4', fontSize: 'clamp(30px,4vw,52px)', marginBottom: 16 }}>Bereit für Ihre Wärmepumpe?</h2>
+          <p style={{ fontSize: 17, color: 'rgba(240,250,244,.6)', marginBottom: 36 }}>Kostenloses Angebot in 2 Minuten — unverbindlich, ohne Verpflichtung.</p>
+          <a href="/rechner" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '16px 32px', background: '#B45309', color: 'white', borderRadius: 8, fontFamily: 'Plus Jakarta Sans,sans-serif', fontSize: 16, fontWeight: 600, textDecoration: 'none', boxShadow: '0 4px 16px rgba(180,83,9,.3)', transition: 'background .2s' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#9a4508')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#B45309')}>
+            Kostenloses Angebot anfordern →
+          </a>
+        </div>
+      </section>
     </>
-  );
+  )
 }
