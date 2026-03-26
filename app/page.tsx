@@ -109,7 +109,7 @@ export default function Home() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -137,7 +137,7 @@ export default function Home() {
           font-size: 16px;
           overflow-x: hidden;
         }
-        h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; line-height: 1.1; }
+        h1,h2,h3,h4 { font-family: 'Playfair Display', serif; line-height: 1.1; }
         h1 { font-size: clamp(44px,6vw,76px); font-weight: 700; }
         h2 { font-size: clamp(34px,4vw,56px); font-weight: 600; }
         h3 { font-size: clamp(20px,2vw,28px); font-weight: 500; }
@@ -427,7 +427,7 @@ export default function Home() {
                 style={{ background: 'white', border: '1px solid rgba(26,71,49,.1)', borderRadius: 14, padding: '36px 28px', transition: `all .25s ease, opacity .7s ease ${i * .1 + .1}s, transform .7s ease ${i * .1 + .1}s`, cursor: 'default', overflow: 'hidden', position: 'relative' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-5px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 16px 48px rgba(26,71,49,.12)' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ''; (e.currentTarget as HTMLDivElement).style.boxShadow = '' }}>
-                <span style={{ position: 'absolute', top: -12, right: 12, fontFamily: 'Cormorant Garamond, serif', fontSize: 96, fontWeight: 700, color: '#1A4731', opacity: .055, lineHeight: 1, userSelect: 'none' }}>{s.n}</span>
+                <span style={{ position: 'absolute', top: -12, right: 12, fontFamily: 'Playfair Display, serif', fontSize: 96, fontWeight: 700, color: '#1A4731', opacity: .055, lineHeight: 1, userSelect: 'none' }}>{s.n}</span>
                 <div style={{ width: 48, height: 48, background: 'rgba(26,71,49,.07)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>{s.icon}</div>
                 <h3 style={{ fontSize: 22, marginBottom: 10 }}>{s.title}</h3>
                 <p style={{ fontSize: 15, color: '#4A6358', lineHeight: 1.65 }}>{s.text}</p>
@@ -559,7 +559,7 @@ export default function Home() {
                   <div style={{ fontSize: 13, color: 'rgba(240,250,244,.3)', marginTop: 4 }}>= bis zu €21.000 Zuschuss</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 68, fontWeight: 700, color: '#F59E0B', lineHeight: 1 }}>70%</div>
+                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 68, fontWeight: 700, color: '#F59E0B', lineHeight: 1 }}>70%</div>
                   <div style={{ fontSize: 12, color: 'rgba(240,250,244,.3)' }}>nicht rückzahlbar</div>
                 </div>
               </div>
@@ -695,7 +695,7 @@ export default function Home() {
                 <div style={{ color: '#F59E0B', fontSize: 15, letterSpacing: 2, marginBottom: 14 }}>★★★★★</div>
                 <p style={{ fontSize: 15, color: '#4A6358', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 18 }}>{t.text}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 40, height: 40, background: 'rgba(26,71,49,.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontWeight: 600, color: '#1A4731', flexShrink: 0 }}>{t.init}</div>
+                  <div style={{ width: 40, height: 40, background: 'rgba(26,71,49,.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Playfair Display, serif', fontSize: 17, fontWeight: 600, color: '#1A4731', flexShrink: 0 }}>{t.init}</div>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 600, color: '#1C2B25' }}>{t.name}</div>
                     <div style={{ fontSize: 12, color: '#7A9E8E' }}>{t.city}</div>
@@ -714,7 +714,7 @@ export default function Home() {
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=60" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: .15 }}/>
         </div>
-        <span style={{ position: 'absolute', fontFamily: 'Cormorant Garamond, serif', fontSize: 360, fontWeight: 700, color: 'rgba(255,255,255,.025)', top: -60, left: '50%', transform: 'translateX(-50%)', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', whiteSpace: 'nowrap', zIndex: 0 }}>→</span>
+        <span style={{ position: 'absolute', fontFamily: 'Playfair Display, serif', fontSize: 360, fontWeight: 700, color: 'rgba(255,255,255,.025)', top: -60, left: '50%', transform: 'translateX(-50%)', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', whiteSpace: 'nowrap', zIndex: 0 }}>→</span>
         <div className="c" style={{ position: 'relative', zIndex: 1 }}>
           <span className="over" style={{ color: 'rgba(76,175,125,.8)', display: 'block', textAlign: 'center' }}>Bereit für den Wechsel?</span>
           <h2 style={{ color: '#F0FAF4', fontSize: 'clamp(38px,5vw,62px)', marginBottom: 18 }}>Bereit für die Heizungswende?</h2>
