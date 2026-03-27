@@ -2,8 +2,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Outfit, DM_Sans, JetBrains_Mono } from 'next/font/google';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -181,7 +181,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${dmSans.className} antialiased bg-wp-bg text-wp-text`}>
-        <Navbar />
+        <Navigation />
         {children}
         <Footer />
       </body>
