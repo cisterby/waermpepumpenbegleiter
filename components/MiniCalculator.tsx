@@ -102,7 +102,7 @@ export default function MiniCalculator() {
 
           <div className="text-center">
             <span className="font-body text-xs text-wp-text-light">
-              Amortisation mit 55% Förderung: ca. {result.amortisation} Jahre
+              Amortisation mit 55% Förderung: ca. {result.amortisationJahre} Jahre
             </span>
           </div>
         </div>
