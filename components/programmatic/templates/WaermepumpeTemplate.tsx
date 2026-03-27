@@ -322,8 +322,9 @@ function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
 
 // ── HAUPTKOMPONENTE ──────────────────────────────────────────────────────────
 export default function WaermepumpeTemplate({
-  city, keyword, jaz, calc, foerd, h1, nearby, variant,
+  city, keyword, jaz, calc, foerd, h1, nearby,
 }: CityPageRouterProps) {
+  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
   const heroImg  = pick(HERO_IMGS,  city.lat, city.lng, 0);
   const sideImg  = pick(SIDE_IMGS,  city.lat, city.lng, 1);
   const stripImg = pick(STRIP_IMGS, city.lat, city.lng, 2);
