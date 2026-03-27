@@ -24,9 +24,6 @@ export const WAERMEBEDARF_KWH_PRO_M2: Record<string, number> = {
   '2010_plus':      72,   // EnEV 2009+
   'kfw_55':         41,   // KfW-Effizienzhaus 55
   'passivhaus':     21,   // Passivhaus
-  // Fallback für ältere Dropdown-Werte
-  'vor_1978':      215,   // Aggregiert vor 1978
-  '1979_1994':     148,
 }
 
 // ── ENERGIEPREISE (Bundesdurchschnitt als Fallback) ───────────
