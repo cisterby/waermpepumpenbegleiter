@@ -1,145 +1,112 @@
 // app/[keywordSlug]/[citySlug]/page.tsx
-// ============================================================
-// Dynamische Route für alle 16.126 programmatischen Seiten
-// Next.js 13 App Router + Static Site Generation
-//
-// URL-Struktur: /waermepumpe-kosten/berlin
-//               /waermepumpe-installateur/muenchen
-//               /luft-wasser-waermepumpe/hamburg
-// ============================================================
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { KEYWORDS, getKeywordBySlug, fillTemplate } from '@/lib/keywords';
+import { CITIES, getCityBySlug, estimateJAZ, getNearbyCity } from '@/lib/cities';
+import { calcBetriebskosten, calcFoerderung } from '@/lib/calculations';
+import CityPageRouter from '@/components/programmatic/CityPageRouter';
 
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { CITIES, getCityBySlug, getNearbyCity, estimateJAZ, calcCityBetriebskosten, getVariantIndex } from '@/lib/cities'
-import { KEYWORDS, getKeywordBySlug, fillTemplate } from '@/lib/keywords'
-import { calcBetriebskosten, calcFoerderung, fmtEuro } from '@/lib/calculations'
-
-// Template-Komponenten (Tier 1 zuerst)
-import WaermepumpeTemplate     from '@/components/templates/WaermepumpeTemplate'
-import WaermepumpeKostenTemplate from '@/components/templates/WaermepumpeKostenTemplate'
-import InstallateurTemplate    from '@/components/templates/InstallateurTemplate'
-import FoerderungTemplate      from '@/components/templates/FoerderungTemplate'
-import LuftWasserTemplate      from '@/components/templates/LuftWasserTemplate'
-// Tier 2–4 (alle auf WaermepumpeTemplate zurückfallen bis fertig)
-import GenericTemplate         from '@/components/templates/GenericTemplate'
-
-// ── STATIC PARAMS ─────────────────────────────────────────────
-// Generiert alle gültigen [keywordSlug]/[citySlug] Kombinationen
-// Priorität: Tier 1 Keywords × alle Städte zuerst
-export async function generateStaticParams() {
-  const params: Array<{ keywordSlug: string; citySlug: string }> = []
-
-  // Sortierung: Tier 1 zuerst, dann nach Einwohnerzahl absteigend
-  // → Wichtigste Seiten werden bei Partial-Prerendering zuerst gebaut
-  const sortedKeywords = [...KEYWORDS].sort((a, b) => a.tier - b.tier)
-  const sortedCities   = [...CITIES].sort((a, b) => b.einwohner - a.einwohner)
-
-  for (const keyword of sortedKeywords) {
-    for (const city of sortedCities) {
-      params.push({
-        keywordSlug: keyword.slug,
-        citySlug:    city.slug,
-      })
-    }
-  }
-
-  return params
+interface Props {
+  params: { keywordSlug: string; citySlug: string };
 }
 
-// ── METADATA ──────────────────────────────────────────────────
-export async function generateMetadata({
-  params,
-}: {
-  params: { keywordSlug: string; citySlug: string }
-}): Promise<Metadata> {
-  const city    = getCityBySlug(params.citySlug)
-  const keyword = getKeywordBySlug(params.keywordSlug)
+export const dynamicParams = false;
 
-  if (!city || !keyword) {
-    return { title: 'Seite nicht gefunden | Wärmepumpenbegleiter' }
-  }
+export async function generateStaticParams() {
+  const sortedKeywords = [...KEYWORDS].sort((a, b) => a.tier - b.tier);
+  const sortedCities   = [...CITIES].sort((a, b) => b.einwohner - a.einwohner);
+  return sortedKeywords.flatMap((kw) =>
+    sortedCities.map((city) => ({ keywordSlug: kw.slug, citySlug: city.slug }))
+  );
+}
 
-  const jaz   = estimateJAZ(city)
-  const title = fillTemplate(keyword.titleTemplate, city, jaz)
-  const desc  = fillTemplate(keyword.metaTemplate, city, jaz)
-  const canonical = `https://waermepumpenbegleiter.de/${keyword.slug}/${city.slug}`
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const city    = getCityBySlug(params.citySlug);
+  const keyword = getKeywordBySlug(params.keywordSlug);
+  if (!city || !keyword) return {};
+
+  const jaz   = estimateJAZ(city);
+  const calc  = calcBetriebskosten(120, '1979_1994', 'erdgas', {
+    strompreisCtKwh: city.strompreis,
+    gaspreisCtKwh:   city.gaspreis,
+    avgTemp:         city.avgTemp,
+  });
+  const title = fillTemplate(keyword.titleTemplate, city, jaz, calc.wpKosten, calc.ersparnis);
+  const desc  = fillTemplate(keyword.metaTemplate,  city, jaz, calc.wpKosten, calc.ersparnis);
+  const url   = `https://waermepumpenbegleiter.de/${keyword.slug}/${city.slug}`;
 
   return {
     title,
     description: desc,
-    alternates: { canonical },
+    alternates: { canonical: url },
     openGraph: {
-      title,
-      description: desc,
-      url: canonical,
-      siteName: 'Wärmepumpenbegleiter.de',
-      locale: 'de_DE',
-      type: 'website',
+      title, description: desc, url,
+      type: 'website', locale: 'de_DE',
+      images: [{ url: 'https://waermepumpenbegleiter.de/opengraph-image.png', width: 1200, height: 630 }],
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: { index: true, follow: true, 'max-snippet': -1 },
-    },
-  }
+    robots: { index: true, follow: true },
+  };
 }
 
-// ── PAGE COMPONENT ────────────────────────────────────────────
-export default function CityKeywordPage({
-  params,
-}: {
-  params: { keywordSlug: string; citySlug: string }
-}) {
-  const city    = getCityBySlug(params.citySlug)
-  const keyword = getKeywordBySlug(params.keywordSlug)
+export default function CityKeywordPage({ params }: Props) {
+  const city    = getCityBySlug(params.citySlug);
+  const keyword = getKeywordBySlug(params.keywordSlug);
+  if (!city || !keyword) notFound();
 
-  if (!city || !keyword) notFound()
-
-  // Stadtspezifische Berechnungen
-  const jaz     = estimateJAZ(city)
-  const calc    = calcBetriebskosten('120', '1979_1994', 'erdgas', {
+  const jaz    = estimateJAZ(city);
+  const calc   = calcBetriebskosten(120, '1979_1994', 'erdgas', {
     strompreisCtKwh: city.strompreis,
     gaspreisCtKwh:   city.gaspreis,
     avgTemp:         city.avgTemp,
-  })
-  const foerd   = calcFoerderung({
-    investitionskosten:      25000,
-    isSelfOccupied:          true,
-    hasOldFossilHeating:     true,
-    einkommenUnter40k:       false,
-    hasNaturalRefrigerant:   false,
-    usesErdwaermeOrWasser:   false,
-  })
-  const nearby  = getNearbyCity(city, 6)
-  const variant = getVariantIndex(city.slug, keyword.slug, 4)
+  });
+  const foerd  = calcFoerderung({
+    investitionskosten:    25000,
+    isSelfOccupied:        true,
+    hasOldFossilHeating:   true,
+    einkommenUnter40k:     false,
+    hasNaturalRefrigerant: false,
+    usesErdwaermeOrWasser: false,
+  });
+  const nearby = getNearbyCity(city, 6);
+  const h1     = fillTemplate(keyword.h1Template, city, jaz, calc.wpKosten, calc.ersparnis);
 
-  // Gemeinsame Props für alle Templates
-  const templateProps = {
-    city,
-    keyword,
-    jaz,
-    calc,
-    foerd,
-    nearby,
-    variant,
-    h1: fillTemplate(keyword.h1Template, city, jaz, calc.wpKosten, calc.ersparnis),
-  }
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://waermepumpenbegleiter.de' },
+      { '@type': 'ListItem', position: 2, name: keyword.keyword.replace('[Stadt]', '').trim(), item: `https://waermepumpenbegleiter.de/${keyword.slug}` },
+      { '@type': 'ListItem', position: 3, name: city.name, item: `https://waermepumpenbegleiter.de/${keyword.slug}/${city.slug}` },
+    ],
+  };
 
-  // Template-Router
-  switch (keyword.template) {
-    case 'WaermepumpeTemplate':
-      return <WaermepumpeTemplate {...templateProps} />
-    case 'WaermepumpeKostenTemplate':
-      return <WaermepumpeKostenTemplate {...templateProps} />
-    case 'InstallateurTemplate':
-      return <InstallateurTemplate {...templateProps} />
-    case 'FoerderungTemplate':
-      return <FoerderungTemplate {...templateProps} />
-    case 'LuftWasserTemplate':
-      return <LuftWasserTemplate {...templateProps} />
-    default:
-      // Alle Tier 2–4 Templates fallen auf GenericTemplate zurück
-      // bis die spezialisierten Komponenten gebaut sind
-      return <GenericTemplate {...templateProps} />
-  }
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: keyword.faqPool.slice(0, 4).map(item => ({
+      '@type': 'Question',
+      name: fillTemplate(item.q, city, jaz, calc.wpKosten, calc.ersparnis),
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: fillTemplate(item.a, city, jaz, calc.wpKosten, calc.ersparnis),
+      },
+    })),
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <CityPageRouter
+        city={city}
+        keyword={keyword}
+        calc={calc}
+        foerd={foerd}
+        jaz={jaz}
+        nearby={nearby}
+        h1={h1}
+        allCities={CITIES}
+      />
+    </>
+  );
 }
