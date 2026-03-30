@@ -8,7 +8,7 @@ import { ChevronDown, ArrowRight, Shield, Zap, Euro, Clock } from 'lucide-react'
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import AuthorBox from '@/components/programmatic/AuthorBox';
+import { getRotatingFAQs } from '@/lib/content-variation';
 
 export default function GenericTemplate({
   city, keyword, calc, foerd, jaz, nearby, h1,
@@ -233,8 +233,6 @@ export default function GenericTemplate({
               </div>
             ))}
           </div>
-              {/* AuthorBox — E-E-A-T Signal */}
-              <AuthorBox keywordSlug={keyword.slug} />
         </div>
       </div>
     </div>
