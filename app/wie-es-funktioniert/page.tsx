@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { CheckCircle, ArrowRight, Shield, Clock, Euro, Star, Users, Zap, Award, TrendingUp } from 'lucide-react';
 
-const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] } }) };
+const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } }) };
 
 function AnimSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useRef(null);
