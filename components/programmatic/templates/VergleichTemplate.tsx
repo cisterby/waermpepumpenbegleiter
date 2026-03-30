@@ -11,6 +11,7 @@ import { fmtEuro } from '@/lib/calculations';
 import { estimateJAZ } from '@/lib/city-utils';
 import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
+import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 
@@ -200,6 +201,7 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           </div>
           {/* Formspree Form */}
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+          <AuthorBox keywordSlug={keyword.slug} />
           {/* Trust */}
           <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
             {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
