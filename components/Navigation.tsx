@@ -38,8 +38,9 @@ export default function Navigation() {
         style={{
           background: scrolled
             ? 'rgba(247,245,240,0.97)'
-            : 'linear-gradient(180deg, rgba(10,25,16,0.70) 0%, rgba(10,25,16,0.0) 100%)',
-          backdropFilter: scrolled ? 'blur(14px)' : 'none',
+            : 'rgba(247,245,240,0.82)',
+          backdropFilter: 'blur(14px)',
+
           boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)' : 'none',
         }}
       >
@@ -49,12 +50,12 @@ export default function Navigation() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group shrink-0">
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                scrolled ? 'bg-wp-green' : 'bg-white/15 border border-white/25'
+                scrolled ? 'bg-wp-green' : 'bg-wp-green'
               }`}>
                 <Leaf className="w-4 h-4 text-white" strokeWidth={2.5} />
               </div>
               <span className={`font-heading font-bold text-[15px] hidden sm:block transition-colors ${
-                scrolled ? 'text-wp-green' : 'text-white'
+                scrolled ? 'text-wp-green' : 'text-wp-green'
               }`}>
                 Wärmepumpenbegleiter
               </span>
@@ -67,7 +68,7 @@ export default function Navigation() {
                   className={`font-sans text-[13.5px] font-medium px-3.5 py-2 rounded-lg transition-all ${
                     scrolled
                       ? 'text-wp-text2 hover:text-wp-green hover:bg-wp-greenlt'
-                      : 'text-white/85 hover:text-white hover:bg-white/10'
+                      : 'text-wp-green hover:text-wp-green2 hover:bg-wp-greenlt'
                   }`}>
                   {link.label}
                 </Link>
@@ -80,7 +81,7 @@ export default function Navigation() {
                 className={`font-sans text-[13.5px] font-medium px-3.5 py-2 rounded-lg transition-all ${
                   scrolled
                     ? 'text-wp-text2 hover:text-wp-green hover:bg-wp-greenlt'
-                    : 'text-white/75 hover:text-white hover:bg-white/10'
+                    : 'text-wp-green hover:text-wp-green2 hover:bg-wp-greenlt'
                 }`}>
                 Kontakt
               </Link>
@@ -88,7 +89,7 @@ export default function Navigation() {
                 className={`flex items-center gap-1.5 font-heading font-bold text-[13.5px] px-5 py-2.5 rounded-xl transition-all hover:-translate-y-0.5 ${
                   scrolled
                     ? 'bg-wp-green text-white hover:bg-wp-green2 shadow-wp-sm'
-                    : 'bg-white text-wp-green hover:bg-white/90 shadow-lg shadow-black/20'
+                    : 'bg-wp-green text-white hover:bg-wp-green2 shadow-wp-sm'
                 }`}>
                 Kostenloses Angebot <ArrowRight size={13} />
               </Link>
@@ -97,7 +98,7 @@ export default function Navigation() {
             {/* Mobile toggle */}
             <button onClick={() => setMobileOpen(true)}
               className={`lg:hidden p-2 rounded-lg transition-colors ${
-                scrolled ? 'text-wp-green hover:bg-wp-greenlt' : 'text-white hover:bg-white/10'
+                scrolled ? 'text-wp-green hover:bg-wp-greenlt' : 'text-wp-green hover:bg-wp-greenlt'
               }`}
               aria-label="Menü öffnen">
               <Menu className="w-5 h-5" />
