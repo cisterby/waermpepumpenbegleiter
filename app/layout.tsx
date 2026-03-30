@@ -155,8 +155,8 @@ const personSchema = {
   '@id': 'https://waermepumpenbegleiter.de/ueber-uns#markus-sommer',
   name: 'Dr. Markus Sommer',
   jobTitle: 'Energieberater (IHK)',
-  description: 'Spezialist für Heizsystemvergleiche, KfW-Förderanträge und Gebäudeenergieberatung.',
-  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'Gebäudeenergiegesetz GEG', 'Heizungssanierung', 'JAZ', 'Betriebskostenvergleich'],
+  description: 'Spezialist für Heizsystemvergleiche und KfW-Förderanträge. Ehemals Sachverständiger bei der Verbraucherzentrale NRW.',
+  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'GEG', 'Heizungssanierung', 'JAZ'],
   worksFor: { '@type': 'Organization', name: 'Wärmepumpenbegleiter.de', url: 'https://waermepumpenbegleiter.de' },
   url: 'https://waermepumpenbegleiter.de/ueber-uns',
 };
