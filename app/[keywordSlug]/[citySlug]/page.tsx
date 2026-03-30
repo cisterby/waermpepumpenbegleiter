@@ -110,12 +110,41 @@ export default function CityKeywordPage({ params }: Props) {
       },
     })),
   };
+  // Service Schema (keyword-spezifisch) — PDF Anforderung #6
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `https://waermepumpenbegleiter.de/\${keyword.slug}/\${city.slug}#service`,
+    name: `\${keyword.keyword.replace('[Stadt]', city.name).trim()}`,
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    serviceType: 'Wärmepumpen-Vermittlung',
+    areaServed: {
+      '@type': 'City',
+      name: city.name,
+      containedInPlace: {
+        '@type': 'State',
+        name: city.bundesland,
+      },
+    },
+    provider: {
+      '@type': 'Organization',
+      '@id': 'https://waermepumpenbegleiter.de/#organization',
+      name: 'Wärmepumpenbegleiter.de',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'EUR',
+      description: 'Kostenlose Vermittlung an geprüfte Wärmepumpen-Fachbetriebe',
+    },
+  };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBizSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <CityPageRouter
         city={city}
         keyword={keyword}
