@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Leaf, ArrowRight } from 'lucide-react';
 
 const navLinks = [
-  { href: '/#wie-es-funktioniert', label: 'Wie es funktioniert' },
+  { href: '/wie-es-funktioniert', label: 'Wie es funktioniert' },
   { href: '/rechner', label: 'Rechner' },
   { href: '/waermepumpe-foerderung/berlin', label: 'Förderung' },
   { href: '/ratgeber', label: 'Ratgeber' },
