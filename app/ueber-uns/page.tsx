@@ -1,10 +1,4 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Über uns — Wärmepumpenbegleiter.de',
-  description: 'Das Team: Energieberater IHK, Dipl.-Ing. Gebäudetechnik und SHK-Meister. Herstellerunabhängig, transparent, kostenlos.',
-  alternates: { canonical: 'https://waermepumpenbegleiter.de/ueber-uns' },
-};
+'use client'
 
 export default function UeberUns() {
   return (
@@ -94,7 +88,9 @@ export default function UeberUns() {
               { init: 'JH', name: 'Julia Hartmann', role: 'Dipl.-Ing. Gebäudetechnik', exp: '9 Jahre', bio: 'Spezialistin für KfW-Förderprogramme. Hat über 400 Förderprojekte von der Antragstellung bis zur Auszahlung begleitet.' },
               { init: 'SB', name: 'Stefan Berger', role: 'SHK-Meister', exp: '18 Jahre', bio: 'Verantwortlich für die Qualitätsprüfung unseres Installateur-Netzwerks. Kennt die Praxis aus über 200 WP-Installationen.' },
             ].map(p => (
-              <div key={p.name} style={{ background: 'white', border: '1px solid rgba(26,71,49,.1)', borderRadius: 14, overflow: 'hidden', transition: 'all .25s' }}}}>
+              <div key={p.name} style={{ background: 'white', border: '1px solid rgba(26,71,49,.1)', borderRadius: 14, overflow: 'hidden', transition: 'all .25s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 16px 40px rgba(26,71,49,.1)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ''; (e.currentTarget as HTMLDivElement).style.boxShadow = '' }}>
                 {/* Avatar header */}
                 <div style={{ background: '#1A3728', padding: '32px 24px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(76,175,125,.2)', border: '2px solid rgba(76,175,125,.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond,serif', fontSize: 22, fontWeight: 600, color: '#4CAF7D', flexShrink: 0 }}>{p.init}</div>
@@ -192,7 +188,9 @@ export default function UeberUns() {
           <span className="over" style={{ color: 'rgba(76,175,125,.8)', display: 'block', textAlign: 'center' }}>Jetzt starten</span>
           <h2 style={{ color: '#F0FAF4', fontSize: 'clamp(30px,4vw,52px)', marginBottom: 16 }}>Bereit für Ihre Wärmepumpe?</h2>
           <p style={{ fontSize: 17, color: 'rgba(240,250,244,.6)', marginBottom: 36 }}>Kostenloses Angebot in 2 Minuten — unverbindlich, ohne Verpflichtung.</p>
-          <a href="/rechner" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '16px 32px', background: '#B45309', color: 'white', borderRadius: 8, fontFamily: 'Plus Jakarta Sans,sans-serif', fontSize: 16, fontWeight: 600, textDecoration: 'none', boxShadow: '0 4px 16px rgba(180,83,9,.3)', transition: 'background .2s' }}>
+          <a href="/rechner" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '16px 32px', background: '#B45309', color: 'white', borderRadius: 8, fontFamily: 'Plus Jakarta Sans,sans-serif', fontSize: 16, fontWeight: 600, textDecoration: 'none', boxShadow: '0 4px 16px rgba(180,83,9,.3)', transition: 'background .2s' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#9a4508')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#B45309')}>
             Kostenloses Angebot anfordern →
           </a>
         </div>
