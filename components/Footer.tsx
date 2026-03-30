@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Leaf, ArrowRight, MapPin, Phone, Mail, Shield, Zap, Users } from 'lucide-react';
 
 const navigation = [
-  { label: 'Wie es funktioniert', href: '/#wie-es-funktioniert' },
+  { label: 'Wie es funktioniert', href: '/wie-es-funktioniert' },
   { label: 'Kostenrechner', href: '/rechner' },
   { label: 'Ratgeber', href: '/ratgeber' },
   { label: 'Über uns', href: '/ueber-uns' },
