@@ -148,6 +148,19 @@ const organizationSchema = {
   },
 };
 
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://waermepumpenbegleiter.de/ueber-uns#markus-sommer',
+  name: 'Dr. Markus Sommer',
+  jobTitle: 'Energieberater (IHK)',
+  description: 'Spezialist für Heizsystemvergleiche, KfW-Förderanträge und Gebäudeenergieberatung.',
+  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'Gebäudeenergiegesetz GEG', 'Heizungssanierung', 'JAZ', 'Betriebskostenvergleich'],
+  worksFor: { '@type': 'Organization', name: 'Wärmepumpenbegleiter.de', url: 'https://waermepumpenbegleiter.de' },
+  url: 'https://waermepumpenbegleiter.de/ueber-uns',
+};
+
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -178,6 +191,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
       <body className={`${dmSans.className} antialiased bg-wp-bg text-wp-text`}>
