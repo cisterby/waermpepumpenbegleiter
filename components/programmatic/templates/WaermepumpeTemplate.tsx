@@ -13,6 +13,7 @@ import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs } from "@/lib/content-variation";
+import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
