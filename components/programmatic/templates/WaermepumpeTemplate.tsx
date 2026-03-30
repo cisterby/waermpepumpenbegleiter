@@ -334,7 +334,8 @@ export default function WaermepumpeTemplate({
 
   // Intro-Textvarianten (stadtspezifisch + deterministisch)
   // Intro-Paragraphen: 8 × 4 Stadtgrößen × 6 Keyword-Kategorien = unique pro Stadt
-  const [introText] = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const introParagraphs = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const introText = introParagraphs[0];
 
   // FAQs rotierend aus Pool (20+ Fragen je Keyword-Kategorie, 6 pro Stadt-Hash)
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
@@ -911,7 +912,6 @@ export default function WaermepumpeTemplate({
                     <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />
                     {t}
                   </div>
-              <AuthorBox keywordSlug={keyword.slug} />
                 ))}
               </div>
 
