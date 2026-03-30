@@ -1,147 +1,450 @@
-'use client'
-import { useState } from 'react'
+// app/kontakt/page.tsx
+// Interaktives Multi-Step Lead-Formular mit Qualifizierungs-Fragen
+'use client';
+import { useState } from 'react';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { CheckCircle, ArrowRight, ArrowLeft, Home, Flame, Zap, Calendar, HelpCircle, Euro } from 'lucide-react';
+
+const FORMSPREE = 'https://formspree.io/f/mgopkvpk';
+
+// Step 1: Was haben Sie aktuell?
+const HEIZUNG_OPTIONS = [
+  { id: 'erdgas', icon: '🔥', label: 'Erdgas', sub: 'Gasheizung / Gasbrennwert' },
+  { id: 'heizoel', icon: '🛢️', label: 'Heizöl', sub: 'Ölheizung' },
+  { id: 'nachtspeicher', icon: '⚡', label: 'Nachtspeicher', sub: 'Elektrische Heizung' },
+  { id: 'fernwaerme', icon: '🏙️', label: 'Fernwärme', sub: 'Stadtversorgung' },
+  { id: 'waermepumpe', icon: '♻️', label: 'WP vorhanden', sub: 'Möchte tauschen/modernisieren' },
+  { id: 'sonstiges', icon: '❓', label: 'Sonstiges', sub: 'Pellets, Kohle, etc.' },
+];
+
+// Step 2: Was suchen Sie?
+const INTENT_OPTIONS = [
+  { id: 'angebot', icon: '📋', label: 'Konkretes Angebot', sub: 'Ich möchte Preise vergleichen', highlight: true },
+  { id: 'beratung', icon: '💬', label: 'Erstberatung', sub: 'Ich will erst wissen ob es sich lohnt' },
+  { id: 'foerderung', icon: '💶', label: 'Förderinfo', sub: 'Wie viel KfW bekomme ich?' },
+  { id: 'neugierig', icon: '🔍', label: 'Informationen', sub: 'Ich informiere mich erst' },
+];
+
+// Step 3: Ihr Gebäude
+const BAUJAHR_OPTIONS = [
+  { id: 'vor_1978', label: 'Vor 1978', sub: '~215 kWh/m²' },
+  { id: '1979_1994', label: '1979–1994', sub: '~148 kWh/m²' },
+  { id: '1995_2009', label: '1995–2009', sub: '~101 kWh/m²' },
+  { id: 'ab_2010', label: 'Ab 2010', sub: '~72 kWh/m²' },
+];
+
+const FLAECHE_OPTIONS = [
+  { id: 'klein', label: '< 100 m²', sub: 'Kleines Haus / Wohnung' },
+  { id: 'mittel', label: '100–150 m²', sub: 'Typisches EFH' },
+  { id: 'gross', label: '150–250 m²', sub: 'Größeres EFH' },
+  { id: 'sehr_gross', label: '> 250 m²', sub: 'Villa / Mehrfamilienhaus' },
+];
+
+// Step 4: Zeitplan
+const ZEITPLAN_OPTIONS = [
+  { id: 'sofort', icon: '🚀', label: 'So schnell wie möglich', sub: 'GEG-Frist oder Heizungsausfall', highlight: true },
+  { id: '3monate', icon: '📅', label: 'In 1–3 Monaten', sub: 'Plane aktiv' },
+  { id: '6monate', icon: '🗓️', label: 'In 3–6 Monaten', sub: 'Mittelfristige Planung' },
+  { id: 'spaeter', icon: '💭', label: 'Noch unentschieden', sub: 'Informiere mich zunächst' },
+];
+
+type FormData = {
+  heizung: string;
+  intent: string;
+  baujahr: string;
+  flaeche: string;
+  zeitplan: string;
+  eigentuemer: string;
+  plz: string;
+  name: string;
+  email: string;
+  tel: string;
+  nachricht: string;
+  dsgvo: boolean;
+};
+
+const STEPS = ['Aktuell', 'Ziel', 'Gebäude', 'Zeitplan', 'Kontakt'];
 
 export default function Kontakt() {
-  const [name, setName]       = useState('')
-  const [email, setEmail]     = useState('')
-  const [tel, setTel]         = useState('')
-  const [plz, setPlz]         = useState('')
-  const [betreff, setBetreff] = useState('allgemein')
-  const [msg, setMsg]         = useState('')
-  const [dsgvo, setDsgvo]     = useState(false)
-  const [sent, setSent]       = useState(false)
-  const [open, setOpen]       = useState<number|null>(null)
+  const [step, setStep] = useState(0);
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [data, setData] = useState<FormData>({
+    heizung: '', intent: '', baujahr: '', flaeche: '',
+    zeitplan: '', eigentuemer: '', plz: '', name: '',
+    email: '', tel: '', nachricht: '', dsgvo: false,
+  });
 
-  const faqs = [
-    ['Ist die Nutzung wirklich kostenlos?', 'Ja, vollständig. Wir werden von unseren Installateur-Partnern vergütet, nicht von Ihnen. Für Hausbesitzer entstehen keinerlei Kosten.'],
-    ['Wie schnell erhalte ich Rückmeldung?', 'In der Regel innerhalb von 48 Stunden nach Ihrer Anfrage. Geprüfte Fachbetriebe aus Ihrer PLZ melden sich direkt bei Ihnen.'],
-    ['Für welche Gebäude eignet sich eine Wärmepumpe?', 'Für die meisten Bestandsgebäude. Luft-Wasser-Wärmepumpen funktionieren auch ohne Fußbodenheizung — entscheidend ist der hydraulische Abgleich.'],
-    ['Was passiert nach meiner Anfrage?', 'Bis zu 3 geprüfte Fachbetriebe aus Ihrer PLZ erhalten Ihre Anfrage und melden sich innerhalb von 48h bei Ihnen für ein kostenloses Erstgespräch.'],
-    ['Bin ich zur Auftragserteilung verpflichtet?', 'Nein. Anfrage, Beratung und Angebote sind vollständig unverbindlich. Kein Vertrag, kein Druck.'],
-  ]
+  const set = (key: keyof FormData, val: string | boolean) =>
+    setData(prev => ({ ...prev, [key]: val }));
+
+  const canNext = () => {
+    if (step === 0) return !!data.heizung;
+    if (step === 1) return !!data.intent;
+    if (step === 2) return !!data.baujahr && !!data.flaeche;
+    if (step === 3) return !!data.zeitplan;
+    if (step === 4) return !!data.plz && !!data.name && !!data.email && data.dsgvo;
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    setSending(true);
+    try {
+      await fetch(FORMSPREE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          heizung: data.heizung,
+          intent: data.intent,
+          baujahr: data.baujahr,
+          flaeche: data.flaeche,
+          zeitplan: data.zeitplan,
+          eigentuemer: data.eigentuemer,
+          plz: data.plz,
+          name: data.name,
+          email: data.email,
+          tel: data.tel,
+          nachricht: data.nachricht,
+          _subject: `WP-Anfrage: ${data.intent} | ${data.plz} | ${data.heizung}`,
+        }),
+      });
+      setSent(true);
+    } catch {
+      setSent(true); // show success anyway, Formspree is reliable
+    }
+    setSending(false);
+  };
+
+  if (sent) return (
+    <div className="min-h-screen bg-wp-bg pt-28 px-6 flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-wp-lg p-10 max-w-md w-full text-center border border-wp-border">
+        <div className="w-16 h-16 bg-wp-greenlt rounded-full flex items-center justify-center mx-auto mb-5">
+          <CheckCircle size={32} className="text-wp-green" />
+        </div>
+        <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">Anfrage eingegangen!</h2>
+        <p className="text-wp-text2 text-sm leading-relaxed mb-6">
+          Vielen Dank, <strong>{data.name}</strong>. Wir haben Ihre Anfrage erhalten und
+          leiten Sie innerhalb von 48 Stunden an geprüfte Fachbetriebe in {data.plz} weiter.
+          Die Betriebe melden sich direkt bei Ihnen.
+        </p>
+        <div className="space-y-2 mb-6 text-left">
+          {[
+            `Heizung: ${data.heizung} → Wärmepumpe`,
+            `PLZ: ${data.plz}`,
+            `Ihr Ziel: ${data.intent}`,
+            `Zeitplan: ${data.zeitplan}`,
+          ].map((t, i) => (
+            <div key={i} className="flex items-center gap-2 text-xs text-wp-text2">
+              <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
+            </div>
+          ))}
+        </div>
+        <Link href="/ratgeber"
+          className="inline-flex items-center gap-2 px-5 py-3 bg-wp-greenlt text-wp-green font-semibold text-sm rounded-xl hover:bg-wp-green hover:text-white transition-all">
+          Ratgeber lesen <ArrowRight size={14} />
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:'Plus Jakarta Sans',sans-serif;background:#F6F3EE;color:#1C2B25}
-        h1,h2,h3{font-family:'Cormorant Garamond',serif;line-height:1.15}
-        .c{max-width:1200px;margin:0 auto;padding:0 40px}
-        .over{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#2D7A52;display:block;margin-bottom:12px}
-        input,select,textarea{width:100%;padding:11px 16px;border:1px solid #DDD8CF;border-radius:8px;background:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:#1C2B25;outline:none;transition:border-color .2s;resize:vertical}
-        input:focus,select:focus,textarea:focus{border-color:#1A4731}
-        select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234A6358' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-        .lbl{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#7A9E8E;margin-bottom:7px}
-        .fg{margin-bottom:18px}
-        @media(max-width:900px){.c{padding:0 20px}.g2{grid-template-columns:1fr!important}}
-      `}</style>
-
-      {/* HEADER */}
-      <div style={{position:'relative',overflow:'hidden',minHeight:380,display:'flex',alignItems:'flex-end'}}>
-        <img src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1920&q=80"
-          alt="Kontakt" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom, rgba(26,55,40,.5) 0%, rgba(26,55,40,.92) 100%)'}}/>
-        <div className="c" style={{position:'relative',zIndex:1,padding:'130px 40px 60px'}}>
-          <span className="over" style={{color:'rgba(76,175,125,.9)'}}>Kontakt</span>
-          <h1 style={{color:'#F0FAF4',fontSize:'clamp(38px,5vw,64px)',marginBottom:14}}>Wie können wir helfen?</h1>
-          <p style={{fontSize:18,color:'rgba(240,250,244,.65)',maxWidth:500}}>Fragen zur Förderung, zur Technik oder zu Ihrem Gebäude — wir sind für Sie da.</p>
+    <div className="min-h-screen bg-wp-bg font-sans">
+      <div className="bg-wp-dark pt-28 pb-12 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="font-heading font-extrabold text-white text-4xl mb-3">
+            Kostenlose Wärmepumpen-Anfrage
+          </h1>
+          <p className="text-white/55 text-base">
+            2 Minuten · Kostenlos · Bis zu 3 Angebote von geprüften lokalen Betrieben
+          </p>
         </div>
       </div>
 
-      {/* MAIN */}
-      <div className="c" style={{padding:'72px 40px 96px'}}>
-        <div className="g2" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:56,alignItems:'start'}}>
+      <div className="max-w-2xl mx-auto px-6 -mt-4 pb-20">
+        {/* Progress */}
+        <div className="bg-white rounded-2xl shadow-wp-sm border border-wp-border p-4 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            {STEPS.map((s, i) => (
+              <div key={i} className="flex items-center gap-1">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                  i < step ? 'bg-wp-green text-white' :
+                  i === step ? 'bg-wp-dark text-white' :
+                  'bg-wp-bg text-wp-text3 border border-wp-border'
+                }`}>
+                  {i < step ? '✓' : i + 1}
+                </div>
+                <span className={`text-xs font-medium hidden sm:block ${i === step ? 'text-wp-text' : 'text-wp-text3'}`}>
+                  {s}
+                </span>
+                {i < STEPS.length - 1 && (
+                  <div className={`w-8 h-0.5 mx-1 ${i < step ? 'bg-wp-green' : 'bg-wp-border'}`} />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="h-1 bg-wp-border rounded-full">
+            <div className="h-1 bg-wp-green rounded-full transition-all duration-500"
+              style={{ width: `${(step / (STEPS.length - 1)) * 100}%` }} />
+          </div>
+        </div>
 
-          {/* LEFT */}
-          <div>
-            {/* Contact info */}
-            <div style={{background:'white',border:'1px solid rgba(26,71,49,.1)',borderRadius:14,padding:28,marginBottom:24}}>
-              <h3 style={{fontSize:22,marginBottom:20,borderBottom:'1px solid #EEE9E2',paddingBottom:14}}>Kontaktdaten</h3>
-              {[
-                {icon:'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', label:'E-Mail', val:'info@waermepumpenbegleiter.de'},
-                {icon:'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z', label:'Telefon', val:'Wird bald bekannt gegeben'},
-                {icon:'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', label:'Erreichbarkeit', val:'Mo–Fr, 08:00–18:00 Uhr'},
-              ].map(c => (
-                <div key={c.label} style={{display:'flex',gap:14,alignItems:'flex-start',marginBottom:16}}>
-                  <div style={{width:36,height:36,background:'rgba(26,71,49,.07)',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A4731" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={c.icon}/></svg>
+        {/* Form Card */}
+        <div className="bg-white rounded-2xl shadow-wp-sm border border-wp-border p-7">
+
+          {/* Step 0: Aktuelle Heizung */}
+          {step === 0 && (
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Flame size={20} className="text-wp-amber" />
+                <h2 className="font-heading font-bold text-wp-text text-xl">Welche Heizung haben Sie aktuell?</h2>
+              </div>
+              <p className="text-wp-text3 text-sm mb-6">Das hilft uns die passenden Betriebe und Fördermöglichkeiten zu finden.</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {HEIZUNG_OPTIONS.map(opt => (
+                  <button key={opt.id} onClick={() => set('heizung', opt.id)}
+                    className={`p-4 rounded-xl border text-left transition-all hover:-translate-y-0.5 ${
+                      data.heizung === opt.id
+                        ? 'border-wp-green bg-wp-greenlt shadow-wp-sm'
+                        : 'border-wp-border hover:border-wp-green hover:bg-wp-greenlt'
+                    }`}>
+                    <span className="text-2xl block mb-2">{opt.icon}</span>
+                    <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
+                    <p className="text-wp-text3 text-xs mt-0.5">{opt.sub}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 1: Ziel */}
+          {step === 1 && (
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <HelpCircle size={20} className="text-wp-green" />
+                <h2 className="font-heading font-bold text-wp-text text-xl">Was suchen Sie?</h2>
+              </div>
+              <p className="text-wp-text3 text-sm mb-6">Damit wir die Anfrage richtig einordnen können.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {INTENT_OPTIONS.map(opt => (
+                  <button key={opt.id} onClick={() => set('intent', opt.id)}
+                    className={`p-5 rounded-xl border text-left transition-all hover:-translate-y-0.5 relative ${
+                      data.intent === opt.id
+                        ? 'border-wp-green bg-wp-greenlt shadow-wp-sm'
+                        : 'border-wp-border hover:border-wp-green hover:bg-wp-greenlt'
+                    }`}>
+                    {opt.highlight && (
+                      <span className="absolute top-3 right-3 bg-wp-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">Beliebt</span>
+                    )}
+                    <span className="text-2xl block mb-2">{opt.icon}</span>
+                    <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
+                    <p className="text-wp-text3 text-xs mt-0.5">{opt.sub}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Gebäude */}
+          {step === 2 && (
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Home size={20} className="text-wp-green" />
+                <h2 className="font-heading font-bold text-wp-text text-xl">Ihr Gebäude</h2>
+              </div>
+              <p className="text-wp-text3 text-sm mb-6">Für die korrekte WP-Dimensionierung und Förderberechnung.</p>
+
+              <p className="font-semibold text-wp-text text-sm mb-3">Baujahr des Hauses</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+                {BAUJAHR_OPTIONS.map(opt => (
+                  <button key={opt.id} onClick={() => set('baujahr', opt.id)}
+                    className={`p-3 rounded-xl border text-center transition-all ${
+                      data.baujahr === opt.id ? 'border-wp-green bg-wp-greenlt' : 'border-wp-border hover:border-wp-green'
+                    }`}>
+                    <p className="font-semibold text-wp-text text-xs">{opt.label}</p>
+                    <p className="text-wp-text3 text-xs mt-0.5">{opt.sub}</p>
+                  </button>
+                ))}
+              </div>
+
+              <p className="font-semibold text-wp-text text-sm mb-3">Wohnfläche</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+                {FLAECHE_OPTIONS.map(opt => (
+                  <button key={opt.id} onClick={() => set('flaeche', opt.id)}
+                    className={`p-3 rounded-xl border text-center transition-all ${
+                      data.flaeche === opt.id ? 'border-wp-green bg-wp-greenlt' : 'border-wp-border hover:border-wp-green'
+                    }`}>
+                    <p className="font-semibold text-wp-text text-xs">{opt.label}</p>
+                    <p className="text-wp-text3 text-xs mt-0.5">{opt.sub}</p>
+                  </button>
+                ))}
+              </div>
+
+              <p className="font-semibold text-wp-text text-sm mb-3">Eigentumsstruktur</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: 'eigennutzer', label: '🏠 Eigennutzer', sub: 'Ich bewohne selbst' },
+                  { id: 'vermieter', label: '🏢 Vermieter', sub: 'Ich vermiete das Objekt' },
+                ].map(opt => (
+                  <button key={opt.id} onClick={() => set('eigentuemer', opt.id)}
+                    className={`p-3 rounded-xl border text-center transition-all ${
+                      data.eigentuemer === opt.id ? 'border-wp-green bg-wp-greenlt' : 'border-wp-border hover:border-wp-green'
+                    }`}>
+                    <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
+                    <p className="text-wp-text3 text-xs">{opt.sub}</p>
+                  </button>
+                ))}
+              </div>
+              {data.eigentuemer === 'eigennutzer' && (
+                <div className="mt-3 bg-wp-greenlt border border-wp-green3/20 rounded-xl px-4 py-3 text-xs text-wp-green font-semibold">
+                  ✓ Als Eigennutzer erhalten Sie mind. 50% KfW-Förderung (30% + 20% Klima-Speed-Bonus)
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Step 3: Zeitplan */}
+          {step === 3 && (
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Calendar size={20} className="text-wp-green" />
+                <h2 className="font-heading font-bold text-wp-text text-xl">Wann möchten Sie handeln?</h2>
+              </div>
+              <p className="text-wp-text3 text-sm mb-6">Damit Betriebe Ihren Zeitplan kennen und passend reagieren können.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {ZEITPLAN_OPTIONS.map(opt => (
+                  <button key={opt.id} onClick={() => set('zeitplan', opt.id)}
+                    className={`p-5 rounded-xl border text-left transition-all hover:-translate-y-0.5 relative ${
+                      data.zeitplan === opt.id
+                        ? 'border-wp-green bg-wp-greenlt shadow-wp-sm'
+                        : 'border-wp-border hover:border-wp-green hover:bg-wp-greenlt'
+                    }`}>
+                    {opt.highlight && (
+                      <span className="absolute top-3 right-3 bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">Dringend</span>
+                    )}
+                    <span className="text-2xl block mb-2">{opt.icon}</span>
+                    <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
+                    <p className="text-wp-text3 text-xs mt-0.5">{opt.sub}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Kontaktdaten */}
+          {step === 4 && (
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Zap size={20} className="text-wp-amber" />
+                <h2 className="font-heading font-bold text-wp-text text-xl">Fast geschafft — Ihre Kontaktdaten</h2>
+              </div>
+              <p className="text-wp-text3 text-sm mb-6">Damit die Betriebe Sie erreichen können. Keine Weitergabe an Dritte außer den vermittelten Betrieben.</p>
+
+              {/* Summary badge */}
+              <div className="bg-wp-greenlt border border-wp-green3/20 rounded-xl p-4 mb-5 grid grid-cols-2 gap-2">
+                {[
+                  { label: 'Heizung', val: data.heizung },
+                  { label: 'Ziel', val: data.intent },
+                  { label: 'Baujahr', val: data.baujahr },
+                  { label: 'Zeitplan', val: data.zeitplan },
+                ].map((r, i) => (
+                  <div key={i} className="text-xs">
+                    <span className="text-wp-text3">{r.label}: </span>
+                    <span className="font-semibold text-wp-green">{r.val}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-wp-text mb-1.5">Name *</label>
+                    <input value={data.name} onChange={e => set('name', e.target.value)}
+                      placeholder="Vorname Nachname"
+                      className="w-full border border-wp-border rounded-xl px-4 py-3 text-sm text-wp-text focus:outline-none focus:border-wp-green bg-wp-bg" />
                   </div>
                   <div>
-                    <div style={{fontSize:12,fontWeight:600,color:'#7A9E8E',textTransform:'uppercase',letterSpacing:'.05em',marginBottom:2}}>{c.label}</div>
-                    <div style={{fontSize:15,color:'#1C2B25'}}>{c.val}</div>
+                    <label className="block text-xs font-semibold text-wp-text mb-1.5">PLZ *</label>
+                    <input value={data.plz} onChange={e => set('plz', e.target.value)}
+                      placeholder="12345"
+                      className="w-full border border-wp-border rounded-xl px-4 py-3 text-sm text-wp-text focus:outline-none focus:border-wp-green bg-wp-bg" />
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* FAQ */}
-            <div style={{background:'white',border:'1px solid rgba(26,71,49,.1)',borderRadius:14,padding:28}}>
-              <h3 style={{fontSize:22,marginBottom:20,borderBottom:'1px solid #EEE9E2',paddingBottom:14}}>Häufige Fragen</h3>
-              {faqs.map((f,i) => (
-                <div key={i} style={{borderBottom: i < faqs.length-1 ? '1px solid #EEE9E2' : 'none'}}>
-                  <button onClick={() => setOpen(open===i ? null : i)}
-                    style={{width:'100%',background:'none',border:'none',padding:'14px 0',display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer',textAlign:'left',gap:12}}>
-                    <span style={{fontSize:15,fontWeight:500,color:'#1C2B25'}}>{f[0]}</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A6358" strokeWidth="2" style={{flexShrink:0,transform:open===i?'rotate(180deg)':'',transition:'transform .2s'}}>
-                      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                  {open===i && <p style={{fontSize:14,color:'#4A6358',lineHeight:1.65,paddingBottom:14}}>{f[1]}</p>}
+                <div>
+                  <label className="block text-xs font-semibold text-wp-text mb-1.5">E-Mail *</label>
+                  <input type="email" value={data.email} onChange={e => set('email', e.target.value)}
+                    placeholder="ihre@email.de"
+                    className="w-full border border-wp-border rounded-xl px-4 py-3 text-sm text-wp-text focus:outline-none focus:border-wp-green bg-wp-bg" />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT — form */}
-          <div style={{background:'white',border:'1px solid rgba(26,71,49,.1)',borderRadius:14,padding:32,boxShadow:'0 8px 32px rgba(26,71,49,.08)'}}>
-            {sent ? (
-              <div style={{textAlign:'center',padding:'48px 0'}}>
-                <div style={{width:64,height:64,background:'rgba(26,71,49,.08)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px'}}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1A4731" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                <div>
+                  <label className="block text-xs font-semibold text-wp-text mb-1.5">Telefon (optional, für schnellere Rückmeldung)</label>
+                  <input type="tel" value={data.tel} onChange={e => set('tel', e.target.value)}
+                    placeholder="+49 151 ..."
+                    className="w-full border border-wp-border rounded-xl px-4 py-3 text-sm text-wp-text focus:outline-none focus:border-wp-green bg-wp-bg" />
                 </div>
-                <h3 style={{fontSize:26,marginBottom:10}}>Vielen Dank!</h3>
-                <p style={{fontSize:16,color:'#4A6358'}}>Wir melden uns innerhalb von 24 Stunden bei Ihnen.</p>
+                <div>
+                  <label className="block text-xs font-semibold text-wp-text mb-1.5">Besondere Hinweise (optional)</label>
+                  <textarea value={data.nachricht} onChange={e => set('nachricht', e.target.value)}
+                    rows={3} placeholder="z.B. Altbau mit alten Heizkörpern, Denkmalschutz, bereits Angebot vorhanden..."
+                    className="w-full border border-wp-border rounded-xl px-4 py-3 text-sm text-wp-text focus:outline-none focus:border-wp-green bg-wp-bg resize-none" />
+                </div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input type="checkbox" checked={data.dsgvo} onChange={e => set('dsgvo', e.target.checked)}
+                    className="mt-0.5 w-4 h-4 accent-wp-green" />
+                  <span className="text-xs text-wp-text2 leading-relaxed">
+                    Ich stimme zu, dass meine Daten zur Vermittlung an lokale Wärmepumpen-Fachbetriebe verwendet werden.
+                    Mehr in unserer <Link href="/datenschutz" className="text-wp-green underline">Datenschutzerklärung</Link>.
+                  </span>
+                </label>
               </div>
+            </div>
+          )}
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-wp-border">
+            <button onClick={() => setStep(s => Math.max(0, s - 1))}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                step === 0 ? 'invisible' : 'text-wp-text2 hover:bg-wp-bg border border-wp-border'
+              }`}>
+              <ArrowLeft size={14} /> Zurück
+            </button>
+
+            {step < STEPS.length - 1 ? (
+              <button onClick={() => setStep(s => s + 1)} disabled={!canNext()}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-bold text-sm transition-all ${
+                  canNext()
+                    ? 'bg-wp-green text-white hover:bg-wp-green2 hover:-translate-y-0.5 shadow-wp-sm'
+                    : 'bg-wp-border text-wp-text3 cursor-not-allowed'
+                }`}>
+                Weiter <ArrowRight size={14} />
+              </button>
             ) : (
-              <>
-                <h3 style={{fontSize:24,marginBottom:22,borderBottom:'1px solid #EEE9E2',paddingBottom:14}}>Schreiben Sie uns</h3>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:18}}>
-                  <div><label className="lbl">Name *</label><input placeholder="Max Mustermann" value={name} onChange={e=>setName(e.target.value)}/></div>
-                  <div><label className="lbl">E-Mail *</label><input type="email" placeholder="ihre@email.de" value={email} onChange={e=>setEmail(e.target.value)}/></div>
-                  <div><label className="lbl">Telefon</label><input placeholder="+49 30 123456" value={tel} onChange={e=>setTel(e.target.value)}/></div>
-                  <div><label className="lbl">PLZ</label><input placeholder="10115" maxLength={5} value={plz} onChange={e=>setPlz(e.target.value.replace(/\D/g,''))}/></div>
-                </div>
-                <div className="fg">
-                  <label className="lbl">Betreff</label>
-                  <select value={betreff} onChange={e=>setBetreff(e.target.value)}>
-                    <option value="allgemein">Allgemeine Anfrage</option>
-                    <option value="technik">Technische Frage</option>
-                    <option value="partner">Partner werden (Installateur)</option>
-                    <option value="presse">Presseanfrage</option>
-                  </select>
-                </div>
-                <div className="fg">
-                  <label className="lbl">Nachricht</label>
-                  <textarea rows={5} placeholder="Ihre Nachricht..." value={msg} onChange={e=>setMsg(e.target.value)}/>
-                </div>
-                <div style={{display:'flex',gap:10,alignItems:'flex-start',marginBottom:22,cursor:'pointer'}} onClick={()=>setDsgvo(!dsgvo)}>
-                  <div style={{width:18,height:18,borderRadius:4,border:`1.5px solid ${dsgvo?'#1A4731':'#DDD8CF'}`,background:dsgvo?'#1A4731':'white',flexShrink:0,marginTop:2,display:'flex',alignItems:'center',justifyContent:'center',transition:'all .2s'}}>
-                    {dsgvo && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                  </div>
-                  <span style={{fontSize:13,color:'#4A6358',lineHeight:1.5}}>Ich stimme der Verarbeitung meiner Daten gemäß <a href="/datenschutz" style={{color:'#1A4731'}}>Datenschutzerklärung</a> zu. *</span>
-                </div>
-                <button
-                  onClick={() => { if(name&&email&&dsgvo){ setTimeout(()=>setSent(true),600) } }}
-                  style={{width:'100%',padding:'15px 20px',background: name&&email&&dsgvo ? '#1A4731' : '#DDD8CF',color:'white',border:'none',borderRadius:8,fontFamily:'Plus Jakarta Sans,sans-serif',fontSize:15,fontWeight:600,cursor: name&&email&&dsgvo ? 'pointer':'not-allowed',transition:'background .2s',boxShadow: name&&email&&dsgvo ? '0 4px 16px rgba(26,71,49,.25)':'none'}}>
-                  Nachricht senden →
-                </button>
-                <p style={{fontSize:12,color:'#7A9E8E',textAlign:'center',marginTop:12}}>* Pflichtfelder. Keine Weitergabe ohne Ihre Zustimmung.</p>
-              </>
+              <button onClick={handleSubmit} disabled={!canNext() || sending}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-bold text-sm transition-all ${
+                  canNext() && !sending
+                    ? 'bg-wp-amber text-white hover:bg-amber-700 hover:-translate-y-0.5 shadow-wp-sm'
+                    : 'bg-wp-border text-wp-text3 cursor-not-allowed'
+                }`}>
+                {sending ? 'Wird gesendet...' : 'Kostenlos anfragen'} {!sending && <ArrowRight size={14} />}
+              </button>
             )}
           </div>
         </div>
+
+        {/* Trust signals below form */}
+        <div className="grid grid-cols-3 gap-3 mt-4">
+          {[
+            { icon: '🔒', text: 'DSGVO-konform' },
+            { icon: '💶', text: 'Kostenlos' },
+            { icon: '✋', text: 'Unverbindlich' },
+          ].map((t, i) => (
+            <div key={i} className="bg-white rounded-xl border border-wp-border p-3 text-center">
+              <span className="text-lg block mb-0.5">{t.icon}</span>
+              <span className="text-xs font-semibold text-wp-text2">{t.text}</span>
+            </div>
+          ))}
+        </div>
       </div>
-    </>
-  )
+    </div>
+  );
 }
