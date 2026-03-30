@@ -9,6 +9,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { estimateJAZ } from '@/lib/city-utils';
+import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 
 const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
@@ -17,10 +18,7 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = keyword.faqPool.slice(0, 5).map(item => ({
-    q: fillTemplate(item.q, city, jaz, calc.wpKosten, calc.ersparnis),
-    a: fillTemplate(item.a, city, jaz, calc.wpKosten, calc.ersparnis),
-  }));
+  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
