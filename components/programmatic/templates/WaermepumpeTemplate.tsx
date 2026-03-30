@@ -12,7 +12,7 @@ import type { CityPageRouterProps } from "@/components/programmatic/CityPageRout
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
+import AuthorBox from '@/components/programmatic/AuthorBox';
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
@@ -933,6 +933,8 @@ export default function WaermepumpeTemplate({
               )}
             </div>
           </div>
+              {/* AuthorBox — E-E-A-T Signal */}
+              <AuthorBox keywordSlug={keyword.slug} />
         </div>
       </div>
     </div>
