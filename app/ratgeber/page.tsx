@@ -17,30 +17,42 @@ const ARTICLES = [
     img: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&q=80',
     big: true,
     content: `
-Das Gebäudeenergiegesetz (GEG) 2024 hat die Spielregeln beim Heizungsersatz grundlegend verändert. Seit dem 1. Januar 2024 gilt: Wer eine neue Heizung einbaut, muss mindestens 65% erneuerbare Energie nutzen. Für Bestandsgebäude galt eine Übergangsfrist — die läuft jetzt aus.
+Das Gebäudeenergiegesetz 2024 hat die Spielregeln beim Heizungsersatz grundlegend verändert. Seit dem 1. Januar 2024 gilt: Wer eine neue Heizung einbaut, muss mindestens 65 Prozent erneuerbare Energie nutzen. Für Bestandsgebäude galt eine Übergangsfrist — die läuft jetzt aus.
 
-**Was ab 30. Juni 2026 gilt**
+**Ab 30. Juni 2026 gilt die erste große Frist**
 
-In Kommunen mit mehr als 100.000 Einwohnern endet die Übergangsfrist. Das betrifft direkt die 80 größten deutschen Städte: Berlin, Hamburg, München, Köln, Frankfurt, Stuttgart, Düsseldorf und alle weiteren Großstädte. Wer in diesen Städten nach dem 30. Juni 2026 eine Heizung austauscht (weil sie kaputt ist oder freiwillig), muss die 65%-EE-Anforderung erfüllen.
+In Kommunen mit mehr als 100.000 Einwohnern endet die Übergangsfrist am 30. Juni 2026. Das betrifft rund 80 deutsche Städte: Berlin, Hamburg, München, Köln, Frankfurt, Stuttgart, Düsseldorf, Hannover und alle weiteren Großstädte. Wer nach diesem Datum eine Heizung austauscht — wegen Defekts oder freiwillig — muss die 65-Prozent-EE-Anforderung erfüllen. Für alle anderen Kommunen gilt die Frist ab dem 30. Juni 2028.
 
-Für alle anderen Kommunen gilt die Frist ab 30. Juni 2028 — also noch etwas Zeit, aber nicht viel.
+**Was 65 Prozent erneuerbare Energie bedeutet**
 
-**Was bedeutet das konkret?**
+Eine Wärmepumpe erfüllt das GEG automatisch und vollständig — ohne weitere Auflagen. Das ist der Hauptgrund warum sie zum Heizungstyp der Stunde geworden ist. Pellets erfüllen die Anforderung grundsätzlich, unterliegen aber Feinstaubauflagen und Lagerungsanforderungen. Fernwärme gilt als konform wenn der Netzbetreiber den erneuerbaren Anteil nachweist — was nicht überall gegeben ist. Eine reine Gasheizung ohne Solarthermie-Anteil erfüllt die Anforderung nicht mehr.
 
-Eine reine Gasheizung als Ersatz? Nicht mehr möglich ohne 65% erneuerbaren Anteil. Praktisch bedeutet das: Wer seine Gasheizung nach der Frist ersetzt, braucht entweder eine Wärmepumpe, eine Hybridheizung mit WP-Anteil, einen Fernwärme-Anschluss (wenn verfügbar) oder Holzpellets/Biomasse.
+**Die kommunale Wärmeplanung als Orientierung**
 
-Die Wärmepumpe ist dabei die einzige Lösung, die das GEG automatisch und vollständig erfüllt — ohne Einschränkungen oder Auflagen.
+Parallel zum GEG müssen Städte bis 2026 einen kommunalen Wärmeplan vorlegen. Dieser zeigt wie die lokale Wärmeversorgung künftig aussehen soll. Wichtige Frage: Plant Ihre Gemeinde Fernwärme in Ihrer Straße? Falls ja könnte kurzes Abwarten sinnvoll sein. Falls nein ist die Wärmepumpe die klare Alternative. Viele Wärmepläne sind bereits online verfügbar.
 
-**Das neue Gebäudemodernisierungsgesetz (GMG) — was ändert sich?**
+**Das Gebäudemodernisierungsgesetz und was es bedeutet**
 
-Die neue CDU/SPD-Koalition hat Eckpunkte für ein "Gebäudemodernisierungsgesetz" vorgelegt, das die 65%-Pflicht möglicherweise aufweicht. Stand März 2026 gilt das bestehende GEG weiter. Wärmepumpen bleiben die primär geförderte Technologie unabhängig vom Ausgang der Gesetzgebung.
+Die neue CDU/SPD-Koalition hat Anfang 2026 Eckpunkte für ein Gebäudemodernisierungsgesetz vorgelegt das die 65-Prozent-Pflicht möglicherweise flexibilisieren könnte. Stand März 2026 gilt das GEG weiter. Entscheidend: Selbst wenn dieses Gesetz die Pflicht aufweicht bleiben Wärmepumpen die primär geförderte Technologie. Die KfW-Förderung bis 70 Prozent läuft parallel und ist davon unabhängig.
 
-**Was jetzt tun?**
+**Die Wirtschaftlichkeit: Warum jetzt der richtige Zeitpunkt ist**
 
-Wenn Sie in einer Großstadt wohnen und eine Heizung haben, die älter als 15 Jahre ist: Jetzt ist der richtige Zeitpunkt zu handeln. Die Wartezeit bei guten Installateuren liegt bei 4–12 Wochen. Die KfW-Förderung (bis 70%) läuft parallel. Wer vor der Frist handelt, hat mehr Auswahl und bessere Konditionen.
+Bei einem typischen Einfamilienhaus mit 120 Quadratmetern Wohnfläche und Baujahr zwischen 1979 und 1994 liegen die Betriebskosten einer Wärmepumpe bei circa 1.600 Euro pro Jahr. Eine Gasheizung kostet heute rund 2.400 Euro — und dieser Abstand wächst weil der CO₂-Preis jedes Jahr steigt. Ab 2027 greift der europäische Emissionshandel ETS2 der den Gaspreis durch Marktmechanismen weiter nach oben treiben wird. Wer heute handelt sichert sich die volle KfW-Förderung bis 70 Prozent und den Klima-Speed-Bonus für den Ersatz fossiler Heizungen.
 
-**Quellen:** GEG 2024 (Bundesrecht), Kommunale Wärmeplanung WPG, Koalitionsvertrag 2025 CDU/SPD, KfW BEG Programm 458 Stand März 2026.
-    `,
+**Förderung im Überblick**
+
+Die KfW-Bundesförderung (Programm 458) gewährt einen nicht rückzahlbaren Zuschuss. Eigennutzer die eine fossile Heizung ersetzen erhalten: 30 Prozent Grundförderung plus 20 Prozent Klima-Speed-Bonus gleich 50 Prozent. Mit R290-Kältemittel-WP (Viessmann Vitocal, Vaillant aroTHERM) kommen weitere 5 Prozent dazu. Bei Einkommen unter 40.000 Euro netto gibt es zusätzliche 30 Prozent Einkommensbonus — insgesamt bis 70 Prozent gleich maximal 21.000 Euro Zuschuss auf 30.000 Euro Investition.
+
+**Was jetzt konkret zu tun ist**
+
+Erstens: Prüfen Sie ob Ihre Gemeinde Großstadt über 100.000 Einwohner ist — dann gilt GEG-Frist 30. Juni 2026. Zweitens: Planen Sie Vorlauf ein — vier bis zwölf Wochen für Installateur und KfW-Antrag. Drittens: KfW-Antrag zwingend vor Vertragsabschluss stellen. Viertens: Mindestens drei vollständige Angebote von LuL-registrierten Betrieben vergleichen. Fünftens: Prüfen Sie ob ein Individueller Sanierungsfahrplan sinnvoll ist — das bringt 5 Prozent Bonus zusätzlich bei nur 60 bis 140 Euro Eigenanteil.
+
+**Häufige Fragen zur GEG-Frist**
+
+Muss ich wechseln wenn meine Heizung noch funktioniert? Nein — nur beim tatsächlichen Ersatz gilt die Pflicht. Was wenn die Heizung nach dem Stichtag defekt wird? Dann greift die Pflicht sofort — eine Notreparatur ist temporär möglich aber keine vollständige Neuinstallation des gleichen Systems. Gilt das auch für Vermieter? Ja, unabhängig vom Eigennutzerstatus.
+
+Quellen: GEG 2024 Bundesanzeiger, Kommunales Wärmeplanungsgesetz WPG, Koalitionsvertrag CDU/SPD 2025, KfW BEG Programm 458 Stand März 2026, Bundesministerium für Wohnen.
+`,
   },
   {
     slug: 'kfw-458-schritt-fuer-schritt',
@@ -52,38 +64,44 @@ Wenn Sie in einer Großstadt wohnen und eine Heizung haben, die älter als 15 Ja
     author: 'Julia Hartmann',
     img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80',
     content: `
-Die KfW-Bundesförderung für effiziente Gebäude (BEG) ist das attraktivste Förderprogramm für Wärmepumpen in Deutschland. Bis zu 70% Zuschuss, nicht rückzahlbar, direkt auf Ihr Konto. Der Haken: Wer die Reihenfolge nicht kennt, verliert die Förderung vollständig.
+Die KfW-Bundesförderung für effiziente Gebäude ist das attraktivste staatliche Förderprogramm für Wärmepumpen in Deutschland — bis zu 70 Prozent der Investition, nicht rückzahlbar, direkt auf Ihr Konto. Doch jedes Jahr verlieren tausende Hausbesitzer die gesamte Förderung durch einen einzigen Fehler.
 
-**Der wichtigste Grundsatz: Antrag VOR Baubeginn**
+**Die wichtigste Regel: Antrag vor Baubeginn**
 
-Klingt simpel, wird aber immer wieder falsch gemacht. Baubeginn bedeutet hier: der Moment an dem Sie einen Vertrag mit dem Installateur unterschreiben. Nicht der erste Spatenstich, nicht die Lieferung des Geräts. Der Vertrag.
+Baubeginn bedeutet hier der Moment des Vertragsabschlusses mit dem Installateur. Nicht der Spatenstich, nicht die Lieferung, nicht der Einbau — der Vertrag. Wer erst unterschreibt und dann den Antrag stellt verliert alles. Keine Ausnahmen, keine Kulanzfälle, keine nachträgliche Genehmigung.
 
-Wer zuerst unterschreibt und dann den KfW-Antrag stellt, bekommt keine Förderung. Ausnahmslos. Keine Ausnahmen, keine Kulanzregelungen.
+Die korrekte Reihenfolge: Erstens Fachbetrieb finden und Angebote erhalten. Zweitens KfW-Antrag stellen und Bestätigung abwarten. Drittens Vertrag mit Installateur unterschreiben. Viertens Installation durchführen lassen. Fünftens Verwendungsnachweis einreichen und Auszahlung erhalten.
 
-**Welche Boni gibt es?**
+**Grundförderung und alle Boni im Detail**
 
-Die Grundförderung beträgt 30% für alle förderfähigen Kosten bis €30.000 (also max. €9.000). Darauf aufbauend:
+Die Grundförderung beträgt 30 Prozent auf förderfähige Kosten bis 30.000 Euro — maximal 9.000 Euro. Klima-Speed-Bonus: 20 Prozent zusätzlich für Eigennutzer die eine fossile Heizung durch eine Wärmepumpe ersetzen — macht 50 Prozent Standard. Einkommensbonus: 30 Prozent für Haushalte unter 40.000 Euro Jahreseinkommen, kumulierbar aber auf 70 Prozent gedeckelt. Kältemittelbonus: 5 Prozent für R290-Propan-Geräte oder Erdwärme-WP. Geräte mit Bonus: Viessmann Vitocal 250-A und Vaillant aroTHERM plus.
 
-- **Klima-Speed-Bonus (+20%)**: Für Eigennutzer, die eine fossile Heizung (Gas, Öl, Kohle) ersetzen. Das macht die meisten zu 50% Grundkombination.
-- **Einkommensbonus (+30%)**: Für Haushalte mit unter €40.000 Nettoeinkommen im Jahr. Kumulierbar mit allem anderen — macht max. 70% möglich.
-- **Kältemittelbonus (+5%)**: Für Wärmepumpen mit natürlichem Kältemittel (R290 Propan) oder Erdwärme/Grundwasser-WP. Lohnt sich: Viessmann Vitocal 250-A und Vaillant aroTHERM plus sind R290-Geräte.
+**Was förderfähig ist und was nicht**
 
-**Die Schritte im Detail**
+Förderfähig: Gerät, Montage, hydraulischer Abgleich (Pflicht), Elektroinstallation, Pufferspeicher, Planung. Nicht förderfähig: Kosten über 30.000 Euro, reine Modernisierungsmaßnahmen. Wichtig für Vermieter: KfW-Zuschüsse sind bei Vermietung steuerpflichtig.
 
-1. Fachbetrieb mit KfW-LuL-Registrierung finden (unser Service hilft)
-2. KfW-Antrag im Online-Portal stellen (mit Betrieb zusammen)
-3. KfW-Bestätigung abwarten (oft nur Tage)
-4. Vertrag mit Betrieb unterschreiben
-5. Installation durchführen lassen
-6. Verwendungsnachweis einreichen (Rechnung + Bestätigung)
-7. Auszahlung: 4–8 Wochen
+**LuL-Registrierung: Nicht jeder darf den Antrag stellen**
 
-**Was ist förderungsfähig?**
+Nur Betriebe mit Lieferant-und-Leistungserbringer-Registrierung im KfW-Portal dürfen Anträge stellen. Ohne LuL: keine Förderung, egal wie gut die Arbeit ist. Immer nach der LuL-Nummer fragen. Alle unsere Partnerbetriebe sind registriert.
 
-Gerät, Montage, hydraulischer Abgleich (Pflicht!), notwendige Elektroinstallation, Wärmespeicher. Nicht förderungsfähig: reine Modernisierungsmaßnahmen ohne Heizungstausch, Kosten über €30.000.
+**iSFP-Bonus: 5 Prozent mehr mit Sanierungsfahrplan**
 
-**Quelle:** KfW Bundesförderung für effiziente Gebäude (BEG), Merkblatt Programm 458, Stand März 2026. kfw.de/458.
-    `,
+Mit einem Individuellen Sanierungsfahrplan vor dem KfW-Antrag erhalten Sie 5 Prozent Bonus. Der iSFP kostet 300 bis 700 Euro, wird zu 80 Prozent von BAFA gefördert — Eigenanteil nur 60 bis 140 Euro. Bei 25.000 Euro Investition: 1.250 Euro mehr Zuschuss. Fast immer lohnenswert.
+
+**Der Verwendungsnachweis**
+
+Nach Installation: Rechnung plus Fachunternehmer-Bestätigung im KfW-Portal einreichen. Frist: sechs Monate. Auszahlung: vier bis acht Wochen danach direkt auf Ihr Konto.
+
+**Kombination mit Landesförderungen**
+
+Hamburg (IFB), NRW (progres.nrw), Baden-Württemberg (L-Bank), Niedersachsen (NBank) haben kombinierbare Programme. Bayern hat das 10.000-Häuser-Programm eingestellt. Berlin derzeit ausgesetzt. Kombinierbarkeit mit dem Fachbetrieb klären.
+
+**Die häufigsten Fehler**
+
+(1) Vertrag vor Antrag — vollständiger Förderverlust. (2) Betrieb ohne LuL — kein Antrag möglich. (3) Verwendungsnachweis vergessen — sechs Monate Frist. (4) Eigennutzer-Status falsch — Klima-Speed-Bonus entfällt. (5) iSFP-Bonus vergessen — 1.250 Euro bei 25.000 Euro Investition verschenkt. (6) Kältemittelbonus nicht geprüft — 5 Prozent bei R290-Geräten einfach liegen lassen.
+
+Quellen: KfW Bundesförderung BEG Merkblatt Programm 458 März 2026, BAFA Energieberatung Wohngebäude, Bundesministerium für Wirtschaft und Klimaschutz.
+`,
   },
   {
     slug: 'luft-wasser-waermepumpe-ehrlich',
@@ -95,41 +113,46 @@ Gerät, Montage, hydraulischer Abgleich (Pflicht!), notwendige Elektroinstallati
     author: 'Stefan Berger',
     img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80',
     content: `
-92% aller 2025 in Deutschland verkauften Wärmepumpen waren Luft-Wasser-Geräte. Das ist kein Zufall — aber es bedeutet auch nicht, dass sie für jeden das Richtige sind. Eine ehrliche Analyse.
+Neunzig Prozent aller 2025 neu installierten Wärmepumpen in Deutschland waren Luft-Wasser-Geräte. Diese Technologie hat sich als pragmatische Standardlösung durchgesetzt. Aber was steckt wirklich dahinter — und für wen sind Luft-Wasser-Wärmepumpen tatsächlich geeignet?
 
-**Wie funktioniert eine Luft-Wasser-Wärmepumpe?**
+**Das Funktionsprinzip: Der umgekehrte Kühlschrank**
 
-Das Prinzip ist der umgekehrte Kühlschrank: Die Außeneinheit entzieht der Außenluft Wärme (auch bei -20°C ist noch Energie enthalten), verdichtet das Kältemittel und überträgt die Wärme auf das Heizwasser. Der Kompressor verbraucht dabei Strom.
+Eine Luft-Wasser-Wärmepumpe entzieht der Außenluft Wärme — selbst bei minus 20 Grad enthält die Luft noch nutzbare Energie — und überträgt diese auf das Heizwasser. Der Kältekreislauf: Kältemittel (R290 oder R410A) verdampft in der Außeneinheit und nimmt Wärme auf. Verdichter erhöht Druck und Temperatur. Verflüssiger gibt Wärme ans Heizwasser ab. Expansionsventil entspannt — Kreislauf beginnt von vorn. Ergebnis: Aus 1 kWh Strom werden 3 bis 4,5 kWh Wärme.
 
-Der entscheidende Unterschied zur Gasheizung: Aus 1 kWh Strom werden nicht 1 kWh Wärme, sondern 3–4,5 kWh Wärme. Das nennt sich JAZ (Jahresarbeitszahl) — die wichtigste Kennzahl beim Kauf.
+**JAZ vs. COP: Der entscheidende Unterschied**
 
-**Was die JAZ wirklich bedeutet**
+Der COP ist ein Momentanwert unter Prüfbedingungen (A7/W35: 7 Grad Außen, 35 Grad Vorlauf). Ein COP von 4,5 gilt nur bei diesen Bedingungen. Die JAZ ist der reale Jahresdurchschnitt — sie liegt deutlich niedriger weil: Außentemperatur fällt im Winter unter 7 Grad. Abtauprozess kostet Energie. Warmwasserbereitung braucht höhere Temperaturen. Anlaufvorgänge verbrauchen Strom.
 
-COP und JAZ sind nicht dasselbe. Der COP ist ein Momentanwert bei Prüfbedingungen (oft A7/W35 = 7°C Außentemperatur, 35°C Vorlauf). Die JAZ ist der Jahresdurchschnitt unter realen Bedingungen — sie ist deutlich niedriger.
+In deutschen Feldstudien (Fraunhofer ISE, 3.000+ Anlagen): reale JAZ 2,8 bis 4,5. KfW-Mindestanforderung: JAZ 3,0. Norddeutschland: 3,0 bis 3,5. Süddeutschland und Rheinland: 3,6 bis 4,2.
 
-In Deutschland erreichen Luft-Wasser-WP im Schnitt JAZ 3,2–4,0. In Norddeutschland eher 3,0–3,5, in Süddeutschland 3,6–4,2. Fraunhofer ISE misst in Feldstudien regelmäßig reale JAZ (Quelle: ise.fraunhofer.de).
+**Schall und Aufstellung**
 
-**Vorteile**
+45 bis 55 Dezibel auf einem Meter — wie ein ruhiges Gespräch. In dicht bebauten Gebieten kann das beim Nachbarn ankommen. Mindestabstand zur Grenze: drei Meter meist ausreichend. Schallschutzmaßnahmen: 100 bis 800 Euro, senken Pegel um 3 bis 5 Dezibel.
 
-- Keine Bohrung, keine Genehmigung (nur Aufstellgenehmigung)
-- Für fast alle Häuser nachrüstbar
-- KfW-gefördert (bis 70%)
-- Montage in 1–3 Tagen
-- Auch für Altbauten mit hydraulischem Abgleich geeignet
+**Vorlauftemperatur: Das zentrale Kriterium**
 
-**Nachteile — ehrlich**
+Fußbodenheizung: 30 bis 40 Grad, JAZ bis 4,0+. Sanierte Heizkörper: 45 bis 55 Grad, JAZ 3,2 bis 3,8. Altbau-Heizkörper: 60 bis 70 Grad, Hochtemperatur-WP nötig, JAZ 2,8 bis 3,2.
 
-- Lauter als Sole-WP (45–55 dB auf 1 Meter)
-- Bei sehr kalten Außentemperaturen (<-10°C) sinkt die Effizienz stark
-- Keine natürliche Kühlfunktion (nur aktiv, mit zusätzlichem Aufwand)
-- Nicht für jeden Aufstellort geeignet (Mindestabstand, Schallschutzauflagen)
+Hochtemperatur-WP wie Viessmann Vitocal 252-A und Stiebel Eltron WPL arbeiten bis 70 Grad Vorlauf — kompatibel mit nahezu allen Bestandsheizkörpern. Hydraulischer Abgleich (KfW-Pflicht, 500 bis 1.500 Euro) senkt die nötige Temperatur oft um 5 bis 10 Grad.
 
-**Für wen sie nicht geeignet ist**
+**PV-Kombination: Der Effizienz-Turbo**
 
-Häuser mit extrem hohem Wärmebedarf (sehr schlechte Dämmung, sehr große Fläche) und Vorlauftemperaturen über 65°C dauerhaft — hier wird die WP unwirtschaftlich. Auch in sehr engen Bebauungen mit Lärm-Sensitivität der Nachbarn kann die Außeneinheit zum Problem werden.
+Mit eigener PV: Netzstrom 30 ct + JAZ 3,5 = Wärme kostet 8,6 ct/kWh. PV-Eigenverbrauch zu Grenzkosten unter 5 ct: Wärme unter 2 ct/kWh. Smart-Grid-fähige WP verschieben Betriebszeiten automatisch auf PV-Produktionsphasen.
 
-**Quelle:** BWP Marktdaten 2025, Fraunhofer ISE Feldmonitor Wärmepumpen 2023, Stiftung Warentest WP-Test 2024.
-    `,
+**Hersteller im Vergleich**
+
+Stiftung Warentest 2024/2025: Viessmann Vitocal 250-A Testsieger Note Gut. Vaillant aroTHERM plus: R290-Kältemittel, erhält KfW-Kältemittelbonus 5 Prozent. Bosch/Buderus: gutes Preis-Leistungs-Verhältnis. Stiebel Eltron: deutsche Produktion, lange Garantie. Nibe Fighter: sehr leise, bewährt in Skandinavien.
+
+**Für wen Luft-WP nicht geeignet ist**
+
+Gebäude mit dauerhaft nötiger Vorlauftemperatur über 65 Grad ohne Sanierungsmöglichkeit. Grundstücke ohne Platz oder mit extremen Lärmrestriktionen. Sehr hoher Warmwasserbedarf wo Sole-WP wirtschaftlicher wäre.
+
+**Typische Investitionskosten**
+
+Gerät: 8.000 bis 15.000 Euro. Installation: 4.000 bis 8.000 Euro. Hydraulischer Abgleich: 500 bis 1.500 Euro. Gesamt brutto: 14.000 bis 26.000 Euro. Nach 50 Prozent KfW: 7.000 bis 13.000 Euro Eigenanteil. Betriebskosten pro Jahr (120 m², Baujahr 1980): 1.200 bis 1.900 Euro je nach Standort.
+
+Quellen: BWP Marktdaten 2025, Fraunhofer ISE Feldmonitor 2023, Stiftung Warentest WP-Test 2024/2025, Bundesnetzagentur Monitoringbericht 2025.
+`,
   },
   {
     slug: 'waermepumpe-altbau-was-wichtig-ist',
@@ -141,37 +164,42 @@ Häuser mit extrem hohem Wärmebedarf (sehr schlechte Dämmung, sehr große Flä
     author: 'Dr. Markus Sommer',
     img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
     content: `
-"Wärmepumpen taugen nicht für Altbauten" — dieser Mythos hält sich hartnäckig. Die Realität ist differenzierter: Die meisten Altbauten in Deutschland sind für Wärmepumpen geeignet, wenn die Planung stimmt. Was wirklich zählt.
+"Wärmepumpen taugen nicht für Altbauten" — dieser Satz ist falsch. Nach Einschätzungen des Bundesverbands Wärmepumpe sind 70 bis 80 Prozent aller deutschen Bestandsgebäude technisch für eine Wärmepumpe geeignet — wenn die Planung stimmt.
 
-**Die Vorlauftemperatur ist der Schlüssel**
+**Was Altbau wirklich bedeutet**
 
-Jede Heizung hat eine Vorlauftemperatur — die Temperatur des Heizwassers das in die Heizkörper geht. Gasheizungen laufen oft bei 70–80°C. Wärmepumpen arbeiten am effizientesten bei 35–45°C.
+Altbau umfasst eine enorme Bandbreite. Entscheidend ist nicht das Baujahr sondern der energetische Zustand — der Heizwärmebedarf in kWh pro m² und Jahr. Faustformel: Unter 150 kWh/m²a ist fast immer WP-tauglich. Das entspricht Häusern ab circa 1960 mit durchschnittlichem Sanierungsstand oder älteren Häusern mit teilsanierter Gebäudehülle.
 
-Die gute Nachricht: Moderne Hochtemperatur-Wärmepumpen (z.B. Viessmann Vitocal 252-A, Stiebel Eltron WPL) arbeiten bis 70°C Vorlauf — damit sind sie mit fast allen Bestandsheizkörpern kompatibel. Die schlechte Nachricht: Je höher die nötige Vorlauftemperatur, desto schlechter die JAZ.
+**Die Vorlauftemperatur entscheidet**
 
-**Der hydraulische Abgleich als Game-Changer**
+Altbauheizungen laufen oft mit 65 bis 80 Grad. WP arbeiten am effizientesten bei 35 bis 45 Grad. Drei Lösungswege: (1) Hochtemperatur-WP wie Viessmann Vitocal 252-A oder Stiebel Eltron WPL arbeiten bis 70 Grad Vorlauf — kompatibel mit nahezu allen Bestandsheizkörpern. (2) Hydraulischer Abgleich senkt die nötige Vorlauftemperatur um 5 bis 15 Grad. (3) Gezielter Austausch einzelner unterdimensionierter Heizkörper — meist nur ein oder zwei im ganzen Haus.
 
-Der hydraulische Abgleich ist die wichtigste Maßnahme vor dem WP-Einbau — und KfW-Pflicht. Er stellt sicher, dass das Heizwasser gleichmäßig durch alle Heizkörper fließt. Das senkt die nötige Vorlauftemperatur oft um 5–15°C.
+**Hydraulischer Abgleich: KfW-Pflicht und Game-Changer**
 
-Ein gut durchgeführter hydraulischer Abgleich (Kosten: €500–1.500) kann die JAZ von 2,8 auf 3,5 verbessern. Das ist erheblich — sowohl für die Wirtschaftlichkeit als auch für die KfW-Förderfähigkeit (min. JAZ 3,0).
+KfW-Pflicht und wichtigste Einzelmaßnahme. Vorher: Heizwasser fließt unkontrolliert — nächste Heizkörper heiß, entfernte kalt, hohe Vorlauftemperatur nötig. Nachher: Jeder Heizkörper bekommt genau die richtige Menge. Vorlauftemperatur sinkt 5 bis 15 Grad. JAZ verbessert sich von 2,8 auf zum Beispiel 3,3. Kosten: 500 bis 1.500 Euro.
 
-**Sanierungsmaßnahmen die sich vorher lohnen**
+**Heizlastberechnung nach DIN EN 12831**
 
-Nicht immer nötig, aber manchmal sinnvoll:
-- Dachdämmung: Senkt den Gesamtwärmebedarf erheblich
-- Austausch unterdimensionierter Heizkörper in 1–2 Zimmern (nicht alle)
-- Zusätzliche Dämmung der Kellerdecke
+Vor der Planung muss die Heizlast berechnet werden — Norm DIN EN 12831. Berücksichtigt Wandaufbau, Fenster, Dach, Keller, Luftwechsel und lokale Normaußentemperatur. Zu groß dimensioniert: WP taktet — schlechtere JAZ und kürzere Lebensdauer. Zu klein: liefert bei Kälte nicht genug. Heizlastberechnung ist Kernkompetenz guter Fachbetriebe und Bestandteil jedes seriösen Angebots.
 
-**Welche Altbauten sind problematisch?**
+**Sanierungsreihenfolge**
 
-Häuser vor 1920 mit sehr schlechter Bausubstanz, kaum gedämmt, kleine Heizkörper — hier kann die WP unvirtschaftlich werden wenn keine Sanierungsmaßnahmen stattfinden. Eine Heizlastberechnung nach DIN EN 12831 klärt das im Vorfeld.
+In den meisten Fällen: WP jetzt, Sanierung schrittweise danach. WP funktioniert auch im unsanierten Bestand wenn die Heizlastberechnung es bestätigt. Dachdämmung und Kellerdeckendämmung vorher sind günstig (3.000 bis 8.000 Euro), werden KfW-gefördert und senken den Heizwärmebedarf um 10 bis 20 Prozent — verbessert die JAZ spürbar.
+
+**Altbau-spezifische Herausforderungen**
+
+Einrohrheizung: Lösbar mit speziellen Einrohrsystem-Abgleichlösungen. Sehr kleine Heizkörper in einzelnen Räumen: Nur diese tauschen, nicht alle. Asbest: Prüfen und fachgerecht entfernen (500 bis 2.000 Euro) — kein WP-Hindernis, aber Planungsfaktor.
+
+**Reale Kosten im Altbau**
+
+Typisches EFH Baujahr 1978 bis 1994, 120 m², Heizkörper: WP mit Installation 20.000 bis 26.000 Euro brutto. Hydraulischer Abgleich 800 bis 1.200 Euro. KfW-Förderung 50 Prozent: minus 12.000 bis 13.000 Euro. Eigenanteil: 8.000 bis 14.000 Euro. Jährliche Ersparnis gegenüber Gas: 600 bis 1.200 Euro. Amortisation: 8 bis 15 Jahre.
 
 **Fazit**
 
-Für geschätzte 75–80% aller deutschen Altbauten ist eine Wärmepumpe technisch und wirtschaftlich machbar. Der entscheidende erste Schritt: Eine Heizlastberechnung durch einen geprüften Fachbetrieb — kostenlos im Rahmen unseres Vermittlungsservices.
+Der Altbau ist kein Hindernis — er ist eine Planungsaufgabe. Wer mit einem erfahrenen Fachbetrieb startet, der eine Heizlastberechnung durchführt, den hydraulischen Abgleich macht und das richtige Gerät auswählt, hat sehr gute Chancen auf eine effiziente und wirtschaftliche WP-Installation.
 
-**Quellen:** BWP Marktdaten, Fraunhofer ISE Altbaustudie 2022, DIN EN 12831 Norm, Verbraucherzentrale NRW.
-    `,
+Quellen: BWP Bundesverband Wärmepumpe, Fraunhofer ISE Altbaustudie 2022, DIN EN 12831, Verbraucherzentrale NRW, co2online Heizspiegel 2025.
+`,
   },
   {
     slug: 'co2-preis-2026-gasheizer',
@@ -183,34 +211,44 @@ Für geschätzte 75–80% aller deutschen Altbauten ist eine Wärmepumpe technis
     author: 'Julia Hartmann',
     img: 'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80',
     content: `
-Seit 2021 gibt es in Deutschland einen nationalen CO₂-Preis auf fossile Brennstoffe. Er steigt planmäßig jedes Jahr — und er wird sich noch deutlich erhöhen. Was bedeutet das für Hausbesitzer mit Gasheizung?
+Wer heute noch eine Gasheizung betreibt zahlt jedes Jahr mehr — nicht nur wegen schwankender Gaspreise, sondern wegen eines staatlich festgelegten und planmäßig steigenden CO₂-Preises. Was viele als abstrakte Klimapolitik wahrnehmen macht sich sehr konkret auf der Heizkostenabrechnung bemerkbar.
 
-**Wie der CO₂-Preis auf Ihre Gasrechnung wirkt**
+**Was ist der CO₂-Preis?**
 
-Der CO₂-Preis wird auf den Brennstoff erhoben und vom Energieversorger an Kunden weitergegeben. Erdgas verursacht ca. 200 g CO₂ pro kWh. Bei 55 €/Tonne (2026) bedeutet das 1,1 ct/kWh CO₂-Aufschlag auf den Gaspreis.
+Seit 2021 gibt es in Deutschland einen nationalen CO₂-Preis. Gasversorger müssen für jede emittierte Tonne CO₂ ein Zertifikat kaufen und geben diese Kosten weiter. Erdgas: rund 200 Gramm CO₂ pro kWh. Bei 55 Euro pro Tonne: 1,1 Cent CO₂-Aufschlag je kWh Gas. Für ein typisches EFH mit 20.000 kWh Jahresverbrauch: 220 Euro CO₂-Abgabe pro Jahr allein.
 
-Klingt wenig? Für ein typisches EFH mit 15.000 kWh Gasverbrauch/Jahr sind das: 15.000 × 0,011 = 165 €/Jahr CO₂-Abgabe allein. Und es wird mehr.
+**Die Preisentwicklung 2024 bis 2030**
 
-**Die Entwicklung bis 2030**
+2024: 45 Euro pro Tonne, 0,9 Cent je kWh. 2025: 55 Euro, 1,1 Cent. 2026: 55 bis 65 Euro nach BEHG-Planung. 2027: EU-ETS2 startet — Gebäude werden in den europäischen Emissionshandel einbezogen, marktbasierte Preise, Prognosen 80 bis 120 Euro pro Tonne. 2030: 100 bis 150 Euro pro Tonne nach Umweltbundesamt und Fraunhofer ISI.
 
-- 2024: 45 €/t CO₂
-- 2025: 55 €/t CO₂
-- 2026: 55–65 €/t CO₂ (geplant)
-- 2027: EU-ETS2 startet — Handelspreis, voraussichtlich 80–120 €/t
-- 2030: Prognosen: 100–150 €/t CO₂
+**Was das für Ihre Gasrechnung bedeutet**
 
-Bei 100 €/t bedeutet das: +2 ct/kWh auf Gas. Bei einem Gasverbrauch von 15.000 kWh/Jahr sind das +300 €/Jahr CO₂-Abgabe — allein durch den Preisanstieg.
+Typisches EFH, 150 m², Baujahr 1980, 20.000 kWh Gasverbrauch pro Jahr. Heute 2026: 20.000 × 0,011 Euro = 220 Euro CO₂-Abgabe. Bei 100 Euro pro Tonne (2030): 20.000 × 0,02 = 400 Euro — 180 Euro mehr allein durch CO₂. Dazu kommen ETS2-Markteffekt, Netzinfrastrukturkosten und geopolitische Preissteigerungen.
 
-**Die Wärmepumpen-Rechnung**
+**Die Wärmepumpen-Gegenrechnung**
 
-Eine Wärmepumpe verbraucht Strom. Strom hat zwar auch einen CO₂-Preis eingepreist — aber der Strommix wird sauberer, und die JAZ macht Strom effizienter. Bei JAZ 3,5 braucht die WP für 15.000 kWh Wärme nur 4.286 kWh Strom. Die CO₂-Belastung sinkt um 60–75% gegenüber Gas.
+Eine WP verbraucht Strom. Der CO₂-Gehalt des deutschen Strommixes sinkt jedes Jahr — von 366 g/kWh in 2022 auf unter 200 g/kWh in 2030 (Prognose). Bei JAZ 3,5: Für 20.000 kWh Wärme braucht die WP nur 5.714 kWh Strom. CO₂ 2026 bei 250 g/kWh: 1,43 Tonnen. Gasheizung: 4,0 Tonnen. Die WP reduziert CO₂ um 64 Prozent — Abstand wächst jedes Jahr.
+
+**Betriebskosten im Direktvergleich**
+
+Heute 2026 (Gas 12 ct, Strom 30 ct, JAZ 3,5): WP 1.714 Euro/Jahr. Gas 2.609 Euro/Jahr. Vorteil WP: 895 Euro pro Jahr.
+
+2030 Szenario (Gas 16 ct, Strom 28 ct): WP 1.600 Euro/Jahr. Gas 3.478 Euro/Jahr. Vorteil WP: fast 1.900 Euro pro Jahr — mehr als doppelt so viel wie heute.
+
+**Opportunitätskosten des Wartens**
+
+Wer 2 Jahre wartet verliert: 3.200 Euro Betriebsersparnis, günstigere Installationspreise (15 bis 20 Prozent Anstieg 2022 bis 2025), möglicherweise volle KfW-Förderung wenn das politische Umfeld sich ändert. Plus Risiko eines Heizungsausfalls im Winter — dann unter Zeitdruck, teurer und schlechter entscheiden.
+
+**Amortisationsrechnung**
+
+Bei 50 Prozent KfW und 12.500 Euro Eigenanteil: Amortisation bei 895 Euro/Jahr in circa 14 Jahren. Im 2030-Szenario bei 1.900 Euro/Jahr: unter 7 Jahre. Dazu: Immobilienwertaufschlag für GEG-konforme Heizung — Gutachter beziffern den Unterschied auf 5.000 bis 15.000 Euro Marktwert.
 
 **Fazit: Die Wirtschaftlichkeit kippt**
 
-Wer heute noch 12 ct/kWh für Gas zahlt, zahlt 2030 schätzungsweise 15–16 ct/kWh — allein durch CO₂. Die Wärmepumpe wird im Vergleich jedes Jahr attraktiver. Wer jetzt wechselt, sichert sich außerdem noch die volle KfW-Förderung.
+Die aktuelle Rechnung ist bereits zugunsten der Wärmepumpe. Die zukünftige Rechnung kippt noch deutlicher. Wer heute handelt sichert sich hohe KfW-Förderung, stabile Installationspreise und maximalen Vorlauf vor der GEG-Frist.
 
-**Quellen:** Brennstoffemissionshandelsgesetz (BEHG), EU-ETS2 Richtlinie, Bundesregierung CO₂-Preis-Pfad 2023, BDEW Energiepreise 2026.
-    `,
+Quellen: Brennstoffemissionshandelsgesetz BEHG, EU-ETS2 Richtlinie 2023/959, Bundesregierung CO₂-Preispfad, BDEW Energiepreise 2026, Fraunhofer ISI Energiemarktszenarien 2035, Umweltbundesamt CO₂-Strommix.
+`,
   },
 ];
 
