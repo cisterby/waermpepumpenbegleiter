@@ -13,7 +13,7 @@ import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs } from "@/lib/content-variation";
-import { AdditionalContentBlocks } from "@/components/programmatic/AdditionalContentBlocks";
+import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
@@ -477,6 +477,8 @@ export default function WaermepumpeTemplate({
         <div className="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
 
           {/* LEFT */}
+          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
+
           <div className="space-y-14">
 
             {/* Featured Snippet Block */}
@@ -799,9 +801,6 @@ export default function WaermepumpeTemplate({
                 <p className="text-xs text-gray-400 mt-2">Zuletzt geprüft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
             </motion.div>
-            {/* Zusätzliche SEO-Content-Blöcke: iSFP, PV+WP, GEG, Hersteller */}
-            <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
-
 
             {/* FAQ */}
             <motion.section

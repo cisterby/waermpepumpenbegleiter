@@ -12,6 +12,7 @@ import { estimateJAZ } from '@/lib/city-utils';
 import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 
 const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 
@@ -146,6 +147,8 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
           </div>
 
           {/* Nachbarstädte + Cross-Links */}
+          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
+
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
