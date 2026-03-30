@@ -49,7 +49,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="font-body text-xs text-wp-primary-mid hover:text-wp-primary-light transition-colors"
                 >
-                  {social}
+                  {social.name}
                 </a>
               ))}
             </div>
