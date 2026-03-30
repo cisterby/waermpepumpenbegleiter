@@ -14,10 +14,7 @@ export default function GenericTemplate({
 }: CityPageRouterProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const faqs = keyword.faqPool.slice(0, 5).map(item => ({
-    q: fillTemplate(item.q, city, jaz, calc.wpKosten, calc.ersparnis),
-    a: fillTemplate(item.a, city, jaz, calc.wpKosten, calc.ersparnis),
-  }));
+  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))

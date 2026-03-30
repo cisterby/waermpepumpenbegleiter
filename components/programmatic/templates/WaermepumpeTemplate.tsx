@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { CityPageRouterProps } from "@/components/programmatic/CityPageRouter";
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
-import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
+import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
@@ -331,19 +331,11 @@ export default function WaermepumpeTemplate({
   const klimazone = getKlimazone(city);
 
   // Intro-Textvarianten (stadtspezifisch + deterministisch)
-  const intros = [
-    `In ${city.name} setzen immer mehr Hausbesitzer auf Wärmepumpen — und die Zahlen sprechen für sich: Bei ${city.heizgradtage} Heizgradtagen und einem lokalen Strompreis von ${city.strompreis} ct/kWh erreicht eine Luft-Wasser-WP hier eine Jahresarbeitszahl von ${jaz}.`,
-    `${city.name} (${city.bundesland}) liegt ${klimazone === "warm" ? "in einer der wärmeren Klimaregionen Deutschlands" : klimazone === "kalt" ? "in einer kühleren Klimaregion" : "im deutschen Klimadurchschnitt"} mit ${city.avgTemp}°C Jahresmitteltemperatur. Wärmepumpen arbeiten hier mit JAZ ${jaz} — wirtschaftlich sehr attraktiv.`,
-    `Sie wohnen in ${city.name} und denken über den Wärmepumpen-Umstieg nach? Mit dem lokalen Gaspreis von ${city.gaspreis} ct/kWh und dem WP-Strompreis von ${city.strompreis} ct/kWh sparen Sie bei einem 120 m² EFH rund ${fmtEuro(calc.ersparnis)} pro Jahr.`,
-    `Die Heizungswende ist in ${city.name} in vollem Gange. Wir vermitteln kostenlos an geprüfte lokale Fachbetriebe — herstellerunabhängig, ohne Druckverkäufe, mit voller KfW-Antragsbegleitung.`,
-  ];
-  const introText = intros[variant];
+  // Intro-Paragraphen: 8 × 4 Stadtgrößen × 6 Keyword-Kategorien = unique pro Stadt
+  const [introText] = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
-  // FAQs mit stadtspezifischen Variablen befüllen
-  const faqs = keyword.faqPool.slice(0, 6).map(item => ({
-    q: fillTemplate(item.q, city, jaz, calc.wpKosten, calc.ersparnis),
-    a: fillTemplate(item.a, city, jaz, calc.wpKosten, calc.ersparnis),
-  }));
+  // FAQs rotierend aus Pool (20+ Fragen je Keyword-Kategorie, 6 pro Stadt-Hash)
+  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
   // Cross-Links
   const crossKeywords = keyword.crossLinks
