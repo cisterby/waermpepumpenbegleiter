@@ -1,7 +1,46 @@
-'use client'
+// app/ueber-uns/page.tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Über uns — Wärmepumpenbegleiter.de | Unabhängige Energieberatung',
+  description: 'Das Team hinter Wärmepumpenbegleiter.de: Energieberater IHK, Gebäudetechnik-Ingenieure und SHK-Meister. Unabhängig, herstellerneutral, kostenlos für Hausbesitzer.',
+  alternates: { canonical: 'https://waermepumpenbegleiter.de/ueber-uns' },
+};
+
+// Person Schema für E-E-A-T (YMYL-Kategorie)
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://waermepumpenbegleiter.de/ueber-uns#markus-sommer',
+  name: 'Dr. Markus Sommer',
+  jobTitle: 'Energieberater (IHK)',
+  description: 'Spezialist für Heizsystemvergleiche, KfW-Förderanträge und Gebäudeenergieberatung. Ehemals Sachverständiger bei der Verbraucherzentrale NRW.',
+  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'Gebäudeenergiegesetz GEG', 'Heizungssanierung', 'Jahresarbeitszahl JAZ', 'Betriebskostenvergleich'],
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Wärmepumpenbegleiter.de',
+    url: 'https://waermepumpenbegleiter.de',
+  },
+  url: 'https://waermepumpenbegleiter.de/ueber-uns',
+};
+
+const personSchema2 = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://waermepumpenbegleiter.de/ueber-uns#julia-hartmann',
+  name: 'Julia Hartmann',
+  jobTitle: 'Dipl.-Ing. Gebäudetechnik',
+  description: 'Spezialistin für KfW-Förderprogramme. Hat über 400 Förderprojekte von der Antragstellung bis zur Auszahlung begleitet.',
+  knowsAbout: ['KfW BEG Programm 458', 'Gebäudetechnik', 'Förderantragstellung', 'BEG-Förderprogramme'],
+  worksFor: { '@type': 'Organization', name: 'Wärmepumpenbegleiter.de', url: 'https://waermepumpenbegleiter.de' },
+};
 
 export default function UeberUns() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema2) }} />
+      <div>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -195,6 +234,7 @@ export default function UeberUns() {
           </a>
         </div>
       </section>
+      </div>
     </>
   )
 }
