@@ -38,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 22 × 16 = 352 Bundesland-Hub-Seiten
   const hub_pages: MetadataRoute.Sitemap = KEYWORDS.flatMap(kw =>
     BUNDESLAENDER.map(bl => ({
-      url: `${BASE}/${kw.slug}/${bl}`,
+      url: `${BASE}/${kw.slug}/bundesland/${bl}`,
       lastModified: MOD,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
