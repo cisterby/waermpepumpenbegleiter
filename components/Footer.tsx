@@ -37,10 +37,16 @@ export default function Footer() {
               Ihr unabhängiger Begleiter für die Heizungswende.
             </p>
             <div className="flex gap-4">
-              {['LinkedIn', 'Instagram', 'Facebook'].map((social) => (
+              {[
+                {name: 'LinkedIn', url: 'https://www.linkedin.com/company/waermepumpenbegleiter'},
+                {name: 'Instagram', url: 'https://www.instagram.com/waermepumpenbegleiter'},
+                {name: 'Facebook', url: 'https://www.facebook.com/waermepumpenbegleiter'},
+              ].map((social) => (
                 <a
-                  key={social}
-                  href="#"
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-body text-xs text-wp-primary-mid hover:text-wp-primary-light transition-colors"
                 >
                   {social}
