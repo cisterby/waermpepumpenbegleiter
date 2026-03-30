@@ -1,7 +1,7 @@
 // components/programmatic/CityPageRouter.tsx
 'use client';
 
-import type { City }              from '@/lib/cities';
+import type { City } from '@/lib/city-utils';
 import type { Keyword }           from '@/lib/keywords';
 import type { BerechnungsErgebnis, FoerderErgebnis } from '@/lib/calculations';
 
