@@ -12,6 +12,7 @@ import { estimateJAZ } from '@/lib/city-utils';
 import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 
 const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 
@@ -91,31 +92,67 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Welche Wärmepumpe soll ich in {stadt} kaufen?', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              Für die meisten Häuser in {city.name} ist eine <strong>Luft-Wasser-Wärmepumpe</strong> die richtige Wahl. Bei {city.avgTemp}°C Jahresmitteltemperatur erreichen Sie eine JAZ von {jaz} — wirtschaftlich und wartungsarm.
-            </p>
-            <div className="space-y-3 mb-6">
-              <p className="font-heading font-semibold text-wp-text">5 Schritte zur richtigen WP in {city.name}:</p>
-              {[
-                {n:"1",title:"Heizlast berechnen lassen",text:"Ein Fachbetrieb in "+city.name+" misst die tatsächliche Heizlast Ihres Hauses. Keine Überdimensionierung — ein zu großes Gerät taktet unnötig und spart weniger."},
-                {n:"2",title:"Vorlauftemperatur prüfen",text:"Unter 55°C Vorlauf? Dann ist jede Luft-WP geeignet. Über 55°C empfiehlt sich ein hydraulischer Abgleich oder eine Hochtemperatur-WP."},
-                {n:"3",title:"Hersteller vergleichen",text:"Bewährte Marken: Viessmann (Testsieger Stiftung Warentest 2025), Vaillant, Bosch/Buderus, Stiebel Eltron, Nibe. Entscheidend ist die Fachgerechte Installation."},
-                {n:"4",title:"KfW-Antrag VOR Kauf stellen",text:"Wichtig: Der Förderantrag muss vor Vertragsabschluss gestellt werden. Wir begleiten Sie durch diesen Schritt."},
-                {n:"5",title:"3 Angebote vergleichen",text:"Holen Sie mindestens 3 Angebote von lokalen Betrieben in "+city.name+" ein. Preisunterschiede von 20–35% sind keine Seltenheit."},
-              ].map((s,i) => (
-                <div key={i} className="flex gap-4 p-4 bg-white rounded-xl border border-wp-border shadow-wp-sm">
-                  <div className="w-8 h-8 bg-wp-green rounded-full flex items-center justify-center font-heading font-bold text-white text-sm shrink-0">{s.n}</div>
-                  <div>
-                    <p className="font-heading font-semibold text-wp-text mb-1">{s.title}</p>
-                    <p className="text-wp-text2 text-sm leading-relaxed">{s.text}</p>
-                  </div>
+          {/* Keyword-spezifischer Hauptinhalt — 4 Varianten per cityHash */}
+          {(() => {
+            const v = Math.abs(Math.round(city.lat * 7 + city.lng * 13)) % 4;
+            const isAltbau = city.heizgradtage > 3300;
+            const intros = [
+              `Für die meisten Häuser in ${city.name} ist eine Luft-Wasser-Wärmepumpe die wirtschaftlichste Wahl: Bei ${city.avgTemp}°C Jahresmitteltemperatur und ${city.strompreis} ct/kWh Strompreis erreichen Sie JAZ ${jaz} — das entspricht ${(city.strompreis / jaz).toFixed(1)} ct/kWh Wärmekosten.`,
+              `${city.name} (${city.bundesland}) hat ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtage — ${isAltbau ? 'ein hoher Wert der eine gut dimensionierte WP voraussetzt' : 'ein moderater Wert der für jede Luft-WP ideal ist'}. JAZ ${jaz}, Betriebskosten ${fmtEuro(calc.wpKosten)}/Jahr, Eigenanteil nach KfW: ab ${fmtEuro(foerd.eigenanteil)}.`,
+              `In ${city.name} mit Norm-Außentemperatur ${city.normAussentemp}°C (DIN EN 12831) sind alle modernen Luft-WP einsetzbar. Hochtemperatur-WP (bis 70°C Vorlauf) sind auch für Altbauten ohne Sanierung geeignet. JAZ ${jaz} bei Ihrem lokalen Klima.`,
+              `Die entscheidende Frage beim WP-Kauf in ${city.name}: Welche Heizlast hat Ihr Haus? Eine zu groß dimensionierte WP taktet unnötig und verliert Effizienz. Unsere Partnerbetriebe erstellen die Heizlastberechnung nach DIN EN 12831 vor jedem Angebot.`,
+            ];
+            const stepVariants = [
+              [
+                {n:'1',title:'Heizlastberechnung (DIN EN 12831)',text:`Ihr Fachbetrieb in ${city.name} berechnet die genaue Heizlast für Ihr Gebäude. Bei ${city.normAussentemp}°C Norm-Außentemperatur und ${city.heizgradtage.toLocaleString('de-DE')} HGT ist eine präzise Auslegung entscheidend für JAZ ${jaz}.`},
+                {n:'2',title:'Vorlauftemperatur & Hydraulik',text:`Unter 55°C Vorlauf (Fußbodenheizung): Jede Luft-WP geeignet, JAZ bis ${(jaz + 0.4).toFixed(1)}. Über 55°C: Hydraulischen Abgleich (€500–1.500, KfW-Pflicht) einplanen — senkt Vorlauf um 5–10°C.`},
+                {n:'3',title:'Hersteller & Modell wählen',text:`Bewährte Marken in ${city.bundesland}: Viessmann (Testsieger Stiftung Warentest 2025), Vaillant (R290-WP +5% KfW), Bosch/Buderus, Stiebel Eltron. Entscheidend ist fachgerechte Installation, nicht die Marke.`},
+                {n:'4',title:'KfW-Antrag VOR Vertragsabschluss',text:`Zwingend: KfW-Antrag stellen bevor Sie unterschreiben. Unser Partnerbetrieb in ${city.name} übernimmt das — als registrierter LuL-Betrieb kann er den Antrag direkt stellen.`},
+                {n:'5',title:'3 vollständige Angebote vergleichen',text:`Alle Positionen einfordern: Gerät, Montage, Hydraulik, Elektrik. Preisunterschiede von 20–35% in ${city.name} sind normal — aber nur vergleichbar wenn alle Positionen gleich sind.`},
+              ],
+              [
+                {n:'1',title:'Gebäudeanalyse & Eignung prüfen',text:`In ${city.name} mit ${city.avgTemp}°C Jahresmittel ist fast jedes Haus WP-geeignet. Unser Partnerbetrieb prüft: Heizlast, Vorlauftemperatur, Aufstellmöglichkeit Außeneinheit, Elektroinstallation.`},
+                {n:'2',title:'Förderquote maximieren',text:`Ihr Fördersatz in ${city.name}: ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)} Zuschuss. Mit iSFP: +5% = +${fmtEuro(Math.round(25000 * 0.05))} mehr.${city.bundeslandFoerderung ? ` Dazu ${city.bundeslandFoerderung} in ${city.bundesland}.` : ''}`},
+                {n:'3',title:'Gerät & Hersteller entscheiden',text:`R290-Propan-WP wählen: Viessmann Vitocal 250-A oder Vaillant aroTHERM plus → +5% KfW-Kältemittelbonus. In ${city.name} mit JAZ ${jaz} lohnt sich das — ${fmtEuro(Math.round(25000 * 0.05))} mehr Förderung.`},
+                {n:'4',title:'Installation koordinieren',text:`Typische Projektdauer in ${city.name}: 6–10 Wochen von Anfrage bis Inbetriebnahme. Montage selbst: 1–2 Tage. Unsere Partner koordinieren KfW-Antrag, Lieferung und Installation in einem.`},
+                {n:'5',title:'Inbetriebnahme & Optimierung',text:`Nach der Installation: Einregulierung und hydraulischer Abgleich (KfW-Pflicht). Erste Heizsaison: Betriebsdaten beobachten, WP-Stromtarif beantragen (spart 2–4 ct/kWh = ${fmtEuro(Math.round(120 * 160 / jaz * 0.03))}/Jahr).`},
+              ],
+              [
+                {n:'1',title:'Typ festlegen: Luft, Sole oder Wasser?',text:`In ${city.name}: Luft-WP (92% Marktanteil, JAZ ${jaz}, keine Bohrung) für die meisten Häuser. Sole-WP (JAZ 4,3+, +5% KfW, Bohrung nötig) wenn Grundstück vorhanden. Wasser-WP (JAZ 5+) bei Grundwasserzugang.`},
+                {n:'2',title:'Dimensionierung nach Heizlast',text:`${city.name}: ${city.normAussentemp}°C Auslegungstemperatur, ${city.heizgradtage.toLocaleString('de-DE')} HGT. Faustregel 120 m² EFH: 8–12 kW Heizlast. Korrekte Dimensionierung verhindert Taktbetrieb und sichert JAZ ${jaz}.`},
+                {n:'3',title:'Markencheck: Was passt zu Ihrem Haus?',text:`Altbau (>55°C Vorlauf nötig): Viessmann Vitocal 252-A oder Stiebel Eltron WPL (bis 65°C). Neubau/Fußbodenheizung: Alle Geräte geeignet, Vaillant aroTHERM für niedrigste Betriebskosten.`},
+                {n:'4',title:'KfW + ggf. Landesförderung beantragen',text:`KfW-Antrag VOR Baubeginn (sonst kein Geld).${city.bundeslandFoerderung ? ` ${city.bundeslandFoerderung} in ${city.bundesland} ggf. zusätzlich beantragen.` : ''} Unser Partner übernimmt beide Anträge.`},
+                {n:'5',title:'Installation & erste Abrechnung',text:`Nach Einbau: Verwendungsnachweis für KfW einreichen (4–8 Wochen bis Auszahlung). Tipp: WP-Sondertarif beim lokalen Netzbetreiber in ${city.name} beantragen — spart ${fmtEuro(Math.round(120 * 160 / jaz * 0.03))}/Jahr.`},
+              ],
+              [
+                {n:'1',title:'Bestandsaufnahme Ihres Hauses',text:`Welche Heizkörper? Wie alt? Baujahr des Gebäudes? In ${city.name} sind ${city.efhQuote}% der Häuser Einfamilienhäuser — bei über 80% ist eine Luft-WP ohne große Umbaumaßnahmen installierbar.`},
+                {n:'2',title:'Vorlauftemperatur ist die Schlüsselfrage',text:`Unter 50°C: Standard-WP ideal, JAZ bis ${(jaz + 0.5).toFixed(1)}. 50–60°C: WP mit hydraulischem Abgleich. Über 60°C: Hochtemperatur-WP oder Sanierung der Heizkörper (dann JAZ ${jaz} möglich).`},
+                {n:'3',title:'Angebote richtig vergleichen',text:`In ${city.name} auf Vollständigkeit achten: Heizlastberechnung, hydraulischer Abgleich (KfW-Pflicht), Gerät, Montage, Elektrik, KfW-Begleitung. Nur dann sind Angebote wirklich vergleichbar.`},
+                {n:'4',title:'Fördermaximierung: Alle Boni nutzen',text:`${foerd.gesamtSatz}% Basis + ggf. iSFP-Bonus (5%) + ggf. Einkommensbonus (30%) = bis zu 70% = max. ${fmtEuro(21000)}.${city.bundeslandFoerderung ? ` Plus ${city.bundeslandFoerderung} in ${city.bundesland}.` : ''}`},
+                {n:'5',title:'Betrieb optimieren nach Einbau',text:`WP-Stromtarif beantragen (2–4 ct/kWh günstiger), Nachtabsenkung einstellen, PV-Kombination prüfen (${city.avgSunHours} Sonnenstunden in ${city.name} = ${fmtEuro(Math.round(city.avgSunHours * 8 * 0.85 * 0.65 * (city.strompreis / 100)))}/Jahr Zusatzersparnis).`},
+              ],
+            ];
+            return (
+              <>
+                <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
+                  {fillTemplate('Welche Wärmepumpe soll ich in {stadt} kaufen?', city, jaz)}
+                </h2>
+                <p className="text-wp-text2 text-base leading-relaxed mb-5">{intros[v]}</p>
+                <div className="space-y-3 mb-6">
+                  <p className="font-heading font-semibold text-wp-text">5 Schritte zur richtigen WP in {city.name}:</p>
+                  {stepVariants[v].map((s, i) => (
+                    <div key={i} className="flex gap-4 p-4 bg-white rounded-xl border border-wp-border shadow-wp-sm">
+                      <div className="w-8 h-8 bg-wp-green rounded-full flex items-center justify-center font-heading font-bold text-white text-sm shrink-0">{s.n}</div>
+                      <div>
+                        <p className="font-heading font-semibold text-wp-text mb-1">{s.title}</p>
+                        <p className="text-wp-text2 text-sm leading-relaxed">{s.text}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            );
+          })()}
 
           {/* FAQ */}
           <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
@@ -142,6 +179,8 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
           </div>
 
           {/* Nachbarstädte + Cross-Links */}
+          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
+
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
