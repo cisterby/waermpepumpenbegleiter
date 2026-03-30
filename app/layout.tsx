@@ -29,7 +29,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: {
     default: 'Wärmepumpenbegleiter.de – Kostenlose WP-Vermittlung in Deutschland',
-    template: '%s',
+    template: '%s | Wärmepumpenbegleiter.de',
   },
   description:
     'Wir finden den besten Wärmepumpen-Installateur in Ihrer Region – kostenlos, herstellerunabhängig, ohne Verkaufsdruck. Bis zu 3 Angebote vergleichen.',

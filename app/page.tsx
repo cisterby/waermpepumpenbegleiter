@@ -111,11 +111,50 @@ export default function Home(){
         }
       `}</style>
 
-
+      {/* ── NAV ── */}
+      <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:999,height:68,display:'flex',alignItems:'center',
+        background:scrolled?'rgba(255,255,255,.97)':'transparent',
+        borderBottom:scrolled?`1px solid ${BDR}`:'none',
+        backdropFilter:scrolled?'blur(14px)':'none',transition:'all .3s'}}>
+        <div className="c" style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <a href="/" style={{display:'flex',alignItems:'center',gap:9,textDecoration:'none'}}>
+            <div style={{width:34,height:34,background:G,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M10 1s-6 5.5-6 10a6 6 0 0012 0C16 6.5 10 1 10 1z" fill="white" opacity=".95"/>
+                <path d="M10 9s-3 3-3 5a3 3 0 006 0c0-2-3-5-3-5z" fill="white" opacity=".5"/>
+              </svg>
+            </div>
+            <span style={{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:15,color:scrolled?TX:'white'}}>
+              Wärmepumpenbegleiter<span style={{color:scrolled?G2:'#4CAF7D'}}>.de</span>
+            </span>
+          </a>
+          <div style={{display:'flex',alignItems:'center',gap:24}}>
+            {[
+              {label:'Wie es funktioniert',href:'/#steps'},
+              {label:'Rechner',href:'/rechner'},
+              {label:'Förderung',href:'/#foerderung'},
+              {label:'Ratgeber',href:'/ratgeber'},
+              {label:'Über uns',href:'/ueber-uns'},
+            ].map(l=>(
+              <a key={l.label} href={l.href}
+                style={{fontSize:14,fontWeight:500,color:scrolled?TX2:'rgba(255,255,255,.82)',textDecoration:'none',transition:'color .15s'}}
+                onMouseEnter={e=>(e.currentTarget.style.color=scrolled?G:'white')}
+                onMouseLeave={e=>(e.currentTarget.style.color=scrolled?TX2:'rgba(255,255,255,.82)')}>
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <a href="/rechner" style={{padding:'10px 20px',background:G,color:'white',borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:14,fontWeight:600,textDecoration:'none',boxShadow:'0 2px 8px rgba(27,94,55,.3)',transition:'all .18s'}}
+            onMouseEnter={e=>(e.currentTarget as HTMLAnchorElement).style.background='#154d2c'}
+            onMouseLeave={e=>(e.currentTarget as HTMLAnchorElement).style.background=G}>
+            Kostenloses Angebot
+          </a>
+        </div>
+      </nav>
 
       {/* ── HERO ── */}
       <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',overflow:'hidden',paddingTop:68}}>
-        <img src={IMGS.hero} alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}/>
+        <img src={IMGS.hero} alt="Wärmepumpe Einfamilienhaus" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}/>
         <div style={{position:'absolute',inset:0,zIndex:1,background:'linear-gradient(105deg,rgba(10,25,16,.94) 0%,rgba(10,25,16,.85) 45%,rgba(10,25,16,.3) 100%)'}}/>
         <div className="c" style={{position:'relative',zIndex:2,width:'100%',padding:'96px 40px 80px'}}>
           <div className="hero-g" style={{display:'grid',gridTemplateColumns:'54% 46%',gap:60,alignItems:'center'}}>
@@ -540,7 +579,7 @@ export default function Home(){
             <div className={'fu '+(foerdRef.v?'fv':'')} style={{transitionDelay:'.15s'}}>
               <div style={{borderRadius:16,overflow:'hidden',boxShadow:SHL}}>
                 <div style={{position:'relative',height:190}}>
-                  <img src={IMGS.money} alt="" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <img src={IMGS.money} alt="Wärmepumpe Installation" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
                   <div style={{position:'absolute',inset:0,background:'rgba(27,94,55,.65)'}}/>
                   <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
                     <div style={{fontFamily:'Outfit,sans-serif',fontSize:17,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:4}}>Beispiel: 120 m² EFH</div>
@@ -753,7 +792,7 @@ export default function Home(){
 
       {/* ── CTA ── */}
       <section style={{position:'relative',overflow:'hidden'}}>
-        <img src={IMGS.outdoor} alt="" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
+        <img src={IMGS.outdoor} alt="Wärmepumpe Installation" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
         <div style={{position:'absolute',inset:0,background:'rgba(10,25,16,.82)'}}/>
         <div className="c" style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
           <Tag bg="rgba(255,255,255,.1)" color="rgba(255,255,255,.8)" text="Jetzt starten"/>
@@ -770,7 +809,41 @@ export default function Home(){
         </div>
       </section>
 
-
+      {/* ── FOOTER ── */}
+      <footer style={{background:'#0A1710',padding:'56px 0 28px'}}>
+        <div className="c">
+          <div className="g4" style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:40,marginBottom:44}}>
+            <div>
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+                <div style={{width:32,height:32,background:G,borderRadius:7,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 1s-6 5.5-6 10a6 6 0 0012 0C16 6.5 10 1 10 1z" fill="white" opacity=".95"/></svg>
+                </div>
+                <span style={{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:14,color:'white'}}>Wärmepumpenbegleiter.de</span>
+              </div>
+              <p style={{fontSize:13,color:'rgba(255,255,255,.33)',lineHeight:1.65,maxWidth:210,marginBottom:12}}>Ihr unabhängiger Begleiter für die Heizungswende. Herstellerunabhängig seit 2025.</p>
+              <p style={{fontSize:11,color:'rgba(255,255,255,.2)',lineHeight:1.5}}>Wir erhalten eine Vermittlungsprovision von Installateuren. Für Sie kostenlos.</p>
+            </div>
+            {[
+              {h:'Navigation',links:[{l:'Rechner',href:'/rechner'},{l:'Ratgeber',href:'/ratgeber'},{l:'Über uns',href:'/ueber-uns'},{l:'Kontakt',href:'/kontakt'}]},
+              {h:'Städte',links:[{l:'Berlin',href:'#'},{l:'Hamburg',href:'#'},{l:'München',href:'#'},{l:'Köln',href:'#'},{l:'Frankfurt',href:'#'},{l:'Stuttgart',href:'#'}]},
+              {h:'Rechtliches',links:[{l:'Impressum',href:'/impressum'},{l:'Datenschutz',href:'/datenschutz'},{l:'AGB',href:'/agb'}]},
+            ].map(col=>(
+              <div key={col.h}>
+                <div style={{fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',color:'rgba(255,255,255,.22)',marginBottom:14}}>{col.h}</div>
+                {col.links.map(l=>(
+                  <a key={l.l} href={l.href} style={{display:'block',fontSize:13,color:'rgba(255,255,255,.42)',textDecoration:'none',marginBottom:8,transition:'color .15s'}}
+                    onMouseEnter={e=>e.currentTarget.style.color='white'}
+                    onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,.42)'}>{l.l}</a>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div style={{borderTop:'1px solid rgba(255,255,255,.07)',paddingTop:20,display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
+            <span style={{fontSize:12,color:'rgba(255,255,255,.2)'}}>© 2026 Wärmepumpenbegleiter.de</span>
+            <span style={{fontSize:12,color:'rgba(255,255,255,.2)'}}>Zuletzt aktualisiert: März 2026</span>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
