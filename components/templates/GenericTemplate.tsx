@@ -12,6 +12,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate } from '@/lib/keywords'
 import { fmtEuro } from '@/lib/calculations'
 import { useState } from 'react'
+import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
 
 export default function GenericTemplate({ city, keyword, jaz, calc, foerd, h1, nearby, }: CityPageRouterProps) {
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
