@@ -1,19 +1,31 @@
 // components/programmatic/CityPageRouter.tsx
 'use client';
-
-import type { City } from '@/lib/city-utils';
-import type { Keyword }           from '@/lib/keywords';
+import type { City }    from '@/lib/city-utils';
+import type { Keyword } from '@/lib/keywords';
 import type { BerechnungsErgebnis, FoerderErgebnis } from '@/lib/calculations';
 
-// Tier 1 — spezialisierte Templates
 import WaermepumpeTemplate       from './templates/WaermepumpeTemplate';
-// import WaermepumpeKostenTemplate from './templates/WaermepumpeKostenTemplate';
-// import InstallateurTemplate      from './templates/InstallateurTemplate';
-// import FoerderungTemplate        from './templates/FoerderungTemplate';
-// import LuftWasserTemplate        from './templates/LuftWasserTemplate';
-
-// Tier 2–4 Fallback bis spezialisierte Templates fertig
-import GenericTemplate           from './templates/GenericTemplate';
+import WaermepumpeKostenTemplate from './templates/WaermepumpeKostenTemplate';
+import InstallateurTemplate      from './templates/InstallateurTemplate';
+import FoerderungTemplate        from './templates/FoerderungTemplate';
+import LuftWasserTemplate        from './templates/LuftWasserTemplate';
+import KaufenTemplate            from './templates/KaufenTemplate';
+import AltbauTemplate            from './templates/AltbauTemplate';
+import NachruestenTemplate       from './templates/NachruestenTemplate';
+import HeizungTauschenTemplate   from './templates/HeizungTauschenTemplate';
+import InstallationTemplate      from './templates/InstallationTemplate';
+import WaermeplanungTemplate     from './templates/WaermeplanungTemplate';
+import ErdwaermeTemplate         from './templates/ErdwaermeTemplate';
+import AngebotTemplate           from './templates/AngebotTemplate';
+import PreiseTemplate            from './templates/PreiseTemplate';
+import AnbieterTemplate          from './templates/AnbieterTemplate';
+import LuftwaermepumpeTemplate   from './templates/LuftwaermepumpeTemplate';
+import NeubauTemplate            from './templates/NeubauTemplate';
+import BeratungTemplate          from './templates/BeratungTemplate';
+import FachbetriebTemplate       from './templates/FachbetriebTemplate';
+import MontageTemplate           from './templates/MontageTemplate';
+import VergleichTemplate         from './templates/VergleichTemplate';
+import StromverbrauchTemplate    from './templates/StromverbrauchTemplate';
 
 export interface CityPageRouterProps {
   city:      City;
@@ -27,24 +39,29 @@ export interface CityPageRouterProps {
 }
 
 export default function CityPageRouter(props: CityPageRouterProps) {
-  const { keyword } = props;
-
-  // ── REGEL: Slug-Checks immer vor Category-Checks ─────────────────────────
-
-  // ── Tier 1: Haupt-Keywords ────────────────────────────────────────────────
-  if (keyword.slug === 'waermepumpe')
-    return <WaermepumpeTemplate {...props} />;
-
-  // Tier 1 — folgen nach und nach:
-  // if (keyword.slug === 'waermepumpe-kosten')
-  //   return <WaermepumpeKostenTemplate {...props} />;
-  // if (keyword.slug === 'waermepumpe-installateur')
-  //   return <InstallateurTemplate {...props} />;
-  // if (keyword.slug === 'waermepumpe-foerderung')
-  //   return <FoerderungTemplate {...props} />;
-  // if (keyword.slug === 'luft-wasser-waermepumpe')
-  //   return <LuftWasserTemplate {...props} />;
-
-  // ── Tier 2–4: GenericTemplate als Fallback ────────────────────────────────
-  return <GenericTemplate {...props} />;
+  switch (props.keyword.slug) {
+    case 'waermepumpe':              return <WaermepumpeTemplate       {...props} />;
+    case 'waermepumpe-kosten':       return <WaermepumpeKostenTemplate {...props} />;
+    case 'waermepumpe-installateur': return <InstallateurTemplate      {...props} />;
+    case 'waermepumpe-foerderung':   return <FoerderungTemplate        {...props} />;
+    case 'luft-wasser-waermepumpe':  return <LuftWasserTemplate        {...props} />;
+    case 'waermepumpe-kaufen':       return <KaufenTemplate            {...props} />;
+    case 'waermepumpe-altbau':       return <AltbauTemplate            {...props} />;
+    case 'waermepumpe-nachruesten':  return <NachruestenTemplate       {...props} />;
+    case 'heizung-tauschen':         return <HeizungTauschenTemplate   {...props} />;
+    case 'waermepumpe-installation': return <InstallationTemplate      {...props} />;
+    case 'kommunale-waermeplanung':  return <WaermeplanungTemplate     {...props} />;
+    case 'erdwaermepumpe':           return <ErdwaermeTemplate         {...props} />;
+    case 'waermepumpe-angebot':      return <AngebotTemplate           {...props} />;
+    case 'waermepumpe-preise':       return <PreiseTemplate            {...props} />;
+    case 'waermepumpe-anbieter':     return <AnbieterTemplate          {...props} />;
+    case 'luftwaermepumpe':          return <LuftwaermepumpeTemplate   {...props} />;
+    case 'waermepumpe-neubau':       return <NeubauTemplate            {...props} />;
+    case 'waermepumpe-beratung':     return <BeratungTemplate          {...props} />;
+    case 'waermepumpe-fachbetrieb':  return <FachbetriebTemplate       {...props} />;
+    case 'waermepumpe-montage':      return <MontageTemplate           {...props} />;
+    case 'waermepumpe-oder-gas':     return <VergleichTemplate         {...props} />;
+    case 'waermepumpe-stromverbrauch': return <StromverbrauchTemplate  {...props} />;
+    default:                         return <WaermepumpeTemplate       {...props} />;
+  }
 }
