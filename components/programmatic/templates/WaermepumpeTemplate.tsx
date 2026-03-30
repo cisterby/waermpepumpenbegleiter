@@ -13,6 +13,7 @@ import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs } from "@/lib/content-variation";
+import AuthorBox from "@/components/programmatic/AuthorBox";
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
@@ -910,6 +911,7 @@ export default function WaermepumpeTemplate({
                     <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />
                     {t}
                   </div>
+              <AuthorBox keywordSlug={keyword.slug} />
                 ))}
               </div>
 
