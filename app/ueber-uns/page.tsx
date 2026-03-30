@@ -36,10 +36,12 @@ const personSchema2 = {
 };
 
 export default function UeberUns() {
+  const schema1 = JSON.stringify(personSchema);
+  const schema2 = JSON.stringify(personSchema2);
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema2) }} />
+    <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema1 }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema2 }} />
       <div>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -230,6 +232,6 @@ export default function UeberUns() {
         </div>
       </section>
       </div>
-    </>
+    </div>
   )
 }
