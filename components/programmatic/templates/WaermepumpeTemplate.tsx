@@ -13,7 +13,7 @@ import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs } from "@/lib/content-variation";
-import AuthorBox from "@/components/programmatic/AuthorBox";
+import { AdditionalContentBlocks } from "@/components/programmatic/AdditionalContentBlocks";
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
@@ -334,8 +334,7 @@ export default function WaermepumpeTemplate({
 
   // Intro-Textvarianten (stadtspezifisch + deterministisch)
   // Intro-Paragraphen: 8 × 4 Stadtgrößen × 6 Keyword-Kategorien = unique pro Stadt
-  const introParagraphs = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const introText = introParagraphs[0];
+  const [introText] = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   // FAQs rotierend aus Pool (20+ Fragen je Keyword-Kategorie, 6 pro Stadt-Hash)
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
@@ -800,6 +799,9 @@ export default function WaermepumpeTemplate({
                 <p className="text-xs text-gray-400 mt-2">Zuletzt geprüft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
             </motion.div>
+            {/* Zusätzliche SEO-Content-Blöcke: iSFP, PV+WP, GEG, Hersteller */}
+            <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
+
 
             {/* FAQ */}
             <motion.section

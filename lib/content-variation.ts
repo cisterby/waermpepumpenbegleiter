@@ -219,6 +219,14 @@ export function getRotatingFAQs(city: City, keyword: Keyword, jaz: number, wpKos
         ? `Ja: ${city.bundeslandFoerderung} — ${city.bundeslandFoerderungBetrag}. ${city.bundeslandFoerderungUrl ? `Mehr Infos: ${city.bundeslandFoerderungUrl}` : 'Informationen beim zuständigen Landesförderinstitut.'}`
         : `${city.bundesland} hat kein eigenes aktives WP-Förderprogramm. Die KfW-Bundesförderung (bis 70% Zuschuss, max. €21.000) gilt jedoch in ${city.name} genauso wie überall in Deutschland.`,
     },
+    {
+      q: `Lohnt sich der individuelle Sanierungsfahrplan (iSFP) in \${city.name}?`,
+      a: `Ja — für die meisten Hausbesitzer in \${city.name}. Der iSFP kostet €300–700 (80% BAFA-gefördert, Eigenanteil ca. €60–140) und bringt +5% KfW-Bonus auf alle Maßnahmen. Bei €25.000 WP-Investition = +\${fmtEuro(Math.round(25000 * 0.05))} = der iSFP finanziert sich selbst.`,
+    },
+    {
+      q: `Wie viel spare ich mit Wärmepumpe + PV in \${city.name}?`,
+      a: `Mit \${city.avgSunHours} Sonnenstunden/Jahr erzeugt eine 8-kWp-PV-Anlage ca. \${Math.round(city.avgSunHours * 8 * 0.85).toLocaleString('de-DE')} kWh/Jahr. Davon kann ein Großteil direkt die WP (JAZ \${jaz}) betreiben — das reduziert die effektiven WP-Kosten auf unter 10 ct/kWh. Zusatzersparnis: ca. \${fmtEuro(Math.round(Math.min(Math.round(city.avgSunHours * 8 * 0.85) * 0.65, Math.round(120 * 160 / jaz)) * (city.strompreis / 100)))}/Jahr.`,
+    },
   ];
 
   // Kategorie-spezifische FAQs
