@@ -7,10 +7,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
+        disallow: ['/api/', '/_next/'],
       },
     ],
-    sitemap: 'https://waermepumpenbegleiter.de/sitemap.xml',
+    // Sitemap-Index verweist auf alle 22 Sub-Sitemaps
+    sitemap: 'https://waermepumpenbegleiter.de/sitemap-index.xml',
     host: 'https://waermepumpenbegleiter.de',
   };
 }

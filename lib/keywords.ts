@@ -53,7 +53,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'mixed',
     template: 'WaermepumpeTemplate',
     titleTemplate: 'Wärmepumpe {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe in {stadt} einbauen ✓ Kosten ab {preisVon} ✓ Bis 70% KfW-Förderung ✓ Geprüfte Installateure ✓ Kostenlos vergleichen.',
+    metaTemplate: 'Wärmepumpe in {stadt} einbauen ✓ Kosten ab {preisVon} ✓ Bis 70% KfW-Förderung ✓ Geprüfte lokale Installateure ✓ Kostenlos bis zu 3 Angebote vergleichen.',
     h1Template: 'Wärmepumpe {stadt} — Kosten, Förderung & Installateure {year}',
     featuredSnippetQuestions: [
       'Was kostet eine Wärmepumpe in {stadt}?',
@@ -83,7 +83,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'commercial',
     template: 'WaermepumpeKostenTemplate',
     titleTemplate: 'Wärmepumpe Kosten {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Was kostet eine Wärmepumpe in {stadt}? ✓ Aktuelle Preise {year} ✓ Stadtspezifische Betriebskosten ✓ Bis 70% Förderung ✓ Kostenlos vergleichen.',
+    metaTemplate: 'Was kostet eine Wärmepumpe in {stadt}? ✓ Aktuelle Preise {year} ✓ Alle Typen im Vergleich ✓ Betriebskosten {strompreis} ct/kWh ✓ Bis 70% KfW ✓ Kostenlos.',
     h1Template: 'Wärmepumpe Kosten {stadt} {year} — Aktuelle Preise & Förderung',
     featuredSnippetQuestions: [
       'Was kostet eine Wärmepumpe in {stadt} komplett?',
@@ -111,7 +111,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'InstallateurTemplate',
     titleTemplate: 'Wärmepumpe Installateur {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Geprüfte Wärmepumpen-Installateure in {stadt} ✓ Lokale Meisterbetriebe ✓ Kostenlos bis zu 3 Angebote ✓ Alle Betriebe HWK-geprüft.',
+    metaTemplate: 'Geprüfte Wärmepumpen-Installateure in {stadt} ✓ Lokale Meisterbetriebe ✓ Kostenlos bis zu 3 Angebote ✓ Alle Betriebe HWK-geprüft und KfW-registriert.',
     h1Template: 'Geprüfte Wärmepumpen-Installateure in {stadt} {year}',
     featuredSnippetQuestions: [
       'Wer installiert Wärmepumpen in {stadt}?',
@@ -138,7 +138,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'FoerderungTemplate',
     titleTemplate: 'Wärmepumpe Förderung {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe Förderung {stadt} {year}: Bis 70% KfW-Zuschuss + {bundesland}-Förderung ✓ Förderrechner ✓ Schritt-für-Schritt Anleitung.',
+    metaTemplate: 'Wärmepumpe Förderung {stadt} {year}: Bis 70% KfW-Zuschuss = max. €21.000 + {bundesland}-Landesförderung ✓ Förderrechner ✓ Antragsprozess ✓ Kostenlos.',
     h1Template: 'Wärmepumpe Förderung {stadt} {year} — KfW & {bundesland}-Programme',
     featuredSnippetQuestions: [
       'Wie hoch ist die Förderung für Wärmepumpen in {stadt}?',
@@ -165,7 +165,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'LuftWasserTemplate',
     titleTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Luft-Wasser-Wärmepumpe {stadt} ✓ JAZ {jaz} bei {avgTemp}°C Jahresmittel ✓ Kosten & Förderung ✓ 92% Marktanteil ✓ Geprüfte Installateure.',
+    metaTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}: JAZ {jaz} bei {avgTemp}°C Jahresmittel ✓ 92% Marktanteil ✓ Kosten ab {preisVon} ✓ Kostenloser Installateur-Vergleich.',
     h1Template: 'Luft-Wasser-Wärmepumpe {stadt} — Effizienz, Kosten & Installateure {year}',
     featuredSnippetQuestions: [
       'Wie effizient ist eine Luft-Wasser-Wärmepumpe in {stadt}?',
@@ -190,7 +190,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'KaufenTemplate',
     titleTemplate: 'Wärmepumpe kaufen {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe kaufen in {stadt} ✓ Kaufberater {year} ✓ Welche WP ist die richtige? ✓ Bis 70% KfW-Förderung ✓ Kostenlose Angebote.',
+    metaTemplate: 'Wärmepumpe kaufen in {stadt} {year} ✓ Kostenloser Kaufberater ✓ Welche WP passt? ✓ Kosten, Förderung & Hersteller-Vergleich ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe kaufen in {stadt} {year} — Ihr Kaufberater',
     featuredSnippetQuestions: [
       'Welche Wärmepumpe soll ich in {stadt} kaufen?',
@@ -212,7 +212,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'AltbauTemplate',
     titleTemplate: 'Wärmepumpe Altbau {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe im Altbau {stadt} ✓ Eignung & Voraussetzungen ✓ Heizlast-Rechner ✓ Hydraulischer Abgleich ✓ Geprüfte Installateure.',
+    metaTemplate: 'Wärmepumpe im Altbau {stadt} ✓ Eignung & Voraussetzungen {year} ✓ Heizlastberechnung ✓ Vorlauftemperatur optimieren ✓ Kostenloser Fachbetrieb-Vergleich.',
     h1Template: 'Wärmepumpe Altbau {stadt} {year} — Eignung, Kosten & Voraussetzungen',
     featuredSnippetQuestions: [
       'Funktioniert eine Wärmepumpe im Altbau in {stadt}?',
@@ -236,7 +236,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'commercial',
     template: 'NachruestenTemplate',
     titleTemplate: 'Wärmepumpe nachrüsten {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe nachrüsten in {stadt} ✓ GEG-Fristen {year} ✓ Bestandsgebäude umrüsten ✓ Hydraulischer Abgleich ✓ Förderung bis €21.000.',
+    metaTemplate: 'Wärmepumpe nachrüsten in {stadt} ✓ GEG-Fristen {year} ✓ Bestandsgebäude umrüsten ✓ KfW-Förderung bis 70% = max. €21.000 ✓ Geprüfte Fachbetriebe kostenlos.',
     h1Template: 'Wärmepumpe nachrüsten {stadt} {year} — Bestandsgebäude umrüsten',
     featuredSnippetQuestions: [
       'Wie rüste ich meine Heizung in {stadt} auf Wärmepumpe um?',
@@ -257,7 +257,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'commercial',
     template: 'HeizungTauschenTemplate',
     titleTemplate: 'Heizung tauschen {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Heizung tauschen {stadt} {year} ✓ WP vs. Gas vs. Pellet im Vergleich ✓ GEG-Pflicht ab {year} ✓ Kostenlos alle Optionen vergleichen.',
+    metaTemplate: 'Heizung tauschen {stadt} {year} ✓ WP vs. Gas vs. Pellet ehrlicher Vergleich ✓ GEG-konforme Lösungen ✓ Stadtspezifische Betriebskosten ✓ Kostenlos anfragen.',
     h1Template: 'Heizung tauschen in {stadt} {year} — Alle Optionen im Vergleich',
     featuredSnippetQuestions: [
       'Welche Heizung soll ich in {stadt} einbauen?',
@@ -280,7 +280,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'InstallationTemplate',
     titleTemplate: 'Wärmepumpe Installation {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe Installation {stadt} ✓ Ablauf & Zeitplan ✓ Genehmigungen in {stadt} ✓ Geprüfte Installateure ✓ Kosten & Förderung.',
+    metaTemplate: 'Wärmepumpe Installation {stadt} ✓ Vollständiger Ablauf & Zeitplan {year} ✓ Genehmigungen {bundesland} ✓ HWK-Betriebe vor Ort ✓ KfW-Antragsbegleitung.',
     h1Template: 'Wärmepumpe Installation {stadt} {year} — Ablauf, Kosten & Genehmigungen',
     featuredSnippetQuestions: [
       'Wie läuft die Installation einer Wärmepumpe in {stadt} ab?',
@@ -303,7 +303,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'informational',
     template: 'WaermeplanungTemplate',
     titleTemplate: 'Kommunale Wärmeplanung {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Kommunale Wärmeplanung {stadt}: Fristen, Pflichten & was das für Ihre Heizung bedeutet ✓ GEG {year} ✓ Wärmeplan {stadt} erklärt.',
+    metaTemplate: 'Kommunale Wärmeplanung {stadt} {year}: Fristen, Pflichten & was das für Ihre Heizung bedeutet ✓ GEG-Kontext ✓ Wärmepumpe als sichere GEG-konforme Alternative.',
     h1Template: 'Kommunale Wärmeplanung {stadt} {year} — Was Hausbesitzer wissen müssen',
     featuredSnippetQuestions: [
       'Was bedeutet die kommunale Wärmeplanung für {stadt}?',
@@ -326,7 +326,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'ErdwaermeTemplate',
     titleTemplate: 'Erdwärmepumpe {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Erdwärmepumpe in {stadt} ✓ Geologische Eignung ✓ Sole-Wasser & Wasser-Wasser ✓ Kosten & Förderung ✓ Lokale Experten.',
+    metaTemplate: 'Erdwärmepumpe in {stadt} {year} ✓ Geologische Eignung in {bundesland} ✓ Sole-Wasser vs. Wasser-Wasser im Vergleich ✓ +5% KfW-Bonus ✓ Kosten & Förderung.',
     h1Template: 'Erdwärmepumpe {stadt} {year} — Eignung, Kosten & Installateure',
     featuredSnippetQuestions: [
       'Eignet sich mein Grundstück in {stadt} für eine Erdwärmepumpe?',
@@ -347,7 +347,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'AngebotTemplate',
     titleTemplate: 'Wärmepumpe Angebot {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Kostenloses Wärmepumpe Angebot in {stadt} ✓ Bis zu 3 geprüfte Fachbetriebe ✓ Vergleichen & sparen ✓ Jetzt unverbindlich anfragen.',
+    metaTemplate: 'Kostenloses Wärmepumpe Angebot {stadt} {year} ✓ Bis zu 3 geprüfte lokale Fachbetriebe ✓ Alle Positionen transparent ausgewiesen ✓ KfW-Förderung inklusive.',
     h1Template: 'Wärmepumpe Angebot {stadt} {year} — Kostenlos bis zu 3 Angebote vergleichen',
     featuredSnippetQuestions: [
       'Wo bekomme ich kostenlose WP-Angebote in {stadt}?',
@@ -367,7 +367,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'commercial',
     template: 'PreiseTemplate',
     titleTemplate: 'Wärmepumpe Preise {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ Förderung bis €21.000.',
+    metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW-Förderung bis €21.000 ✓ Kostenlos.',
     h1Template: 'Wärmepumpe Preise {stadt} {year} — Aktuelle Kosten aller Typen',
     featuredSnippetQuestions: [
       'Was kostet eine Wärmepumpe in {stadt} im Jahr {year}?',
@@ -388,7 +388,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'AnbieterTemplate',
     titleTemplate: 'Wärmepumpe Anbieter {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Geprüfte Wärmepumpen-Anbieter in {stadt} ✓ Lokale Meisterbetriebe ✓ Hersteller-Vergleich ✓ Kostenlos Angebote einholen.',
+    metaTemplate: 'Geprüfte Wärmepumpen-Anbieter {stadt} ✓ Lokale Meisterbetriebe ✓ Herstellerunabhängig ✓ Kostenlos bis zu 3 vollständige Angebote vergleichen {year}.',
     h1Template: 'Wärmepumpe Anbieter {stadt} {year} — Geprüfte lokale Fachbetriebe',
     featuredSnippetQuestions: [
       'Welche Wärmepumpen-Anbieter gibt es in {stadt}?',
@@ -408,7 +408,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'LuftwaermepumpeTemplate',
     titleTemplate: 'Luftwärmepumpe {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Luftwärmepumpe {stadt} ✓ Luft-Luft & Luft-Wasser ✓ JAZ {jaz} für {stadt} ✓ Kosten & Förderung ✓ Stadtspezifische Effizienz.',
+    metaTemplate: 'Luftwärmepumpe {stadt} {year}: Luft-Luft vs. Luft-Wasser ✓ JAZ {jaz} bei {avgTemp}°C ✓ Kosten & KfW-Förderung bis 70% ✓ Kostenloser Installateur-Vergleich.',
     h1Template: 'Luftwärmepumpe {stadt} {year} — Kosten, Effizienz & Installateure',
     featuredSnippetQuestions: [
       'Was ist der Unterschied zwischen Luft-Wasser und Luft-Luft in {stadt}?',
@@ -428,7 +428,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'NeubauTemplate',
     titleTemplate: 'Wärmepumpe Neubau {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe im Neubau {stadt} ✓ GEG-Pflicht seit 2024 ✓ Optimale Planung ✓ Sole-Wasser empfohlen ✓ Kosten & Förderung.',
+    metaTemplate: 'Wärmepumpe Neubau {stadt} {year} ✓ GEG-Pflicht seit 01.01.2024 ✓ Optimale Planung für maximale Effizienz ✓ KfW-Kredit 297/298 ✓ Geprüfte Fachbetriebe.',
     h1Template: 'Wärmepumpe Neubau {stadt} {year} — GEG-konform & optimal geplant',
     featuredSnippetQuestions: [
       'Welche Wärmepumpe für den Neubau in {stadt}?',
@@ -450,7 +450,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'BeratungTemplate',
     titleTemplate: 'Wärmepumpe Beratung {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Kostenlose Wärmepumpen-Beratung {stadt} ✓ Unabhängig & herstellerneutral ✓ iSFP-Förderung ✓ Energieberatung vor Ort.',
+    metaTemplate: 'Kostenlose Wärmepumpen-Beratung {stadt} {year} ✓ Unabhängig & herstellerneutral ✓ Gebäudeanalyse & Heizlast ✓ Förderberechnung ✓ Geprüfte Fachbetriebe.',
     h1Template: 'Wärmepumpe Beratung {stadt} {year} — Kostenlos & unabhängig',
     featuredSnippetQuestions: ['Wo bekomme ich eine unabhängige WP-Beratung in {stadt}?'],
     faqPool: [{ q: 'Was ist der iSFP und bringt er Vorteile in {stadt}?', a: 'Der individuelle Sanierungsfahrplan (iSFP) kostet ca. €500–1.000, wird aber mit 80% gefördert. Mit iSFP erhöht sich der KfW-BEG-Zuschuss um 5 Prozentpunkte.' }],
@@ -466,7 +466,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'FachbetriebTemplate',
     titleTemplate: 'Wärmepumpe Fachbetrieb {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Zertifizierte WP-Fachbetriebe in {stadt} ✓ Meisterbetriebe ✓ HWK-eingetragen ✓ BWP-Mitglieder ✓ Kostenlos anfragen.',
+    metaTemplate: 'Zertifizierte WP-Fachbetriebe {stadt} ✓ HWK-eingetragene Meisterbetriebe ✓ KfW-registriert ✓ Mindestens 5 WP-Referenzen ✓ Kostenlos bis zu 3 Angebote.',
     h1Template: 'Wärmepumpe Fachbetrieb {stadt} {year} — Zertifizierte Meisterbetriebe',
     featuredSnippetQuestions: ['Was macht einen guten WP-Fachbetrieb in {stadt} aus?'],
     faqPool: [{ q: 'Was unterscheidet einen WP-Fachbetrieb von einem normalen SHK-Betrieb?', a: 'Spezialisierte WP-Fachbetriebe haben mehr als 5 WP-Installationen durchgeführt, kennen die Förderprozesse und sind oft BWP-Mitglied. Das sichert Qualität und Förderkonformität.' }],
@@ -482,7 +482,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'transactional',
     template: 'MontageTemplate',
     titleTemplate: 'Wärmepumpe Montage {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe Montage {stadt} ✓ Aufstellort & Lärmschutz ✓ Montageablauf erklärt ✓ Genehmigungen in {bundesland} ✓ Lokale Fachbetriebe.',
+    metaTemplate: 'Wärmepumpe Montage {stadt} {year} ✓ Aufstellort & Lärmschutz {bundesland} ✓ Montagekosten transparent ✓ Genehmigungscheck ✓ Geprüfte Fachbetriebe kostenlos.',
     h1Template: 'Wärmepumpe Montage {stadt} {year} — Ablauf, Aufstellort & Kosten',
     featuredSnippetQuestions: ['Wo kann ich die Wärmepumpe in {stadt} aufstellen?'],
     faqPool: [{ q: 'Welche Abstände muss ich beim Aufstellen in {stadt} einhalten?', a: 'In {bundesland} gelten in der Regel 3 Meter Abstand zur Grundstücksgrenze. Je nach Lärmpegel kann eine Ausnahmegenehmigung erforderlich sein. Ihr Installateur beantragt das für Sie.' }],
@@ -498,7 +498,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'VergleichTemplate',
     titleTemplate: 'Wärmepumpe oder Gas {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe oder Gas in {stadt}? ✓ Ehrlicher Kostenvergleich {year} ✓ CO₂-Preis 2030 berücksichtigt ✓ Stadtspezifische Berechnung.',
+    metaTemplate: 'Wärmepumpe oder Gas in {stadt}? Ehrlicher Kostenvergleich {year} mit CO₂-Preis ✓ GEG-Konformität ✓ Stadtspezifische Zahlen ✓ Kostenloser Angebotsvergleich.',
     h1Template: 'Wärmepumpe oder Gas in {stadt} {year} — Der ehrliche Vergleich',
     featuredSnippetQuestions: [
       'Was ist günstiger: Wärmepumpe oder Gas in {stadt}?',
@@ -519,7 +519,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'informational',
     template: 'StromverbrauchTemplate',
     titleTemplate: 'Wärmepumpe Stromverbrauch {stadt} {year} | Wärmepumpenbegleiter',
-    metaTemplate: 'Wärmepumpe Stromverbrauch {stadt} ✓ Berechnung mit {strompreis} ct/kWh ✓ JAZ {jaz} in {stadt} ✓ Optimierungstipps ✓ Kostenrechner.',
+    metaTemplate: 'Wärmepumpe Stromverbrauch {stadt} {year}: Berechnung mit lokalem Strompreis {strompreis} ct/kWh, JAZ {jaz} ✓ Optimierungstipps ✓ WP-Sondertarif & PV-Kombination.',
     h1Template: 'Wärmepumpe Stromverbrauch {stadt} {year} — Berechnung & Optimierung',
     featuredSnippetQuestions: [
       'Wie viel Strom verbraucht eine Wärmepumpe in {stadt}?',
