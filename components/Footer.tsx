@@ -46,7 +46,7 @@ export default function Footer() {
               <p className="font-heading font-extrabold text-white text-xl mb-1">
                 Bereit für Ihre Wärmepumpe?
               </p>
-              <p className="text-white/45 text-sm">
+              <p className="text-[rgba(255,255,255,0.45)] text-sm">
                 Kostenlos anfragen · Geprüfte lokale Betriebe · KfW-Antrag inklusive
               </p>
             </div>
@@ -64,12 +64,12 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {stats.map((s) => (
               <div key={s.label} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-wp-green/30 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[rgba(27,94,55,0.3)] flex items-center justify-center shrink-0">
                   <s.icon size={15} className="text-wp-green3" />
                 </div>
                 <div>
                   <p className="font-mono font-bold text-white text-base leading-none">{s.val}</p>
-                  <p className="text-white/40 text-xs mt-0.5">{s.label}</p>
+                  <p className="text-[rgba(255,255,255,0.40)] text-xs mt-0.5">{s.label}</p>
                 </div>
               </div>
             ))}
@@ -91,7 +91,7 @@ export default function Footer() {
                 Wärmepumpenbegleiter
               </span>
             </Link>
-            <p className="text-white/55 text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-[rgba(255,255,255,0.55)] text-sm leading-relaxed mb-6 max-w-xs">
               Herstellerunabhängige Informationen und kostenlose Vermittlung an geprüfte
               Wärmepumpen-Fachbetriebe in 733 deutschen Städten.
             </p>
@@ -103,7 +103,7 @@ export default function Footer() {
                 'KfW-Antragsbegleitung inklusive',
                 'Herstellerunabhängig seit 2024',
               ].map(t => (
-                <div key={t} className="flex items-center gap-2 text-xs text-white/50">
+                <div key={t} className="flex items-center gap-2 text-xs text-[rgba(255,255,255,0.50)]">
                   <span className="text-wp-green3 font-bold">✓</span>
                   {t}
                 </div>
@@ -118,7 +118,7 @@ export default function Footer() {
                 { name: 'Facebook', url: 'https://www.facebook.com/waermepumpenbegleiter' },
               ].map(s => (
                 <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
-                  className="px-3 py-1.5 text-xs font-semibold text-white/50 hover:text-white border border-white/10 hover:border-white/25 rounded-lg transition-all">
+                  className="px-3 py-1.5 text-xs font-semibold text-[rgba(255,255,255,0.50)] hover:text-white border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] rounded-lg transition-all">
                   {s.name}
                 </a>
               ))}
@@ -134,8 +134,8 @@ export default function Footer() {
               {navigation.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href}
-                    className="text-sm text-white/55 hover:text-white transition-colors flex items-center gap-1.5 group">
-                    <span className="w-1 h-1 rounded-full bg-wp-green3/50 group-hover:bg-wp-green3 transition-colors shrink-0" />
+                    className="text-sm text-[rgba(255,255,255,0.55)] hover:text-white transition-colors flex items-center gap-1.5 group">
+                    <span className="w-1 h-1 rounded-full bg-[rgba(61,161,106,0.5)] group-hover:bg-wp-green3 transition-colors shrink-0" />
                     {item.label}
                   </Link>
                 </li>
@@ -152,8 +152,8 @@ export default function Footer() {
               {staedte.map((s) => (
                 <li key={s.slug}>
                   <Link href={`/waermepumpe/${s.slug}`}
-                    className="text-sm text-white/55 hover:text-white transition-colors flex items-center gap-1.5 group">
-                    <span className="w-1 h-1 rounded-full bg-wp-green3/50 group-hover:bg-wp-green3 transition-colors shrink-0" />
+                    className="text-sm text-[rgba(255,255,255,0.55)] hover:text-white transition-colors flex items-center gap-1.5 group">
+                    <span className="w-1 h-1 rounded-full bg-[rgba(61,161,106,0.5)] group-hover:bg-wp-green3 transition-colors shrink-0" />
                     {s.name}
                   </Link>
                 </li>
@@ -170,8 +170,8 @@ export default function Footer() {
               {rechtliches.map((item) => (
                 <li key={item.label}>
                   <Link href={item.href}
-                    className="text-sm text-white/55 hover:text-white transition-colors flex items-center gap-1.5 group">
-                    <span className="w-1 h-1 rounded-full bg-wp-green3/50 group-hover:bg-wp-green3 transition-colors shrink-0" />
+                    className="text-sm text-[rgba(255,255,255,0.55)] hover:text-white transition-colors flex items-center gap-1.5 group">
+                    <span className="w-1 h-1 rounded-full bg-[rgba(61,161,106,0.5)] group-hover:bg-wp-green3 transition-colors shrink-0" />
                     {item.label}
                   </Link>
                 </li>
@@ -183,11 +183,11 @@ export default function Footer() {
             </p>
             <div className="space-y-2">
               <a href="mailto:kontakt@waermepumpenbegleiter.de"
-                className="flex items-center gap-2 text-xs text-white/45 hover:text-white transition-colors">
+                className="flex items-center gap-2 text-xs text-[rgba(255,255,255,0.45)] hover:text-white transition-colors">
                 <Mail size={11} className="text-wp-green3 shrink-0" />
                 kontakt@waermepumpenbegleiter.de
               </a>
-              <p className="flex items-center gap-2 text-xs text-white/45">
+              <p className="flex items-center gap-2 text-xs text-[rgba(255,255,255,0.45)]">
                 <Phone size={11} className="text-wp-green3 shrink-0" />
                 Mo–Fr 8–18 Uhr
               </p>
@@ -199,10 +199,10 @@ export default function Footer() {
       {/* ── Bottom Bar ── */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-[rgba(255,255,255,0.30)]">
             © 2026 Wärmepumpenbegleiter.de — Webflott GbR, Weißenfels
           </p>
-          <p className="text-xs text-white/25 text-center">
+          <p className="text-xs text-[rgba(255,255,255,0.25)] text-center">
             Wir erhalten eine Vermittlungsprovision von Installateuren. Für Sie ist unser Service kostenlos.
           </p>
         </div>
