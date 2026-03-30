@@ -13,7 +13,6 @@ import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs } from "@/lib/content-variation";
-import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
@@ -342,7 +341,8 @@ export default function WaermepumpeTemplate({
   // Cross-Links
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))
-    .filter(Boolean);
+    .filter(Boolean)
+    .slice(0, 6);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -477,8 +477,6 @@ export default function WaermepumpeTemplate({
         <div className="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
 
           {/* LEFT */}
-          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
-
           <div className="space-y-14">
 
             {/* Featured Snippet Block */}
@@ -533,12 +531,10 @@ export default function WaermepumpeTemplate({
                 ))}
               </div>
               <p className="text-gray-600 leading-relaxed">
-                {city.name} liegt in {city.bundesland} mit{" "}
-                <strong>{city.heizgradtage} Heizgradtagen pro Jahr</strong> (Bundesdurchschnitt: ca. 3.200 Kd/a).
-                Das bedeutet {city.heizgradtage > 3200 ? "einen überdurchschnittlichen" : "einen unterdurchschnittlichen"}{" "}
-                Wärmebedarf. Eine Luft-Wasser-Wärmepumpe erreicht hier eine{" "}
-                <strong>Jahresarbeitszahl (JAZ) von {jaz}</strong> — aus einer Kilowattstunde Strom werden {jaz}{" "}
-                kWh Wärme erzeugt.
+                Mit <strong>{city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen pro Jahr</strong> liegt {city.name} {city.heizgradtage > 3200 ? 'über' : city.heizgradtage < 3000 ? 'unter' : 'im'} dem deutschen Durchschnitt (ca. 3.200 Kd/a).
+                Das entspricht einem {city.heizgradtage > 3200 ? 'überdurchschnittlichen' : city.heizgradtage < 3000 ? 'unterdurchschnittlichen' : 'typisch deutschen'} Wärmebedarf.
+                Eine Luft-Wasser-Wärmepumpe erreicht in {city.name} bei {city.avgTemp}°C Jahresmitteltemperatur eine{" "}
+                <strong>Jahresarbeitszahl (JAZ) von {jaz}</strong> — 1 kWh Strom erzeugt {jaz} kWh Wärme.
               </p>
             </motion.section>
 
@@ -801,6 +797,181 @@ export default function WaermepumpeTemplate({
                 <p className="text-xs text-gray-400 mt-2">Zuletzt geprüft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
             </motion.div>
+
+            {/* ── WARUM JETZT — GEG + MARKT ────────────────────────────────── */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}>
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                Warum jetzt handeln?
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                GEG 2024 & Marktlage in {city.name}
+              </h2>
+              <div className="grid md:grid-cols-2 gap-5 mb-6">
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                  <p className="font-bold text-amber-900 mb-2">⚠️ GEG-Frist {city.name}</p>
+                  <p className="text-amber-800 text-sm leading-relaxed mb-3">
+                    {city.einwohner >= 100000
+                      ? `Als Großstadt mit ${city.einwohner.toLocaleString('de-DE')} Einwohnern gilt in ${city.name} die 65%-EE-Pflicht für Bestandsgebäude ab 30. Juni 2026. Jede neu eingebaute Heizung muss mindestens 65% erneuerbare Energie nutzen.`
+                      : `In ${city.name} gilt die 65%-EE-Pflicht für Bestandsgebäude ab 30. Juni 2028. Frühzeitiges Handeln sichert volle KfW-Förderung und beste Installateurverfügbarkeit.`
+                    }
+                  </p>
+                  <div className="bg-amber-100 rounded-lg px-3 py-2 text-xs font-semibold text-amber-800">
+                    Eine Wärmepumpe erfüllt das GEG automatisch — ohne Einschränkungen.
+                  </div>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-2xl p-5">
+                  <p className="font-bold text-gray-900 mb-2">📈 Marktentwicklung 2025</p>
+                  <div className="space-y-2">
+                    {[
+                      {label: 'Verkäufe 2025', val: '299.000 WP', trend: '+55%'},
+                      {label: 'Marktanteil WP', val: '~50% aller Heizungen', trend: '↑'},
+                      {label: 'WP-Bestand DE', val: 'nur 3–4%', trend: 'Riesiges Potenzial'},
+                      {label: 'Regierungsziel', val: '6 Mio. bis 2030', trend: ''},
+                    ].map((r, i) => (
+                      <div key={i} className="flex justify-between items-center text-sm border-b border-gray-100 pb-1.5 last:border-0">
+                        <span className="text-gray-500">{r.label}</span>
+                        <div className="text-right">
+                          <span className="font-semibold text-gray-900">{r.val}</span>
+                          {r.trend && <span className="text-green-600 text-xs ml-2">{r.trend}</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="bg-[#1B5E37]/5 border border-[#1B5E37]/15 rounded-2xl p-5">
+                <p className="font-semibold text-[#1B5E37] mb-3">💡 CO₂-Preis-Entwicklung — warum die WP langfristig gewinnt</p>
+                <div className="grid sm:grid-cols-4 gap-3">
+                  {[
+                    {year: '2024', preis: '45 €/t', gas: city.gaspreis + ' ct/kWh', note: ''},
+                    {year: '2026', preis: '55 €/t', gas: Math.round(city.gaspreis * 1.05 * 10)/10 + ' ct/kWh', note: 'Heute'},
+                    {year: '2028', preis: '65 €/t', gas: Math.round(city.gaspreis * 1.1 * 10)/10 + ' ct/kWh', note: ''},
+                    {year: '2030', preis: '100 €/t', gas: Math.round(city.gaspreis * 1.2 * 10)/10 + ' ct/kWh', note: 'Prognose'},
+                  ].map((r, i) => (
+                    <div key={i} className={`rounded-xl p-3 text-center border ${r.note === 'Heute' ? 'border-[#1B5E37] bg-white' : 'border-gray-200 bg-white/60'}`}>
+                      <p className="font-mono font-bold text-gray-900">{r.year}</p>
+                      <p className="text-xs text-gray-500">CO₂: {r.preis}</p>
+                      <p className="text-xs font-semibold text-orange-600">Gas: ≥{r.gas}</p>
+                      {r.note && <p className="text-xs bg-[#1B5E37] text-white rounded px-1 mt-1">{r.note}</p>}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-3">Mit steigendem CO₂-Preis wächst der Kostenvorteil der Wärmepumpe gegenüber Gas jedes Jahr. Quelle: Bundesregierung / EU-ETS2 Planung.</p>
+              </div>
+            </motion.section>
+
+            {/* ── SCHRITT-FÜR-SCHRITT GUIDE ──────────────────────────────────── */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}>
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                Schritt für Schritt
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                Von der Anfrage bis zum KfW-Zuschuss in {city.name}
+              </h2>
+              <div className="space-y-3">
+                {[
+                  {
+                    n: '01', title: 'Eignung prüfen & Angebote einholen',
+                    time: 'Woche 1',
+                    text: `In ${city.name} die häufigste Frage: "Ist mein Haus geeignet?" In über 80% der Fälle ja. Entscheidend ist die Vorlauftemperatur (unter 55°C: jede WP). Unser Service: Wir stellen Ihnen in 48h bis zu 3 vollständige Angebote von HWK-geprüften Betrieben in ${city.name} zusammen.`,
+                    tag: 'Kostenlos'
+                  },
+                  {
+                    n: '02', title: 'KfW-Antrag stellen — VOR Vertragsabschluss',
+                    time: 'Woche 2–3',
+                    text: 'Zwingend: Der KfW-Antrag muss gestellt sein bevor Sie den Installationsvertrag unterschreiben. Kein Antrag vor Baubeginn = kein Fördergeld. Ihr Partnerbetrieb stellt den Antrag als registrierter Lieferanten- und Leistungserbringer (LuL) im KfW-Portal.',
+                    tag: 'Pflicht'
+                  },
+                  {
+                    n: '03', title: 'Installation (1–3 Tage)',
+                    time: 'Woche 6–10',
+                    text: `Die eigentliche Montage dauert 1–3 Tage. Hydraulischer Abgleich (KfW-Pflicht) und Inbetriebnahme inklusive. Typische Projektdauer in ${city.name} von Anfrage bis fertige Anlage: 6–12 Wochen — abhängig von der Auslastung lokaler Betriebe.`,
+                    tag: 'Installation'
+                  },
+                  {
+                    n: '04', title: 'Verwendungsnachweis & KfW-Auszahlung',
+                    time: 'Woche 12–20',
+                    text: `Nach Abschluss reichen Sie Rechnung und Bestätigung des Fachbetriebs im KfW-Portal ein. Auszahlung: ${fmtEuro(foerd.zuschuss)} direkt auf Ihr Konto — typischerweise 4–8 Wochen nach vollständigem Verwendungsnachweis.`,
+                    tag: 'Auszahlung'
+                  },
+                  {
+                    n: '05', title: 'Betrieb optimieren & WP-Tarif sichern',
+                    time: 'Nach Installation',
+                    text: `WP-Sondertarif beim lokalen Netzbetreiber in ${city.name} beantragen (oft 2–4 ct/kWh günstiger). PV-Kombination prüfen (${city.avgSunHours} Sonnenstunden/Jahr). Einstellung optimieren: Nachtabsenkung, Pufferspeicher, Smart-Home-Integration für maximale JAZ ${jaz}.`,
+                    tag: 'Optimierung'
+                  },
+                ].map((step, i) => (
+                  <div key={i} className="flex gap-4 bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+                    <div className="shrink-0">
+                      <div className="w-10 h-10 bg-[#1B5E37] rounded-xl flex items-center justify-center font-mono font-bold text-white text-sm">{step.n}</div>
+                      <p className="text-xs text-gray-400 text-center mt-1 font-medium">{step.time}</p>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <p className="font-bold text-gray-900">{step.title}</p>
+                        <span className="text-xs bg-[#E8F5EE] text-[#1B5E37] font-bold px-2 py-0.5 rounded-full">{step.tag}</span>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">{step.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+
+            {/* ── LOKALER MARKT INFO ─────────────────────────────────────────── */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}>
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                Lokale Marktinfos
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Wärmepumpenmarkt in {city.name} & {city.bundesland}
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+                {[
+                  {icon: '🏘️', title: 'EFH-Quote', val: city.efhQuote + '%', sub: 'Einfamilienhäuser — ideale WP-Zielgruppe'},
+                  {icon: '🌡️', title: 'Ø Jahrestemp.', val: city.avgTemp + '°C', sub: `JAZ ${jaz} — ${city.avgTemp >= 10 ? 'mildes' : city.avgTemp < 8 ? 'raueres' : 'gemäßigtes'} Klima`},
+                  {icon: '🔥', title: 'Fernwärme', val: city.fernwaermeQuote + '%', sub: `${100 - city.fernwaermeQuote}% der Gebäude ohne Fernwärme → WP-Markt`},
+                  {icon: '⚡', title: 'Strompreis', val: city.strompreis + ' ct/kWh', sub: `BDEW Regional 2026 — ${city.strompreis < 29 ? 'günstig' : city.strompreis > 31 ? 'überdurchschnittlich' : 'marktüblich'}`},
+                ].map((d, i) => (
+                  <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                    <div className="text-2xl mb-2">{d.icon}</div>
+                    <p className="font-mono font-bold text-[#1B5E37] text-xl leading-none mb-0.5">{d.val}</p>
+                    <p className="font-semibold text-gray-900 text-xs mb-0.5">{d.title}</p>
+                    <p className="text-gray-500 text-xs leading-tight">{d.sub}</p>
+                  </div>
+                ))}
+              </div>
+              {city.bundeslandFoerderung && (
+                <div className="bg-[#E8F5EE] border border-[#1B5E37]/20 rounded-2xl p-5">
+                  <p className="font-bold text-[#1B5E37] mb-1">🏛️ {city.bundesland}-Landesförderung</p>
+                  <p className="text-gray-700 text-sm mb-2">
+                    <strong>{city.bundeslandFoerderung}</strong>{city.bundeslandFoerderungBetrag ? `: ${city.bundeslandFoerderungBetrag}` : ''} — kombinierbar mit KfW-Bundesförderung.
+                  </p>
+                  {city.bundeslandFoerderungUrl && (
+                    <a href={city.bundeslandFoerderungUrl} target="_blank" rel="noopener noreferrer"
+                      className="text-[#1B5E37] text-sm font-semibold hover:underline">→ Mehr erfahren ↗</a>
+                  )}
+                </div>
+              )}
+            </motion.section>
+
+            {/* ── ADDITIONAL SEO CONTENT BLOCKS ────────────────────────────── */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}>
+              <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
+            </motion.section>
+
 
             {/* FAQ */}
             <motion.section
