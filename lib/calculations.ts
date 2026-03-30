@@ -141,8 +141,8 @@ export function calcBetriebskosten(
   const ersparnis = altKosten - wpKosten
 
   // CO₂
-  const co2AltHeizung = Math.round(heizwaermebedarf / wg * CO2_FAKTOREN[heizung === 'heizoel' ? 'heizoel' : 'erdgas'] * 10) / 10
-  const co2WP = Math.round(stromverbrauch * CO2_FAKTOREN.strom_2026 * 10) / 10
+  const co2AltHeizung = Math.round(heizwaermebedarf / wg * CO2_FAKTOREN[heizung === 'heizoel' ? 'heizoel' : 'erdgas'] / 1000 * 10) / 10
+  const co2WP = Math.round(stromverbrauch * CO2_FAKTOREN.strom_2026 / 1000 * 10) / 10
   const co2Ersparnis = Math.round((co2AltHeizung - co2WP) * 10) / 10
 
   // Amortisation (mit 55% Förderung als Standard)
