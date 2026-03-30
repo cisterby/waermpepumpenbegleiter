@@ -1,12 +1,13 @@
 // components/programmatic/AdditionalContentBlocks.tsx
-// 4 stadtspezifische SEO-Content-Blöcke für alle Templates
-// Shared Component — einmal gebaut, überall eingebunden
+// Rotierende SEO-Content-Blöcke — 2 von 4 erscheinen je Stadt (city-hash)
+// Jeder Block hat 4-5 Textvarianten → echte Uniqueness
 'use client';
 import { useState } from 'react';
-import { CheckCircle, Sun, Leaf, ArrowRight, ChevronDown } from 'lucide-react';
+import { CheckCircle, ChevronDown } from 'lucide-react';
 import type { City } from '@/lib/city-utils';
 import type { Keyword } from '@/lib/keywords';
 import type { BerechnungsErgebnis, FoerderErgebnis } from '@/lib/calculations';
+import { cityHash } from '@/lib/content-variation';
 
 interface Props {
   city: City;
@@ -16,82 +17,64 @@ interface Props {
   foerd: FoerderErgebnis;
 }
 
-function fmtEuro(n: number) {
-  return n.toLocaleString('de-DE') + ' €';
-}
+function fmtEuro(n: number) { return n.toLocaleString('de-DE') + ' €'; }
 
-// ── 1. iSFP-Block ────────────────────────────────────────────────────────────
-export function ISFPBlock({ city, foerd }: Pick<Props, 'city' | 'foerd'>) {
+// ── BLOCK 1: iSFP ────────────────────────────────────────────────────────────
+function ISFPBlock({ city, foerd }: { city: City; foerd: FoerderErgebnis }) {
   const [open, setOpen] = useState(false);
-  const isfpBonus = Math.round(Math.min(25000, 25000) * 0.05); // 5% auf max €25k
+  const bonus = Math.round(Math.min(25000, 30000) * 0.05);
+  const v = cityHash(city, 4, 40); // 4 Text-Varianten
+
+  const intros = [
+    `Der Individuelle Sanierungsfahrplan (iSFP) bringt Hausbesitzern in ${city.name} einen zusätzlichen KfW-Bonus von 5% — das ergibt bei €25.000 WP-Investition ${fmtEuro(bonus)} mehr Zuschuss. Der iSFP selbst wird zu 80% von BAFA gefördert, Eigenanteil: ca. €60–140.`,
+    `Wenige nutzen ihn, obwohl er sich fast von selbst finanziert: Der iSFP (+5% KfW-Bonus) kostet Hausbesitzer in ${city.name} netto nur €60–140 — bringt aber ${fmtEuro(bonus)} mehr Zuschuss bei typischen WP-Investitionen. BAFA erstattet 80% der Beratungskosten.`,
+    `In ${city.name} kann der iSFP die KfW-Förderung auf bis zu ${Math.min(foerd.gesamtSatz + 5, 70)}% steigern. Der Sanierungsfahrplan wird von BAFA zu 80% bezuschusst — bei Kosten von €300–700 zahlen Sie als Eigenanteil nur ca. €60–140.`,
+    `Für ${city.name}-Hausbesitzer lohnt sich der iSFP fast immer: +5% KfW = ${fmtEuro(bonus)} Mehrförderung, Eigenkosten nach BAFA-Förderung ca. €60–140. Voraussetzung: Beauftragung eines zertifizierten Energieberaters VOR dem KfW-Antrag.`,
+  ];
 
   return (
     <div className="bg-white rounded-2xl border border-wp-border shadow-wp-sm overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-5 text-left bg-transparent border-none cursor-pointer hover:bg-wp-bg transition-colors"
-      >
+      <button onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-5 text-left bg-transparent border-none cursor-pointer hover:bg-wp-bg transition-colors">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center shrink-0">
             <span className="text-lg">📋</span>
           </div>
           <div>
-            <p className="font-heading font-bold text-wp-text text-sm">
-              iSFP — Individueller Sanierungsfahrplan: +5% KfW-Bonus für {city.name}
-            </p>
-            <p className="text-wp-text3 text-xs">= bis zu {fmtEuro(isfpBonus)} zusätzlicher Zuschuss · 80% gefördert</p>
+            <p className="font-heading font-bold text-wp-text text-sm">iSFP — Individueller Sanierungsfahrplan: +5% KfW für {city.name}</p>
+            <p className="text-wp-text3 text-xs">= bis zu {fmtEuro(bonus)} zusätzlicher Zuschuss · 80% BAFA-gefördert</p>
           </div>
         </div>
         <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
-
       {open && (
-        <div className="px-5 pb-5 border-t border-wp-border">
-          <div className="grid md:grid-cols-2 gap-6 pt-5">
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text mb-3">Was ist der iSFP?</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed mb-3">
-                Der Individuelle Sanierungsfahrplan (iSFP) ist ein staatlich geförderter Energieberatungsplan für Ihr Haus.
-                Ein Energieberater analysiert Ihr Gebäude und erstellt einen Stufenplan zur energetischen Sanierung.
-                Für Hausbesitzer in <strong>{city.name}</strong> kostet der iSFP ca. €300–700 — davon übernimmt der Staat 80% (max. €650).
-              </p>
-              <div className="space-y-2">
-                {[
-                  '+5% KfW-Bonus auf alle BEG-Maßnahmen mit iSFP',
-                  'Gilt zusätzlich zu allen anderen Boni (bis 70% gesamt)',
-                  `Erspart in ${city.name}: +${fmtEuro(isfpBonus)} bei €25.000 Investition`,
-                  '80% gefördert über BAFA (Bundesamt für Wirtschaft)',
-                ].map((p, i) => (
-                  <div key={i} className="flex items-start gap-2 text-sm">
-                    <CheckCircle size={14} className="text-wp-green shrink-0 mt-0.5" />
-                    <span className="text-wp-text2">{p}</span>
-                  </div>
-                ))}
-              </div>
+        <div className="px-5 pb-5 border-t border-wp-border pt-5">
+          <p className="text-wp-text2 text-sm leading-relaxed mb-4">{intros[v]}</p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              {[
+                '+5% KfW auf alle BEG-Maßnahmen mit iSFP',
+                `= ${fmtEuro(bonus)} mehr bei €25.000 Investition`,
+                '80% BAFA-Förderung auf iSFP-Kosten',
+                'Gilt zusätzlich zu allen anderen Boni',
+              ].map((p, i) => (
+                <div key={i} className="flex items-start gap-2 text-xs text-wp-text2">
+                  <CheckCircle size={12} className="text-wp-green shrink-0 mt-0.5" />{p}
+                </div>
+              ))}
             </div>
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text mb-3">iSFP in {city.name} beantragen</h3>
-              <div className="space-y-3">
-                {[
-                  { n: '1', t: 'Energieberater finden', d: 'BAFA-zugelassenen Berater über die Energieeffizienz-Experten-Liste (dena) suchen.' },
-                  { n: '2', t: 'iSFP erstellen lassen', d: `Vor-Ort-Begehung in ${city.name}, Analyse und Stufenplan. Kosten: €300–700 brutto.` },
-                  { n: '3', t: 'BAFA-Förderantrag stellen', d: '80% der Beratungskosten erstattet (max. €650) — vor der Beauftragung des Beraters.' },
-                  { n: '4', t: 'iSFP bei KfW einreichen', d: '+5% Bonus gilt für alle Maßnahmen die im iSFP empfohlen werden, inkl. Wärmepumpe.' },
-                ].map(s => (
-                  <div key={s.n} className="flex gap-3">
-                    <div className="w-6 h-6 bg-wp-green rounded-full flex items-center justify-center shrink-0 font-bold text-white text-xs">{s.n}</div>
-                    <div>
-                      <p className="font-semibold text-wp-text text-xs mb-0.5">{s.t}</p>
-                      <p className="text-wp-text3 text-xs leading-relaxed">{s.d}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <a href="https://www.bafa.de/DE/Energie/Energieberatung/Bundesfoerderung_Energieberatung_Wohngebaeude/bundesfoerderung_energieberatung_wohngebaeude_node.html"
-                target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 mt-4 text-wp-green text-xs font-semibold hover:underline">
-                Mehr Infos: BAFA Energieberatung ↗
-              </a>
+            <div className="space-y-2">
+              {[
+                { n: '1', t: 'BAFA-Antrag stellen', d: 'Vor Beauftragung des Energieberaters' },
+                { n: '2', t: 'iSFP erstellen lassen', d: `Energieberater kommt in ${city.name}` },
+                { n: '3', t: 'KfW-Antrag mit iSFP', d: '+5% Bonus automatisch' },
+              ].map(s => (
+                <div key={s.n} className="flex gap-2 text-xs">
+                  <span className="w-5 h-5 bg-wp-green text-white rounded-full flex items-center justify-center shrink-0 font-bold text-xs">{s.n}</span>
+                  <div><p className="font-semibold text-wp-text">{s.t}</p><p className="text-wp-text3">{s.d}</p></div>
+                </div>
+              ))}
+              <a href="https://www.bafa.de/DE/Energie/Energieberatung/Bundesfoerderung_Energieberatung_Wohngebaeude/" target="_blank" rel="noopener noreferrer" className="text-wp-green text-xs font-semibold hover:underline">BAFA Energieberatung ↗</a>
             </div>
           </div>
         </div>
@@ -100,286 +83,146 @@ export function ISFPBlock({ city, foerd }: Pick<Props, 'city' | 'foerd'>) {
   );
 }
 
-// ── 2. WP + PV Kombinations-Block ────────────────────────────────────────────
-export function PVKombiBlock({ city, jaz, calc }: Pick<Props, 'city' | 'jaz' | 'calc'>) {
-  const pvProduktion = Math.round(city.avgSunHours * 8 * 0.85); // 8 kWp Anlage
-  const eigenverbrauch = Math.round(pvProduktion * 0.65);
-  const wpStromBedarf = Math.round(120 * 160 / jaz); // kWh/Jahr
-  const pvFuerWP = Math.min(eigenverbrauch, wpStromBedarf);
+// ── BLOCK 2: WP + PV ─────────────────────────────────────────────────────────
+function PVKombiBlock({ city, jaz, calc }: { city: City; jaz: number; calc: BerechnungsErgebnis }) {
+  const pvErtrag = Math.round(city.avgSunHours * 8 * 0.85);
+  const wpBedarf = Math.round(120 * 160 / jaz);
+  const pvFuerWP = Math.min(Math.round(pvErtrag * 0.65), wpBedarf);
   const pvErsparnis = Math.round(pvFuerWP * (city.strompreis / 100));
-  const pvKosten = Math.round(8 * 1200); // €/kWp Richtwert 2026
-  const pvAmort = Math.round(pvKosten / (pvErsparnis + Math.round(pvProduktion * 0.35 * 0.0778)));
+  const v = cityHash(city, 4, 41);
+
+  const headlines = [
+    `WP + PV in ${city.name}: ${fmtEuro(pvErsparnis)}/Jahr Zusatzersparnis`,
+    `Solarstrom für Ihre Wärmepumpe in ${city.name}`,
+    `${city.avgSunHours} Sonnenstunden/Jahr — PV + WP optimal kombinieren`,
+    `Maximale Unabhängigkeit: Wärmepumpe + Photovoltaik in ${city.name}`,
+  ];
+
+  const texts = [
+    `Mit ${city.avgSunHours} Sonnenstunden/Jahr und 8 kWp PV erzeugen Sie in ${city.name} ca. ${pvErtrag.toLocaleString('de-DE')} kWh/Jahr. Davon fließen ${pvFuerWP.toLocaleString('de-DE')} kWh direkt in die Wärmepumpe (JAZ ${jaz}) — das senkt die effektiven Heizkosten auf unter 10 ct/kWh.`,
+    `In ${city.name} lohnt sich die Kombination besonders: ${city.avgSunHours} Sonnenstunden × 8 kWp × 0,85 = ${pvErtrag.toLocaleString('de-DE')} kWh PV-Strom/Jahr. Ihr WP-Jahresbedarf beträgt ca. ${wpBedarf.toLocaleString('de-DE')} kWh — ${pvFuerWP.toLocaleString('de-DE')} kWh deckt die PV direkt ab.`,
+    `Die Synergie von Wärmepumpe und Photovoltaik in ${city.name}: PV-Strom zu ca. 0 ct/kWh Grenzkosten betreibt die WP (JAZ ${jaz}) und erzeugt Wärme für effektiv ${(0 / jaz).toFixed(1)} ct/kWh. Gesamtersparnis inkl. PV: ${fmtEuro(calc.ersparnis + pvErsparnis)}/Jahr.`,
+    `Mit Smart-Home-Steuerung lädt die WP in ${city.name} bevorzugt wenn die PV-Anlage produziert. Das maximiert den Eigenverbrauch auf 65–75% und senkt die Stromrechnung dauerhaft — unabhängig von Preissteigerungen beim Netzstrom (${city.strompreis} ct/kWh).`,
+  ];
 
   return (
     <div className="bg-gradient-to-br from-wp-greenlt to-amber-50 rounded-2xl border border-wp-green3/30 p-6 shadow-wp-sm">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-10 h-10 bg-wp-green rounded-xl flex items-center justify-center shrink-0">
-          <Sun size={20} className="text-white" />
-        </div>
-        <div>
-          <h3 className="font-heading font-bold text-wp-text text-base">
-            Wärmepumpe + PV in {city.name} — die optimale Kombination
-          </h3>
-          <p className="text-wp-text3 text-xs">{city.avgSunHours} Sonnenstunden/Jahr · 8 kWp Beispielanlage</p>
-        </div>
-      </div>
-
-      <div className="grid sm:grid-cols-3 gap-4 mb-5">
+      <h3 className="font-heading font-bold text-wp-text text-base mb-4 flex items-center gap-2">
+        <span>☀️</span> {headlines[v]}
+      </h3>
+      <p className="text-wp-text2 text-sm leading-relaxed mb-4">{texts[v]}</p>
+      <div className="grid grid-cols-3 gap-3">
         {[
-          { icon: '⚡', label: 'PV-Jahresertrag', val: `${pvProduktion.toLocaleString('de-DE')} kWh`, sub: '8 kWp · 0,85 Performance' },
-          { icon: '🔄', label: 'Direkt für WP genutzt', val: `${pvFuerWP.toLocaleString('de-DE')} kWh`, sub: `von ${wpStromBedarf.toLocaleString('de-DE')} kWh WP-Bedarf` },
-          { icon: '💶', label: 'Zusatzersparnis/Jahr', val: fmtEuro(pvErsparnis), sub: `bei ${city.strompreis} ct/kWh` },
+          { label: 'PV-Jahresertrag', val: pvErtrag.toLocaleString('de-DE') + ' kWh', sub: '8 kWp · ' + city.avgSunHours + 'h/J.' },
+          { label: 'Für WP genutzt', val: pvFuerWP.toLocaleString('de-DE') + ' kWh', sub: 'von ' + wpBedarf.toLocaleString('de-DE') + ' kWh' },
+          { label: 'Zusatzersparnis', val: fmtEuro(pvErsparnis), sub: 'pro Jahr' },
         ].map((d, i) => (
-          <div key={i} className="bg-white rounded-xl p-4 border border-wp-border shadow-wp-sm text-center">
-            <div className="text-xl mb-1">{d.icon}</div>
-            <div className="font-mono font-bold text-wp-green text-lg leading-none mb-0.5">{d.val}</div>
-            <div className="font-semibold text-wp-text text-xs mb-0.5">{d.label}</div>
+          <div key={i} className="bg-white rounded-xl p-3 border border-wp-border text-center">
+            <div className="font-mono font-bold text-wp-green text-sm leading-none mb-0.5">{d.val}</div>
+            <div className="font-semibold text-wp-text text-xs">{d.label}</div>
             <div className="text-wp-text3 text-xs">{d.sub}</div>
           </div>
         ))}
       </div>
-
-      <div className="bg-white rounded-xl p-4 border border-wp-border">
-        <p className="font-heading font-semibold text-wp-text text-sm mb-2">
-          Warum WP + PV in {city.name} besonders gut funktioniert:
-        </p>
-        <div className="grid sm:grid-cols-2 gap-2">
-          {[
-            `${city.avgSunHours} Sonnenstunden/Jahr — ${city.avgSunHours >= 1700 ? 'überdurchschnittlich gut' : city.avgSunHours >= 1600 ? 'solider Durchschnitt' : 'ausreichend für wirtschaftliche Anlage'}`,
-            `WP-Stromverbrauch tagsüber intelligent steuern (Smart Grid)`,
-            `PV senkt effektive WP-Kosten auf unter 10 ct/kWh`,
-            `Amortisation PV-Anlage: ca. ${pvAmort} Jahre (allein), früher mit WP-Synergie`,
-            `KfW 270 finanziert WP + PV als Kombi-Paket zinsgünstig`,
-            `${city.avgSunHours} h × JAZ ${jaz} = maximale Energieunabhängigkeit`,
-          ].map((t, i) => (
-            <div key={i} className="flex items-start gap-2 text-xs text-wp-text2">
-              <CheckCircle size={12} className="text-wp-green shrink-0 mt-0.5" />
-              {t}
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
 
-// ── 3. GEG-Checkliste (stadtspezifisch) ──────────────────────────────────────
-export function GEGChecklistBlock({ city }: Pick<Props, 'city'>) {
+// ── BLOCK 3: GEG-Checkliste ──────────────────────────────────────────────────
+function GEGChecklistBlock({ city }: { city: City }) {
   const fristDate = city.gegFrist.split('-').reverse().join('.');
   const isUrgent = city.einwohner >= 100000;
+  const v = cityHash(city, 4, 42);
 
-  const checklist = [
-    {
-      done: false,
-      title: 'Aktuelle Heizung prüfen',
-      text: `Ist Ihre Heizung älter als 15 Jahre? Ab 30 Jahren Nutzungszeit endet die Betriebserlaubnis in ${city.name}.`,
-      tag: isUrgent ? 'Jetzt prüfen' : 'Empfohlen',
-    },
-    {
-      done: false,
-      title: 'GEG-Frist für Ihre Stadt kennen',
-      text: `In ${city.name} gilt die 65%-EE-Pflicht für Bestandsgebäude ab dem ${fristDate}. ${isUrgent ? 'Handeln Sie jetzt — die Frist naht!' : 'Sie haben noch Zeit, aber gute Betriebe sind schnell ausgebucht.'}`,
-      tag: isUrgent ? '⚠️ Frist naht' : 'Info',
-    },
-    {
-      done: false,
-      title: 'KfW-Antrag VOR Baubeginn stellen',
-      text: 'Zwingend erforderlich: Kein Antrag = keine Förderung. Der Antrag muss vor dem ersten Spatenstich eingereicht sein.',
-      tag: 'Pflicht',
-    },
-    {
-      done: false,
-      title: 'Registrierten Fachbetrieb beauftragen',
-      text: `Nur KfW-registrierte LuL-Betriebe können den Förderantrag stellen. Alle unsere Partner in ${city.name} erfüllen das.`,
-      tag: 'Pflicht',
-    },
-    {
-      done: false,
-      title: 'Kommunalen Wärmeplan prüfen',
-      text: `${isUrgent ? `${city.name} als Großstadt muss bis 30. Juni 2026 einen kommunalen Wärmeplan vorlegen. Prüfen Sie ob Fernwärmeausbau in Ihrer Straße geplant ist.` : `${city.name} muss bis 2028 einen Wärmeplan vorstellen. Informieren Sie sich bei der Stadtverwaltung.`}`,
-      tag: 'Empfohlen',
-    },
-    {
-      done: false,
-      title: 'Isnallation planen & Förderung sichern',
-      text: `Nach der Bewilligung haben Sie 24 Monate Zeit für die Installation in ${city.name}. Planen Sie genug Puffer für Lieferzeiten.`,
-      tag: 'Info',
-    },
+  const intros = [
+    `Das GEG 2024 gilt in ${city.name} ab ${fristDate}: Jede neue Heizung muss 65% erneuerbare Energie nutzen. Die Wärmepumpe ist die einzige Lösung ohne Einschränkungen.`,
+    `${isUrgent ? `⚠️ Als Großstadt über 100.000 Einwohner gilt in ${city.name} die GEG-Frist bereits am ${fristDate}.` : `In ${city.name} gilt die GEG-65%-EE-Pflicht ab ${fristDate}.`} Wer jetzt plant, sichert sich die volle KfW-Förderung und die besten Betriebe.`,
+    `Die GEG-Fristen für ${city.name} im Überblick: Bestandsgebäude ab ${fristDate} betroffen. Neubauten: seit 01.01.2024 bereits 65%-EE-Pflicht. Die Wärmepumpe erfüllt beides automatisch.`,
+    `Kommunale Wärmeplanung ${city.name}: ${isUrgent ? `Als Großstadt muss ${city.name} bis 30.06.2026 einen Wärmeplan vorlegen. Prüfen Sie ob in Ihrer Straße Fernwärme geplant ist — das beeinflusst die WP-Entscheidung.` : `${city.name} muss bis 2028 einen kommunalen Wärmeplan erstellen. Für die meisten Häuser ist die WP trotzdem die richtige Wahl — unabhängig vom Fernwärmeausbau.`}`,
   ];
 
-  const tagColors: Record<string, string> = {
-    '⚠️ Frist naht': 'bg-amber-100 text-amber-800',
-    'Pflicht': 'bg-red-100 text-red-700',
-    'Jetzt prüfen': 'bg-wp-greenlt text-wp-green',
-    'Empfohlen': 'bg-blue-50 text-blue-700',
-    'Info': 'bg-wp-bg text-wp-text3',
-  };
-
   return (
-    <div className="bg-white rounded-2xl border border-wp-border shadow-wp-sm p-6">
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h3 className="font-heading font-bold text-wp-text text-base">
-            GEG-Checkliste für {city.name}
-          </h3>
-          <p className="text-wp-text3 text-xs">
-            65%-EE-Pflicht ab {fristDate} · {isUrgent ? '⚠️ Großstadt — erhöhte Dringlichkeit' : 'Frühzeitig planen lohnt sich'}
-          </p>
-        </div>
-        {isUrgent && (
-          <div className="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-full shrink-0">
-            Frist: {fristDate}
-          </div>
-        )}
-      </div>
-
-      <div className="space-y-3">
-        {checklist.map((item, i) => (
-          <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-wp-border hover:bg-wp-bg transition-colors">
-            <div className="w-5 h-5 rounded border-2 border-wp-border shrink-0 mt-0.5 flex items-center justify-center">
-              <span className="text-wp-text3 text-xs">{i + 1}</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap mb-1">
-                <p className="font-semibold text-wp-text text-sm">{item.title}</p>
-                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${tagColors[item.tag] ?? 'bg-wp-bg text-wp-text3'}`}>
-                  {item.tag}
-                </span>
-              </div>
-              <p className="text-wp-text2 text-xs leading-relaxed">{item.text}</p>
-            </div>
+    <div className="bg-white rounded-2xl border border-wp-border shadow-wp-sm p-5">
+      <h3 className="font-heading font-bold text-wp-text text-base mb-3 flex items-center gap-2">
+        <span>📋</span> GEG-Frist {city.name}: {fristDate}
+        {isUrgent && <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded-full">Dringend</span>}
+      </h3>
+      <p className="text-wp-text2 text-sm leading-relaxed mb-4">{intros[v]}</p>
+      <div className="space-y-2">
+        {[
+          { t: 'KfW-Antrag VOR Baubeginn', status: 'Pflicht', color: 'bg-red-50 text-red-700' },
+          { t: 'Registrierten Fachbetrieb (LuL) beauftragen', status: 'Pflicht', color: 'bg-red-50 text-red-700' },
+          { t: 'Kommunalen Wärmeplan prüfen', status: 'Empfohlen', color: 'bg-blue-50 text-blue-700' },
+          { t: 'Förderquote individuell berechnen', status: 'Jetzt', color: 'bg-wp-greenlt text-wp-green' },
+        ].map((item, i) => (
+          <div key={i} className="flex items-center justify-between p-2.5 rounded-lg border border-wp-border">
+            <span className="text-wp-text2 text-xs font-medium">{item.t}</span>
+            <span className={`text-xs font-bold px-2 py-0.5 rounded-full shrink-0 ml-2 ${item.color}`}>{item.status}</span>
           </div>
         ))}
       </div>
-
-      <div className="mt-4 pt-4 border-t border-wp-border flex items-center justify-between">
-        <p className="text-wp-text3 text-xs">
-          Quellen: GEG 2024 · Kommunale Wärmeplanung MWG · KfW BEG Stand März 2026
-        </p>
-        <a href={`https://www.gesetze-im-internet.de/geg/`} target="_blank" rel="noopener noreferrer"
-          className="text-wp-green text-xs font-semibold hover:underline shrink-0">
-          GEG Volltext ↗
-        </a>
-      </div>
     </div>
   );
 }
 
-// ── 4. Hersteller-Vergleich ───────────────────────────────────────────────────
-export function HerstellerVergleichBlock({ city, jaz }: Pick<Props, 'city' | 'jaz'>) {
-  const hersteller = [
-    {
-      name: 'Viessmann Vitocal',
-      logo: '🟦',
-      cop: `A7/W35: ${(jaz * 1.1).toFixed(1)} COP`,
-      preis: '€11.000–18.000',
-      besonderheit: 'Testsieger Stiftung Warentest 2024/25',
-      vorlauf: 'bis 65°C',
-      r290: true,
-      highlight: true,
-    },
-    {
-      name: 'Vaillant aroTHERM',
-      logo: '🟩',
-      cop: `A7/W35: ${(jaz * 1.05).toFixed(1)} COP`,
-      preis: '€10.000–17.000',
-      besonderheit: 'R290 Propan-WP, +5% KfW-Bonus',
-      vorlauf: 'bis 65°C',
-      r290: true,
-      highlight: false,
-    },
-    {
-      name: 'Bosch / Buderus',
-      logo: '🔴',
-      cop: `A7/W35: ${(jaz).toFixed(1)} COP`,
-      preis: '€9.000–15.000',
-      besonderheit: 'Gutes Preis-Leistungs-Verhältnis',
-      vorlauf: 'bis 60°C',
-      r290: false,
-      highlight: false,
-    },
-    {
-      name: 'Stiebel Eltron WPL',
-      logo: '🟧',
-      cop: `A7/W35: ${(jaz * 1.08).toFixed(1)} COP`,
-      preis: '€10.000–16.000',
-      besonderheit: 'Deutsche Qualität, lange Garantie',
-      vorlauf: 'bis 65°C',
-      r290: false,
-      highlight: false,
-    },
-    {
-      name: 'Nibe Fighter',
-      logo: '⬜',
-      cop: `A7/W35: ${(jaz * 1.06).toFixed(1)} COP`,
-      preis: '€9.000–15.000',
-      besonderheit: 'Schwedische Qualität, sehr leise',
-      vorlauf: 'bis 63°C',
-      r290: false,
-      highlight: false,
-    },
+// ── BLOCK 4: Hersteller-Vergleich ────────────────────────────────────────────
+function HerstellerBlock({ city, jaz }: { city: City; jaz: number }) {
+  const v = cityHash(city, 4, 43);
+
+  const intros = [
+    `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur erreichen moderne Luft-WP-Geräte eine JAZ von ${jaz}. Hier die bewährten Hersteller im Überblick — alle kompatibel mit dem lokalen Klima:`,
+    `Bei der Herstellerwahl für ${city.name} gilt: Die JAZ ${jaz} ist das Ergebnis des Zusammenspiels aus Gerät, Installation und Klimabedingungen. Herstellerunabhängig empfehlen wir das für Ihr Haus passende Gerät:`,
+    `Alle großen WP-Hersteller sind in ${city.name} durch Fachbetriebe verfügbar. Entscheidend ist nicht die Marke, sondern die fachgerechte Dimensionierung (Heizlast, JAZ ${jaz}) und Installation:`,
+    `Stiftung Warentest testete 2024 Wärmepumpen — Viessmann Vitocal führt das Ranking an. In ${city.name} sind alle diese Geräte von unseren Partnerbetrieben erhältlich und installierbar:`,
   ];
 
   return (
     <div className="bg-white rounded-2xl border border-wp-border shadow-wp-sm overflow-hidden">
-      <div className="px-6 py-5 border-b border-wp-border">
-        <h3 className="font-heading font-bold text-wp-text text-base">
-          Wärmepumpen-Hersteller Vergleich — {city.name} {new Date().getFullYear()}
-        </h3>
-        <p className="text-wp-text3 text-xs mt-1">
-          Richtwerte bei {city.avgTemp}°C Jahresmitteltemperatur · A7/W35 Prüfbedingungen
-        </p>
+      <div className="px-5 py-4 border-b border-wp-border">
+        <h3 className="font-heading font-bold text-wp-text text-base">🏆 WP-Hersteller für {city.name} — Überblick</h3>
+        <p className="text-wp-text3 text-xs mt-0.5">{intros[v]}</p>
       </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm min-w-[600px]">
-          <thead>
-            <tr className="bg-wp-bg border-b border-wp-border">
-              {['Hersteller', 'COP (A7/W35)', 'Gerätepreis', 'Max. Vorlauf', 'R290 (+5% KfW)', 'Besonderheit'].map(h => (
-                <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase tracking-wider">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {hersteller.map((h, i) => (
-              <tr key={i} className={`border-b border-wp-border last:border-0 ${h.highlight ? 'bg-wp-greenxlt' : ''}`}>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">{h.logo}</span>
-                    <span className={`font-semibold text-sm ${h.highlight ? 'text-wp-green' : 'text-wp-text'}`}>{h.name}</span>
-                    {h.highlight && <span className="bg-wp-green text-white text-xs font-bold px-1.5 py-0.5 rounded">Top</span>}
-                  </div>
-                </td>
-                <td className="px-4 py-3 font-mono text-wp-text2 text-xs">{h.cop}</td>
-                <td className="px-4 py-3 font-mono text-wp-amber text-xs">{h.preis}</td>
-                <td className="px-4 py-3 text-wp-text2 text-xs">{h.vorlauf}</td>
-                <td className="px-4 py-3 text-center">
-                  {h.r290 ? <span className="text-wp-green font-bold">✅ +5%</span> : <span className="text-wp-text3">—</span>}
-                </td>
-                <td className="px-4 py-3 text-wp-text2 text-xs">{h.besonderheit}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="divide-y divide-wp-border">
+        {[
+          { n: 'Viessmann Vitocal', cop: (jaz * 1.1).toFixed(1), r290: true, info: 'Testsieger SW 2024/25', preis: '€11–18k' },
+          { n: 'Vaillant aroTHERM', cop: (jaz * 1.05).toFixed(1), r290: true, info: 'Propan-WP +5% KfW', preis: '€10–17k' },
+          { n: 'Bosch / Buderus', cop: jaz.toFixed(1), r290: false, info: 'Gutes Preis-Leistungs-Verhältnis', preis: '€9–15k' },
+          { n: 'Stiebel Eltron', cop: (jaz * 1.08).toFixed(1), r290: false, info: 'Deutsche Qualität', preis: '€10–16k' },
+          { n: 'Nibe Fighter', cop: (jaz * 1.06).toFixed(1), r290: false, info: 'Sehr leise', preis: '€9–15k' },
+        ].map((h, i) => (
+          <div key={i} className="flex items-center justify-between px-5 py-3 text-xs">
+            <div className="font-semibold text-wp-text w-36 shrink-0">{h.n}</div>
+            <div className="text-wp-text3 hidden sm:block">COP A7/W35: {h.cop}</div>
+            <div className="text-wp-text3 hidden sm:block">{h.info}</div>
+            {h.r290 && <span className="bg-wp-greenlt text-wp-green font-bold px-1.5 py-0.5 rounded text-xs hidden sm:block">+5% KfW</span>}
+            <div className="font-mono text-wp-amber font-bold">{h.preis}</div>
+          </div>
+        ))}
       </div>
-
-      <div className="px-6 py-3 bg-wp-bg border-t border-wp-border">
-        <p className="text-wp-text3 text-xs">
-          ⚠️ Herstellerunabhängige Einschätzung · Gerätepreise netto ohne Montage · Entscheidend ist die fachgerechte Installation durch einen zertifizierten Betrieb in {city.name}.
-        </p>
+      <div className="px-5 py-3 bg-wp-bg border-t border-wp-border">
+        <p className="text-wp-text3 text-xs">Herstellerunabhängig — wir empfehlen das für Ihr Haus in {city.name} passende Gerät.</p>
       </div>
     </div>
   );
 }
 
-// ── Master-Export: alle 4 Blöcke ─────────────────────────────────────────────
+// ── MASTER EXPORT: 2 von 4 Blöcken rotierend ─────────────────────────────────
 export function AdditionalContentBlocks({ city, keyword, jaz, calc, foerd }: Props) {
+  // Welche 2 von 4 Blöcken erscheinen — city-hash-basiert
+  const allBlocks = [
+    <ISFPBlock key="isfp" city={city} foerd={foerd} />,
+    <PVKombiBlock key="pv" city={city} jaz={jaz} calc={calc} />,
+    <GEGChecklistBlock key="geg" city={city} />,
+    <HerstellerBlock key="hersteller" city={city} jaz={jaz} />,
+  ];
+
+  const idx1 = cityHash(city, 4, 50);
+  const idx2 = (idx1 + 1 + cityHash(city, 2, 51)) % 4;
+
   return (
-    <div className="space-y-6">
-      <ISFPBlock city={city} foerd={foerd} />
-      <PVKombiBlock city={city} jaz={jaz} calc={calc} />
-      <GEGChecklistBlock city={city} />
-      <HerstellerVergleichBlock city={city} jaz={jaz} />
+    <div className="space-y-5">
+      {allBlocks[idx1]}
+      {idx2 !== idx1 && allBlocks[idx2]}
     </div>
   );
 }
