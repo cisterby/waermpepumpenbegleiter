@@ -23,9 +23,10 @@ function useInView(threshold=0.15){
   return{ref,v}
 }
 function useCounter(target:number,active:boolean){
-  const[val,setVal]=useState(0)
+  const[val,setVal]=useState(target)
   useEffect(()=>{
     if(!active)return
+    setVal(0)
     let raf:number
     const s=performance.now()
     const step=(now:number)=>{const p=Math.min((now-s)/1600,1),e=1-Math.pow(1-p,3);setVal(Math.round(e*target));if(p<1)raf=requestAnimationFrame(step)}
@@ -79,6 +80,19 @@ export default function Home(){
   const c3=useCounter(21000,statsRef.v),c4=useCounter(25,statsRef.v)
 
   return(
+
+      {/* FAQ Schema für Featured Snippets */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          { '@type': 'Question', name: 'Ist die Nutzung von wärmepumpenbegleiter.de wirklich kostenlos?', acceptedAnswer: { '@type': 'Answer', text: 'Ja, vollständig. Wir finanzieren uns über Vermittlungsprovisionen von unseren geprüften Installateur-Partnern. Für Sie entstehen keinerlei Kosten — weder für die Beratung noch für die Angebote.' }},
+          { '@type': 'Question', name: 'Wie hoch ist die KfW-Förderung für eine Wärmepumpe 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Bis zu 70% der förderfähigen Kosten bis 30.000 Euro = maximal 21.000 Euro Zuschuss. Zusammensetzung: 30% Grundförderung + 20% Klima-Speed-Bonus (bei Ersatz fossiler Heizung) + bis 30% Einkommensbonus + 5% Kältemittelbonus für R290-Geräte.' }},
+          { '@type': 'Question', name: 'Funktioniert eine Wärmepumpe auch im Altbau?', acceptedAnswer: { '@type': 'Answer', text: 'Ja — in den meisten Altbauten. Entscheidend ist nicht das Baujahr, sondern die Vorlauftemperatur. Moderne Hochtemperatur-Wärmepumpen arbeiten bis 70°C Vorlauf und sind mit normalen Heizkörpern kompatibel. Ein hydraulischer Abgleich verbessert die Effizienz zusätzlich.' }},
+          { '@type': 'Question', name: 'Was kostet eine Wärmepumpe inklusive Installation?', acceptedAnswer: { '@type': 'Answer', text: 'Eine Luft-Wasser-Wärmepumpe kostet inklusive Installation 18.000 bis 28.000 Euro brutto. Nach KfW-Förderung (50%) beträgt der Eigenanteil ab ca. 9.000 bis 14.000 Euro. Die jährliche Ersparnis gegenüber Erdgas beträgt typisch 600 bis 1.200 Euro.' }},
+          { '@type': 'Question', name: 'Muss ich bei Auftragserteilung einen Vertrag mit wärmepumpenbegleiter.de abschließen?', acceptedAnswer: { '@type': 'Answer', text: 'Nein. Ihre Anfrage, alle Angebote und das Erstgespräch sind vollständig unverbindlich. Einen Vertrag schließen Sie ausschließlich mit dem Installateur Ihrer Wahl — nicht mit uns.' }},
+        ]
+      })}} />
     <div style={{fontFamily:"'DM Sans',sans-serif",background:BG,color:TX,overflowX:'hidden'}}>
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
@@ -154,7 +168,7 @@ export default function Home(){
 
       {/* ── HERO ── */}
       <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',overflow:'hidden',paddingTop:68}}>
-        <img src={IMGS.hero} alt="Wärmepumpe Einfamilienhaus" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}/>
+        <img src={IMGS.hero} alt="Einfamilienhaus mit moderner Wärmepumpe" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}/>
         <div style={{position:'absolute',inset:0,zIndex:1,background:'linear-gradient(105deg,rgba(10,25,16,.94) 0%,rgba(10,25,16,.85) 45%,rgba(10,25,16,.3) 100%)'}}/>
         <div className="c" style={{position:'relative',zIndex:2,width:'100%',padding:'96px 40px 80px'}}>
           <div className="hero-g" style={{display:'grid',gridTemplateColumns:'54% 46%',gap:60,alignItems:'center'}}>
@@ -396,7 +410,7 @@ export default function Home(){
         <div className="c">
           <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 52px'}}>
             <Tag bg={GLT} color={G} text="So funktioniert es"/>
-            <h2>In 3 Schritten zur Wärmepumpe</h2>
+            <h2>In 3 Schritten zur Wärmepumpe — kostenlos & herstellerunabhängig</h2>
           </div>
           <div className="g3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
             {[
@@ -579,7 +593,7 @@ export default function Home(){
             <div className={'fu '+(foerdRef.v?'fv':'')} style={{transitionDelay:'.15s'}}>
               <div style={{borderRadius:16,overflow:'hidden',boxShadow:SHL}}>
                 <div style={{position:'relative',height:190}}>
-                  <img src={IMGS.money} alt="Wärmepumpe Installation" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <img src={IMGS.money} alt="Wärmepumpe Kostenrechner" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
                   <div style={{position:'absolute',inset:0,background:'rgba(27,94,55,.65)'}}/>
                   <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
                     <div style={{fontFamily:'Outfit,sans-serif',fontSize:17,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:4}}>Beispiel: 120 m² EFH</div>
@@ -752,6 +766,38 @@ export default function Home(){
         </div>
       </section>
 
+
+      {/* ── STADTSEITEN INTERNAL LINKS ── */}
+      <section className="sec" style={{background:'white'}}>
+        <div className="c">
+          <div style={{textAlign:'center',marginBottom:40}}>
+            <span style={{display:'inline-block',background:'#E8F5EE',color:'#1B5E37',fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',padding:'5px 12px',borderRadius:100,marginBottom:16}}>Wärmepumpe in Ihrer Stadt</span>
+            <h2 style={{fontSize:'clamp(24px,3vw,38px)'}}>Jetzt Angebote in Ihrer Stadt vergleichen</h2>
+            <p style={{color:'#4B5563',maxWidth:560,margin:'12px auto 0'}}>Über 733 Städte — stadtspezifische Klimadaten, Förderprogramme und geprüfte lokale Betriebe.</p>
+          </div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:10,justifyContent:'center',marginBottom:32}}>
+            {[
+              ['Berlin','berlin'],['Hamburg','hamburg'],['München','muenchen'],['Köln','koeln'],
+              ['Frankfurt','frankfurt-am-main'],['Stuttgart','stuttgart'],['Düsseldorf','duesseldorf'],
+              ['Hannover','hannover'],['Leipzig','leipzig'],['Dortmund','dortmund'],
+              ['Bremen','bremen'],['Dresden','dresden'],['Nürnberg','nuernberg'],['Duisburg','duisburg'],
+              ['Bochum','bochum'],['Wuppertal','wuppertal'],['Bielefeld','bielefeld'],['Bonn','bonn'],
+            ].map(([name,slug])=>(
+              <a key={slug} href={`/waermepumpe/${slug}`}
+                style={{padding:'8px 16px',background:'#F8F9FA',border:'1px solid #E5E7EB',borderRadius:8,fontSize:13,color:'#4B5563',textDecoration:'none',fontWeight:500,transition:'all .15s'}}
+                onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='#1B5E37';el.style.color='#1B5E37'}}
+                onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='#E5E7EB';el.style.color='#4B5563'}}>
+                Wärmepumpe {name}
+              </a>
+            ))}
+          </div>
+          <div style={{textAlign:'center'}}>
+            <a href="/waermepumpe/berlin" style={{fontSize:13,color:'#1B5E37',fontWeight:600,textDecoration:'none'}}>
+              Alle 733 Städte → Suchen Sie Ihre Stadt
+            </a>
+          </div>
+        </div>
+      </section>
       {/* ── FAQ ── */}
       <section className="sec" style={{background:BG}}>
         <div className="c" style={{maxWidth:800,margin:'0 auto'}}>
@@ -771,28 +817,24 @@ export default function Home(){
             {q:'Wie lange dauert die Installation einer Wärmepumpe?',
               a:'Die eigentliche Montage dauert 1–3 Tage. Inklusive Planung, Förderantrag (muss vor Baubeginn gestellt werden!) und Vorlaufzeit sollten Sie 6–12 Wochen von der Anfrage bis zur fertigen Anlage einplanen.'},
           ].map((item,i)=>(
-            <div key={i} style={{borderBottom:`1px solid ${BDR}`}}>
-              <button onClick={()=>setOpenFaq(openFaq===i?null:i)}
-                style={{width:'100%',background:'none',border:'none',padding:'18px 0',display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer',textAlign:'left',gap:16}}>
+            <details key={i} style={{borderBottom:`1px solid ${BDR}`}}>
+              <summary style={{width:'100%',padding:'18px 0',display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer',listStyle:'none',gap:16}}>
                 <span style={{fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:600,color:TX}}>{item.q}</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TX3} strokeWidth="2" strokeLinecap="round"
-                  style={{flexShrink:0,transform:openFaq===i?'rotate(180deg)':'rotate(0)',transition:'transform .2s'}}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TX3} strokeWidth="2" strokeLinecap="round" style={{flexShrink:0}}>
                   <path d="M6 9l6 6 6-6"/>
                 </svg>
-              </button>
-              {openFaq===i&&(
-                <div style={{paddingBottom:18}}>
-                  <p style={{fontSize:15,color:TX2,lineHeight:1.7}}>{item.a}</p>
-                </div>
-              )}
-            </div>
+              </summary>
+              <div style={{paddingBottom:18}}>
+                <p style={{fontSize:15,color:TX2,lineHeight:1.7}}>{item.a}</p>
+              </div>
+            </details>
           ))}
         </div>
       </section>
 
       {/* ── CTA ── */}
       <section style={{position:'relative',overflow:'hidden'}}>
-        <img src={IMGS.outdoor} alt="Wärmepumpe Installation" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
+        <img src={IMGS.outdoor} alt="Wärmepumpe Installation Fachbetrieb" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
         <div style={{position:'absolute',inset:0,background:'rgba(10,25,16,.82)'}}/>
         <div className="c" style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
           <Tag bg="rgba(255,255,255,.1)" color="rgba(255,255,255,.8)" text="Jetzt starten"/>
