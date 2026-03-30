@@ -105,7 +105,7 @@ export default function WieEsFunktioniert() {
         }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-[1fr_380px] gap-12 items-start">
             <div>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <div className="inline-flex items-center gap-2 bg-wp-green/20 border border-wp-green3/40 rounded-full px-4 py-2 mb-6">
@@ -116,7 +116,7 @@ export default function WieEsFunktioniert() {
                   So funktioniert<br />
                   <span className="text-wp-green3">Wärmepumpen</span>begleiter
                 </h1>
-                <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-lg">
+                <p className="text-[rgba(255,255,255,0.70)] text-lg leading-relaxed mb-8 max-w-lg">
                   Vom ersten Klick bis zu €21.000 KfW auf Ihrem Konto — in 4 einfachen Schritten,
                   mit geprüften lokalen Fachbetrieben in 733 deutschen Städten.
                 </p>
@@ -126,7 +126,7 @@ export default function WieEsFunktioniert() {
                     Jetzt kostenlos anfragen <ArrowRight size={16} />
                   </Link>
                   <Link href="/rechner"
-                    className="flex items-center gap-2 px-7 py-4 bg-white/10 border border-white/20 text-white font-heading font-semibold rounded-xl hover:bg-white/15 transition-all">
+                    className="flex items-center gap-2 px-7 py-4 bg-[rgba(255,255,255,0.10)] border border-[rgba(255,255,255,0.20)] text-white font-heading font-semibold rounded-xl hover:bg-[rgba(255,255,255,0.15)] transition-all">
                     Kosten berechnen
                   </Link>
                 </div>
@@ -135,7 +135,7 @@ export default function WieEsFunktioniert() {
 
             {/* Animated stats card */}
             <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7 }}>
-              <div className="bg-white/8 backdrop-blur-sm border border-white/15 rounded-2xl p-8">
+              <div className="bg-[rgba(255,255,255,0.08)] backdrop-blur-sm border border-[rgba(255,255,255,0.15)] rounded-2xl p-8">
                 <div className="grid grid-cols-2 gap-6 mb-6">
                   {[
                     { val: `${counter}`, label: 'Städte abgedeckt', icon: '🗺️' },
@@ -147,17 +147,17 @@ export default function WieEsFunktioniert() {
                       className="text-center">
                       <div className="text-2xl mb-1">{s.icon}</div>
                       <div className="font-mono font-extrabold text-white text-2xl leading-none mb-1">{s.val}</div>
-                      <div className="text-white/45 text-xs">{s.label}</div>
+                      <div className="text-[rgba(255,255,255,0.45)] text-xs">{s.label}</div>
                     </motion.div>
                   ))}
                 </div>
-                <div className="border-t border-white/10 pt-5">
+                <div className="border-t border-[rgba(255,255,255,0.10)] pt-5">
                   <div className="flex items-center gap-3 mb-3">
                     <Award size={16} className="text-wp-green3" />
-                    <span className="text-white/70 text-sm font-semibold">Alle Partner geprüft nach 6 Kriterien</span>
+                    <span className="text-[rgba(255,255,255,0.70)] text-sm font-semibold">Alle Partner geprüft nach 6 Kriterien</span>
                   </div>
                   {['HWK-eingetragener Meisterbetrieb', 'KfW-LuL-Registrierung aktiv', 'Haftpflicht nachgewiesen'].map((t, i) => (
-                    <div key={i} className="flex items-center gap-2 text-white/50 text-xs py-1">
+                    <div key={i} className="flex items-center gap-2 text-[rgba(255,255,255,0.50)] text-xs py-1">
                       <CheckCircle size={11} className="text-wp-green3 shrink-0" />{t}
                     </div>
                   ))}
@@ -169,9 +169,9 @@ export default function WieEsFunktioniert() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-white/30 text-xs uppercase tracking-widest">Mehr erfahren</span>
+          <span className="text-[rgba(255,255,255,0.30)] text-xs uppercase tracking-widest">Mehr erfahren</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-5 h-8 border-2 border-white/20 rounded-full flex items-start justify-center pt-1.5">
+            className="w-5 h-8 border-2 border-[rgba(255,255,255,0.20)] rounded-full flex items-start justify-center pt-1.5">
             <div className="w-1 h-1.5 bg-white/40 rounded-full" />
           </motion.div>
         </div>
@@ -241,7 +241,7 @@ export default function WieEsFunktioniert() {
               }} />
               <div className="relative z-10">
                 <h3 className="font-heading font-bold text-white text-2xl mb-2">Bereit? Anfrage dauert 2 Minuten.</h3>
-                <p className="text-white/50 text-sm mb-6">Kostenlos · Unverbindlich · Keine Verpflichtung</p>
+                <p className="text-[rgba(255,255,255,0.50)] text-sm mb-6">Kostenlos · Unverbindlich · Keine Verpflichtung</p>
                 <Link href="/kontakt"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-wp-amber text-white font-heading font-bold rounded-xl hover:bg-amber-700 transition-all hover:-translate-y-0.5">
                   Jetzt kostenlos anfragen <ArrowRight size={16} />
@@ -265,7 +265,7 @@ export default function WieEsFunktioniert() {
             <h2 className="font-heading font-bold text-white mb-4" style={{ fontSize: 'clamp(28px,4vw,46px)' }}>
               6 Kriterien — so prüfen wir jeden Partner
             </h2>
-            <p className="text-white/55 text-base max-w-xl mx-auto">
+            <p className="text-[rgba(255,255,255,0.55)] text-base max-w-xl mx-auto">
               Nicht jeder SHK-Betrieb ist ein Wärmepumpen-Fachbetrieb. Wir unterscheiden das für Sie.
             </p>
           </AnimSection>
@@ -273,10 +273,10 @@ export default function WieEsFunktioniert() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-12">
             {QUALITY.map((c, i) => (
               <AnimSection key={i} custom={i * 0.07}>
-                <div className="bg-white/6 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.10)] rounded-2xl p-6 hover:bg-[rgba(255,255,255,0.10)] transition-colors">
                   <span className="text-3xl block mb-3">{c.icon}</span>
                   <h3 className="font-heading font-bold text-white text-base mb-2">{c.title}</h3>
-                  <p className="text-white/55 text-sm leading-relaxed">{c.text}</p>
+                  <p className="text-[rgba(255,255,255,0.55)] text-sm leading-relaxed">{c.text}</p>
                 </div>
               </AnimSection>
             ))}
@@ -284,10 +284,10 @@ export default function WieEsFunktioniert() {
 
           {/* Trust metric */}
           <AnimSection>
-            <div className="bg-white/6 border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
+            <div className="bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.10)] rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
               <div className="flex-1">
                 <p className="font-heading font-bold text-white text-lg mb-1">Laufendes Qualitätsmonitoring</p>
-                <p className="text-white/55 text-sm leading-relaxed">
+                <p className="text-[rgba(255,255,255,0.55)] text-sm leading-relaxed">
                   Nach jeder Vermittlung → Feedbackanfrage. Unter Ø 3,5/5 nach 10+ Bewertungen → automatisch entfernt.
                   Kein Badge kann gekauft werden.
                 </p>
@@ -296,7 +296,7 @@ export default function WieEsFunktioniert() {
                 <div className="text-3xl">⭐</div>
                 <div>
                   <p className="font-mono font-extrabold text-white text-3xl leading-none">4,6</p>
-                  <p className="text-white/40 text-xs">Ø Partnerbewertung / 5,0</p>
+                  <p className="text-[rgba(255,255,255,0.40)] text-xs">Ø Partnerbewertung / 5,0</p>
                 </div>
               </div>
             </div>
@@ -318,8 +318,8 @@ export default function WieEsFunktioniert() {
               <table className="w-full min-w-[580px] rounded-2xl border border-wp-border overflow-hidden shadow-wp-sm">
                 <thead>
                   <tr className="bg-wp-dark">
-                    <th className="px-5 py-4 text-left text-white/40 text-xs font-bold uppercase tracking-wider w-1/3">Kriterium</th>
-                    <th className="px-5 py-4 text-left text-white/40 text-xs font-bold uppercase tracking-wider w-1/3">Direkt suchen</th>
+                    <th className="px-5 py-4 text-left text-[rgba(255,255,255,0.40)] text-xs font-bold uppercase tracking-wider w-1/3">Kriterium</th>
+                    <th className="px-5 py-4 text-left text-[rgba(255,255,255,0.40)] text-xs font-bold uppercase tracking-wider w-1/3">Direkt suchen</th>
                     <th className="px-5 py-4 text-left text-wp-green3 text-xs font-bold uppercase tracking-wider w-1/3">Wärmepumpenbegleiter ✓</th>
                   </tr>
                 </thead>
@@ -386,7 +386,7 @@ export default function WieEsFunktioniert() {
             <h2 className="font-heading font-extrabold text-white text-4xl mb-4">
               In 2 Minuten starten
             </h2>
-            <p className="text-white/55 mb-8 text-base">
+            <p className="text-[rgba(255,255,255,0.55)] mb-8 text-base">
               Kostenlos · Kein Vertrag · Keine Verpflichtung · KfW-Begleitung inklusive
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -395,7 +395,7 @@ export default function WieEsFunktioniert() {
                 Jetzt kostenlos anfragen <ArrowRight size={16} />
               </Link>
               <Link href="/rechner"
-                className="flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-heading font-bold rounded-xl hover:bg-white/15 transition-all border border-white/20">
+                className="flex items-center justify-center gap-2 px-8 py-4 bg-[rgba(255,255,255,0.10)] text-white font-heading font-bold rounded-xl hover:bg-[rgba(255,255,255,0.15)] transition-all border border-[rgba(255,255,255,0.20)]">
                 Erst Kosten berechnen
               </Link>
             </div>
