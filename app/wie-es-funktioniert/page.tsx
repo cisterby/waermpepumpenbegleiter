@@ -8,11 +8,11 @@ import { CheckCircle, ArrowRight, Shield, Clock, Euro, Star, Users, Zap, Award, 
 
 const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } }) };
 
-function AnimSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+function AnimSection({ children, className = '', custom = 0 }: { children: React.ReactNode; className?: string; custom?: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   return (
-    <motion.div ref={ref} initial="hidden" animate={inView ? 'visible' : 'hidden'} variants={fadeUp} className={className}>
+    <motion.div ref={ref} initial="hidden" animate={inView ? 'visible' : 'hidden'} variants={fadeUp} custom={custom} className={className}>
       {children}
     </motion.div>
   );
