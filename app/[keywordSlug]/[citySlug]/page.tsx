@@ -1,8 +1,6 @@
 // app/[keywordSlug]/[citySlug]/page.tsx
-// Pattern: exakt wie DeinSolarBegleiter
-// - citiesData direkt aus JSON importiert (nicht aus cities.ts)
-// - CITIES array bleibt server-side
-// - Templates erhalten city als PROP (kein cities-Import in client bundles)
+// ISR-Strategie: Nur Top-Seiten pre-builden, Rest on-demand (cached)
+// Buildzeit: ~2 Min statt ~17 Min | SEO: identisch zu SSG
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -17,13 +15,28 @@ interface Props {
   params: { keywordSlug: string; citySlug: string };
 }
 
-// Exakt wie Solar: alle 16.126 Seiten pre-rendern, unbekannte → 404
-export const dynamicParams = false;
+// dynamicParams = true → unbekannte Routen werden on-demand gerendert + gecacht
+// Google bekommt volles HTML — identisch zu SSG aus SEO-Sicht
+export const dynamicParams = true;
 
+// ISR: Seiten nach 30 Tagen neu generieren (Preise, Förderinfos aktuell halten)
+export const revalidate = 2592000;
+
+// Pre-builden: nur Tier 1 Keywords × Top 50 Städte = 250 Seiten
+// → ~2 Min Buildzeit statt 17 Min
 export async function generateStaticParams() {
   const cities = citiesData as City[];
-  return KEYWORDS.flatMap((kw) =>
-    cities.map((city) => ({
+
+  // Top 50 Städte nach Einwohnerzahl (die meisten Suchanfragen)
+  const topCities = [...cities]
+    .sort((a, b) => b.einwohner - a.einwohner)
+    .slice(0, 50);
+
+  // Nur Tier 1 Keywords (höchstes Suchvolumen)
+  const tier1 = KEYWORDS.filter(k => k.tier === 1);
+
+  return tier1.flatMap((kw) =>
+    topCities.map((city) => ({
       keywordSlug: kw.slug,
       citySlug:    city.slug,
     }))
@@ -62,9 +75,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function CityKeywordPage({ params }: Props) {
   const keyword = getKeywordBySlug(params.keywordSlug);
   const city    = (citiesData as City[]).find(c => c.slug === params.citySlug);
+
+  // 404 nur wenn Keyword oder Stadt komplett unbekannt
   if (!keyword || !city) notFound();
 
-  // Alle Berechnungen server-side — city wird als Prop an Client-Komponenten übergeben
   const jaz    = estimateJAZ(city);
   const calc   = calcBetriebskosten(120, '1979_1994', 'erdgas', {
     strompreisCtKwh: city.strompreis,
@@ -82,8 +96,8 @@ export default function CityKeywordPage({ params }: Props) {
   const nearby = getNearbyCity(city, 6);
   const h1     = fillTemplate(keyword.h1Template, city, jaz, calc.wpKosten, calc.ersparnis);
 
-  const breadcrumbSchema  = buildBreadcrumbSchema(keyword.slug, keyword.keyword.replace('[Stadt]', '').trim(), city);
-  const localBizSchema    = buildLocalBusinessSchema(keyword.slug, city);
+  const breadcrumbSchema = buildBreadcrumbSchema(keyword.slug, keyword.keyword.replace('[Stadt]', '').trim(), city);
+  const localBizSchema   = buildLocalBusinessSchema(keyword.slug, city);
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
