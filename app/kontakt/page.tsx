@@ -152,7 +152,7 @@ export default function Kontakt() {
             <h1 className="font-heading font-extrabold text-white text-4xl mb-3">
               Wärmepumpe anfragen
             </h1>
-            <p className="text-white/55 text-base">
+            <p className="text-[rgba(255,255,255,0.55)] text-base">
               2 Minuten · Kostenlos · Bis zu 3 geprüfte lokale Betriebe
             </p>
           </motion.div>
@@ -166,12 +166,12 @@ export default function Kontakt() {
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
                     i < step ? 'bg-wp-green text-white' :
                     i === step ? 'bg-white text-wp-green' :
-                    'bg-white/10 text-white/30'
+                    'bg-[rgba(255,255,255,0.10)] text-[rgba(255,255,255,0.30)]'
                   }`}>
                     {i < step ? <CheckCircle size={16} /> : <Icon size={15} />}
                   </div>
                   {i < STEPS_META.length - 1 && (
-                    <div className={`w-8 h-0.5 transition-all ${i < step ? 'bg-wp-green' : 'bg-white/15'}`} />
+                    <div className={`w-8 h-0.5 transition-all ${i < step ? 'bg-wp-green' : 'bg-[rgba(255,255,255,0.15)]'}`} />
                   )}
                 </div>
               );
@@ -378,9 +378,9 @@ export default function Kontakt() {
           {/* Trust row */}
           <div className="grid grid-cols-3 gap-3 mt-4">
             {[['🔒', 'DSGVO-konform'], ['💶', '100% Kostenlos'], ['✋', 'Unverbindlich']].map(([icon, text]) => (
-              <div key={text} className="bg-white/8 border border-white/15 rounded-xl p-3 text-center">
+              <div key={text} className="bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.15)] rounded-xl p-3 text-center">
                 <span className="text-lg block mb-1">{icon}</span>
-                <span className="text-xs font-semibold text-white/60">{text}</span>
+                <span className="text-xs font-semibold text-[rgba(255,255,255,0.60)]">{text}</span>
               </div>
             ))}
           </div>
