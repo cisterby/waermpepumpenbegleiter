@@ -80,9 +80,9 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
             <p className="text-[#4CAF7D] text-xs font-bold uppercase tracking-wider mb-1">
               KOSTENLOSER RECHNER — STADTSPEZIFISCH
             </p>
-            <h3 className="text-white font-extrabold text-2xl">
+            <p className="text-white font-extrabold text-2xl leading-tight">
               Was kostet die Wärmepumpe wirklich in {city.name}?
-            </h3>
+            </p>
             <p className="text-white/50 text-sm">
               {city.strompreis} ct/kWh Strompreis · {city.heizgradtage} Heizgradtage · JAZ {jaz} · Stand März 2026
             </p>
@@ -571,7 +571,7 @@ export default function WaermepumpeTemplate({
                 Kostenrechner
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Was kostet Ihre Wärmepumpe in {city.name}?
+                Kosten berechnen — für Ihr Haus in {city.name}
               </h2>
               <WPKostenRechner city={city} />
             </motion.section>
