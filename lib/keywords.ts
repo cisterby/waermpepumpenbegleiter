@@ -397,7 +397,8 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Welche Wärmepumpen-Anbieter gibt es in {stadt}?',
     ],
-    faqPool: [
+          crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-fachbetrieb'],
+      faqPool: [
       { q: 'Lokaler Betrieb oder bundesweiter Anbieter (Thermondo/Enpal) in {stadt}?', a: 'Lokale Betriebe kennen die örtlichen Gegebenheiten in {stadt} besser, sind bei Störungen schneller vor Ort und bieten oft flexiblere Lösungen. Bundesweite Anbieter können günstiger sein, arbeiten aber mit Subunternehmern.' },
     ],
     sitemapPriority: 0.7,
