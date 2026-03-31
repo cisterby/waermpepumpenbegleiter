@@ -1,196 +1,290 @@
-// FachbetriebTemplate — waermepumpe-fachbetrieb — maximale Uniqueness
+// components/programmatic/templates/FachbetriebTemplate.tsx
+// waermepumpe-fachbetrieb — vollständig standalone, 500+ Wörter unique content
 'use client';
+import Link from 'next/link';
+import { ChevronDown, CheckCircle, XCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { cityHash } from '@/lib/content-variation';
-import { CheckCircle, AlertTriangle } from 'lucide-react';
-import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import LeadForm from '@/components/programmatic/LeadForm';
+import AuthorBox from '@/components/programmatic/AuthorBox';
 
-export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, nearby, h1, allCities }: CityPageRouterProps) {
-  const isUrgent = city.einwohner >= 100000;
-  const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
-  const v = cityHash(city, 4, 71);
+const IMG = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+
+const KRITERIEN = [
+  { icon: '🏛️', title: 'HWK-Eintragung aktiv', text: 'Gültige Eintragung in der Handwerksrolle. Ohne diese darf kein Heizungsbau durchgeführt werden.' },
+  { icon: '👨‍🔧', title: 'Meisterbetrieb SHK', text: 'Persönliche technische Leitung durch einen eingetragenen SHK-Meister. Garantiert Fachkenntnis und Haftung.' },
+  { icon: '📊', title: 'Min. 5 WP-Installationen (24 Monate)', text: 'Nachweisbare WP-Erfahrung. Betriebe ohne WP-Spezialisierung machen häufig Fehler bei Dimensionierung und Hydraulik.' },
+  { icon: '🏦', title: 'KfW-LuL-Registrierung', text: 'Pflicht für KfW-Antragsbegleitung. Ohne aktive LuL-Registrierung kein Förderantrag möglich — volle Förderung entfällt.' },
+  { icon: '🛡️', title: 'Betriebshaftpflicht', text: 'Gültige Haftpflicht für Heizungsbau. Schützt bei Schäden durch fehlerhafte Installation.' },
+  { icon: '⭐', title: 'Kundenbewertung ≥ 3,5/5', text: 'Mindestens 10 Bewertungen auf Google oder Trusted Shops. Unter 3,5 automatisch aus unserem Netzwerk entfernt.' },
+];
+
+const ANGEBOT_CHECKLISTE = [
+  { item: 'Heizlastberechnung DIN EN 12831', muss: true, note: 'Grundlage für korrekte Dimensionierung — KfW-Pflicht' },
+  { item: 'Gerät: Fabrikat, Modell, kW-Leistung', muss: true, note: 'Einzeln ausgewiesen, keine Pauschalposition' },
+  { item: 'Hydraulischer Abgleich Verfahren B', muss: true, note: 'KfW-Pflicht — fehlt in >60% der Angebote!' },
+  { item: 'Wärmemengenzähler (neu 2026)', muss: true, note: 'KfW-Pflicht ab 2026 — im Angebot abfragen' },
+  { item: 'KfW-Antragsbegleitung als LuL', muss: true, note: 'Betrieb muss LuL-registriert sein' },
+  { item: 'Elektroinstallation & Zählerinfrastruktur', muss: false, note: 'Oft separat: €500–1.500' },
+  { item: 'Schallschutznachweis (neu ab 2026)', muss: false, note: '10 dB unter EU-Grenzwert für Förderfähigkeit' },
+  { item: 'Gewährleistung & Wartungsvertrag', muss: false, note: 'Gesetzl. 2 Jahre — gute Betriebe: 5+ Jahre' },
+];
+
+const FEHLER = [
+  { fehler: 'Keine Heizlastberechnung', folge: 'WP falsch dimensioniert, JAZ 10–20% unter Zielwert' },
+  { fehler: 'KfW-Antrag nach Baubeginn', folge: 'Förderung komplett verloren — bis zu €21.000' },
+  { fehler: 'Kein hydraulischer Abgleich', folge: 'KfW-Antrag abgelehnt, ineffizienter Betrieb' },
+  { fehler: 'Betrieb ohne LuL-Registrierung', folge: 'Kein KfW-Antrag möglich, trotz fertiger Anlage' },
+  { fehler: 'Falsche WP für Vorlauftemperatur', folge: 'Hochtemperatur-WP nötig, JAZ sinkt auf 2,5–3,0' },
+];
+
+export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
 
   const intros = [
-    `WP-Fachbetrieb ${city.name}: Drei Merkmale — KfW-LuL-Registrierung, min. 5 WP-Installationen in 24 Monaten, Erfahrung für ${city.normAussentemp}°C Normaußentemperatur in ${city.bundesland}. Nur so wird JAZ ${jaz} in ${city.name} erreicht.`,
-    `In ${city.name} mit ${city.einwohner.toLocaleString('de-DE')} Einwohnern gibt es ${city.einwohner >= 500000 ? 'viele Betriebe die WP anbieten, aber wenige echte Spezialisten' : 'eine überschaubare Zahl geprüfter WP-Fachbetriebe'}. Entscheidend: LuL-Registrierung und JAZ-Erfahrung für ${city.avgTemp}°C. Wir prüfen 6 Kriterien.`,
-    `In ${city.bundesland}: Fachbetriebe müssen seit 2026 Geräte mit 10 dB Schallunterschreitung installieren. Bei ${city.einwohner >= 300000 ? 'dichter Bebauung in ' + city.name : city.bundesland + '-Auflagen'} entscheidend. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
-    `Fachbetrieb ${city.name} prüfen: LuL-Nummer im KfW-Portal, HWK-Eintragung ${city.bundesland}, Referenz mit ${city.heizgradtage} Kd/a. Wir prüfen das für alle Partnerbetriebe vor jeder Vermittlung.`,
+    `WP-Fachbetrieb ${city.name}: Die KfW-LuL-Registrierung ist Pflicht — ohne sie kein Förderantrag. Bei ${city.strompreis} ct/kWh und JAZ ${jaz} in ${city.name} macht die Wahl des richtigen Fachbetriebs bis zu ${fmtEuro(Math.round(calc.ersparnis * 0.3))}/Jahr Unterschied in der tatsächlichen Effizienz.`,
+    `In ${city.name} (${city.bundesland}) gibt es SHK-Betriebe und spezialisierte WP-Fachbetriebe — das ist ein großer Unterschied. Nur zertifizierte Betriebe mit KfW-LuL und WP-Erfahrung bei ${city.normAussentemp}°C Normaußentemperatur liefern JAZ ${jaz} und stellen den KfW-Antrag (${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)}) korrekt.`,
+    `Fehler bei der Betriebsauswahl in ${city.name} kosten: falsche Dimensionierung bei ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen, kein hydraulischer Abgleich, KfW-Antrag zu spät. Wir prüfen alle unsere Partnerbetriebe in ${city.name} nach 6 Kriterien vorab.`,
+    `Drei Merkmale eines guten WP-Fachbetriebs in ${city.name}: KfW-LuL-Registrierung aktiv, min. 5 WP-Installationen in 24 Monaten, Erfahrung für ${city.normAussentemp}°C Normaußentemperatur in ${city.bundesland}. Nur so wird JAZ ${jaz} und Eigenanteil ${fmtEuro(foerd.eigenanteil)} nach Förderung erreicht.`,
   ];
 
-  const heroStats = [
-    { val: `${foerd.gesamtSatz}%`, label: 'KfW-Förderung', sub: 'Eigennutzer' },
-    { val: fmtEuro(foerd.zuschuss), label: 'Zuschuss', sub: 'nicht rückzahlbar' },
-    { val: fmtEuro(foerd.eigenanteil), label: 'Eigenanteil', sub: 'nach Förderung' },
-    { val: fmtEuro(calc.ersparnis), label: 'Ersparnis/Jahr', sub: 'vs. Erdgas' },
-  ];
-
-  const sections = (
-    <>
-      {/* Featured Snippet mit cityHash-rotierendem Intro */}
-      <div className="bg-white border border-wp-border border-l-4 border-l-wp-green rounded-xl p-6 shadow-wp-sm">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-          {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
-        </h2>
-        <p className="text-wp-text2 text-base leading-relaxed">{intros[v]}</p>
-      </div>
-
-      {/* Bild + stadtspezifische Kennzahlen */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        <div className="relative rounded-2xl overflow-hidden h-64">
-          <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80" alt={h1} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-wp-dark/60 flex items-end p-5">
-            <div>
-              <p className="font-heading font-bold text-white text-base">{city.name} · JAZ {jaz}</p>
-              <p className="text-white/60 text-xs">{city.avgTemp}°C · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.strompreis} ct/kWh</p>
-            </div>
-          </div>
-        </div>
-        <div className="space-y-3">
-          <h3 className="font-heading font-bold text-wp-text text-lg">WP-Fachbetrieb in {city.name}</h3>
-          {[
-            { icon: '🌡️', label: 'Jahresmitteltemperatur', val: `${city.avgTemp}°C`, note: city.avgTemp > 10 ? `Milder Standort — JAZ ${jaz} gut erreichbar` : `Kühlerer Standort — JAZ ${jaz}, ggf. HT-WP prüfen` },
-            { icon: '⚡', label: `Strompreis ${city.name}`, val: `${city.strompreis} ct/kWh`, note: `WP-Betrieb: ${fmtEuro(calc.wpKosten)}/Jahr (JAZ ${jaz})` },
-            { icon: '🔥', label: 'Heizgradtage', val: `${city.heizgradtage.toLocaleString('de-DE')} Kd/a`, note: city.heizgradtage > 3200 ? 'Überdurchschnittlicher Wärmebedarf' : 'Günstiger Wärmebedarf' },
-            { icon: '💶', label: `KfW ${foerd.gesamtSatz}% in ${city.name}`, val: fmtEuro(foerd.zuschuss), note: `Eigenanteil: ${fmtEuro(foerd.eigenanteil)}` },
-          ].map((d, i) => (
-            <div key={i} className="bg-white border border-wp-border rounded-xl p-3 shadow-wp-sm flex items-start gap-3">
-              <span className="text-xl shrink-0">{d.icon}</span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="font-heading font-bold text-wp-text text-xs">{d.label}</p>
-                  <span className="font-mono font-bold text-wp-amber text-sm">{d.val}</span>
-                </div>
-                <p className="text-wp-text3 text-xs mt-0.5">{d.note}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {city.fernwaermeQuote >= 40 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-          <AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" />
-          <p className="text-amber-800 text-sm leading-relaxed">
-            <strong>{city.name}</strong> hat {city.fernwaermeQuote}% Fernwärmeabdeckung. Prüfen Sie ob Ihre Adresse in einem Fernwärmegebiet liegt — dort kann eine WP unzulässig sein. Für {100 - city.fernwaermeQuote}% der Haushalte in {city.name} ist die Wärmepumpe die klare Lösung.
-          </p>
-        </div>
-      )}
-
-      {/* 6 Qualitätskriterien — volles Fließtext */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">6 Qualitätskriterien in {city.name} — was wichtig ist</h2>
-        <div className="space-y-4 text-wp-text2 leading-relaxed">
-          <p>
-            In <strong className="text-wp-text">{city.name}</strong> ({city.bundesland}) liegt der lokale Strompreis bei <strong className="text-wp-text">{city.strompreis} ct/kWh</strong>. Mit JAZ <strong className="text-wp-text">{jaz}</strong> — dem erwarteten Wert für {city.avgTemp}°C Jahresmitteltemperatur — entstehen WP-Betriebskosten von <strong className="text-wp-text">{fmtEuro(calc.wpKosten)}</strong>/Jahr. Die Gasheizung kostet {fmtEuro(calc.altKosten)}/Jahr — die WP spart <strong className="text-wp-text">{fmtEuro(calc.ersparnis)}/Jahr</strong>.
-          </p>
-          <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-5">
-            <h3 className="font-heading font-semibold text-wp-green text-base mb-2">Betrieb prüfen in {city.name}</h3>
-            <p className="text-wp-text2 text-sm leading-relaxed">
-              {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.includes('ausgesetzt')
-                ? `In ${city.bundesland} gibt es zusätzlich zur KfW-Bundesförderung das Programm "${city.bundeslandFoerderung}": ${city.bundeslandFoerderungBetrag}. Kombiniert mit ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) ergibt das eine überdurchschnittliche Gesamtförderung für Hausbesitzer in ${city.name}.`
-                : `In ${city.bundesland} gilt die KfW-Bundesförderung (Programm 458) mit ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil für Hausbesitzer in ${city.name}: ${fmtEuro(foerd.eigenanteil)}.`
-              }
-            </p>
-          </div>
-          <p>
-            Bei {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen pro Jahr und {city.normAussentemp}°C Normaußentemperatur in {city.name} ist eine <strong className="text-wp-text">Heizlastberechnung nach DIN EN 12831</strong> die Basis für die richtige WP-Dimensionierung. Eine Über- oder Unterdimensionierung würde die JAZ {jaz} verschlechtern und die Wirtschaftlichkeit mindern. Amortisation bei korrekter Planung: <strong className="text-wp-text">{calc.amortisationJahre} Jahre</strong>.
-          </p>
-        </div>
-      </div>
-
-      {/* Zweites Bild mit City-Zahlen */}
-      <div className="relative rounded-2xl overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80" alt={`${keyword.keyword.replace('[Stadt]', city.name)}`} className="w-full h-52 object-cover" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.35) 100%)' }} />
-        <div className="absolute inset-0 flex items-center px-8">
-          <div>
-            <p className="font-heading font-extrabold text-white text-xl mb-2">{city.name} — Ihre Zahlen</p>
-            <p className="text-white text-sm">Ersparnis: <strong>{fmtEuro(calc.ersparnis)}/Jahr</strong></p>
-            <p className="text-white/70 text-sm">KfW {foerd.gesamtSatz}%: {fmtEuro(foerd.zuschuss)} · Eigenanteil: {fmtEuro(foerd.eigenanteil)}</p>
-            <p className="text-white/70 text-sm">Amortisation: {calc.amortisationJahre} Jahre · JAZ {jaz} · {city.avgTemp}°C</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Vollständige Datentabellen — macht jede Seite unique */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Alle Kennzahlen für {city.name} 2026</h2>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
-            <div className="px-4 py-3 border-b border-wp-border" style={{ background: 'linear-gradient(135deg, #1A4731 0%, #0A1910 100%)' }}>
-              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">{city.name} — Standort & Klima</p>
-            </div>
-            <div className="p-4 space-y-2">
-              {[
-                ['Jahresmitteltemperatur', city.avgTemp + '°C'],
-                ['Normaußentemperatur', city.normAussentemp + '°C'],
-                ['Heizgradtage', city.heizgradtage.toLocaleString('de-DE') + ' Kd/a'],
-                ['Sonnenstunden/Jahr', city.avgSunHours.toLocaleString('de-DE') + ' h'],
-                ['Fernwärmequote', city.fernwaermeQuote + '%'],
-                ['JAZ Luft-WP', String(jaz)],
-              ].map(([l, v], i) => (
-                <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
-                  <span className="text-wp-text2 text-xs">{l}</span>
-                  <span className="font-mono font-bold text-wp-text text-xs">{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
-            <div className="px-4 py-3 border-b border-wp-border bg-wp-dark">
-              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">Energie & Wirtschaftlichkeit</p>
-            </div>
-            <div className="p-4 space-y-2">
-              {[
-                ['Strompreis ' + city.name, city.strompreis + ' ct/kWh'],
-                ['Gaspreis ' + city.name, city.gaspreis + ' ct/kWh'],
-                ['Gas-Betriebskosten heute', fmtEuro(calc.altKosten) + '/Jahr'],
-                ['WP-Betriebskosten', fmtEuro(calc.wpKosten) + '/Jahr'],
-                ['Ersparnis/Jahr', fmtEuro(calc.ersparnis)],
-                ['Amortisation', calc.amortisationJahre + ' Jahre'],
-              ].map(([l, v], i) => (
-                <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
-                  <span className="text-wp-text2 text-xs">{l}</span>
-                  <span className={`font-mono font-bold text-xs ${i === 4 ? 'text-wp-amber' : i === 3 ? 'text-wp-green' : 'text-wp-text'}`}>{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Prozessschritte */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Kostenlos anfragen in {city.name}</h2>
-        <div className="space-y-3">
-          {[
-            { n: '01', title: 'Anfrage (2 Min.)', text: `PLZ und Gebäudedaten eingeben. Wir finden geprüfte Betriebe in ${city.name} (${city.bundesland}) — kostenlos, 48h.` },
-            { n: '02', title: 'Bis zu 3 vollständige Angebote', text: `Alle mit Heizlastberechnung für ${city.normAussentemp}°C, hydraulischem Abgleich und KfW-Antrag inklusive.` },
-            { n: '03', title: 'KfW-Antrag vor Vertragsabschluss', text: `${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}. LuL-Betrieb stellt Antrag VOR Unterschrift.` },
-            { n: '04', title: `Auszahlung: ${fmtEuro(foerd.zuschuss)}`, text: `Verwendungsnachweis → ${fmtEuro(foerd.zuschuss)} in 4–8 Wochen auf Ihr Konto. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.` },
-          ].map((s, i) => (
-            <div key={i} className="bg-white rounded-xl border border-wp-border p-4 flex gap-4 shadow-wp-sm">
-              <div className="w-9 h-9 bg-wp-dark rounded-xl flex items-center justify-center font-mono font-bold text-wp-green3 text-sm shrink-0">{s.n}</div>
-              <div>
-                <p className="font-heading font-bold text-wp-text mb-1">{s.title}</p>
-                <p className="text-wp-text2 text-sm leading-relaxed">{s.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question', name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
 
   return (
-    <RichTemplateBase
-      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1} allCities={allCities}
-      heroImg="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80"
-      heroStats={heroStats}
-      {...(isUrgent ? { urgencyBadge: `GEG-Frist ${city.name}: ${gegFristFormatted}` } : {})}
-      sections={sections}
-    />
+    <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      {/* Hero */}
+      <div className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
+            <span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors">{keyword.keyword.replace(' [Stadt]','')}</Link>
+            <span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          {city.einwohner >= 100000 && (
+            <div className="inline-block bg-wp-amber text-wp-dark text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              GEG-Frist {city.name}: {city.gegFrist.split('-').reverse().join('.')}
+            </div>
+          )}
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: `${foerd.gesamtSatz}%`, label: 'KfW-Förderung' },
+              { val: fmtEuro(foerd.zuschuss), label: 'Zuschuss' },
+              { val: fmtEuro(foerd.eigenanteil), label: 'Eigenanteil' },
+              { val: `${fmtEuro(calc.ersparnis)}/J.`, label: 'Ersparnis' },
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="text-2xl font-extrabold text-white">{s.val}</div>
+                <div className="text-white/50 text-xs">{s.label}</div>
+              </div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Geprüften Fachbetrieb finden →
+          </a>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          {/* Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Was macht einen guten WP-Fachbetrieb in {stadt} aus?', city, jaz)}
+            </h2>
+            <p className="text-wp-text2 text-base leading-relaxed">
+              Ein guter WP-Fachbetrieb in <strong>{city.name}</strong> hat: aktive KfW-LuL-Registrierung (Pflicht für Förderantrag), mindestens 5 WP-Installationen in 24 Monaten, HWK-Eintragung als Meisterbetrieb und Erfahrung mit {city.normAussentemp}°C Normaußentemperatur in {city.bundesland}. Nur so werden JAZ {jaz} und {foerd.gesamtSatz}% KfW-Förderung ({fmtEuro(foerd.zuschuss)}) zuverlässig erreicht.
+            </p>
+          </div>
+
+          {/* 6 Kriterien */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-6">
+              6 Qualitätskriterien für WP-Fachbetriebe in {city.name}
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {KRITERIEN.map((k, i) => (
+                <div key={i} className="p-4 bg-white border border-wp-border rounded-xl shadow-wp-sm">
+                  <div className="text-xl mb-2">{k.icon}</div>
+                  <div className="font-heading font-bold text-wp-text text-sm mb-1">{k.title}</div>
+                  <p className="text-wp-text2 text-xs leading-relaxed">{k.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Angebot-Checkliste */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Checkliste: Was muss ein WP-Angebot in {city.name} enthalten?
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-wp-bg border-b border-wp-border">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">Position</th>
+                    <th className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">Pflicht?</th>
+                    <th className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">Hinweis</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ANGEBOT_CHECKLISTE.map((row, i) => (
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${row.muss ? '' : 'opacity-80'}`}>
+                      <td className="px-4 py-3 font-semibold text-wp-text">{row.item}</td>
+                      <td className="px-4 py-3">
+                        {row.muss
+                          ? <span className="text-wp-green font-bold">✅ Pflicht</span>
+                          : <span className="text-wp-text3">Optional</span>}
+                      </td>
+                      <td className="px-4 py-3 text-wp-text2 text-xs">{row.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Typische Fehler */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              5 typische Fehler — und ihre Konsequenzen in {city.name}
+            </h2>
+            <div className="space-y-3">
+              {FEHLER.map((f, i) => (
+                <div key={i} className="flex gap-3 p-4 bg-white border border-wp-border rounded-xl">
+                  <XCircle size={18} className="text-red-500 shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-heading font-semibold text-wp-text text-sm">{f.fehler}</div>
+                    <div className="text-wp-text2 text-xs mt-0.5">→ {f.folge}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Stadtdaten */}
+          <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{city.name} — Standortdaten für Dimensionierung</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+              {[
+                [`${city.avgTemp}°C`, 'Jahresmitteltemperatur'],
+                [`${city.normAussentemp}°C`, 'Normaußentemperatur'],
+                [city.heizgradtage.toLocaleString('de-DE') + ' Kd/a', 'Heizgradtage'],
+                [String(jaz), 'Erwartete JAZ'],
+                [`${city.strompreis} ct/kWh`, 'Strompreis lokal'],
+                [fmtEuro(calc.ersparnis) + '/J.', 'Ersparnis vs. Gas'],
+              ].map(([v, l], i) => (
+                <div key={i}><div className="text-wp-text3 text-xs">{l}</div><div className="font-bold text-wp-text">{v}</div></div>
+              ))}
+            </div>
+          </div>
+
+          {/* H3 Featured Snippet */}
+          {faqs.length > 0 && (
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            </div>
+          )}
+
+          {/* FAQ */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              Häufige Fragen — Wärmepumpe Fachbetrieb {city.name}
+            </h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq, i) => (
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border">
+                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          {/* Links */}
+          <div className="grid sm:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">
+                {nearby.map(n => (
+                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">
+                {(keyword.crossLinks ?? []).map((slug: string) => (
+                  <Link key={slug} href={`/${slug}/${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ').replace('foerderung','Förderung')} {city.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div>
+          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Kennzahlen</div>
+            {[
+              ['KfW-Zuschuss', fmtEuro(foerd.zuschuss)],
+              ['Förderquote', `${foerd.gesamtSatz}%`],
+              ['Eigenanteil', fmtEuro(foerd.eigenanteil)],
+              ['Ersparnis/Jahr', fmtEuro(calc.ersparnis)],
+              ['JAZ in ' + city.name, String(jaz)],
+              ['Amortisation', `${calc.amortisationJahre} J.`],
+              ['GEG-Frist', city.gegFrist.split('-').reverse().join('.')],
+            ].map(([l, v], i) => (
+              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+                <span className="text-wp-text2">{l}</span>
+                <span className="font-bold text-wp-text">{v}</span>
+              </div>
+            ))}
+            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">
+              Kostenloses Angebot →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">Klimadaten: DWD · Förderrecht: KfW/BAFA · Stand März 2026</div>
+      </div>
+    </div>
   );
 }
