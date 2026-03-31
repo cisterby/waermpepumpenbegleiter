@@ -220,19 +220,19 @@ export function getRotatingFAQs(city: City, keyword: Keyword, jaz: number, wpKos
         : `${city.bundesland} hat kein eigenes aktives WP-Förderprogramm. Die KfW-Bundesförderung (bis 70% Zuschuss, max. €21.000) gilt jedoch in ${city.name} genauso wie überall in Deutschland.`,
     },
     {
-      q: `Lohnt sich der individuelle Sanierungsfahrplan (iSFP) in \${city.name}?`,
-      a: `Ja — für die meisten Hausbesitzer in \${city.name}. Der iSFP kostet €300–700 (80% BAFA-gefördert, Eigenanteil ca. €60–140) und bringt +5% KfW-Bonus auf alle Maßnahmen. Bei €25.000 WP-Investition = +\${fmtEuro(Math.round(25000 * 0.05))} = der iSFP finanziert sich selbst.`,
+      q: `Lohnt sich der individuelle Sanierungsfahrplan (iSFP) in ${city.name}?`,
+      a: `Ja — für die meisten Hausbesitzer in ${city.name}. Der iSFP kostet €300–700 (80% BAFA-gefördert, Eigenanteil ca. €60–140) und bringt +5% KfW-Bonus auf alle Maßnahmen. Bei €25.000 WP-Investition = +\${fmtEuro(Math.round(25000 * 0.05))} = der iSFP finanziert sich selbst.`,
     },
     {
-      q: `Wie viel spare ich mit Wärmepumpe + PV in \${city.name}?`,
-      a: `Mit \${city.avgSunHours} Sonnenstunden/Jahr erzeugt eine 8-kWp-PV-Anlage ca. \${Math.round(city.avgSunHours * 8 * 0.85).toLocaleString('de-DE')} kWh/Jahr. Davon kann ein Großteil direkt die WP (JAZ \${jaz}) betreiben — das reduziert die effektiven WP-Kosten auf unter 10 ct/kWh. Zusatzersparnis: ca. \${fmtEuro(Math.round(Math.min(Math.round(city.avgSunHours * 8 * 0.85) * 0.65, Math.round(120 * 160 / jaz)) * (city.strompreis / 100)))}/Jahr.`,
+      q: `Wie viel spare ich mit Wärmepumpe + PV in ${city.name}?`,
+      a: `Mit ${city.avgSunHours} Sonnenstunden/Jahr erzeugt eine 8-kWp-PV-Anlage ca. ${Math.round(city.avgSunHours * 8 * 0.85).toLocaleString('de-DE')} kWh/Jahr. Davon kann ein Großteil direkt die WP (JAZ ${jaz}) betreiben — das reduziert die effektiven WP-Kosten auf unter 10 ct/kWh. Zusatzersparnis: ca. ${fmtEuro(Math.round(Math.min(Math.round(city.avgSunHours * 8 * 0.85) * 0.65, Math.round(120 * 160 / jaz)) * (city.strompreis / 100)))}/Jahr.`,
     },
   ];
 
   // Kategorie-spezifische FAQs
   const catFAQs: Record<KwCategory, FAQItem[]> = {
     kosten: [
-      { q: `Lohnt sich eine WP in ${city.name} finanziell?`, a: `Ja. Bei JAZ ${jaz} kostet die Wärme ${(city.strompreis / jaz).toFixed(1)} ct/kWh — günstiger als Gas mit ${city.gaspreis} ct/kWh. Jahresersparnis: ${fmtEuro(ersparnis)}. Amortisation mit 55% KfW: ca. ${Math.round(12500 / Math.max(ersparnis, 1))} Jahre. Die WP läuft danach 10–15 Jahre kostenlos.` },
+      { q: `Wann lohnt sich eine Wärmepumpe in ${city.name} besonders?`, a: `Ja. Bei JAZ ${jaz} kostet die Wärme ${(city.strompreis / jaz).toFixed(1)} ct/kWh — günstiger als Gas mit ${city.gaspreis} ct/kWh. Jahresersparnis: ${fmtEuro(ersparnis)}. Amortisation mit 55% KfW: ca. ${Math.round(12500 / Math.max(ersparnis, 1))} Jahre. Die WP läuft danach 10–15 Jahre kostenlos.` },
       { q: `Was kostet eine Erdwärmepumpe in ${city.name}?`, a: `Eine Sole-Wasser-WP mit Tiefenbohrung kostet in ${city.bundesland} €22.000–35.000 (Gerät + Bohrung à ca. €100/m + Installation). Die höhere JAZ (~4,3) und der zusätzliche KfW-Bonus (+5%) amortisieren die Mehrinvestition. Gesamtkosten nach 50% Förderung: ab €11.000.` },
       { q: `Welche Nebenkosten gibt es bei der WP-Installation in ${city.name}?`, a: `Zusätzlich zu Gerät und Montage kommen: Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Elektroinstallation/Zähler-Upgrade (€500–1.500), Fundament/Aufstellung (€300–800), optional Pufferspeicher (€800–2.000). Seriöse Angebote in ${city.name} weisen alle Positionen einzeln aus.` },
       { q: `Wie viel Strom verbraucht eine WP in ${city.name} pro Jahr?`, a: `Bei 120 m² EFH (Baujahr 1980–1994) und JAZ ${jaz} in ${city.name} ca. ${Math.round(120 * 160 / jaz).toLocaleString('de-DE')} kWh/Jahr. Bei ${city.strompreis} ct/kWh entspricht das ${fmtEuro(wpKosten)} Jahresstromkosten für die Heizung.` },
