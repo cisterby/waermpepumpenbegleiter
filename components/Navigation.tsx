@@ -42,6 +42,7 @@ export default function Navigation() {
             ? 'bg-[#F7F5F0]/95 backdrop-blur-md shadow-wp-sm'
             : 'bg-transparent'
         }`}
+        style={{ '--nav-scrolled': scrolled ? '1' : '0' } as React.CSSProperties}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-[72px]">
@@ -49,7 +50,7 @@ export default function Navigation() {
               <div className="w-8 h-8 flex items-center justify-center">
                 <Leaf className="w-6 h-6 text-wp-primary transition-transform group-hover:rotate-12" strokeWidth={2} />
               </div>
-              <span className="font-body font-semibold text-[15px] text-wp-primary hidden sm:block">
+              <span className={`font-body font-semibold text-[15px] hidden sm:block transition-colors ${scrolled ? 'text-wp-primary' : 'text-white'}`}>
                 Wärmepumpenbegleiter
               </span>
             </Link>
