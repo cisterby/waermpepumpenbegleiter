@@ -243,6 +243,13 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
           {/* FAQ */}
           <div>
+                        {/* H3 Featured Snippet */}
+            {faqs.length > 0 && (
+              <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-greenborder rounded-2xl">
+                <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+                <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+              </div>
+            )}
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen zur Förderung in {city.name}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
               {faqs.map((faq, i) => (

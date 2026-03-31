@@ -122,6 +122,13 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
             </div>
 
           {/* FAQ */}
+                    {/* H3 Featured Snippet */}
+          {faqs.length > 0 && (
+            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-greenborder rounded-2xl">
+              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            </div>
+          )}
           <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
             Häufige Fragen — {city.name}
           </h2>

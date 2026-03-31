@@ -138,6 +138,13 @@ export default function RichTemplateBase({
             </div>
           </div>
 
+          {/* Featured Snippet: H3 + Kurzantwort vor FAQ */}
+          {faqs.length > 0 && (
+            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-greenborder rounded-2xl">
+              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            </div>
+          )}
           {/* FAQ */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
