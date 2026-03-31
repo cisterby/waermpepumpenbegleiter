@@ -460,7 +460,7 @@ faqPool: [
     featuredSnippetQuestions: ['Wo bekomme ich eine unabhängige WP-Beratung in {stadt}?'],
     faqPool: [{ q: 'Was ist der iSFP und bringt er Vorteile in {stadt}?', a: 'Der individuelle Sanierungsfahrplan (iSFP) kostet ca. €500–1.000, wird aber mit 80% gefördert. Mit iSFP erhöht sich der KfW-BEG-Zuschuss um 5 Prozentpunkte.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur'],
+    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-kosten'],
   },
   {
     id: 19, tier: 4,
