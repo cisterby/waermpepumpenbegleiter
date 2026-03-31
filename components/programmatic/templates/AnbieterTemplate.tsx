@@ -1,14 +1,23 @@
-// AnbieterTemplate — waermepumpe-anbieter
+// AnbieterTemplate — waermepumpe-anbieter — maximale Uniqueness
 'use client';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { cityHash } from '@/lib/content-variation';
+import { CheckCircle, AlertTriangle } from 'lucide-react';
 import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
 
 export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const isUrgent = city.einwohner >= 100000;
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
+  const v = cityHash(city, 4, 47);
+
+  const intros = [
+    `In {city.name} konkurrieren bundesweite Anbieter wie Thermondo und Enpal mit lokalen SHK-Meisterbetrieben. Der Unterschied: Lokale Betriebe kennen die Schallschutz-Auflagen in {city.bundesland} und reagieren bei Störungen in Stunden statt Tagen. Bei {city.einwohner >= 200000 ? 'hoher Nachfrage in ' + city.name : 'guter Verfügbarkeit in ' + city.name} ist lokale Präsenz ein echter Vorteil.`,
+    `WP-Anbieter in {city.name} ({city.bundesland}) auswählen: KfW-LuL-Registrierung (Pflicht), WP-Erfahrung für {city.avgTemp}°C Jahresmittel, und lokale Präsenz. Bei {city.strompreis} ct/kWh Strompreis macht die JAZ-Differenz zwischen gutem und schlechtem Anbieter bis zu {Math.round(calc.ersparnis * 0.3)} €/Jahr aus.`,
+    `Bundesweite Anbieter bieten Festpreise. In {city.name} mit {city.normAussentemp}°C Normaußentemperatur und {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen sind lokale Kenntnisse entscheidend: Schallschutz {city.bundesland}, WP-Sondertarif beim Netzbetreiber, Geräteauswahl für {city.avgTemp}°C.`,
+    `{city.name}: Strompreis {city.strompreis} ct/kWh, JAZ {jaz}, Heizgradtage {city.heizgradtage.toLocaleString('de-DE')} — daraus ergibt sich welcher WP-Anbieter für Ihr Haus passt. KfW-Zuschuss: {fmtEuro(foerd.zuschuss)}. Eigenanteil: {fmtEuro(foerd.eigenanteil)}.`,
+  ];
 
   const heroStats = [
     { val: `${foerd.gesamtSatz}%`, label: 'KfW-Förderung', sub: 'Eigennutzer' },
@@ -19,64 +28,108 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
   const sections = (
     <>
-      {/* Featured Snippet */}
+      {/* Featured Snippet mit cityHash-rotierendem Intro */}
       <div className="bg-white border border-wp-border border-l-4 border-l-wp-green rounded-xl p-6 shadow-wp-sm">
         <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
           {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
         </h2>
-        <p className="text-wp-text2 text-base leading-relaxed">
-          In <strong className="text-wp-text">{city.name}</strong> ({city.bundesland}) mit {city.avgTemp}°C Jahresmitteltemperatur
-          und {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen erreicht eine Wärmepumpe eine JAZ von <strong className="text-wp-text">{jaz}</strong>.
-          Jährliche Ersparnis gegenüber Erdgas: <strong className="text-wp-text">{fmtEuro(calc.ersparnis)}</strong>.
-          KfW-Förderung: {foerd.gesamtSatz}% = {fmtEuro(foerd.zuschuss)} · Eigenanteil: {fmtEuro(foerd.eigenanteil)}.
-        </p>
+        <p className="text-wp-text2 text-base leading-relaxed">{intros[v]}</p>
       </div>
 
-      {/* Hero-Bild + Infokarten */}
+      {/* Bild + stadtspezifische Kennzahlen */}
       <div className="grid sm:grid-cols-2 gap-6">
         <div className="relative rounded-2xl overflow-hidden h-64">
           <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80" alt={h1} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-wp-dark/60 flex items-end p-5">
             <div>
               <p className="font-heading font-bold text-white text-base">{city.name} · JAZ {jaz}</p>
-              <p className="text-white/60 text-xs">{city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.avgTemp}°C · {city.strompreis}ct/kWh</p>
+              <p className="text-white/60 text-xs">{city.avgTemp}°C · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.strompreis} ct/kWh</p>
             </div>
           </div>
         </div>
         <div className="space-y-3">
           <h3 className="font-heading font-bold text-wp-text text-lg">Wärmepumpen-Anbieter in {city.name}</h3>
           {[
-            { icon: '💶', title: 'KfW-Förderung', text: `${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)} Zuschuss · Eigenanteil: ${fmtEuro(foerd.eigenanteil)}` },
-            { icon: '⚡', title: `JAZ ${jaz} in ${city.name}`, text: `Aus 1 kWh Strom → ${jaz} kWh Wärme · Betrieb: ${fmtEuro(calc.wpKosten)}/Jahr` },
-            { icon: '🛡️', title: 'Geprüfte Meisterbetriebe', text: `HWK + KfW-LuL-registriert in ${city.name} · 48h · kostenlos` },
-            { icon: '🌿', title: 'CO₂ gespart', text: `${calc.co2Ersparnis} t CO₂/Jahr weniger als Gasheizung` },
-          ].map((c, i) => (
+            { icon: '🌡️', label: 'Jahresmitteltemperatur', val: `${city.avgTemp}°C`, note: city.avgTemp > 10 ? `Milder Standort — JAZ ${jaz} gut erreichbar` : `Kühlerer Standort — JAZ ${jaz}, ggf. HT-WP prüfen` },
+            { icon: '⚡', label: `Strompreis ${city.name}`, val: `${city.strompreis} ct/kWh`, note: `WP-Betrieb: ${fmtEuro(calc.wpKosten)}/Jahr (JAZ ${jaz})` },
+            { icon: '🔥', label: 'Heizgradtage', val: `${city.heizgradtage.toLocaleString('de-DE')} Kd/a`, note: city.heizgradtage > 3200 ? 'Überdurchschnittlicher Wärmebedarf' : 'Günstiger Wärmebedarf' },
+            { icon: '💶', label: `KfW ${foerd.gesamtSatz}% in ${city.name}`, val: fmtEuro(foerd.zuschuss), note: `Eigenanteil: ${fmtEuro(foerd.eigenanteil)}` },
+          ].map((d, i) => (
             <div key={i} className="bg-white border border-wp-border rounded-xl p-3 shadow-wp-sm flex items-start gap-3">
-              <span className="text-xl shrink-0">{c.icon}</span>
+              <span className="text-xl shrink-0">{d.icon}</span>
               <div>
-                <p className="font-heading font-bold text-wp-text text-sm mb-0.5">{c.title}</p>
-                <p className="text-wp-text2 text-xs leading-relaxed">{c.text}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-heading font-bold text-wp-text text-xs">{d.label}</p>
+                  <span className="font-mono font-bold text-wp-amber text-sm">{d.val}</span>
+                </div>
+                <p className="text-wp-text3 text-xs mt-0.5">{d.note}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Wärmepumpen-Anbieter — Tabellen */}
+      {city.fernwaermeQuote >= 40 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+          <AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" />
+          <p className="text-amber-800 text-sm leading-relaxed">
+            <strong>{city.name}</strong> hat {city.fernwaermeQuote}% Fernwärmeabdeckung. Prüfen Sie ob Ihre Adresse in einem Fernwärmegebiet liegt — dort kann eine WP unzulässig sein. Für {100 - city.fernwaermeQuote}% der Haushalte in {city.name} ist die Wärmepumpe die klare Lösung.
+          </p>
+        </div>
+      )}
+
+      {/* Anbietervergleich — volles Fließtext */}
       <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Wärmepumpen-Anbieter in {city.name} — Zahlen 2026</h2>
+        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Anbietervergleich in {city.name} — was wichtig ist</h2>
+        <div className="space-y-4 text-wp-text2 leading-relaxed">
+          <p>
+            In <strong className="text-wp-text">{city.name}</strong> ({city.bundesland}) liegt der lokale Strompreis bei <strong className="text-wp-text">{city.strompreis} ct/kWh</strong>. Mit JAZ <strong className="text-wp-text">{jaz}</strong> — dem erwarteten Wert für {city.avgTemp}°C Jahresmitteltemperatur — entstehen WP-Betriebskosten von <strong className="text-wp-text">{fmtEuro(calc.wpKosten)}</strong>/Jahr. Die Gasheizung kostet {fmtEuro(calc.altKosten)}/Jahr — die WP spart <strong className="text-wp-text">{fmtEuro(calc.ersparnis)}/Jahr</strong>.
+          </p>
+          <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-5">
+            <h3 className="font-heading font-semibold text-wp-green text-base mb-2">Bundesweit vs. lokal in {city.name}</h3>
+            <p className="text-wp-text2 text-sm leading-relaxed">
+              {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.includes('ausgesetzt')
+                ? `In ${city.bundesland} gibt es zusätzlich zur KfW-Bundesförderung das Programm "${city.bundeslandFoerderung}": ${city.bundeslandFoerderungBetrag}. Kombiniert mit ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) ergibt das eine überdurchschnittliche Gesamtförderung für Hausbesitzer in ${city.name}.`
+                : `In ${city.bundesland} gilt die KfW-Bundesförderung (Programm 458) mit ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil für Hausbesitzer in ${city.name}: ${fmtEuro(foerd.eigenanteil)}.`
+              }
+            </p>
+          </div>
+          <p>
+            Bei {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen pro Jahr und {city.normAussentemp}°C Normaußentemperatur in {city.name} ist eine <strong className="text-wp-text">Heizlastberechnung nach DIN EN 12831</strong> die Basis für die richtige WP-Dimensionierung. Eine Über- oder Unterdimensionierung würde die JAZ {jaz} verschlechtern und die Wirtschaftlichkeit mindern. Amortisation bei korrekter Planung: <strong className="text-wp-text">{calc.amortisationJahre} Jahre</strong>.
+          </p>
+        </div>
+      </div>
+
+      {/* Zweites Bild mit City-Zahlen */}
+      <div className="relative rounded-2xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80" alt={`${keyword.keyword.replace('[Stadt]', city.name)}`} className="w-full h-52 object-cover" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.35) 100%)' }} />
+        <div className="absolute inset-0 flex items-center px-8">
+          <div>
+            <p className="font-heading font-extrabold text-white text-xl mb-2">{city.name} — Ihre Zahlen</p>
+            <p className="text-white text-sm">Ersparnis: <strong>{fmtEuro(calc.ersparnis)}/Jahr</strong></p>
+            <p className="text-white/70 text-sm">KfW {foerd.gesamtSatz}%: {fmtEuro(foerd.zuschuss)} · Eigenanteil: {fmtEuro(foerd.eigenanteil)}</p>
+            <p className="text-white/70 text-sm">Amortisation: {calc.amortisationJahre} Jahre · JAZ {jaz} · {city.avgTemp}°C</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Vollständige Datentabellen — macht jede Seite unique */}
+      <div>
+        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Alle Kennzahlen für {city.name} 2026</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
             <div className="px-4 py-3 border-b border-wp-border" style={{ background: 'linear-gradient(135deg, #1A4731 0%, #0A1910 100%)' }}>
-              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">{city.name} — Standort</p>
+              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">{city.name} — Standort & Klima</p>
             </div>
             <div className="p-4 space-y-2">
               {[
                 ['Jahresmitteltemperatur', city.avgTemp + '°C'],
+                ['Normaußentemperatur', city.normAussentemp + '°C'],
                 ['Heizgradtage', city.heizgradtage.toLocaleString('de-DE') + ' Kd/a'],
-                ['Strompreis lokal', city.strompreis + ' ct/kWh'],
-                ['JAZ Erwartung', String(jaz)],
-                ['CO₂ gespart/Jahr', calc.co2Ersparnis + ' t'],
+                ['Sonnenstunden/Jahr', city.avgSunHours.toLocaleString('de-DE') + ' h'],
+                ['Fernwärmequote', city.fernwaermeQuote + '%'],
+                ['JAZ Luft-WP', String(jaz)],
               ].map(([l, v], i) => (
                 <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
                   <span className="text-wp-text2 text-xs">{l}</span>
@@ -87,21 +140,20 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           </div>
           <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
             <div className="px-4 py-3 border-b border-wp-border bg-wp-dark">
-              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">Förderung & Wirtschaftlichkeit</p>
+              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">Energie & Wirtschaftlichkeit</p>
             </div>
             <div className="p-4 space-y-2">
               {[
-                ['KfW-Förderung', foerd.gesamtSatz + '%'],
-                ['Zuschuss', fmtEuro(foerd.zuschuss)],
-                ['Eigenanteil', fmtEuro(foerd.eigenanteil)],
-                ['Gas heute', fmtEuro(calc.altKosten) + '/Jahr'],
-                ['WP-Betrieb', fmtEuro(calc.wpKosten) + '/Jahr'],
+                ['Strompreis ' + city.name, city.strompreis + ' ct/kWh'],
+                ['Gaspreis ' + city.name, city.gaspreis + ' ct/kWh'],
+                ['Gas-Betriebskosten heute', fmtEuro(calc.altKosten) + '/Jahr'],
+                ['WP-Betriebskosten', fmtEuro(calc.wpKosten) + '/Jahr'],
                 ['Ersparnis/Jahr', fmtEuro(calc.ersparnis)],
                 ['Amortisation', calc.amortisationJahre + ' Jahre'],
               ].map(([l, v], i) => (
                 <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
                   <span className="text-wp-text2 text-xs">{l}</span>
-                  <span className={`font-mono font-bold text-xs ${i === 1 ? 'text-wp-green' : i === 2 ? 'text-wp-amber' : i === 5 ? 'text-wp-amber' : 'text-wp-text'}`}>{v}</span>
+                  <span className={`font-mono font-bold text-xs ${i === 4 ? 'text-wp-amber' : i === 3 ? 'text-wp-green' : 'text-wp-text'}`}>{v}</span>
                 </div>
               ))}
             </div>
@@ -111,13 +163,13 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
       {/* Prozessschritte */}
       <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Wie wir vorgehen in {city.name}</h2>
+        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Kostenlos anfragen in {city.name}</h2>
         <div className="space-y-3">
           {[
-            { n: '01', title: 'Kostenlose Anfrage (2 Min.)', text: `PLZ und Gebäudedaten eingeben. Wir finden geprüfte Betriebe in ${city.name} — kostenlos, 48h Rückmeldung.` },
-            { n: '02', title: 'Bis zu 3 vollständige Angebote', text: 'Alle mit Heizlastberechnung, hydraulischem Abgleich und KfW-Antrag inklusive. Vergleichbar.' },
-            { n: '03', title: 'KfW-Antrag vor Vertragsabschluss', text: `LuL-registrierter Betrieb stellt Antrag. Erst nach Bestätigung unterschreiben. ${fmtEuro(foerd.zuschuss)} Zuschuss.` },
-            { n: '04', title: 'Installation & Auszahlung', text: `Montage 1–3 Tage. Verwendungsnachweis → ${fmtEuro(foerd.zuschuss)} in 4–8 Wochen auf Ihr Konto.` },
+            { n: '01', title: 'Anfrage (2 Min.)', text: `PLZ und Gebäudedaten eingeben. Wir finden geprüfte Betriebe in ${city.name} (${city.bundesland}) — kostenlos, 48h.` },
+            { n: '02', title: 'Bis zu 3 vollständige Angebote', text: `Alle mit Heizlastberechnung für ${city.normAussentemp}°C, hydraulischem Abgleich und KfW-Antrag inklusive.` },
+            { n: '03', title: 'KfW-Antrag vor Vertragsabschluss', text: `${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}. LuL-Betrieb stellt Antrag VOR Unterschrift.` },
+            { n: '04', title: `Auszahlung: ${fmtEuro(foerd.zuschuss)}`, text: `Verwendungsnachweis → ${fmtEuro(foerd.zuschuss)} in 4–8 Wochen auf Ihr Konto. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.` },
           ].map((s, i) => (
             <div key={i} className="bg-white rounded-xl border border-wp-border p-4 flex gap-4 shadow-wp-sm">
               <div className="w-9 h-9 bg-wp-dark rounded-xl flex items-center justify-center font-mono font-bold text-wp-green3 text-sm shrink-0">{s.n}</div>
@@ -127,20 +179,6 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Abschluss-Bild */}
-      <div className="relative rounded-2xl overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80"
-          alt={`${keyword.keyword.replace('[Stadt]', city.name)}`} className="w-full h-52 object-cover" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.35) 100%)' }} />
-        <div className="absolute inset-0 flex items-center px-8">
-          <div>
-            <p className="font-heading font-extrabold text-white text-xl mb-2">Kostenlos anfragen in {city.name}</p>
-            <p className="text-white/70 text-sm mb-1">3 Angebote · 48h · HWK-geprüft · KfW-LuL-registriert</p>
-            <p className="font-bold text-wp-amber text-2xl">Eigenanteil ab {fmtEuro(foerd.eigenanteil)}</p>
-          </div>
         </div>
       </div>
     </>
