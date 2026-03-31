@@ -443,7 +443,7 @@ faqPool: [
       { q: 'Ist eine WP im Neubau in {stadt} Pflicht?', a: 'Seit 1.1.2024 muss jede neue Heizung 65% EE nutzen. Eine Wärmepumpe erfüllt das automatisch und ist damit die häufigste Wahl bei Neubauten in {stadt}.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe', 'luft-wasser-waermepumpe', 'erdwaermepumpe', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe', 'luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur'],
   },
   // ── TIER 4 ────────────────────────────────────────────────────
   {
