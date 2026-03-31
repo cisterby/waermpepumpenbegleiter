@@ -1,15 +1,13 @@
 // components/programmatic/RichTemplateBase.tsx
 // Geteilt von allen 20 spezialisierten Templates — sorgt für einheitliche visuelle Tiefe
 'use client';
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { getRotatingFAQs } from '@/lib/content-variation';
-import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -24,14 +22,24 @@ export default function RichTemplateBase({
   city, keyword, calc, foerd, jaz, nearby, h1, allCities,
   heroImg, heroStats, urgencyBadge, sections
 }: RichTemplateBaseProps) {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const isUrgent = city.einwohner >= 100000;
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ── HERO ── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
@@ -130,9 +138,6 @@ export default function RichTemplateBase({
             </div>
           </div>
 
-          {/* Additional SEO blocks */}
-          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
-
           {/* FAQ */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
@@ -140,21 +145,15 @@ export default function RichTemplateBase({
             </h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
               {faqs.map((faq, i) => (
-                <div key={i} className={i < faqs.length - 1 ? 'border-b border-wp-border' : ''}>
-                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full bg-transparent border-none px-5 py-4 flex justify-between items-center cursor-pointer text-left gap-3">
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
                     <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {openFaq === i && (
-                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }}>
-                        <p className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border">
+                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  </div>
+                </details>
               ))}
             </div>
           </div>
