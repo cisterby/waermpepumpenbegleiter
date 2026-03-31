@@ -332,7 +332,8 @@ export const KEYWORDS: Keyword[] = [
       'Eignet sich mein Grundstück in {stadt} für eine Erdwärmepumpe?',
       'Was kostet eine Erdwärmepumpe in {stadt}?',
     ],
-    faqPool: [
+          crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur'],
+      faqPool: [
       { q: 'Eignet sich {stadt} für Erdwärme?', a: 'In {bundesland} sind die geologischen Bedingungen überwiegend gut für Erdwärmesonden geeignet. Eine Genehmigung beim zuständigen Bergamt ist erforderlich. Ihr lokaler Fachbetrieb beantragt diese für Sie.' },
     ],
     sitemapPriority: 0.75,
@@ -352,7 +353,8 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Wo bekomme ich kostenlose WP-Angebote in {stadt}?',
     ],
-    faqPool: [
+          crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung'],
+      faqPool: [
       { q: 'Wie viele Angebote sollte ich in {stadt} einholen?', a: 'Mindestens 3. Die Verbraucherzentrale empfiehlt ausdrücklich, mehrere Angebote zu vergleichen — Preisunterschiede von 30–50% sind keine Seltenheit.' },
     ],
     sitemapPriority: 0.72,
@@ -367,13 +369,15 @@ export const KEYWORDS: Keyword[] = [
     intent: 'commercial',
     template: 'PreiseTemplate',
     titleTemplate: 'Wärmepumpe Preise {stadt} {year}',
-    metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW-Förderung bis €21.000 ✓ Kostenlos.',
+    metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW bis €21.000 ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe Preise {stadt} {year} — Aktuelle Kosten aller Typen',
     featuredSnippetQuestions: [
       'Was kostet eine Wärmepumpe in {stadt} im Jahr {year}?',
       'Wie haben sich die WP-Preise in {stadt} entwickelt?',
     ],
-    faqPool: [
+          crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
+            crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
+      faqPool: [
       { q: 'Was kostet eine Wärmepumpe aktuell in {stadt}?', a: 'Luft-Wasser-WP: €18.000–€28.000 komplett. Sole-Wasser: €22.000–€35.000. Wasser-Wasser: €25.000–€40.000. Die Preise sind 2025/26 nach dem Boom stabil geblieben.' },
     ],
     sitemapPriority: 0.75,
