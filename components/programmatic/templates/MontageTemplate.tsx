@@ -159,6 +159,49 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
           </div>
         </div>
       </div>
+      {/* Stadtspezifische Daten — Uniqueness */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
+          <div className="px-4 py-3 border-b border-wp-border" style={{ background: 'linear-gradient(135deg, #1A4731 0%, #0A1910 100%)' }}>
+            <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">{city.name} — Montage-Kennzahlen</p>
+          </div>
+          <div className="p-4 space-y-2">
+            {[
+              ['Jahresmitteltemperatur', city.avgTemp + '°C'],
+              ['Normaußentemperatur', city.normAussentemp + '°C'],
+              ['Heizgradtage', city.heizgradtage.toLocaleString('de-DE') + ' Kd/a'],
+              ['Empf. Montagezeitraum', city.normAussentemp < -12 ? 'Frühjahr/Sommer' : 'Ganzjährig möglich'],
+              ['JAZ nach Montage', String(jaz)],
+            ].map(([l, v], i) => (
+              <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
+                <span className="text-wp-text2 text-xs">{l}</span>
+                <span className="font-mono font-bold text-wp-text text-xs">{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
+          <div className="px-4 py-3 border-b border-wp-border bg-wp-dark">
+            <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">Kosten nach Montage in {city.name}</p>
+          </div>
+          <div className="p-4 space-y-2">
+            {[
+              ['Strompreis ' + city.name, city.strompreis + ' ct/kWh'],
+              ['WP-Betriebskosten', fmtEuro(calc.wpKosten) + '/Jahr'],
+              ['Gas vorher', fmtEuro(calc.altKosten) + '/Jahr'],
+              ['Ersparnis/Jahr', fmtEuro(calc.ersparnis)],
+              ['KfW-Zuschuss', fmtEuro(foerd.zuschuss)],
+              ['Amortisation', calc.amortisationJahre + ' Jahre'],
+            ].map(([l, v], i) => (
+              <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
+                <span className="text-wp-text2 text-xs">{l}</span>
+                <span className={`font-mono font-bold text-xs ${i === 3 ? 'text-wp-amber' : i === 4 ? 'text-wp-green' : 'text-wp-text'}`}>{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </>
   );
 
