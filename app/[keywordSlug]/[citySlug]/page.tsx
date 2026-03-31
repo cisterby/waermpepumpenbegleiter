@@ -113,8 +113,8 @@ export default function CityKeywordPage({ params }: Props) {
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    '@id': `https://waermepumpenbegleiter.de/\${keyword.slug}/\${city.slug}#service`,
-    name: `\${keyword.keyword.replace('[Stadt]', city.name).trim()}`,
+    '@id': `https://waermepumpenbegleiter.de/${keyword.slug}/${city.slug}#service`,
+    name: keyword.keyword.replace('[Stadt]', city.name).trim(),
     description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
     serviceType: 'Wärmepumpen-Vermittlung',
     areaServed: {
