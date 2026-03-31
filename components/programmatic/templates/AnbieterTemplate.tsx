@@ -13,10 +13,10 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
   const v = cityHash(city, 4, 47);
 
   const intros = [
-    `In {city.name} konkurrieren bundesweite Anbieter wie Thermondo und Enpal mit lokalen SHK-Meisterbetrieben. Der Unterschied: Lokale Betriebe kennen die Schallschutz-Auflagen in {city.bundesland} und reagieren bei Störungen in Stunden statt Tagen. Bei {city.einwohner >= 200000 ? 'hoher Nachfrage in ' + city.name : 'guter Verfügbarkeit in ' + city.name} ist lokale Präsenz ein echter Vorteil.`,
-    `WP-Anbieter in {city.name} ({city.bundesland}) auswählen: KfW-LuL-Registrierung (Pflicht), WP-Erfahrung für {city.avgTemp}°C Jahresmittel, und lokale Präsenz. Bei {city.strompreis} ct/kWh Strompreis macht die JAZ-Differenz zwischen gutem und schlechtem Anbieter bis zu {Math.round(calc.ersparnis * 0.3)} €/Jahr aus.`,
-    `Bundesweite Anbieter bieten Festpreise. In {city.name} mit {city.normAussentemp}°C Normaußentemperatur und {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen sind lokale Kenntnisse entscheidend: Schallschutz {city.bundesland}, WP-Sondertarif beim Netzbetreiber, Geräteauswahl für {city.avgTemp}°C.`,
-    `{city.name}: Strompreis {city.strompreis} ct/kWh, JAZ {jaz}, Heizgradtage {city.heizgradtage.toLocaleString('de-DE')} — daraus ergibt sich welcher WP-Anbieter für Ihr Haus passt. KfW-Zuschuss: {fmtEuro(foerd.zuschuss)}. Eigenanteil: {fmtEuro(foerd.eigenanteil)}.`,
+    `In ${city.name} konkurrieren bundesweite Anbieter wie Thermondo und Enpal mit lokalen SHK-Meisterbetrieben. Der Unterschied: Lokale Betriebe kennen die Schallschutz-Auflagen in ${city.bundesland} und reagieren bei Störungen in Stunden statt Tagen. Bei ${city.einwohner >= 200000 ? 'hoher Nachfrage in ' + city.name : 'guter Verfügbarkeit in ' + city.name} ist lokale Präsenz ein echter Vorteil.`,
+    `WP-Anbieter in ${city.name} (${city.bundesland}) auswählen: KfW-LuL-Registrierung (Pflicht), WP-Erfahrung für ${city.avgTemp}°C Jahresmittel, und lokale Präsenz. Bei ${city.strompreis} ct/kWh Strompreis macht die JAZ-Differenz zwischen gutem und schlechtem Anbieter bis zu ${Math.round(calc.ersparnis * 0.3)} €/Jahr aus.`,
+    `Bundesweite Anbieter bieten Festpreise. In ${city.name} mit ${city.normAussentemp}°C Normaußentemperatur und ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen sind lokale Kenntnisse entscheidend: Schallschutz ${city.bundesland}, WP-Sondertarif beim Netzbetreiber, Geräteauswahl für ${city.avgTemp}°C.`,
+    `${city.name}: Strompreis ${city.strompreis} ct/kWh, JAZ ${jaz}, Heizgradtage ${city.heizgradtage.toLocaleString('de-DE')} — daraus ergibt sich welcher WP-Anbieter für Ihr Haus passt. KfW-Zuschuss: ${fmtEuro(foerd.zuschuss)}. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
   ];
 
   const heroStats = [
