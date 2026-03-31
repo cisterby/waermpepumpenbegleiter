@@ -21,7 +21,7 @@ interface RichTemplateBaseProps extends CityPageRouterProps {
 }
 
 export default function RichTemplateBase({
-  city, keyword, calc, foerd, jaz, nearby, h1,
+  city, keyword, calc, foerd, jaz, nearby, h1, allCities,
   heroImg, heroStats, urgencyBadge, sections
 }: RichTemplateBaseProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
