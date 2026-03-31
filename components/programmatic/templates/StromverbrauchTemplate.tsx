@@ -13,10 +13,10 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
   const v = cityHash(city, 4, 41);
 
   const intros = [
-    `WP-Stromverbrauch {city.name}: JAZ {jaz} bei {city.avgTemp}°C → {Math.round(20000 / jaz).toLocaleString('de-DE')} kWh/Jahr. Bei {city.strompreis} ct/kWh: {fmtEuro(Math.round(20000 / jaz * city.strompreis / 100))}/Jahr — {fmtEuro(calc.ersparnis)}/Jahr weniger als Gas.`,
-    `WP-Sondertarif {city.name}: Strom auf ca. {Math.round(city.strompreis - 5)} ct/kWh senken = {fmtEuro(Math.round(20000 / jaz * 0.05))}/Jahr zusätzliche Ersparnis. PV-Kombination: 40–60% Eigendeckung möglich — effektive Wärmekosten unter 2 ct/kWh in {city.name}.`,
-    `Smart-Grid {city.name}: {city.avgSunHours > 1500 ? city.avgSunHours + ' Sonnenstunden' : 'Die Solarstrahlung in ' + city.bundesland} ermöglicht PV-Eigenverbrauch. WP nutzt Eigenstrom für thermische Speicherung. Netzbezug sinkt auf ca. {Math.round(20000 / jaz * 0.4).toLocaleString('de-DE')} kWh/Jahr.`,
-    `{city.name}: JAZ {jaz} → {Math.round(15000/jaz).toLocaleString('de-DE')} kWh Heiz-Strom + {Math.round(1500/jaz*0.7).toLocaleString('de-DE')} kWh WW = {Math.round(15000/jaz + 1500/jaz*0.7).toLocaleString('de-DE')} kWh/Jahr. Bei {city.strompreis} ct: {fmtEuro(Math.round((15000/jaz + 1500/jaz*0.7) * city.strompreis/100))}/Jahr. Mit WP-Tarif ({Math.round(city.strompreis-5)} ct): {fmtEuro(Math.round((15000/jaz + 1500/jaz*0.7) * (city.strompreis-5)/100))}/Jahr.`,
+    `WP-Stromverbrauch ${city.name}: JAZ ${jaz} bei ${city.avgTemp}°C → ${Math.round(20000 / jaz).toLocaleString('de-DE')} kWh/Jahr. Bei ${city.strompreis} ct/kWh: ${fmtEuro(Math.round(20000 / jaz * city.strompreis / 100))}/Jahr — ${fmtEuro(calc.ersparnis)}/Jahr weniger als Gas.`,
+    `WP-Sondertarif ${city.name}: Strom auf ca. ${Math.round(city.strompreis - 5)} ct/kWh senken = ${fmtEuro(Math.round(20000 / jaz * 0.05))}/Jahr zusätzliche Ersparnis. PV-Kombination: 40–60% Eigendeckung möglich — effektive Wärmekosten unter 2 ct/kWh in ${city.name}.`,
+    `Smart-Grid ${city.name}: ${city.avgSunHours > 1500 ? city.avgSunHours + ' Sonnenstunden' : 'Die Solarstrahlung in ' + city.bundesland} ermöglicht PV-Eigenverbrauch. WP nutzt Eigenstrom für thermische Speicherung. Netzbezug sinkt auf ca. ${Math.round(20000 / jaz * 0.4).toLocaleString('de-DE')} kWh/Jahr.`,
+    `${city.name}: JAZ ${jaz} → ${Math.round(15000/jaz).toLocaleString('de-DE')} kWh Heiz-Strom + ${Math.round(1500/jaz*0.7).toLocaleString('de-DE')} kWh WW = ${Math.round(15000/jaz + 1500/jaz*0.7).toLocaleString('de-DE')} kWh/Jahr. Bei ${city.strompreis} ct: ${fmtEuro(Math.round((15000/jaz + 1500/jaz*0.7) * city.strompreis/100))}/Jahr. Mit WP-Tarif (${Math.round(city.strompreis-5)} ct): ${fmtEuro(Math.round((15000/jaz + 1500/jaz*0.7) * (city.strompreis-5)/100))}/Jahr.`,
   ];
 
   const heroStats = [
