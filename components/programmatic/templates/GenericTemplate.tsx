@@ -2,8 +2,7 @@
 // Vollwertiges Template für alle Tier 2-4 Keywords (17 Keywords × 733 Städte)
 // Unique Content durch: city-hash Textvarianten + rotierende Blöcke + keyword-spezifische Sektionen
 'use client';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
@@ -179,7 +178,6 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
 export default function GenericTemplate({
   city, keyword, calc, foerd, jaz, nearby, h1,
 }: CityPageRouterProps) {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const introParagraphs = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -190,8 +188,19 @@ export default function GenericTemplate({
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
   const kw = keyword.keyword.replace('[Stadt]', '').trim();
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* HERO */}
       <div className="bg-wp-dark pt-20 pb-14 px-6">
@@ -297,27 +306,28 @@ export default function GenericTemplate({
             </div>
           ))}
 
+          {/* H3 Featured Snippet */}
+          {faqs.length > 0 && (
+            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-greenborder rounded-2xl">
+              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            </div>
+          )}
           {/* FAQ */}
           <h2 className="font-heading font-bold text-wp-text mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
             Häufige Fragen — {keyword.keyword.replace('[Stadt]', city.name)}
           </h2>
-          <div className="border border-wp-border rounded-xl overflow-hidden bg-white shadow-wp-sm mb-10">
+          <div className="border border-wp-border rounded-xl overflow-hidden bg-white shadow-sm mb-8">
             {faqs.map((faq, i) => (
-              <div key={i} className={i < faqs.length - 1 ? 'border-b border-wp-border' : ''}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full bg-transparent border-none px-5 py-4 flex justify-between items-center cursor-pointer text-left gap-3">
+              <details key={i} className="group border-b border-wp-border last:border-0">
+                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
                   <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
-                </button>
-                <AnimatePresence>
-                  {openFaq === i && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }}>
-                      <p className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                </summary>
+                <div className="border-t border-wp-border">
+                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              </details>
             ))}
           </div>
 
