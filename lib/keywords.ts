@@ -535,7 +535,7 @@ faqPool: [
       { q: 'Lohnt sich PV für die Wärmepumpe in {stadt}?', a: 'Sehr. Mit einer PV-Anlage sinken die Betriebskosten der WP um 30–40%. Die optimale Kombination für {stadt}: 8–12 kWp PV + Wärmepumpe + optional Batteriespeicher.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe-oder-gas', 'waermepumpe'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe-oder-gas', 'waermepumpe', 'waermepumpe-installateur'],
   },
 ]
 
