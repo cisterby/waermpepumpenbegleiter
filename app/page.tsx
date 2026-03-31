@@ -80,7 +80,7 @@ export default function Home(){
   const c3=useCounter(21000,statsRef.v),c4=useCounter(25,statsRef.v)
 
   return(
-
+    <div style={{fontFamily:"'DM Sans',sans-serif",background:BG,color:TX,overflowX:'hidden'}}>
       {/* FAQ Schema für Featured Snippets */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
@@ -93,7 +93,6 @@ export default function Home(){
           { '@type': 'Question', name: 'Muss ich bei Auftragserteilung einen Vertrag mit wärmepumpenbegleiter.de abschließen?', acceptedAnswer: { '@type': 'Answer', text: 'Nein. Ihre Anfrage, alle Angebote und das Erstgespräch sind vollständig unverbindlich. Einen Vertrag schließen Sie ausschließlich mit dem Installateur Ihrer Wahl — nicht mit uns.' }},
         ]
       })}} />
-    <div style={{fontFamily:"'DM Sans',sans-serif",background:BG,color:TX,overflowX:'hidden'}}>
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet"/>
