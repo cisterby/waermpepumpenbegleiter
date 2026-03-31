@@ -70,17 +70,6 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   return (
     <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
 
-      {/* FAQ Schema — stadtspezifisch für Featured Snippets */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqs.slice(0, 5).map(f => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a }
-        }))
-      })}} />
-
       {/* Header */}
       <div className="relative h-36 overflow-hidden">
         <img src={STRIP_IMGS[0]} alt="WP Kostenrechner"
@@ -342,6 +331,17 @@ export default function WaermepumpeTemplate({
 
   return (
     <div className="bg-gray-50 min-h-screen">
+
+      {/* FAQ Schema — stadtspezifisch für Google Featured Snippets */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.slice(0, 5).map(f => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a }
+        }))
+      })}} />
 
       {/* ── HERO ────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[82vh] flex items-center overflow-hidden">
