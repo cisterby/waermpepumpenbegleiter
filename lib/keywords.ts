@@ -397,7 +397,8 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Welche Wärmepumpen-Anbieter gibt es in {stadt}?',
     ],
-    faqPool: [
+          crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-fachbetrieb'],
+      faqPool: [
       { q: 'Lokaler Betrieb oder bundesweiter Anbieter (Thermondo/Enpal) in {stadt}?', a: 'Lokale Betriebe kennen die örtlichen Gegebenheiten in {stadt} besser, sind bei Störungen schneller vor Ort und bieten oft flexiblere Lösungen. Bundesweite Anbieter können günstiger sein, arbeiten aber mit Subunternehmern.' },
     ],
     sitemapPriority: 0.7,
@@ -417,11 +418,11 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Was ist der Unterschied zwischen Luft-Wasser und Luft-Luft in {stadt}?',
     ],
-    faqPool: [
+faqPool: [
       { q: 'Luft-Wasser oder Luft-Luft in {stadt}?', a: 'Luft-Wasser-WP (Heizung + Warmwasser) ist in {stadt} der Standardfall für EFH. Luft-Luft ist günstiger, hat aber keinen Warmwasserkreislauf und ist in Deutschland weniger verbreitet.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe', 'erdwaermepumpe'],
+    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur'],
   },
   {
     id: 17, tier: 3,
@@ -442,7 +443,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Ist eine WP im Neubau in {stadt} Pflicht?', a: 'Seit 1.1.2024 muss jede neue Heizung 65% EE nutzen. Eine Wärmepumpe erfüllt das automatisch und ist damit die häufigste Wahl bei Neubauten in {stadt}.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe', 'luft-wasser-waermepumpe', 'erdwaermepumpe', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe', 'luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur'],
   },
   // ── TIER 4 ────────────────────────────────────────────────────
   {
@@ -459,7 +460,7 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: ['Wo bekomme ich eine unabhängige WP-Beratung in {stadt}?'],
     faqPool: [{ q: 'Was ist der iSFP und bringt er Vorteile in {stadt}?', a: 'Der individuelle Sanierungsfahrplan (iSFP) kostet ca. €500–1.000, wird aber mit 80% gefördert. Mit iSFP erhöht sich der KfW-BEG-Zuschuss um 5 Prozentpunkte.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur'],
+    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-kosten'],
   },
   {
     id: 19, tier: 4,
@@ -475,7 +476,7 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: ['Was macht einen guten WP-Fachbetrieb in {stadt} aus?'],
     faqPool: [{ q: 'Was unterscheidet einen WP-Fachbetrieb von einem normalen SHK-Betrieb?', a: 'Spezialisierte WP-Fachbetriebe haben mehr als 5 WP-Installationen durchgeführt, kennen die Förderprozesse und sind oft BWP-Mitglied. Das sichert Qualität und Förderkonformität.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe-anbieter', 'waermepumpe'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-anbieter', 'waermepumpe', 'waermepumpe-kosten'],
   },
   {
     id: 20, tier: 4,
@@ -491,7 +492,7 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: ['Wo kann ich die Wärmepumpe in {stadt} aufstellen?'],
     faqPool: [{ q: 'Welche Abstände muss ich beim Aufstellen in {stadt} einhalten?', a: 'In {bundesland} gelten in der Regel 3 Meter Abstand zur Grundstücksgrenze. Je nach Lärmpegel kann eine Ausnahmegenehmigung erforderlich sein. Ihr Installateur beantragt das für Sie.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe-installation', 'waermepumpe-installateur', 'waermepumpe'],
+    crossLinks: ['waermepumpe-installation', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-kosten'],
   },
   {
     id: 21, tier: 4,
@@ -534,7 +535,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Lohnt sich PV für die Wärmepumpe in {stadt}?', a: 'Sehr. Mit einer PV-Anlage sinken die Betriebskosten der WP um 30–40%. Die optimale Kombination für {stadt}: 8–12 kWp PV + Wärmepumpe + optional Batteriespeicher.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe-oder-gas', 'waermepumpe'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe-oder-gas', 'waermepumpe', 'waermepumpe-installateur'],
   },
 ]
 

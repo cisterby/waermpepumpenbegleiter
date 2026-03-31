@@ -13,10 +13,10 @@ export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, n
   const v = cityHash(city, 4, 71);
 
   const intros = [
-    `WP-Fachbetrieb {city.name}: Drei Merkmale — KfW-LuL-Registrierung, min. 5 WP-Installationen in 24 Monaten, Erfahrung für {city.normAussentemp}°C Normaußentemperatur in {city.bundesland}. Nur so wird JAZ {jaz} in {city.name} erreicht.`,
-    `In {city.name} mit {city.einwohner.toLocaleString('de-DE')} Einwohnern gibt es {city.einwohner >= 500000 ? 'viele Betriebe die WP anbieten, aber wenige echte Spezialisten' : 'eine überschaubare Zahl geprüfter WP-Fachbetriebe'}. Entscheidend: LuL-Registrierung und JAZ-Erfahrung für {city.avgTemp}°C. Wir prüfen 6 Kriterien.`,
-    `In {city.bundesland}: Fachbetriebe müssen seit 2026 Geräte mit 10 dB Schallunterschreitung installieren. Bei {city.einwohner >= 300000 ? 'dichter Bebauung in ' + city.name : city.bundesland + '-Auflagen'} entscheidend. Eigenanteil: {fmtEuro(foerd.eigenanteil)}.`,
-    `Fachbetrieb {city.name} prüfen: LuL-Nummer im KfW-Portal, HWK-Eintragung {city.bundesland}, Referenz mit {city.heizgradtage} Kd/a. Wir prüfen das für alle Partnerbetriebe vor jeder Vermittlung.`,
+    `WP-Fachbetrieb ${city.name}: Drei Merkmale — KfW-LuL-Registrierung, min. 5 WP-Installationen in 24 Monaten, Erfahrung für ${city.normAussentemp}°C Normaußentemperatur in ${city.bundesland}. Nur so wird JAZ ${jaz} in ${city.name} erreicht.`,
+    `In ${city.name} mit ${city.einwohner.toLocaleString('de-DE')} Einwohnern gibt es ${city.einwohner >= 500000 ? 'viele Betriebe die WP anbieten, aber wenige echte Spezialisten' : 'eine überschaubare Zahl geprüfter WP-Fachbetriebe'}. Entscheidend: LuL-Registrierung und JAZ-Erfahrung für ${city.avgTemp}°C. Wir prüfen 6 Kriterien.`,
+    `In ${city.bundesland}: Fachbetriebe müssen seit 2026 Geräte mit 10 dB Schallunterschreitung installieren. Bei ${city.einwohner >= 300000 ? 'dichter Bebauung in ' + city.name : city.bundesland + '-Auflagen'} entscheidend. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
+    `Fachbetrieb ${city.name} prüfen: LuL-Nummer im KfW-Portal, HWK-Eintragung ${city.bundesland}, Referenz mit ${city.heizgradtage} Kd/a. Wir prüfen das für alle Partnerbetriebe vor jeder Vermittlung.`,
   ];
 
   const heroStats = [

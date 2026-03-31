@@ -13,10 +13,10 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
   const v = cityHash(city, 4, 67);
 
   const intros = [
-    `Neubau in {city.name} ({city.bundesland}): 65%-EE-Pflicht gilt seit 2024 sofort. Mit Fußbodenheizung (Vorlauf 30–40°C) erreicht WP JAZ {Math.min(jaz + 0.5, 4.8).toFixed(1)}. Betriebskosten: {fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr — {fmtEuro(Math.round(calc.ersparnis * 1.2))}/Jahr besser als Gas.`,
-    `Neubau {city.name}: Mit {city.avgSunHours} Sonnenstunden/Jahr lohnt PV+WP. Eine 8-kWp-PV-Anlage deckt bis zu {Math.round(Math.min(city.avgSunHours * 8 * 0.85 * 0.65, 4000))} kWh des WP-Strombedarfs — effektive Wärmekosten unter 2 ct/kWh.`,
-    `KfW-Förderung Neubau {city.name}: Programm 458 gilt nur für Bestand. Im Neubau: KfW-KFN als zinsgünstiger Kredit. {city.bundeslandFoerderung ? 'Zusätzlich ' + city.bundesland + ': ' + city.bundeslandFoerderung : 'Bundesförd. KFN kombinierbar mit regionalen Programmen in ' + city.bundesland}.`,
-    `Neubau {city.name} 2026: {city.normAussentemp}°C Normaußentemperatur, {city.avgTemp}°C Jahresmittel, {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage. KfW-55 + Fußbodenheizung → JAZ {Math.min(jaz + 0.5, 4.8).toFixed(1)}. Betriebskosten: {fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr.`,
+    `Neubau in ${city.name} (${city.bundesland}): 65%-EE-Pflicht gilt seit 2024 sofort. Mit Fußbodenheizung (Vorlauf 30–40°C) erreicht WP JAZ ${Math.min(jaz + 0.5, 4.8).toFixed(1)}. Betriebskosten: ${fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr — ${fmtEuro(Math.round(calc.ersparnis * 1.2))}/Jahr besser als Gas.`,
+    `Neubau ${city.name}: Mit ${city.avgSunHours} Sonnenstunden/Jahr lohnt PV+WP. Eine 8-kWp-PV-Anlage deckt bis zu ${Math.round(Math.min(city.avgSunHours * 8 * 0.85 * 0.65, 4000))} kWh des WP-Strombedarfs — effektive Wärmekosten unter 2 ct/kWh.`,
+    `KfW-Förderung Neubau ${city.name}: Programm 458 gilt nur für Bestand. Im Neubau: KfW-KFN als zinsgünstiger Kredit. ${city.bundeslandFoerderung ? 'Zusätzlich ' + city.bundesland + ': ' + city.bundeslandFoerderung : 'Bundesförd. KFN kombinierbar mit regionalen Programmen in ' + city.bundesland}.`,
+    `Neubau ${city.name} 2026: ${city.normAussentemp}°C Normaußentemperatur, ${city.avgTemp}°C Jahresmittel, ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtage. KfW-55 + Fußbodenheizung → JAZ ${Math.min(jaz + 0.5, 4.8).toFixed(1)}. Betriebskosten: ${fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr.`,
   ];
 
   const heroStats = [
