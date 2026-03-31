@@ -54,19 +54,9 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
     `${city.name}: JAZ ${jaz} → Heizstrom ${heizStrom.toLocaleString('de-DE')} kWh + Warmwasserstrom ${wwStrom.toLocaleString('de-DE')} kWh = ${gesamtStrom.toLocaleString('de-DE')} kWh/Jahr. Bei ${city.strompreis} ct/kWh Strompreis: ${fmtEuro(kostenNormal)}/Jahr. Das sind ${fmtEuro(calc.ersparnis)}/Jahr weniger als Gasheizung.`,
   ];
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question', name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
       <div className="relative min-h-[55vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />

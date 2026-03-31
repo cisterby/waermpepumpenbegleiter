@@ -63,20 +63,9 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
     `Die Verbraucherzentrale empfiehlt: Mindestens 3 Vergleichsangebote einholen, alle Positionen einzeln ausweisen lassen und nur KfW-LuL-registrierte Betriebe beauftragen. In ${city.name} holen wir diese Angebote für Sie kostenlos ein — in 48 Stunden, vollständig vergleichbar.`,
   ];
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
       {/* ══ HERO ══════════════════════════════════════════════ */}
       <div className="relative min-h-[70vh] flex items-center overflow-hidden">
         <img src={IMGS.hero} alt={`Wärmepumpe Installateur ${city.name}`}

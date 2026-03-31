@@ -26,21 +26,9 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
     { pct: 5,  label: 'iSFP-Bonus', info: `Individueller Sanierungsfahrplan → +${fmtEuro(Math.round(25000 * 0.05))} bei €25.000 Invest · Eigenanteil ca. €60–140 nach BAFA-Förderung`, badge: '+5%', badgeColor: 'bg-wp-amberlt text-wp-amber' },
   ];
 
-  // FAQPage schema for Google Featured Snippets
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
       {/* ── HERO ─────────────────────────────────────── */}
       <div className="bg-wp-dark pt-24 pb-16 px-6" style={{ background: 'linear-gradient(135deg, #0A1910 0%, #1A4731 100%)' }}>
         <div className="max-w-5xl mx-auto">

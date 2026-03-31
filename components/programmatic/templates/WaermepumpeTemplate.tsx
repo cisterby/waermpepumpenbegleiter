@@ -332,16 +332,6 @@ export default function WaermepumpeTemplate({
   return (
     <div className="bg-gray-50 min-h-screen">
 
-      {/* FAQ Schema — stadtspezifisch für Google Featured Snippets */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqs.slice(0, 5).map(f => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a }
-        }))
-      })}} />
 
       {/* ── HERO ────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[82vh] flex items-center overflow-hidden">

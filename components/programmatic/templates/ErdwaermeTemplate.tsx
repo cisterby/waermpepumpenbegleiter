@@ -52,14 +52,9 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
     `Erdwärmepumpe ${city.name}: Tiefenbohrung 100–150m, konstante Quelltemperatur 10–12°C, JAZ ${jazSole}, kein Schall, +5% KfW immer. Mehrinvestition vs. Luft-WP: €8.000–€15.000. Amortisiert sich durch niedrigere Betriebskosten in ${Math.round(10000 / (calc.wpKosten - kostenSole))} Jahren.`,
   ];
 
-  const faqSchema = {
-    '@context': 'https://schema.org', '@type': 'FAQPage',
-    mainEntity: faqs.slice(0,5).map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />

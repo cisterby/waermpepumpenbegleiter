@@ -44,19 +44,9 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
     `Neubau ${city.name} 2026: ${city.normAussentemp}°C Normaußentemperatur, ${city.avgTemp}°C Jahresmittel, ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtage. Fußbodenheizung + WP → JAZ ${jazNeubau}. Betriebskosten: ${fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr.`,
   ];
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question', name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
       {/* Hero */}
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />

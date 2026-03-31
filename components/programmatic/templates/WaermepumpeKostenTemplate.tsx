@@ -42,25 +42,10 @@ export default function WaermepumpeKostenTemplate({
     `${city.bundesland}: ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} nicht rückzahlbarer Zuschuss für Hausbesitzer in ${city.name}. Jahresarbeitszahl ${jazLuft} bei ${city.normAussentemp}°C Normaußentemperatur. Betriebskosten Wärmepumpe: ${fmtEuro(calc.wpKosten)}/Jahr — gegenüber ${fmtEuro(calc.altKosten)}/Jahr Gas.`,
   ];
 
-  // FAQPage schema für Google
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       {/* FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
         <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />

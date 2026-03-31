@@ -48,19 +48,9 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
     `WP-Beratung ${city.name} (${city.bundesland}): ${city.normAussentemp}°C Normaußentemperatur, ${city.avgTemp}°C Jahresmittel, JAZ-Ziel ${jaz}. Betriebskosten: ${fmtEuro(calc.wpKosten)}/Jahr. Eigenanteil nach ${foerd.gesamtSatz}% KfW: ${fmtEuro(foerd.eigenanteil)}.`,
   ];
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question', name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
       {/* Hero */}
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />

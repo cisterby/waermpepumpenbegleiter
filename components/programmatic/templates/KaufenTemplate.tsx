@@ -19,19 +19,9 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* HERO */}
       <section className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
