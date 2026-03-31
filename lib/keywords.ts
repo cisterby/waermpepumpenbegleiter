@@ -332,7 +332,8 @@ export const KEYWORDS: Keyword[] = [
       'Eignet sich mein Grundstück in {stadt} für eine Erdwärmepumpe?',
       'Was kostet eine Erdwärmepumpe in {stadt}?',
     ],
-    faqPool: [
+          crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur'],
+      faqPool: [
       { q: 'Eignet sich {stadt} für Erdwärme?', a: 'In {bundesland} sind die geologischen Bedingungen überwiegend gut für Erdwärmesonden geeignet. Eine Genehmigung beim zuständigen Bergamt ist erforderlich. Ihr lokaler Fachbetrieb beantragt diese für Sie.' },
     ],
     sitemapPriority: 0.75,
