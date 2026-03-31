@@ -1,211 +1,146 @@
-// components/programmatic/templates/AltbauTemplate.tsx
-// "waermepumpe-altbau" — info_commercial
+// waermepumpe-altbau — WP im Altbau
 'use client';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight, AlertTriangle, TrendingUp, Clock, Calculator, FileText, Zap, Home, Leaf, ThumbsUp } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
+import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
-import LeadForm from '@/components/programmatic/LeadForm';
-import AuthorBox from '@/components/programmatic/AuthorBox';
-import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
-
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+import { cityHash } from '@/lib/content-variation';
+import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
 
 export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
+  const isUrgent = city.einwohner >= 100000;
+  const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
 
-  return (
-    <div className="min-h-screen bg-wp-bg font-sans">
-      {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
-                {keyword.keyword.replace('[Stadt]', '').trim()}
-              </Link>
-              <span className="text-white/25">›</span>
-              <span className="text-white/80">{city.name}</span>
-            </nav>
-            <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
-              {h1}
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
-              {[
-                `Wärmepumpe im Altbau {stadt} — funktioniert in den meisten Bestandsgebäuden. Wir prüfen die Eignung Ihres Hauses kostenlos.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),
-                `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur ist die Wärmepumpe die wirtschaftlichste Heizlösung. Jährliche Ersparnis: ${fmtEuro(calc.ersparnis)}.`,
-                `${city.name} (${city.bundesland}): ${city.heizgradtage} Heizgradtage · JAZ ${jaz} · Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
-                `Bis zu ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} für Hausbesitzer in ${city.name}. Wir begleiten Sie kostenlos.`,
-              ][variant]}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-                Kostenloses Angebot <ArrowRight size={16} />
-              </a>
-              <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
-                <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-amber text-lg leading-none">{foerd.gesamtSatz}%</p><p className="text-white/50 text-xs">KfW</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-green3 text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+  const heroStats = [
+    { val: `JAZ ${jaz}`, label: "Jahresarbeitszahl", sub: "in ${city.name}" },
+        { val: `${foerd.gesamtSatz}%`, label: "KfW-Förderung", sub: "Eigennutzer" },
+        { val: `${fmtEuro(foerd.eigenanteil)}`, label: "Eigenanteil", sub: "nach Förderung" },
+        { val: `${calc.amortisationJahre} J.`, label: "Amortisation", sub: "inkl. KfW" }
+  ];
 
-      {/* TRUST BAR */}
-      <div className="bg-white border-b border-wp-border py-3">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-5 flex-wrap">
-          <span className="text-xs font-bold text-wp-text3 uppercase tracking-wider shrink-0">Datenquellen</span>
-          {['KfW','BAFA','BWP','Fraunhofer ISE','Verbraucherzentrale','DWD'].map(s => (
-            <span key={s} className="text-sm font-semibold text-wp-text3">{s}</span>
-          ))}
-        </div>
-      </div>
+  const sections = (
+    <>
 
-      {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-[1fr_380px] gap-12 items-start">
-        <div>
-          {/* Featured Snippet Antwort */}
-          <div className="bg-white border-l-4 border-wp-green rounded-xl p-6 shadow-wp-sm mb-10">
+          {/* Featured Snippet */}
+          <div className="bg-white border border-wp-border border-l-4 border-l-wp-green rounded-xl p-6 shadow-wp-sm">
             <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-              {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
+              {fillTemplate('Funktioniert eine Wärmepumpe im Altbau in {stadt}?', city, jaz)}
             </h2>
             <p className="text-wp-text2 text-base leading-relaxed">
-              
-              Wärmepumpe in <strong>{city.name}</strong>: Eigenanteil ab <strong>{fmtEuro(foerd.eigenanteil)}</strong> nach KfW-Förderung.
-              Jährliche Ersparnis gegenüber Erdgas: <strong>{fmtEuro(calc.ersparnis)}</strong>.
-              JAZ {jaz} bei {city.avgTemp}°C Jahresmitteltemperatur.
+              Ja — in den meisten Altbauten in <strong className="text-wp-text">{city.name}</strong>. Entscheidend ist nicht das Baujahr sondern die <strong className="text-wp-text">Vorlauftemperatur</strong>. Moderne Hochtemperatur-Wärmepumpen arbeiten bis 70°C Vorlauf und sind damit mit nahezu allen Bestandsheizkörpern kompatibel. In {city.name} ({city.bundesland}) mit {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und {city.avgTemp}°C Jahresmittel erreichen WP eine JAZ von {jaz} — jährliche Ersparnis gegenüber Gas: <strong className="text-wp-text">{fmtEuro(calc.ersparnis)}</strong>.
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Funktioniert eine Wärmepumpe im Altbau in {stadt}?', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              Ja — in den meisten Altbauten in <strong>{city.name}</strong>. Entscheidend ist nicht das Baujahr, sondern die <strong>Vorlauftemperatur</strong>. Moderne Luft-WP arbeiten bis 70°C Vorlauf und sind damit mit normalen Heizkörpern kompatibel.
-            </p>
-            <div className="bg-white rounded-2xl border border-wp-border overflow-hidden shadow-wp-sm mb-6">
-              <div className="px-5 py-4 bg-wp-bg border-b border-wp-border">
-                <p className="font-heading font-semibold text-wp-text">Altbau-Eignung: Schnelltest</p>
-              </div>
-              <div className="p-5 space-y-4">
-                {[
-                  {q:"Sind Ihre Heizkörper warm bis sehr warm?",gut:"Ja → Vorlauf wahrsch. hoch → Hochtemperatur-WP empfohlen",schlecht:"Nein → Perfekt für Standard-WP"},
-                  {q:"Haben Sie bereits gedämmt (Dach, Keller)?",gut:"Ja → Heizlast gesunken → WP sehr geeignet",schlecht:"Nein → Trotzdem möglich, JAZ etwas niedriger"},
-                  {q:"Haben Sie Fußbodenheizung?",gut:"Ja → Ideal, niedrige Vorlauftemp. → JAZ "+String(jaz),schlecht:"Nein → Kein Problem mit moderner WP"},
-                ].map((item,i) => (
-                  <div key={i} className="rounded-xl border border-wp-border p-4">
-                    <p className="font-semibold text-wp-text text-sm mb-2">❓ {item.q}</p>
-                    <p className="text-wp-green text-xs mb-1">✓ {item.gut}</p>
-                    <p className="text-wp-text3 text-xs">{item.schlecht}</p>
-                  </div>
-                ))}
+          {/* Bild + Schnelltest nebeneinander */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="relative rounded-2xl overflow-hidden h-64">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80"
+                alt={`Wärmepumpe Altbau ${city.name}`} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-wp-dark/60 flex items-end p-5">
+                <div>
+                  <p className="font-heading font-bold text-white text-base">70–80% aller Altbauten geeignet</p>
+                  <p className="text-white/60 text-xs">Quelle: Bundesverband Wärmepumpe BWP</p>
+                </div>
               </div>
             </div>
-            <div className="bg-wp-greenlt border border-wp-green3/40 rounded-xl p-4">
-              <p className="font-heading font-semibold text-wp-green mb-2">Hydraulischer Abgleich — der Schlüssel im Altbau</p>
-              <p className="text-wp-text2 text-sm leading-relaxed">Ein hydraulischer Abgleich (€500–1.500) optimiert die Wärmeverteilung und senkt die nötige Vorlauftemperatur um oft 5–10°C. Das verbessert die JAZ und ist KfW-Pflicht für die volle Förderung.</p>
-            </div>
-
-          {/* FAQ */}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
-          <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
-            {faqs.map((faq, i) => (
-              <div key={i} className={i < faqs.length - 1 ? 'border-b border-wp-border' : ''}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full bg-transparent border-none px-5 py-4 flex justify-between items-center cursor-pointer text-left gap-3">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
-                </button>
-                <AnimatePresence>
-                  {openFaq === i && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }}>
-                      <p className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
-
-          {/* Nachbarstädte + Cross-Links */}
-          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
-
-          <div className="grid sm:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
-              <div className="flex flex-wrap gap-2">
-                {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {n.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
-              <div className="flex flex-wrap gap-2">
-                {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {kw.keyword.replace('[Stadt]', city.name)}
-                  </Link>
-                ))}
-              </div>
+            <div className="space-y-3">
+              <h3 className="font-heading font-bold text-wp-text text-lg">Altbau-Schnelltest für {city.name}</h3>
+              {[
+                { q: 'Heizkörper warm bis sehr warm?', ja: 'Hochtemperatur-WP bis 70°C empfohlen', nein: 'Standard-WP ideal — niedrige Vorlauftemp.' },
+                { q: 'Dach oder Keller bereits gedämmt?', ja: 'Heizlast gesunken → JAZ steigt auf ' + String(Math.min(jaz + 0.3, 4.5).toFixed(1)), nein: 'Trotzdem möglich — JAZ ' + String(jaz) },
+                { q: 'Fußbodenheizung vorhanden?', ja: 'Ideal — niedrigste Vorlauftemperatur, JAZ ' + String(Math.min(jaz + 0.5, 4.8).toFixed(1)), nein: 'Kein Problem mit moderner WP' },
+              ].map((item, i) => (
+                <div key={i} className="bg-white rounded-xl border border-wp-border p-3 shadow-wp-sm">
+                  <p className="font-semibold text-wp-text text-xs mb-2">❓ {item.q}</p>
+                  <p className="text-wp-green text-xs mb-0.5">✓ Ja: {item.ja}</p>
+                  <p className="text-wp-text3 text-xs">○ Nein: {item.nein}</p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* STICKY SIDEBAR */}
-        <div id="angebot" className="sticky top-24 space-y-4">
-          {/* Quick Stats */}
-          <div className="bg-wp-dark rounded-2xl p-5 shadow-wp-xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">{city.name} — Auf einen Blick</p>
-            {[
-              {l:'Eigenanteil nach KfW', v: fmtEuro(foerd.eigenanteil), c:'text-wp-amber'},
-              {l:`Förderung (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c:'text-green-400'},
-              {l:'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c:'text-wp-green3'},
-              {l:'JAZ in '+city.name, v: String(jaz), c:'text-white'},
-              {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-wp-amber'},
-            ].map(r => (
-              <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
-                <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
+          {/* Haupttext */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Was beim Altbau in {city.name} wirklich entscheidet
+            </h2>
+            <div className="space-y-4 text-wp-text2 text-base leading-relaxed">
+              <p>
+                Die häufigste Falschannahme: "Mein Haus ist zu alt für eine Wärmepumpe." In der Praxis sind in {city.name} ({city.bundesland}) mit {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen pro Jahr die meisten Häuser ab Baujahr 1960 WP-tauglich — sofern eine korrekte Heizlastberechnung nach DIN EN 12831 vorliegt.
+              </p>
+              <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-5">
+                <h3 className="font-heading font-semibold text-wp-green text-base mb-3">
+                  Hydraulischer Abgleich — der Schlüssel im Altbau
+                </h3>
+                <p className="text-wp-text2 text-sm leading-relaxed">
+                  Ein hydraulischer Abgleich (KfW-Pflicht, €500–1.500) optimiert die Wärmeverteilung und senkt die nötige Vorlauftemperatur um typisch 5–15°C. Das verbessert die JAZ von {(jaz - 0.4).toFixed(1)} auf {jaz} oder besser — und ist Voraussetzung für die volle KfW-Förderung.
+                </p>
               </div>
-            ))}
+              <p>
+                Hochtemperatur-Wärmepumpen wie der Viessmann Vitocal 252-A oder Stiebel Eltron WPL arbeiten bis 70°C Vorlauf — kompatibel mit nahezu allen Heizkörpern in {city.name}. Oft reicht der Austausch von einem oder zwei unterdimensionierten Heizkörpern um die Systemtemperatur deutlich zu senken.
+              </p>
+            </div>
           </div>
-          {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-          <AuthorBox keywordSlug={keyword.slug} />
-          {/* Trust */}
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
+
+          {/* Kostentabelle Altbau */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Typische Kosten für WP im Altbau in {city.name}
+            </h2>
+            <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
+              <table className="w-full">
+                <thead><tr className="bg-wp-dark">
+                  <th className="px-4 py-3 text-left text-[rgba(255,255,255,0.45)] text-xs font-bold uppercase">Position</th>
+                  <th className="px-4 py-3 text-right text-[rgba(255,255,255,0.45)] text-xs font-bold uppercase">Kosten</th>
+                  <th className="px-4 py-3 text-right text-wp-green3 text-xs font-bold uppercase">KfW-fähig</th>
+                </tr></thead>
+                <tbody>
+                  {[
+                    ['WP-Gerät (inkl. WW-Speicher)', '€8.000–€15.000', '✓'],
+                    ['Installation & Montage', '€4.000–€8.000', '✓'],
+                    ['Hydraulischer Abgleich', '€500–€1.500', '✓ Pflicht'],
+                    ['Elektroinstallation', '€500–€1.500', '✓'],
+                    ['Fundament Außeneinheit', '€300–€800', '✓'],
+                    ['Ggf. Heizkörpertausch (1–2 St.)', '€200–€800', 'BAFA 15%'],
+                    ['Gesamt brutto', '€14.000–€28.000', ''],
+                    ['Abzüglich KfW (' + String(foerd.gesamtSatz) + '%)', '−' + fmtEuro(foerd.zuschuss), ''],
+                  ].map(([pos, kosten, kfw], i) => (
+                    <tr key={i} className={i === 7 ? 'bg-wp-greenlt border-t-2 border-wp-green' : i % 2 === 0 ? 'bg-white' : 'bg-wp-bg/40'}>
+                      <td className={`px-4 py-3 text-sm border-b border-wp-border ${i === 7 ? 'font-bold text-wp-text' : 'text-wp-text2'}`}>{pos}</td>
+                      <td className={`px-4 py-3 text-sm text-right font-mono border-b border-wp-border ${i === 7 ? 'font-bold text-wp-green' : 'text-wp-text'}`}>{kosten}</td>
+                      <td className={`px-4 py-3 text-xs text-right border-b border-wp-border ${kfw.includes('Pflicht') ? 'text-wp-green font-bold' : 'text-wp-text3'}`}>{kfw}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Bild Installateur */}
+          <div className="relative rounded-2xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80"
+              alt={`WP Installation Altbau ${city.name}`} className="w-full h-52 object-cover" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.4) 100%)' }} />
+            <div className="absolute inset-0 flex items-center px-8">
+              <div>
+                <p className="font-heading font-extrabold text-white text-xl mb-2">Ihr Eigenanteil in {city.name}</p>
+                <p className="font-mono font-bold text-wp-amber text-3xl">{fmtEuro(foerd.eigenanteil)}</p>
+                <p className="text-white/55 text-sm mt-1">nach {foerd.gesamtSatz}% KfW-Förderung · nicht rückzahlbar</p>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+
+    </>
+  );
+
+  return (
+    <RichTemplateBase
+      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1}
+      heroImg="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80"
+      heroStats={heroStats}
+      {...(isUrgent ? { urgencyBadge: `GEG-Frist ${city.name}: ${gegFristFormatted}` } : {})}
+      sections={sections}
+    />
   );
 }
