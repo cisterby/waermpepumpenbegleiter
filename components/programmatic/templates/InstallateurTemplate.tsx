@@ -268,7 +268,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.80) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-4 left-4">
                   <p className="text-white font-bold text-sm">Vollständige Angebote</p>
-                  <p className="text-[rgba(255,255,255,0.65)] text-xs">>60% der Angebote sind unvollständig (VZ)</p>
+                  <p className="text-[rgba(255,255,255,0.65)] text-xs">&gt;60% der Angebote sind unvollständig (VZ)</p>
                 </div>
               </div>
               <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
