@@ -27,20 +27,9 @@ export default function RichTemplateBase({
   const isUrgent = city.einwohner >= 100000;
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
       {/* ── HERO ── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
         <img src={heroImg} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
