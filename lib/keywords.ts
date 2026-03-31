@@ -373,12 +373,11 @@ export const KEYWORDS: Keyword[] = [
       'Was kostet eine Wärmepumpe in {stadt} im Jahr {year}?',
       'Wie haben sich die WP-Preise in {stadt} entwickelt?',
     ],
-            crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
       faqPool: [
       { q: 'Was kostet eine Wärmepumpe aktuell in {stadt}?', a: 'Luft-Wasser-WP: €18.000–€28.000 komplett. Sole-Wasser: €22.000–€35.000. Wasser-Wasser: €25.000–€40.000. Die Preise sind 2025/26 nach dem Boom stabil geblieben.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur'],
   },
   {
     id: 15, tier: 3,
