@@ -353,7 +353,8 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Wo bekomme ich kostenlose WP-Angebote in {stadt}?',
     ],
-    faqPool: [
+          crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung'],
+      faqPool: [
       { q: 'Wie viele Angebote sollte ich in {stadt} einholen?', a: 'Mindestens 3. Die Verbraucherzentrale empfiehlt ausdrücklich, mehrere Angebote zu vergleichen — Preisunterschiede von 30–50% sind keine Seltenheit.' },
     ],
     sitemapPriority: 0.72,
