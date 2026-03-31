@@ -492,7 +492,7 @@ faqPool: [
     featuredSnippetQuestions: ['Wo kann ich die Wärmepumpe in {stadt} aufstellen?'],
     faqPool: [{ q: 'Welche Abstände muss ich beim Aufstellen in {stadt} einhalten?', a: 'In {bundesland} gelten in der Regel 3 Meter Abstand zur Grundstücksgrenze. Je nach Lärmpegel kann eine Ausnahmegenehmigung erforderlich sein. Ihr Installateur beantragt das für Sie.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe-installation', 'waermepumpe-installateur', 'waermepumpe'],
+    crossLinks: ['waermepumpe-installation', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-kosten'],
   },
   {
     id: 21, tier: 4,
