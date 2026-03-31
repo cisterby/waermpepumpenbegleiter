@@ -15,11 +15,12 @@ interface Props {
   params: { keywordSlug: string; citySlug: string };
 }
 
-// DEV-MODUS: Jede Anfrage wird frisch gerendert — kein Caching
-// → Änderungen sofort sichtbar ohne Cache-Probleme
-// Nach Abschluss der Entwicklung auf ISR umstellen:
-//   export const revalidate = 3600; (1 Stunde)
-export const dynamic = 'force-dynamic';
+// dynamicParams = true → unbekannte Routen werden on-demand gerendert + gecacht
+// Google bekommt volles HTML — identisch zu SSG aus SEO-Sicht
+export const dynamicParams = true;
+
+// ISR: Seiten nach 30 Tagen neu generieren (Preise, Förderinfos aktuell halten)
+export const revalidate = 2592000;
 
 // Pre-builden: nur Tier 1 Keywords × Top 50 Städte = 250 Seiten
 // → ~2 Min Buildzeit statt 17 Min
@@ -64,9 +65,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title, description: desc, url,
       type: 'website', locale: 'de_DE',
-      images: [{ url: 'https://waermepumpenbegleiter.de/opengraph-image.png', width: 1200, height: 630 }],
     },
-    twitter: { card: 'summary_large_image', title, description: desc },
+    twitter: {
+      card: 'summary_large_image', title, description: desc,
+      images: [`/waermepumpe-${params.citySlug}/og`],
+    },
     robots: { index: true, follow: true },
   };
 }
