@@ -1,214 +1,242 @@
 // components/programmatic/templates/ErdwaermeTemplate.tsx
-// "erdwaermepumpe" — info_commercial
+// erdwaermepumpe — vollständig standalone
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
+import { ChevronDown, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
+import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+const IMG = 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=1920&q=80';
+
+const BOHRUNG_VS_KOLLEKTOR = [
+  { kriterium: 'Grundstücksfläche nötig', bohrung: 'Gering (5×5m Bohrstelle)', kollektor: 'Groß (1,5–2× Wohnfläche)', besser: 'Bohrung' },
+  { kriterium: 'Kosten Erdarbeiten', bohrung: '€6.000–€15.000', kollektor: '€3.000–€8.000', besser: 'Kollektor' },
+  { kriterium: 'Effizienz (JAZ)', bohrung: 'JAZ 4,5–5,5', kollektor: 'JAZ 4,0–4,8', besser: 'Bohrung' },
+  { kriterium: 'Genehmigung', bohrung: 'Bergamt + Wasserrecht', kollektor: 'Meist genehmigungsfrei', besser: 'Kollektor' },
+  { kriterium: 'Bohrtiefe', bohrung: '80–200m je nach Geologie', kollektor: '1,0–1,5m tief', besser: 'Je nach Platz' },
+  { kriterium: 'Saisonale Schwankung', bohrung: 'Keine — konstant 10–12°C', kollektor: 'Gering (±2°C)', besser: 'Bohrung' },
+  { kriterium: 'KfW-Bonus', bohrung: '+5% immer', kollektor: '+5% immer', besser: 'Beide gleich' },
+];
+
+const GENEHMIGUNG = [
+  { step: 'Grundwassergutachten', beschreibung: 'Hydrogeologisches Gutachten prüft Grundwassertiefe und Fließrichtung. Kostenpflichtig: €300–800.' },
+  { step: 'Bergamt-Antrag', beschreibung: 'Tiefenbohrungen > 100m benötigen in vielen Bundesländern eine Genehmigung beim zuständigen Bergamt. Bearbeitungszeit: 4–12 Wochen.' },
+  { step: 'Wasserrechtliche Erlaubnis', beschreibung: 'Untere Wasserbehörde prüft ob Bohrung Grundwasser gefährdet. In manchen Trinkwasserschutzzonen verboten.' },
+  { step: 'Fachbetrieb F-Gas zertifiziert', beschreibung: 'Kältemittelarbeiten nur durch F-Gas-zertifizierten Kälteanlagenbauer — Pflicht unabhängig von Genehmigungen.' },
+];
+
+const KOSTEN_ERDWAERME = [
+  { pos: 'Sole-WP-Gerät', von: 10000, bis: 18000, note: 'Hocheffizienz, kein Schall' },
+  { pos: 'Tiefenbohrung (100–150m)', von: 6000, bis: 14000, note: '€50–80/m Bohrmeter' },
+  { pos: 'Sole-Kreislauf & Pumpen', von: 1500, bis: 3000, note: 'Frostschutzmittel, Verteiler' },
+  { pos: 'Montage & Hydraulik', von: 2500, bis: 5000, note: 'Wie bei Luft-WP' },
+  { pos: 'Genehmigungen', von: 300, bis: 1500, note: 'Je nach Bundesland' },
+];
 
 export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+  const jazSole = Math.min(jaz + 1.0, 5.5).toFixed(1);
+  const kostenSole = Math.round(calc.wpKosten * (jaz / (jaz + 1.0)));
+  const gesamtMin = KOSTEN_ERDWAERME.reduce((s,p) => s+p.von, 0);
+  const gesamtMax = KOSTEN_ERDWAERME.reduce((s,p) => s+p.bis, 0);
+
+  const intros = [
+    `Erdwärmepumpe ${city.name}: JAZ ${jazSole} bei konstant 10–12°C Erdtemperatur — ${(Number(jazSole) - jaz).toFixed(1)} mehr als Luft-WP. Betriebskosten: ${fmtEuro(kostenSole)}/Jahr. Nachteil: Tiefenbohrung (€6.000–€14.000) und Genehmigung bei ${city.bundesland}.`,
+    `Sole-WP ${city.name} (${city.bundesland}): KfW-Bonus +5% immer aktiv (auch ohne Propan). Nach ${foerd.gesamtSatz + 5}% KfW = ${fmtEuro(Math.round(foerd.zuschuss * 1.12))} Zuschuss. Gesamtkosten ${fmtEuro(gesamtMin)}–${fmtEuro(gesamtMax)}, höher als Luft-WP aber niedrigste Betriebskosten.`,
+    `Erdwärme ${city.name}: Grundwassergutachten und Bergamt-Genehmigung erforderlich (4–12 Wochen). Bei ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und JAZ ${jazSole} spart die Sole-WP ${fmtEuro(Math.round((Number(jazSole) - jaz) / jaz * calc.wpKosten))}/Jahr mehr als Luft-WP.`,
+    `Erdwärmepumpe ${city.name}: Tiefenbohrung 100–150m, konstante Quelltemperatur 10–12°C, JAZ ${jazSole}, kein Schall, +5% KfW immer. Mehrinvestition vs. Luft-WP: €8.000–€15.000. Amortisiert sich durch niedrigere Betriebskosten in ${Math.round(10000 / (calc.wpKosten - kostenSole))} Jahren.`,
+  ];
 
   const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faqs.slice(0,5).map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
-                {keyword.keyword.replace('[Stadt]', '').trim()}
-              </Link>
-              <span className="text-white/25">›</span>
-              <span className="text-white/80">{city.name}</span>
-            </nav>
-            <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
-              {h1}
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
-              {[
-                `Erdwärmepumpe in {stadt} — höchste JAZ, konstante Effizienz unabhängig von der Außentemperatur. Geologie & Eignung für {bundesland}.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),
-                `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur ist die Wärmepumpe die wirtschaftlichste Heizlösung. Jährliche Ersparnis: ${fmtEuro(calc.ersparnis)}.`,
-                `${city.name} (${city.bundesland}): ${city.heizgradtage} Heizgradtage · JAZ ${jaz} · Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
-                `Bis zu ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} für Hausbesitzer in ${city.name}. Wir begleiten Sie kostenlos.`,
-              ][variant]}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-                Kostenloses Angebot <ArrowRight size={16} />
-              </a>
-              <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
-                <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-amber text-lg leading-none">{foerd.gesamtSatz}%</p><p className="text-white/50 text-xs">KfW</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-green3 text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* TRUST BAR */}
-      <div className="bg-white border-b border-wp-border py-3">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-5 flex-wrap">
-          <span className="text-xs font-bold text-wp-text3 uppercase tracking-wider shrink-0">Datenquellen</span>
-          {['KfW','BAFA','BWP','Fraunhofer ISE','Verbraucherzentrale','DWD'].map(s => (
-            <span key={s} className="text-sm font-semibold text-wp-text3">{s}</span>
-          ))}
+      <div className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          <div className="inline-block bg-wp-green text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+            KfW +5% Bonus — immer aktiv bei Sole-WP
+          </div>
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: `JAZ ${jazSole}`, label: 'Sole-WP Effizienz', sub: '10–12°C konstant' },
+              { val: fmtEuro(kostenSole)+'/J.', label: 'Betriebskosten', sub: city.name },
+              { val: fmtEuro(gesamtMin)+'+', label: 'Gesamtkosten', sub: 'Vor KfW' },
+              { val: '+5%', label: 'KfW-Bonus', sub: 'Immer bei Sole-WP' },
+            ].map((s,i) => (
+              <div key={i}><div className="text-xl font-extrabold text-white">{s.val}</div>
+              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Eignung prüfen — kostenlos →
+          </a>
         </div>
       </div>
 
-      {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-[1fr_380px] gap-12 items-start">
-        <div>
-          {/* Featured Snippet Antwort */}
-          <div className="bg-white border-l-4 border-wp-green rounded-xl p-6 shadow-wp-sm mb-10">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-              {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Lohnt sich eine Erdwärmepumpe in {stadt}?', city, jaz)}
             </h2>
             <p className="text-wp-text2 text-base leading-relaxed">
-              
-              Wärmepumpe in <strong>{city.name}</strong>: Eigenanteil ab <strong>{fmtEuro(foerd.eigenanteil)}</strong> nach KfW-Förderung.
-              Jährliche Ersparnis gegenüber Erdgas: <strong>{fmtEuro(calc.ersparnis)}</strong>.
-              JAZ {jaz} bei {city.avgTemp}°C Jahresmitteltemperatur.
+              Eine Erdwärmepumpe (Sole-WP) in <strong>{city.name}</strong> erreicht JAZ {jazSole} — die konstante Erdtemperatur von 10–12°C macht sie unabhängig von Außentemperaturspitzen. Betriebskosten: {fmtEuro(kostenSole)}/Jahr vs. {fmtEuro(calc.wpKosten)}/Jahr Luft-WP. Nachteile: Tiefenbohrung (€6.000–€14.000) und Genehmigung in {city.bundesland}. KfW: +5% Effizienzbonus immer aktiv.
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Eignet sich {stadt} für eine Erdwärmepumpe?', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              In <strong>{city.bundesland}</strong> sind die geologischen Bedingungen für Erdwärme überwiegend gut. Eine Sole-Wasser-WP erreicht in {city.name} eine JAZ von ca. <strong>4,3–5,0</strong> — deutlich höher als eine Luft-WP ({jaz}). Die höheren Installationskosten amortisieren sich über die Lebensdauer.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4 mb-6">
-              {[
-                {title:"Sole-Wasser (Tiefenbohrung)",icon:"🌍",pros:["JAZ 4,3–5,0","Konstante Effizienz","Auch bei -20°C","+5% KfW-Bonus"],cons:["Bohrung 100–150m nötig","Genehmigung Bergamt","€6.000–12.000 Bohrkosten"],kosten:"€22.000–35.000"},
-                {title:"Wasser-Wasser (Grundwasser)",icon:"💧",pros:["JAZ bis 6,0+","Niedrigste Betriebskosten","+5% KfW-Bonus","Sehr hohe Effizienz"],cons:["Grundwasserrecht beachten","Wasserqualität prüfen","Nicht überall möglich","Pumpen wartungsintensiv"],kosten:"€25.000–40.000"},
-              ].map((t,i) => (
-                <div key={i} className="bg-white rounded-xl border border-wp-border p-5 shadow-wp-sm">
-                  <div className="text-3xl mb-2">{t.icon}</div>
-                  <h3 className="font-heading font-semibold text-wp-text mb-1">{t.title}</h3>
-                  <p className="font-mono font-bold text-wp-amber text-sm mb-3">{t.kosten}</p>
-                  <div className="space-y-1 mb-3">
-                    {t.pros.map(p => <div key={p} className="flex gap-2 text-xs text-wp-text2"><span className="text-wp-green">✓</span>{p}</div>)}
-                  </div>
-                  <div className="space-y-1">
-                    {t.cons.map(c => <div key={c} className="flex gap-2 text-xs text-wp-text3"><span>–</span>{c}</div>)}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Tiefenbohrung vs. Flächenkollektor in {city.name}
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Kriterium','Tiefenbohrung','Flächenkollektor','Vorteil'].map(h=>(
+                    <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {BOHRUNG_VS_KOLLEKTOR.map((r,i)=>(
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-3 py-3 font-semibold text-wp-text text-sm">{r.kriterium}</td>
+                      <td className={`px-3 py-3 text-sm ${r.besser==='Bohrung'?'text-wp-green font-bold':'text-wp-text2'}`}>{r.bohrung}</td>
+                      <td className={`px-3 py-3 text-sm ${r.besser==='Kollektor'?'text-wp-green font-bold':'text-wp-text2'}`}>{r.kollektor}</td>
+                      <td className="px-3 py-3 text-xs text-wp-text3">{r.besser}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              Genehmigungen für Erdwärme in {city.bundesland}
+            </h2>
+            <div className="space-y-3">
+              {GENEHMIGUNG.map((g,i)=>(
+                <div key={i} className="flex gap-3 p-4 bg-white border border-wp-border rounded-xl">
+                  <div className="w-6 h-6 bg-wp-green rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">{i+1}</div>
+                  <div>
+                    <div className="font-heading font-bold text-wp-text text-sm mb-1">{g.step}</div>
+                    <p className="text-wp-text2 text-xs leading-relaxed">{g.beschreibung}</p>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
 
-          {/* FAQ */}
-                    {/* H3 Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Kostenübersicht Erdwärmepumpe {city.name}
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Position','Kosten von','Kosten bis','Hinweis'].map(h=>(
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {KOSTEN_ERDWAERME.map((k,i)=>(
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{k.pos}</td>
+                      <td className="px-4 py-3 font-mono text-wp-text2">{fmtEuro(k.von)}</td>
+                      <td className="px-4 py-3 font-mono text-wp-text2">{fmtEuro(k.bis)}</td>
+                      <td className="px-4 py-3 text-xs text-wp-text3">{k.note}</td>
+                    </tr>
+                  ))}
+                  <tr className="bg-wp-greenxlt border-t-2 border-wp-borderl">
+                    <td className="px-4 py-3 font-bold text-wp-text">Gesamt</td>
+                    <td className="px-4 py-3 font-mono font-bold text-wp-green">{fmtEuro(gesamtMin)}</td>
+                    <td className="px-4 py-3 font-mono font-bold text-wp-green">{fmtEuro(gesamtMax)}</td>
+                    <td className="px-4 py-3 text-xs text-wp-text3">Vor KfW-Förderung</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
               <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
-          <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-wp-border last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="border-t border-wp-border">
-                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                </div>
-              </details>
-            ))}
-          </div>
 
-          {/* Nachbarstädte + Cross-Links */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Erdwärmepumpe {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq,i)=>(
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border"><p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p></div>
+                </details>
+              ))}
+            </div>
+          </div>
 
           <div className="grid sm:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
-              <div className="flex flex-wrap gap-2">
-                {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {n.name}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">{nearby.map(n=>(
+                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+              ))}</div>
             </div>
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
-              <div className="flex flex-wrap gap-2">
-                {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {kw.keyword.replace('[Stadt]', city.name)}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">{(keyword.crossLinks??[]).map((slug:string)=>(
+                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                </Link>
+              ))}</div>
             </div>
           </div>
         </div>
 
-        {/* STICKY SIDEBAR */}
-        <div id="angebot" className="sticky top-24 space-y-4">
-          {/* Quick Stats */}
-          <div className="bg-wp-dark rounded-2xl p-5 shadow-wp-xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">{city.name} — Auf einen Blick</p>
-            {[
-              {l:'Eigenanteil nach KfW', v: fmtEuro(foerd.eigenanteil), c:'text-wp-amber'},
-              {l:`Förderung (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c:'text-green-400'},
-              {l:'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c:'text-wp-green3'},
-              {l:'JAZ in '+city.name, v: String(jaz), c:'text-white'},
-              {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-wp-amber'},
-            ].map(r => (
-              <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
-                <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
-              </div>
-            ))}
-          </div>
-          {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-          <AuthorBox keywordSlug={keyword.slug} />
-          {/* Trust */}
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
-              </div>
-            ))}
-          </div>
+        <div><div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+          <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Erdwärme-Kennzahlen</div>
+          {[['JAZ Sole-WP',jazSole],['JAZ Luft-WP',String(jaz)],['Betriebskosten',fmtEuro(kostenSole)+'/J.'],
+            ['KfW-Bonus','+5% immer'],['Gesamtkosten',fmtEuro(gesamtMin)+'–'+fmtEuro(gesamtMax)],
+            ['Genehmigung',city.bundesland+': nötig'],
+          ].map(([l,v],i)=>(
+            <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+              <span className="text-wp-text2">{l}</span><span className="font-bold text-wp-text">{v}</span>
+            </div>
+          ))}
+          <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+        </div></div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">Fraunhofer ISE · LIAG Geothermie-Atlas · KfW BEG 458 · Stand März 2026</div>
       </div>
     </div>
   );

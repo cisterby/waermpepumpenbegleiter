@@ -1,216 +1,260 @@
 // components/programmatic/templates/PreiseTemplate.tsx
-// "waermepumpe-preise" — commercial
+// waermepumpe-preise — vollständig standalone, 500+ Wörter unique content
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
+import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+const IMG = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80';
+
+const WP_TYPEN_PREISE = [
+  { typ: 'Luft-Wasser-WP (Standard)', gerät: '€9.000–€18.000', montage: '€3.000–€6.000', gesamt: '€12.000–€28.000', kfw: true, note: '92% aller WP-Installationen' },
+  { typ: 'Luft-Wasser-WP (Hochtemperatur)', gerät: '€11.000–€20.000', montage: '€3.500–€6.500', gesamt: '€14.500–€30.000', kfw: true, note: 'Für Altbau mit VL 55–70°C' },
+  { typ: 'Sole-Wasser-WP (Erdwärme)', gerät: '€10.000–€18.000', montage: '€8.000–€18.000', gesamt: '€22.000–€38.000', kfw: true, note: 'Inkl. Tiefenbohrung 100–200m' },
+  { typ: 'Wasser-Wasser-WP (Grundwasser)', gerät: '€10.000–€17.000', montage: '€10.000–€20.000', gesamt: '€22.000–€40.000', kfw: true, note: 'Selten — Grundwasserrecht nötig' },
+];
+
+const PREIS_FAKTOREN = [
+  { faktor: 'Heizlast / Gebäudegröße', einfluss: 'Hoch', detail: 'Jedes kW mehr Heizleistung = ca. €800–1.200 Mehrkosten. Heizlastberechnung vor Auswahl Pflicht.' },
+  { faktor: 'Vorlauftemperatur (VL)', einfluss: 'Mittel', detail: 'Hochtemperatur-WP (bis 70°C) kostet €1.500–3.000 mehr als Standard. Häufig in Altbauten.' },
+  { faktor: 'Kältemittel R290 (Propan)', einfluss: 'Niedrig', detail: 'R290-Geräte kosten €200–500 mehr, bringen aber +5% KfW-Bonus — rechnet sich fast immer.' },
+  { faktor: 'Pufferspeicher', einfluss: 'Mittel', detail: '200–500 l Pufferspeicher: €600–2.000. Notwendig bei kurzen Heizkreisen oder getakteter Heizung.' },
+  { faktor: 'Elektroanschluss', einfluss: 'Variabel', detail: 'Neuer Starkstromkreis + Zweitarif-Zähler: €500–1.500. Häufig unterschätzt.' },
+];
+
+const VERSTECKTE_KOSTEN = [
+  { pos: 'Elektroinstallation & Starkstrom', kosten: '€500–1.500', note: 'Eigener Kreis 3×16A, oft nicht im Hauptangebot' },
+  { pos: 'Hydraulischer Abgleich', kosten: '€500–1.500', note: 'KfW-Pflicht, muss separat ausgewiesen sein' },
+  { pos: 'Wärmemengenzähler (KfW-Pflicht 2026)', kosten: '€300–600', note: 'Neu ab 2026 KfW-Pflicht' },
+  { pos: 'Kernbohrung Außenwand', kosten: '€150–400', note: 'Für Kältemittelleitungen' },
+  { pos: 'Schallschutzfundament', kosten: '€200–600', note: 'Empfohlen, in städtischen Lagen Pflicht' },
+  { pos: 'WW-Speicher (falls nicht enthalten)', kosten: '€800–2.500', note: 'Warmwasserbereitung separat' },
+  { pos: 'Alte Heizung entsorgen', kosten: '€200–500', note: 'Demontage + Entsorgungskosten' },
+];
 
 export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+  const eigenanteilMin = Math.round(12000 * (1 - foerd.gesamtSatz / 100));
+  const eigenanteilMax = Math.round(30000 * (1 - foerd.gesamtSatz / 100));
+
+  const intros = [
+    `WP-Preise ${city.name} 2026: Luft-WP €12.000–€28.000, nach ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) noch €${eigenanteilMin.toLocaleString('de-DE')}–€${eigenanteilMax.toLocaleString('de-DE')} Eigenanteil. Versteckte Kosten (Elektro, Puffer, Entsorgung) machen oft 15–25% der Gesamtrechnung aus.`,
+    `Wärmepumpe ${city.name}: Gesamtkosten Luft-WP inkl. aller Nebenkosten: ${fmtEuro(foerd.eigenanteil)} Eigenanteil nach KfW. JAZ ${jaz} → Betriebskosten ${fmtEuro(calc.wpKosten)}/Jahr. Amortisation: ${calc.amortisationJahre} Jahre.`,
+    `Preisvergleich ${city.name} (${city.bundesland}): Luft-WP ab €12.000, Sole-WP €22.000+. Nach ${foerd.gesamtSatz}% KfW = Eigenanteil ${fmtEuro(foerd.eigenanteil)}. Achtung: Angebote ohne Heizlastberechnung immer ablehnen.`,
+    `Was kostet eine WP in ${city.name}? Gerät + Montage + Nebenkosten (Elektro, Puffer, Entsorgung) = €15.000–€32.000 vor Förderung. ${foerd.gesamtSatz}% KfW deckt ${fmtEuro(foerd.zuschuss)} ab. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
+  ];
 
   const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faqs.slice(0,5).map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
-                {keyword.keyword.replace('[Stadt]', '').trim()}
-              </Link>
-              <span className="text-white/25">›</span>
-              <span className="text-white/80">{city.name}</span>
-            </nav>
-            <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
-              {h1}
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
-              {[
-                `Wärmepumpe Preise {stadt} {year} — alle Typen im Vergleich, aktuelle Marktpreise und was die Kosten beeinflusst.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),
-                `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur ist die Wärmepumpe die wirtschaftlichste Heizlösung. Jährliche Ersparnis: ${fmtEuro(calc.ersparnis)}.`,
-                `${city.name} (${city.bundesland}): ${city.heizgradtage} Heizgradtage · JAZ ${jaz} · Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
-                `Bis zu ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} für Hausbesitzer in ${city.name}. Wir begleiten Sie kostenlos.`,
-              ][variant]}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-                Kostenloses Angebot <ArrowRight size={16} />
-              </a>
-              <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
-                <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-amber text-lg leading-none">{foerd.gesamtSatz}%</p><p className="text-white/50 text-xs">KfW</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-green3 text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* TRUST BAR */}
-      <div className="bg-white border-b border-wp-border py-3">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-5 flex-wrap">
-          <span className="text-xs font-bold text-wp-text3 uppercase tracking-wider shrink-0">Datenquellen</span>
-          {['KfW','BAFA','BWP','Fraunhofer ISE','Verbraucherzentrale','DWD'].map(s => (
-            <span key={s} className="text-sm font-semibold text-wp-text3">{s}</span>
-          ))}
+      <div className="relative min-h-[55vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: '€12.000+', label: 'Luft-WP ab', sub: 'Inkl. Montage' },
+              { val: fmtEuro(foerd.zuschuss), label: 'KfW-Abzug', sub: foerd.gesamtSatz + '% Förderung' },
+              { val: fmtEuro(foerd.eigenanteil), label: 'Ihr Eigenanteil', sub: 'Nach Förderung' },
+              { val: calc.amortisationJahre + ' J.', label: 'Amortisation', sub: 'Bei JAZ ' + jaz },
+            ].map((s,i) => (
+              <div key={i}><div className="text-xl font-extrabold text-white">{s.val}</div>
+              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Preise vergleichen — kostenlos →
+          </a>
         </div>
       </div>
 
-      {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-[1fr_380px] gap-12 items-start">
-        <div>
-          {/* Featured Snippet Antwort */}
-          <div className="bg-white border-l-4 border-wp-green rounded-xl p-6 shadow-wp-sm mb-10">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-              {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Was kostet eine Wärmepumpe in {stadt}? — Preisübersicht 2026', city, jaz)}
             </h2>
             <p className="text-wp-text2 text-base leading-relaxed">
-              
-              Wärmepumpe in <strong>{city.name}</strong>: Eigenanteil ab <strong>{fmtEuro(foerd.eigenanteil)}</strong> nach KfW-Förderung.
-              Jährliche Ersparnis gegenüber Erdgas: <strong>{fmtEuro(calc.ersparnis)}</strong>.
-              JAZ {jaz} bei {city.avgTemp}°C Jahresmitteltemperatur.
+              Eine Luft-Wasser-WP in <strong>{city.name}</strong> kostet inklusive Montage und Nebenkosten €12.000–€28.000. Nach {foerd.gesamtSatz}% KfW-Förderung ({fmtEuro(foerd.zuschuss)}) verbleibt ein Eigenanteil von {fmtEuro(foerd.eigenanteil)}. Sole-WP (Erdwärme) kostet €22.000–€38.000, hat aber höhere Effizienz (JAZ {(jaz + 1.0).toFixed(1)}) und immer +5% KfW-Bonus.
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Wärmepumpe Preise {stadt} — Alle Typen im Überblick', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              Die Preise für Wärmepumpen haben sich 2025/26 nach dem Boom stabilisiert. In <strong>{city.name}</strong> liegen die Gesamtkosten (Gerät + Installation) bei einer Luft-Wasser-WP zwischen <strong>€18.000 und €28.000</strong>. Entscheidend: Nach KfW-Förderung zahlen Sie ab {fmtEuro(foerd.eigenanteil)}.
-            </p>
-            <div className="space-y-3 mb-6">
-              {[
-                {typ:"Luft-Wasser-WP (5–10 kW)",von:18000,bis:28000,preis_kw:"1.800–2.800 €/kW",beliebt:true},
-                {typ:"Luft-Wasser-WP (10–15 kW)",von:22000,bis:32000,preis_kw:"1.800–2.600 €/kW",beliebt:false},
-                {typ:"Sole-Wasser-WP inkl. Bohrung",von:22000,bis:35000,preis_kw:"2.200–3.500 €/kW",beliebt:false},
-                {typ:"Wasser-Wasser-WP",von:25000,bis:40000,preis_kw:"2.500–4.000 €/kW",beliebt:false},
-              ].map((r,i) => (
-                <div key={i} className={`p-4 rounded-xl border ${r.beliebt?"border-wp-green bg-wp-greenlt":"border-wp-border bg-white"} shadow-wp-sm`}>
-                  <div className="flex justify-between items-start mb-2">
-                    <p className={`font-heading font-semibold text-sm ${r.beliebt?"text-wp-green":"text-wp-text"}`}>{r.typ}</p>
-                    {r.beliebt && <span className="bg-wp-green text-white text-xs font-bold px-2 py-0.5 rounded-full">Meistgewählt</span>}
-                  </div>
-                  <div className="flex gap-6">
-                    <div><p className="text-xs text-wp-text3">Gesamtkosten</p><p className="font-mono font-bold text-wp-amber">{r.von.toLocaleString("de-DE")}–{r.bis.toLocaleString("de-DE")} €</p></div>
-                    <div><p className="text-xs text-wp-text3">Pro kW Heizleistung</p><p className="font-mono text-wp-text2 text-sm">{r.preis_kw}</p></div>
-                  </div>
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Preisvergleich nach WP-Typ in {city.name} — inkl. Montage 2026
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
+              <table className="w-full text-sm min-w-[500px]">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['WP-Typ','Gerät','Montage','Gesamt','KfW','Hinweis'].map(h=>(
+                    <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {WP_TYPEN_PREISE.map((r,i)=>(
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${i===0?'bg-wp-greenxlt':''}`}>
+                      <td className="px-3 py-3 font-semibold text-wp-text text-sm">{r.typ}</td>
+                      <td className="px-3 py-3 font-mono text-xs text-wp-text2">{r.gerät}</td>
+                      <td className="px-3 py-3 font-mono text-xs text-wp-text2">{r.montage}</td>
+                      <td className="px-3 py-3 font-mono font-bold text-wp-green text-sm">{r.gesamt}</td>
+                      <td className="px-3 py-3 text-sm">{r.kfw?'✅':''}</td>
+                      <td className="px-3 py-3 text-xs text-wp-text3">{r.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-wp-text3 mt-2">Marktpreise {city.name} 2026 — Endpreis nach KfW: {fmtEuro(eigenanteilMin)}–{fmtEuro(eigenanteilMax)}</p>
+          </div>
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              5 Faktoren die den WP-Preis in {city.name} beeinflussen
+            </h2>
+            <div className="space-y-3">
+              {PREIS_FAKTOREN.map((f,i)=>(
+                <div key={i} className="flex gap-3 p-4 bg-white border border-wp-border rounded-xl">
+                  <div className={`shrink-0 px-2 py-0.5 rounded text-xs font-bold h-fit mt-0.5 ${f.einfluss==='Hoch'?'bg-red-100 text-red-700':f.einfluss==='Mittel'?'bg-amber-100 text-amber-700':'bg-green-100 text-green-700'}`}>{f.einfluss}</div>
+                  <div><div className="font-heading font-bold text-wp-text text-sm mb-1">{f.faktor}</div>
+                  <p className="text-wp-text2 text-xs leading-relaxed">{f.detail}</p></div>
                 </div>
               ))}
             </div>
-            <p className="text-wp-text3 text-xs">Preise inkl. MwSt., Gerät, Montage, Hydraulik und Elektrik · Stand März 2026 · {city.name}</p>
+          </div>
 
-          {/* FAQ */}
-                    {/* H3 Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Versteckte Kosten — was viele Angebote weglassen
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Position','Kosten','Hinweis'].map(h=>(
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {VERSTECKTE_KOSTEN.map((r,i)=>(
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{r.pos}</td>
+                      <td className="px-4 py-3 font-mono text-wp-amber font-bold text-sm">{r.kosten}</td>
+                      <td className="px-4 py-3 text-xs text-wp-text2">{r.note}</td>
+                    </tr>
+                  ))}
+                  <tr className="bg-wp-amberlt">
+                    <td className="px-4 py-3 font-bold text-wp-text">Mögliche Zusatzkosten gesamt</td>
+                    <td className="px-4 py-3 font-mono font-bold text-wp-amber">€2.650–7.100</td>
+                    <td className="px-4 py-3 text-xs text-wp-text3">Nicht im Hauptangebot enthalten</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{city.name} — Ihre Kostenrechnung</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+              {[
+                ['€12.000–€28.000','Luft-WP gesamt'],
+                [fmtEuro(foerd.zuschuss),'KfW-Zuschuss (' + foerd.gesamtSatz + '%)'],
+                [fmtEuro(foerd.eigenanteil),'Eigenanteil'],
+                [fmtEuro(calc.wpKosten)+'/J.','Betriebskosten'],
+                [fmtEuro(calc.ersparnis)+'/J.','Ersparnis vs. Gas'],
+                [calc.amortisationJahre + ' J.','Amortisation'],
+              ].map(([v,l],i)=>(
+                <div key={i}><div className="text-wp-text3 text-xs">{l}</div><div className="font-bold text-wp-text">{v}</div></div>
+              ))}
+            </div>
+          </div>
+
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
               <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
-          <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-wp-border last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="border-t border-wp-border">
-                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                </div>
-              </details>
-            ))}
-          </div>
 
-          {/* Nachbarstädte + Cross-Links */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — WP Preise {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq,i)=>(
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border"><p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p></div>
+                </details>
+              ))}
+            </div>
+          </div>
 
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
-              <div className="flex flex-wrap gap-2">
-                {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {n.name}
-                  </Link>
-                ))}
-              </div>
+              <div className="flex flex-wrap gap-2">{nearby.map(n=>(
+                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+              ))}</div>
             </div>
             <div>
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
-              <div className="flex flex-wrap gap-2">
-                {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {kw.keyword.replace('[Stadt]', city.name)}
-                  </Link>
-                ))}
-              </div>
+              <div className="flex flex-wrap gap-2">{(keyword.crossLinks??[]).map((slug:string)=>(
+                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                </Link>
+              ))}</div>
             </div>
           </div>
         </div>
 
-        {/* STICKY SIDEBAR */}
-        <div id="angebot" className="sticky top-24 space-y-4">
-          {/* Quick Stats */}
-          <div className="bg-wp-dark rounded-2xl p-5 shadow-wp-xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">{city.name} — Auf einen Blick</p>
+        <div>
+          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Preisübersicht</div>
             {[
-              {l:'Eigenanteil nach KfW', v: fmtEuro(foerd.eigenanteil), c:'text-wp-amber'},
-              {l:`Förderung (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c:'text-green-400'},
-              {l:'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c:'text-wp-green3'},
-              {l:'JAZ in '+city.name, v: String(jaz), c:'text-white'},
-              {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-wp-amber'},
-            ].map(r => (
-              <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
-                <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
+              ['Luft-WP gesamt','€12k–€28k'],['Sole-WP gesamt','€22k–€38k'],
+              ['KfW-Zuschuss', fmtEuro(foerd.zuschuss)],
+              ['Förderquote', foerd.gesamtSatz+'%'],
+              ['Eigenanteil', fmtEuro(foerd.eigenanteil)],
+              ['Amortisation', calc.amortisationJahre+' J.'],
+              ['Versteckte Kosten','€2.650–€7.100'],
+            ].map(([l,v],i)=>(
+              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+                <span className="text-wp-text2">{l}</span><span className="font-bold text-wp-text">{v}</span>
               </div>
             ))}
-          </div>
-          {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-          <AuthorBox keywordSlug={keyword.slug} />
-          {/* Trust */}
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
-              </div>
-            ))}
+            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
           </div>
         </div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">BWP Preismonitor 2026 · KfW BEG 458 · BDEW Energiepreise · Stand März 2026</div>
       </div>
     </div>
   );

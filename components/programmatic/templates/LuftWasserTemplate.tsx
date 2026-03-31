@@ -1,230 +1,232 @@
 // components/programmatic/templates/LuftWasserTemplate.tsx
-// "luft-wasser-waermepumpe" — info_commercial
+// luft-wasser-waermepumpe — vollständig standalone (differenziert von LuftwaermepumpeTemplate)
+// Fokus: technische Tiefen-Infos zum LW-System: Monoblock vs Split, COP bei Kälte, WW-Integration
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
+import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+const IMG = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80';
+
+const MONOBLOCK_SPLIT = [
+  { kriterium: 'Kältemittel-Leitungen im Haus', monoblock: 'Keine — nur Wasserleitungen', split: 'Ja — Kältemittelleitungen innen', besser: 'Monoblock' },
+  { kriterium: 'Frostschutz bei -20°C', monoblock: 'Nötig (Glykol-Beimischung)', split: 'Kein Problem — WW-seitig', besser: 'Split' },
+  { kriterium: 'F-Gas Pflicht für Inbetriebnahme', monoblock: 'Nein — nur Klempner', split: 'Ja — F-Gas-Fachbetrieb Pflicht', besser: 'Monoblock' },
+  { kriterium: 'Installationskosten', monoblock: 'Günstiger', split: 'Teurer (+€500–1.500)', besser: 'Monoblock' },
+  { kriterium: 'COP bei -10°C', monoblock: 'Ca. 2,0–2,5', split: 'Ca. 2,3–2,8', besser: 'Split minimal' },
+  { kriterium: 'Rohrlänge Innen-Außen', monoblock: 'Max. 15 m (Wasser)', split: 'Max. 30–60 m (Kältemittel)', besser: 'Split bei langen Wegen' },
+  { kriterium: 'Marktanteil DE 2024', monoblock: '~72%', split: '~28%', besser: 'Monoblock dominiert' },
+];
+
+const COP_BEI_TEMP = [
+  { aussentemp: '+20°C', cop: '6,5–8,0', note: 'Sommerbetrieb / Warmwasser' },
+  { aussentemp: '+7°C', cop: '3,8–5,0', note: 'Normaler Heizbetrieb (A7/W35)' },
+  { aussentemp: '0°C', cop: '3,0–3,8', note: 'Kälterer Wintertag' },
+  { aussentemp: '-7°C', cop: '2,2–3,0', note: 'Kältester Standardtest (A-7/W35)' },
+  { aussentemp: '-15°C', cop: '1,5–2,0', note: 'Extremkälte — WP läuft noch' },
+  { aussentemp: '-20°C', cop: '1,2–1,5', note: 'Unter Betriebslimit mancher Geräte' },
+];
+
+const WW_INTEGRATION = [
+  { system: 'Kombispeicher (Heizung + WW)', kosten: '€1.500–€3.500', vorteil: 'Ein Tank für alles — platzsparend', nachteil: 'WW-Temp begrenzt auf 55°C' },
+  { system: 'Pufferspeicher + separater WW-Speicher', kosten: '€1.200–€4.000', vorteil: 'Optimale Temperaturen für beides', nachteil: 'Mehr Platz, mehr Installationsaufwand' },
+  { system: 'Frischwasserstation (hygienisch)', kosten: '€800–€2.000', vorteil: 'Kein stehendes Warmwasser — hygienisch', nachteil: 'Geringerer Komfort bei Spitzenbedarf' },
+  { system: 'Zusätzliche Trinkwasser-WP', kosten: '€1.000–€2.500', vorteil: 'Unabhängig — kann Abwärme nutzen', nachteil: 'Zweites Gerät, Kellerkühlung im Sommer' },
+];
 
 export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+  const coldDays = city.normAussentemp <= -12 ? '15–25' : city.normAussentemp <= -8 ? '8–15' : '3–8';
+
+  const intros = [
+    `Luft-Wasser-WP ${city.name}: COP 3,8–5,0 bei 7°C Außentemperatur (A7/W35 Norm). Bei ${city.normAussentemp}°C Normaußentemperatur in ${city.bundesland}: ${coldDays} Tage/Jahr unter -7°C. WP läuft bis -20°C — Effizienz sinkt, aber Heizen ist immer möglich.`,
+    `Monoblock vs. Split ${city.name}: Monoblock (72% Marktanteil) — keine Kältemittelleitungen im Haus, einfachere Installation. Split — mehr Flexibilität bei Abständen bis 60m. Bei ${city.avgTemp}°C Jahresmittel: beide Typen wirtschaftlich.`,
+    `Luft-Wasser-WP ${city.name}: WW-Integration entscheidend für Gesamteffizienz. Kombispeicher oder separater Speicher? Frischwasserstation hygienisch, aber €800–2.000 Mehrkosten. JAZ ${jaz} → ${fmtEuro(calc.wpKosten)}/Jahr.`,
+    `LW-WP ${city.name} (${city.bundesland}): JAZ ${jaz} Jahresarbeitszahl — das ist der Durchschnitt über alle Außentemperaturen. Im Sommer COP 6–8 (Warmwasser), im Winter COP 2–3 (${city.normAussentemp}°C). KfW: ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)}.`,
+  ];
 
   const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faqs.slice(0,5).map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
-                {keyword.keyword.replace('[Stadt]', '').trim()}
-              </Link>
-              <span className="text-white/25">›</span>
-              <span className="text-white/80">{city.name}</span>
-            </nav>
-            <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
-              {h1}
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
-              {[
-                `Luft-Wasser-Wärmepumpe in {stadt}: JAZ {jaz} bei {avgTemp}°C Jahresmitteltemperatur — die effizienteste Wahl für 92% der Hausbesitzer.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),
-                `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur ist die Wärmepumpe die wirtschaftlichste Heizlösung. Jährliche Ersparnis: ${fmtEuro(calc.ersparnis)}.`,
-                `${city.name} (${city.bundesland}): ${city.heizgradtage} Heizgradtage · JAZ ${jaz} · Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
-                `Bis zu ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} für Hausbesitzer in ${city.name}. Wir begleiten Sie kostenlos.`,
-              ][variant]}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-                Kostenloses Angebot <ArrowRight size={16} />
-              </a>
-              <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
-                <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-amber text-lg leading-none">{foerd.gesamtSatz}%</p><p className="text-white/50 text-xs">KfW</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-green3 text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* TRUST BAR */}
-      <div className="bg-white border-b border-wp-border py-3">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-5 flex-wrap">
-          <span className="text-xs font-bold text-wp-text3 uppercase tracking-wider shrink-0">Datenquellen</span>
-          {['KfW','BAFA','BWP','Fraunhofer ISE','Verbraucherzentrale','DWD'].map(s => (
-            <span key={s} className="text-sm font-semibold text-wp-text3">{s}</span>
-          ))}
+      <div className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: `JAZ ${jaz}`, label: 'Jahresarbeitszahl', sub: city.avgTemp+'°C Jahresmittel' },
+              { val: city.normAussentemp+'°C', label: 'Normaußentemp.', sub: city.name },
+              { val: coldDays+' Tage', label: 'Unter -7°C/J.', sub: 'WP läuft bis -20°C' },
+              { val: fmtEuro(calc.ersparnis)+'/J.', label: 'Ersparnis', sub: 'vs. Gasheizung' },
+            ].map((s,i) => (
+              <div key={i}><div className="text-xl font-extrabold text-white">{s.val}</div>
+              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Kostenloses Angebot →
+          </a>
         </div>
       </div>
 
-      {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-[1fr_380px] gap-12 items-start">
-        <div>
-          {/* Featured Snippet Antwort */}
-          <div className="bg-white border-l-4 border-wp-green rounded-xl p-6 shadow-wp-sm mb-10">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-              {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Wie effizient ist eine Luft-Wasser-WP in {stadt} wirklich?', city, jaz)}
             </h2>
             <p className="text-wp-text2 text-base leading-relaxed">
-              
-              Wärmepumpe in <strong>{city.name}</strong>: Eigenanteil ab <strong>{fmtEuro(foerd.eigenanteil)}</strong> nach KfW-Förderung.
-              Jährliche Ersparnis gegenüber Erdgas: <strong>{fmtEuro(calc.ersparnis)}</strong>.
-              JAZ {jaz} bei {city.avgTemp}°C Jahresmitteltemperatur.
+              In <strong>{city.name}</strong> ({city.avgTemp}°C Jahresmittel, {city.normAussentemp}°C Normaußentemperatur) erreicht eine Luft-Wasser-WP JAZ {jaz}. Das bedeutet: pro 1 kWh Strom erzeugt die WP {jaz} kWh Wärme — im Jahresdurchschnitt. Im Sommer COP 6–8 (Warmwasser), im tiefsten Winter COP 2–3. Selbst bei {city.normAussentemp}°C heizt die WP effizient.
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Luft-Wasser-Wärmepumpe in {stadt} — Effizienz & Klimadaten', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              In <strong>{city.name}</strong> mit {city.avgTemp}°C Jahresmitteltemperatur ({city.heizgradtage} Heizgradtage) erreicht eine moderne Luft-Wasser-Wärmepumpe eine <strong>Jahresarbeitszahl (JAZ) von {jaz}</strong>. Das bedeutet: aus 1 kWh Strom werden {jaz} kWh Wärme erzeugt.
-            </p>
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              {[
-                {label:"JAZ in "+city.name,val:String(jaz),sub:"Luft-Wasser-WP",icon:"⚡"},
-                {label:"Heizgradtage",val:city.heizgradtage.toLocaleString("de-DE")+" Kd/a",sub:"DWD/IWU",icon:"🌡️"},
-                {label:"Vorlauf bis",val:"70°C",sub:"Altbau-kompatibel",icon:"🏚️"},
-                {label:"Lautstärke",val:"45–55 dB",sub:"Wie Gesprächston",icon:"🔊"},
-                {label:"Marktanteil",val:"92%",sub:"Meistgewählt DE",icon:"📊"},
-                {label:"Amortisation",val:calc.amortisationJahre+" Jahre",sub:"55% Förderung",icon:"📈"},
-              ].map((d,i) => (
-                <div key={i} className="bg-white rounded-xl p-4 border border-wp-border shadow-wp-sm">
-                  <div className="text-xl mb-1">{d.icon}</div>
-                  <div className="font-mono font-bold text-wp-green text-lg leading-none mb-0.5">{d.val}</div>
-                  <div className="text-xs font-semibold text-wp-text">{d.label}</div>
-                  <div className="text-xs text-wp-text3">{d.sub}</div>
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              COP-Kurve bei verschiedenen Außentemperaturen — {city.name}
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Außentemperatur','COP (Leistungszahl)','Situation in '+city.name].map(h=>(
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {COP_BEI_TEMP.map((r,i)=>(
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${r.aussentemp==='+7°C'?'bg-wp-greenxlt':r.aussentemp.includes('-15')||r.aussentemp.includes('-20')?'opacity-80':''}`}>
+                      <td className="px-4 py-3 font-mono font-bold text-wp-text">{r.aussentemp}</td>
+                      <td className="px-4 py-3 font-mono text-wp-green font-bold">{r.cop}</td>
+                      <td className="px-4 py-3 text-xs text-wp-text2">{r.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-wp-text3 mt-2">Vorlauftemperatur 35°C · {city.name}: {coldDays} Tage/Jahr unter -7°C</p>
+          </div>
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Monoblock vs. Split — welche Bauart für {city.name}?
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Kriterium','Monoblock','Split','Empfehlung'].map(h=>(
+                    <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {MONOBLOCK_SPLIT.map((r,i)=>(
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-3 py-3 font-semibold text-wp-text text-sm">{r.kriterium}</td>
+                      <td className={`px-3 py-3 text-sm ${r.besser==='Monoblock'?'text-wp-green font-bold':'text-wp-text2'}`}>{r.monoblock}</td>
+                      <td className={`px-3 py-3 text-sm ${r.besser==='Split'?'text-wp-green font-bold':'text-wp-text2'}`}>{r.split}</td>
+                      <td className="px-3 py-3 text-xs text-wp-text3">{r.besser}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              Warmwasser-Integration — 4 Optionen in {city.name}
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {WW_INTEGRATION.map((w,i)=>(
+                <div key={i} className={`p-4 rounded-xl border ${i===0?'bg-wp-greenxlt border-wp-borderl':'bg-white border-wp-border'}`}>
+                  <div className="font-heading font-bold text-wp-text text-sm mb-1">{w.system}</div>
+                  <div className="font-mono text-wp-green text-xs mb-2">{w.kosten}</div>
+                  <div className="text-xs text-wp-green mb-1">✅ {w.vorteil}</div>
+                  <div className="text-xs text-wp-text3">⚠️ {w.nachteil}</div>
                 </div>
               ))}
             </div>
-            <div className="bg-white border border-wp-border rounded-xl p-4">
-              <p className="font-heading font-semibold text-wp-text mb-3">Luft-Wasser vs. Erdwärme in {city.name}</p>
-              <div className="space-y-2 text-sm">
-                {[
-                  {feat:"Installation",lw:"1–2 Tage, keine Erdarbeiten",erd:"Bohrung 100–150m nötig"},
-                  {feat:"JAZ",lw:String(jaz)+" (klimaabhängig)",erd:"4,3–5,0 (konstant)"},
-                  {feat:"Kosten komplett",lw:"€18.000–28.000",erd:"€22.000–35.000"},
-                  {feat:"KfW-Bonus",lw:"Standard",erd:"+5% Kältemittelbonus"},
-                  {feat:"Eignung "+city.name,lw:"✅ Überall",erd:"Genehmigung nötig"},
-                ].map((r,i) => (
-                  <div key={i} className="grid grid-cols-[120px_1fr_1fr] gap-2 text-xs py-2 border-b border-wp-border last:border-0">
-                    <span className="font-semibold text-wp-text2">{r.feat}</span>
-                    <span className="text-wp-green">{r.lw}</span>
-                    <span className="text-wp-text3">{r.erd}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+          </div>
 
-          {/* FAQ */}
-                    {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
               <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
-          <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-wp-border last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="border-t border-wp-border">
-                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                </div>
-              </details>
-            ))}
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Luft-Wasser-WP {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq,i)=>(
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border"><p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p></div>
+                </details>
+              ))}
+            </div>
           </div>
 
-          {/* Nachbarstädte + Cross-Links */}
           <div className="grid sm:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
-              <div className="flex flex-wrap gap-2">
-                {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {n.name}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">{nearby.map(n=>(
+                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+              ))}</div>
             </div>
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
-              <div className="flex flex-wrap gap-2">
-                {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {kw.keyword.replace('[Stadt]', city.name)}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">{(keyword.crossLinks??[]).map((slug:string)=>(
+                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                </Link>
+              ))}</div>
             </div>
           </div>
         </div>
 
-        {/* STICKY SIDEBAR */}
-        <div id="angebot" className="sticky top-24 space-y-4">
-          {/* Quick Stats */}
-          <div className="bg-wp-dark rounded-2xl p-5 shadow-wp-xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">{city.name} — Auf einen Blick</p>
-            {[
-              {l:'Eigenanteil nach KfW', v: fmtEuro(foerd.eigenanteil), c:'text-wp-amber'},
-              {l:`Förderung (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c:'text-green-400'},
-              {l:'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c:'text-wp-green3'},
-              {l:'JAZ in '+city.name, v: String(jaz), c:'text-white'},
-              {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-wp-amber'},
-            ].map(r => (
-              <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
-                <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
-              </div>
-            ))}
-          </div>
-          {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-          <AuthorBox keywordSlug={keyword.slug} />
-          {/* Trust */}
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
-              </div>
-            ))}
-          </div>
+        <div><div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+          <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — LW-WP Kennzahlen</div>
+          {[['JAZ',String(jaz)],['Normaußentemp.',city.normAussentemp+'°C'],
+            ['Jahresmittel',city.avgTemp+'°C'],['Tage unter -7°C',coldDays+'/Jahr'],
+            ['KfW-Zuschuss',fmtEuro(foerd.zuschuss)],['Eigenanteil',fmtEuro(foerd.eigenanteil)],
+            ['Betriebskosten',fmtEuro(calc.wpKosten)+'/J.'],
+          ].map(([l,v],i)=>(
+            <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+              <span className="text-wp-text2">{l}</span><span className="font-bold text-wp-text">{v}</span>
+            </div>
+          ))}
+          <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+        </div></div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">DIN EN 14511 (COP-Norm) · BWP Marktdaten 2024 · DWD Klimadaten {city.name} · Stand März 2026</div>
       </div>
     </div>
   );

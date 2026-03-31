@@ -1,212 +1,238 @@
 // components/programmatic/templates/NachruestenTemplate.tsx
-// "waermepumpe-nachruesten" — commercial
+// waermepumpe-nachruesten — vollständig standalone
+// Fokus: Nachrüstung in bestehende Heizanlage — Anpassungen, Kosten, Ablauf, Eignung
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
+import { ChevronDown, CheckCircle, XCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
+import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+const IMG = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1920&q=80';
+
+const EIGNUNG_NACHRUESTEN = [
+  { punkt: 'Vorlauftemperatur ≤ 55°C', geeignet: true, detail: 'Standard Luft-WP ausreichend. Heizlast prüfen.' },
+  { punkt: 'Vorlauftemperatur 55–70°C', geeignet: true, detail: 'Hochtemperatur-WP (€2.000–3.000 Aufpreis) oder zuerst Hydraulischer Abgleich.' },
+  { punkt: 'Vorhandener Kellerraum > 1 m²', geeignet: true, detail: 'Für Pufferspeicher 200–500 l nötig.' },
+  { punkt: 'Starkstromanschluss 3×16A vorhanden', geeignet: true, detail: 'Falls nicht: €500–1.500 Elektriker-Aufwand.' },
+  { punkt: 'Dachgeschoss mit Heizkörpern', geeignet: true, detail: 'Hydraulischer Abgleich nötig — DG hat oft niedrigsten Druckverlust.' },
+  { punkt: 'Alte undichte Rohrleitungen', geeignet: false, detail: 'Erst sanieren, dann WP nachrüsten. Druckprobe empfohlen.' },
+  { punkt: 'Elektrische Fußbodenheizung', geeignet: false, detail: 'Kein Hydrauliksystem — WP nicht nachrüstbar ohne Umbau.' },
+];
+
+const ANPASSUNGEN_KOSTEN = [
+  { pos: 'Hydraulischer Abgleich (Pflicht)', von: 500, bis: 1500, wann: 'Immer' },
+  { pos: 'Pufferspeicher 200–500 l', von: 600, bis: 2000, wann: 'Fast immer' },
+  { pos: 'Heizkörpertausch (falls nötig)', von: 200, bis: 500, wann: 'Pro Heizkörper bei VL > 55°C' },
+  { pos: 'Elektroanschluss Starkstrom', von: 500, bis: 1500, wann: 'Wenn nicht vorhanden' },
+  { pos: 'WW-Speicher (falls kein Kombi)', von: 800, bis: 2500, wann: 'Je nach System' },
+  { pos: 'Alte Heizung demontieren', von: 200, bis: 500, wann: 'Immer' },
+];
+
+const ABLAUF_NACHRUESTEN = [
+  { step: 'Vor-Ort-Begehung & Heizlast', what: 'Vorlauftemperatur messen, Heizkreis prüfen, Kellermaße, Elektro-Check. Kostenlos bei unseren Partnerbetrieben.' },
+  { step: 'KfW-Antrag stellen (vor Auftrag!)', what: 'Antrag muss VOR Auftragserteilung bei KfW gestellt werden. Wir begleiten das kostenlos.' },
+  { step: 'Anpassungen vornehmen', what: 'Hydraulischer Abgleich, ggf. Heizkörpertausch, Elektro. Diese Kosten sind KfW-förderfähig.' },
+  { step: 'WP-Montage & Inbetriebnahme', what: '2–3 Tage. Pufferspeicher, Kältemittelkreis, Hydraulik, Elektro, Inbetriebnahme durch F-Gas-Betrieb.' },
+  { step: 'KfW-Abrechnung', what: 'Rechnungen + Protokoll einreichen. KfW zahlt innerhalb 4–6 Wochen.' },
+];
 
 export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+  const anpassungMin = ANPASSUNGEN_KOSTEN.slice(0,3).reduce((s,p)=>s+p.von,0);
+  const anpassungMax = ANPASSUNGEN_KOSTEN.slice(0,4).reduce((s,p)=>s+p.bis,0);
+
+  const intros = [
+    `WP nachrüsten ${city.name}: 70–80% aller Bestandsgebäude in ${city.bundesland} geeignet. Entscheidend: Vorlauftemperatur und Pufferspeicher-Platz im Keller. Typische Nachrüst-Anpassungskosten: ${fmtEuro(anpassungMin)}–${fmtEuro(anpassungMax)} (KfW-förderfähig).`,
+    `Nachrüstung ${city.name}: GEG-Frist ${city.gegFrist.split('-').reverse().join('.')}. Wer jetzt nachrüstet bekommt ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) und spart ${fmtEuro(calc.ersparnis)}/Jahr vs. altem Gas. Amortisation: ${calc.amortisationJahre} Jahre.`,
+    `WP nachrüsten ${city.name}: Hochtemperatur-WP bis 70°C Vorlauf für Altbauten — kein teurer Heizkörpertausch nötig. Hydraulischer Abgleich (€500–1.500) reicht oft aus um Effizienz auf JAZ ${jaz} zu heben.`,
+    `${city.name} (${city.bundesland}): Bei ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und ${city.avgTemp}°C Jahresmittel ist die Nachrüstung wirtschaftlich. Eigenanteil nach ${foerd.gesamtSatz}% KfW: ${fmtEuro(foerd.eigenanteil)}. Betriebskosten: ${fmtEuro(calc.wpKosten)}/Jahr.`,
+  ];
 
   const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faqs.slice(0,5).map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
-                {keyword.keyword.replace('[Stadt]', '').trim()}
-              </Link>
-              <span className="text-white/25">›</span>
-              <span className="text-white/80">{city.name}</span>
-            </nav>
-            <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
-              {h1}
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
-              {[
-                `Wärmepumpe nachrüsten in {stadt} — GEG-Pflicht ab {gegFrist} für Kommunen über 100.000 EW. Jetzt handeln, volle Förderung sichern.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),
-                `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur ist die Wärmepumpe die wirtschaftlichste Heizlösung. Jährliche Ersparnis: ${fmtEuro(calc.ersparnis)}.`,
-                `${city.name} (${city.bundesland}): ${city.heizgradtage} Heizgradtage · JAZ ${jaz} · Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
-                `Bis zu ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} für Hausbesitzer in ${city.name}. Wir begleiten Sie kostenlos.`,
-              ][variant]}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-                Kostenloses Angebot <ArrowRight size={16} />
-              </a>
-              <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
-                <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-amber text-lg leading-none">{foerd.gesamtSatz}%</p><p className="text-white/50 text-xs">KfW</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-green3 text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
-              </div>
+      <div className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          {city.einwohner >= 100000 && (
+            <div className="inline-block bg-wp-amber text-wp-dark text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              GEG-Frist {city.name}: {city.gegFrist.split('-').reverse().join('.')}
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* TRUST BAR */}
-      <div className="bg-white border-b border-wp-border py-3">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-5 flex-wrap">
-          <span className="text-xs font-bold text-wp-text3 uppercase tracking-wider shrink-0">Datenquellen</span>
-          {['KfW','BAFA','BWP','Fraunhofer ISE','Verbraucherzentrale','DWD'].map(s => (
-            <span key={s} className="text-sm font-semibold text-wp-text3">{s}</span>
-          ))}
+          )}
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: '70–80%', label: 'Häuser geeignet', sub: 'Quelle: BWP 2024' },
+              { val: fmtEuro(foerd.zuschuss), label: 'KfW-Zuschuss', sub: foerd.gesamtSatz+'%' },
+              { val: fmtEuro(foerd.eigenanteil), label: 'Eigenanteil', sub: 'Nach Förderung' },
+              { val: fmtEuro(calc.ersparnis)+'/J.', label: 'Ersparnis', sub: 'vs. Gasheizung' },
+            ].map((s,i) => (
+              <div key={i}><div className="text-xl font-extrabold text-white">{s.val}</div>
+              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Eignung prüfen — kostenlos →
+          </a>
         </div>
       </div>
 
-      {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-[1fr_380px] gap-12 items-start">
-        <div>
-          {/* Featured Snippet Antwort */}
-          <div className="bg-white border-l-4 border-wp-green rounded-xl p-6 shadow-wp-sm mb-10">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-              {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Kann ich in {stadt} eine WP nachrüsten? — Eignungscheck', city, jaz)}
             </h2>
             <p className="text-wp-text2 text-base leading-relaxed">
-              
-              Wärmepumpe in <strong>{city.name}</strong>: Eigenanteil ab <strong>{fmtEuro(foerd.eigenanteil)}</strong> nach KfW-Förderung.
-              Jährliche Ersparnis gegenüber Erdgas: <strong>{fmtEuro(calc.ersparnis)}</strong>.
-              JAZ {jaz} bei {city.avgTemp}°C Jahresmitteltemperatur.
+              70–80% aller Bestandsgebäude in <strong>{city.name}</strong> sind für die WP-Nachrüstung geeignet. Das entscheidende Kriterium ist nicht das Baujahr sondern die Vorlauftemperatur. Moderne Hochtemperatur-WP arbeiten bis 70°C — damit passen sie in fast jeden Altbau. Bei {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen in {city.name} ergibt sich JAZ {jaz} → Betriebskosten {fmtEuro(calc.wpKosten)}/Jahr.
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Schritt für Schritt: Umrüstung auf Wärmepumpe in {stadt}', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              Die Umrüstung von einer bestehenden Heizung auf eine Wärmepumpe in <strong>{city.name}</strong> dauert typisch <strong>6–12 Wochen</strong> von der Anfrage bis zur fertigen Anlage. Der Ablauf ist klar strukturiert.
-            </p>
-            <div className="space-y-3 mb-6">
-              {[
-                {tag:"Woche 1",title:"Anfrage & Angebote",text:"3 lokale Betriebe in "+city.name+" melden sich innerhalb von 48h."},
-                {tag:"Woche 2–3",title:"Vor-Ort-Begehung",text:"Bestandsaufnahme, Heizlastberechnung, Aufstellort festlegen."},
-                {tag:"Woche 4–6",title:"KfW-Antrag ⚠️",text:"Muss VOR Baubeginn gestellt werden. Wir begleiten Sie.",warn:true},
-                {tag:"Woche 6–10",title:"Installation",text:"1–3 Tage Montage, Inbetriebnahme, Einweisung."},
-                {tag:"Nach Installation",title:"Förderung auszahlen",text:"Verwendungsnachweis einreichen → KfW zahlt "+fmtEuro(foerd.zuschuss)+" in 4–8 Wochen."},
-              ].map((s,i) => (
-                <div key={i} className={`flex gap-4 p-4 rounded-xl border shadow-wp-sm ${s.warn?"bg-amber-50 border-amber-200":"bg-white border-wp-border"}`}>
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              Eignungscheck Nachrüstung in {city.name} — 7 Kriterien
+            </h2>
+            <div className="space-y-2">
+              {EIGNUNG_NACHRUESTEN.map((e,i)=>(
+                <div key={i} className="flex gap-3 p-3 bg-white border border-wp-border rounded-lg">
+                  {e.geeignet ? <CheckCircle size={16} className="text-wp-green shrink-0 mt-0.5" /> : <XCircle size={16} className="text-red-500 shrink-0 mt-0.5" />}
                   <div>
-                    <span className={`text-xs font-bold font-mono ${s.warn?"text-amber-700":"text-wp-green"}`}>{s.tag}</span>
-                    <p className="font-heading font-semibold text-wp-text mt-0.5 mb-1">{s.title}</p>
-                    <p className="text-wp-text2 text-sm">{s.text}</p>
+                    <div className="font-semibold text-wp-text text-sm">{e.punkt}</div>
+                    <div className="text-wp-text2 text-xs mt-0.5">{e.detail}</div>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
 
-          {/* FAQ */}
-                    {/* H3 Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Anpassungskosten bei der Nachrüstung in {city.name}
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Anpassung','Kosten von','Kosten bis','Wann nötig'].map(h=>(
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {ANPASSUNGEN_KOSTEN.map((a,i)=>(
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{a.pos}</td>
+                      <td className="px-4 py-3 font-mono text-wp-text2">{fmtEuro(a.von)}</td>
+                      <td className="px-4 py-3 font-mono text-wp-text2">{fmtEuro(a.bis)}</td>
+                      <td className="px-4 py-3 text-xs text-wp-text3">{a.wann}</td>
+                    </tr>
+                  ))}
+                  <tr className="bg-wp-amberlt border-t-2 border-amber-200">
+                    <td className="px-4 py-3 font-bold text-wp-text">Typische Anpassungskosten</td>
+                    <td className="px-4 py-3 font-mono font-bold text-wp-amber">{fmtEuro(anpassungMin)}</td>
+                    <td className="px-4 py-3 font-mono font-bold text-wp-amber">{fmtEuro(anpassungMax)}</td>
+                    <td className="px-4 py-3 text-xs text-wp-text3">KfW-förderfähig</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              Ablauf: WP nachrüsten in {city.name} — 5 Schritte
+            </h2>
+            <div className="space-y-3">
+              {ABLAUF_NACHRUESTEN.map((s,i)=>(
+                <div key={i} className="flex gap-4 p-4 bg-white border border-wp-border rounded-xl">
+                  <div className="w-8 h-8 bg-wp-green rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">{i+1}</div>
+                  <div>
+                    <div className="font-heading font-bold text-wp-text text-sm mb-1">{s.step}</div>
+                    <p className="text-wp-text2 text-xs leading-relaxed">{s.what}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
               <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
-          <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-wp-border last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="border-t border-wp-border">
-                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                </div>
-              </details>
-            ))}
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — WP nachrüsten {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq,i)=>(
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border"><p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p></div>
+                </details>
+              ))}
+            </div>
           </div>
 
-          {/* Nachbarstädte + Cross-Links */}
           <div className="grid sm:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
-              <div className="flex flex-wrap gap-2">
-                {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {n.name}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">{nearby.map(n=>(
+                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+              ))}</div>
             </div>
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
-              <div className="flex flex-wrap gap-2">
-                {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {kw.keyword.replace('[Stadt]', city.name)}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">{(keyword.crossLinks??[]).map((slug:string)=>(
+                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                </Link>
+              ))}</div>
             </div>
           </div>
         </div>
 
-        {/* STICKY SIDEBAR */}
-        <div id="angebot" className="sticky top-24 space-y-4">
-          {/* Quick Stats */}
-          <div className="bg-wp-dark rounded-2xl p-5 shadow-wp-xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">{city.name} — Auf einen Blick</p>
-            {[
-              {l:'Eigenanteil nach KfW', v: fmtEuro(foerd.eigenanteil), c:'text-wp-amber'},
-              {l:`Förderung (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c:'text-green-400'},
-              {l:'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c:'text-wp-green3'},
-              {l:'JAZ in '+city.name, v: String(jaz), c:'text-white'},
-              {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-wp-amber'},
-            ].map(r => (
-              <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
-                <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
-              </div>
-            ))}
-          </div>
-          {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-          <AuthorBox keywordSlug={keyword.slug} />
-          {/* Trust */}
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
-              </div>
-            ))}
-          </div>
+        <div><div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+          <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Nachrüstung</div>
+          {[['Anpassungskosten',fmtEuro(anpassungMin)+'–'+fmtEuro(anpassungMax)],
+            ['KfW-Zuschuss',fmtEuro(foerd.zuschuss)],['Förderquote',foerd.gesamtSatz+'%'],
+            ['Eigenanteil',fmtEuro(foerd.eigenanteil)],['JAZ',String(jaz)],
+            ['GEG-Frist',city.gegFrist.split('-').reverse().join('.')],
+          ].map(([l,v],i)=>(
+            <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+              <span className="text-wp-text2">{l}</span><span className="font-bold text-wp-text">{v}</span>
+            </div>
+          ))}
+          <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Eignung prüfen →</a>
+        </div></div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">BWP Marktdaten 2024 · KfW BEG 458 · GEG BMWSB · Stand März 2026</div>
       </div>
     </div>
   );

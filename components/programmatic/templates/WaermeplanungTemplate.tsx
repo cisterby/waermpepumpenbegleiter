@@ -1,209 +1,236 @@
 // components/programmatic/templates/WaermeplanungTemplate.tsx
-// "kommunale-waermeplanung" — informational
+// kommunale-waermeplanung — vollständig standalone, keyword-spezifisch
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
+import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+const IMG = 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=1920&q=80';
+
+const FRISTEN_PLAN = [
+  { gruppe: 'Großstädte > 100.000 EW', frist: '30.06.2026', status: 'Läuft — Wärmepläne müssen vorliegen' },
+  { gruppe: 'Mittelstädte 10.000–100.000 EW', frist: '30.06.2028', status: 'Planung läuft' },
+  { gruppe: 'Kleinstädte < 10.000 EW', frist: '30.06.2028', status: 'Bundesland-abhängig' },
+  { gruppe: 'Für Hausbesitzer: GEG-Pflicht', frist: 'Nach kommunalem Wärmeplan', status: '65% EE-Pflicht greift nach Vorliegen des Plans' },
+];
+
+const WAS_BEDEUTET = [
+  { frage: 'Was ist ein kommunaler Wärmeplan?', antwort: 'Eine Pflichtanalyse der Wärmeversorgung der Gemeinde: Wo liegt Fernwärme-Netz, wo dezentrale WP, wo Biomethan? Basis für die GEG-Anwendung im Bestand.' },
+  { frage: 'Was ändert sich für Hausbesitzer?', antwort: 'Sobald der Wärmeplan vorliegt, greift die 65%-EE-Pflicht auch für den Bestand. Eine neue Heizung muss dann zu 65% aus erneuerbaren Energien betrieben werden — Gas-Brennwert allein nicht mehr GEG-konform.' },
+  { frage: 'Lohnt es sich jetzt zu warten?', antwort: 'Nein — wer jetzt freiwillig auf WP umstellt erhält volle KfW-Förderung und sichert sich niedrige Betriebskosten. Wer wartet riskiert höhere CO₂-Preise und mögliche Warteschlangen.' },
+  { frage: 'Was wenn Fernwärme kommt?', antwort: 'Liegt Ihr Haus im geplanten Fernwärme-Ausbaugebiet: abwarten kann sinnvoll sein. Liegt keine Fernwärme-Planung vor: WP ist die sichere Wahl.' },
+];
+
+const GEG_STADTTYPEN = [
+  { typ: 'Fernwärme-Vorranggebiet', action: 'Anschluss an Fernwärme wenn verfügbar', wann: 'Nach Ausbau (oft 2028–2035)' },
+  { typ: 'WP-Eignungsgebiet (dezentral)', action: 'Wärmepumpe — beste Wahl jetzt', wann: 'Sofort möglich und gefördert' },
+  { typ: 'Biomethan/H₂-Vorbehaltsnetz', action: 'Gas-Hybrid als Übergang ggf. möglich', wann: 'Risiko: H₂-Versorgung unsicher bis 2035' },
+  { typ: 'Ländliche Gebiete ohne Plan', action: 'WP oder Pellets — GEG-konform', wann: 'Sofort — kein Fernwärme-Risiko' },
+];
 
 export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+  const fristText = city.einwohner >= 100000 ? '30.06.2026' : '30.06.2028';
+  const hatGrosstadtFrist = city.einwohner >= 100000;
+
+  const intros = [
+    `Kommunale Wärmeplanung ${city.name}: Frist ${fristText}. Sobald der Plan vorliegt, gilt die 65%-EE-Pflicht auch im Bestand. Wer jetzt auf WP umstellt sichert volle KfW-Förderung (${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)}) vor der Frist.`,
+    `${city.name} (${city.bundesland}): GEG-Wärmeplanung Frist ${fristText}. Liegt kein Fernwärme-Netz in Ihrer Straße: WP ist die sichere Wahl. JAZ ${jaz} → ${fmtEuro(calc.wpKosten)}/Jahr Betriebskosten.`,
+    `Was bedeutet die kommunale Wärmeplanung für Hausbesitzer in ${city.name}? Die 65%-EE-Pflicht greift nach Vorliegen des kommunalen Plans. Gas-Brennwert allein dann nicht mehr GEG-konform.`,
+    `Kommunale Wärmeplanung ${city.name}: ${hatGrosstadtFrist ? 'Großstadt-Frist 30.06.2026 — Plan muss vorliegen' : 'Frist 30.06.2028'}. WP-Anteil in ${city.bundesland}: soll auf 80% bis 2030. KfW-Förderung ${foerd.gesamtSatz}% weiterhin aktiv.`,
+  ];
 
   const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 5).map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faqs.slice(0,5).map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
-                {keyword.keyword.replace('[Stadt]', '').trim()}
-              </Link>
-              <span className="text-white/25">›</span>
-              <span className="text-white/80">{city.name}</span>
-            </nav>
-            <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
-              {h1}
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
-              {[
-                `Was bedeutet die kommunale Wärmeplanung für {stadt}? Fristen, Pflichten und was Hausbesitzer jetzt tun sollten.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),
-                `In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur ist die Wärmepumpe die wirtschaftlichste Heizlösung. Jährliche Ersparnis: ${fmtEuro(calc.ersparnis)}.`,
-                `${city.name} (${city.bundesland}): ${city.heizgradtage} Heizgradtage · JAZ ${jaz} · Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
-                `Bis zu ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} für Hausbesitzer in ${city.name}. Wir begleiten Sie kostenlos.`,
-              ][variant]}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-                Kostenloses Angebot <ArrowRight size={16} />
-              </a>
-              <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
-                <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-amber text-lg leading-none">{foerd.gesamtSatz}%</p><p className="text-white/50 text-xs">KfW</p></div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="text-center"><p className="font-mono font-bold text-wp-green3 text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* TRUST BAR */}
-      <div className="bg-white border-b border-wp-border py-3">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-5 flex-wrap">
-          <span className="text-xs font-bold text-wp-text3 uppercase tracking-wider shrink-0">Datenquellen</span>
-          {['KfW','BAFA','BWP','Fraunhofer ISE','Verbraucherzentrale','DWD'].map(s => (
-            <span key={s} className="text-sm font-semibold text-wp-text3">{s}</span>
-          ))}
+      <div className="relative min-h-[55vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          <div className={`inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 ${hatGrosstadtFrist ? 'bg-wp-amber text-wp-dark' : 'bg-wp-green text-white'}`}>
+            Wärmeplan-Frist {city.name}: {fristText}
+          </div>
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: fristText, label: 'Wärmeplan-Frist', sub: city.name },
+              { val: foerd.gesamtSatz+'%', label: 'KfW jetzt', sub: 'Vor Plan-Pflicht' },
+              { val: fmtEuro(foerd.zuschuss), label: 'Zuschuss', sub: 'Nicht rückzahlbar' },
+              { val: fmtEuro(calc.ersparnis)+'/J.', label: 'Ersparnis WP', sub: 'vs. Gas' },
+            ].map((s,i) => (
+              <div key={i}><div className="text-xl font-extrabold text-white">{s.val}</div>
+              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Kostenloses Angebot →
+          </a>
         </div>
       </div>
 
-      {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 grid lg:grid-cols-[1fr_380px] gap-12 items-start">
-        <div>
-          {/* Featured Snippet Antwort */}
-          <div className="bg-white border-l-4 border-wp-green rounded-xl p-6 shadow-wp-sm mb-10">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-              {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Was bedeutet die kommunale Wärmeplanung für {stadt}?', city, jaz)}
             </h2>
             <p className="text-wp-text2 text-base leading-relaxed">
-              
-              Wärmepumpe in <strong>{city.name}</strong>: Eigenanteil ab <strong>{fmtEuro(foerd.eigenanteil)}</strong> nach KfW-Förderung.
-              Jährliche Ersparnis gegenüber Erdgas: <strong>{fmtEuro(calc.ersparnis)}</strong>.
-              JAZ {jaz} bei {city.avgTemp}°C Jahresmitteltemperatur.
+              <strong>{city.name}</strong> ({city.bundesland}) muss bis {fristText} einen kommunalen Wärmeplan vorlegen. Dieser Plan definiert, ob in Ihrer Straße Fernwärme geplant ist, ob dezentrale WP die Lösung ist oder ob Biomethan möglich wird. Für Hausbesitzer gilt: Nach Vorliegen des Plans greift die GEG-65%-EE-Pflicht — Gas-Brennwert allein wird nicht mehr akzeptiert. Wer jetzt auf WP umstellt bekommt {foerd.gesamtSatz}% KfW und sichert sich niedrige Betriebskosten von {fmtEuro(calc.wpKosten)}/Jahr.
             </p>
           </div>
 
-          {/* Keyword-spezifischer Hauptinhalt */}
-          <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Was ist die kommunale Wärmeplanung in {stadt}?', city, jaz)}
-          </h2>
-          <p className="text-wp-text2 text-base leading-relaxed mb-5">
-              Alle Kommunen über 10.000 Einwohner müssen bis 2028 einen kommunalen Wärmeplan vorlegen — auch <strong>{city.name}</strong>. Dieser Plan zeigt, wie die Wärmeversorgung bis 2045 klimaneutral wird. Für Hausbesitzer ist er wichtig, um zu wissen ob Fernwärme kommt oder eine Wärmepumpe die bessere Wahl ist.
-            </p>
-            <div className="space-y-3 mb-6">
-              {[
-                {title:"Was steht im Wärmeplan?",text:"Gebiete für Fernwärmeausbau, Gebiete für dezentrale Lösungen (WP), Zeitplan für die Umstellung."},
-                {title:"Was bedeutet das für mich?",text:"Wenn Ihr Gebiet als Fernwärmegebiet ausgewiesen ist: Eventuell auf Fernwärmeanschluss warten. Ohne Fernwärmeplan: Wärmepumpe ist die sichere Wahl."},
-                {title:`GEG-Frist ${city.name}`,text:city.einwohner>=100000?"Als Großstadt über 100.000 Einwohner gilt in "+city.name+" die 65%-EE-Pflicht für Bestandsgebäude ab 30. Juni 2026.":"Als Gemeinde unter 100.000 Einwohnern gilt in "+city.name+" die Pflicht ab 30. Juni 2028."},
-                {title:"Unsere Empfehlung",text:"Wer jetzt handelt, sichert sich die volle KfW-Förderung ("+foerd.gesamtSatz+"% = "+fmtEuro(foerd.zuschuss)+") und die besten Installateure in "+city.name+". Wartezeiten nehmen zu."},
-              ].map((s,i) => (
-                <div key={i} className="p-4 bg-white rounded-xl border border-wp-border shadow-wp-sm">
-                  <p className="font-heading font-semibold text-wp-text mb-2">{s.title}</p>
-                  <p className="text-wp-text2 text-sm leading-relaxed">{s.text}</p>
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              Fristen der kommunalen Wärmeplanung in {city.bundesland}
+            </h2>
+            <div className="space-y-3">
+              {FRISTEN_PLAN.map((f,i)=>(
+                <div key={i} className={`flex gap-3 p-4 rounded-xl border ${i===0&&hatGrosstadtFrist?'bg-wp-amberlt border-amber-200':i===1&&!hatGrosstadtFrist?'bg-wp-amberlt border-amber-200':'bg-white border-wp-border'}`}>
+                  <div className="font-mono font-bold text-wp-green text-sm shrink-0 mt-0.5">{f.frist}</div>
+                  <div>
+                    <div className="font-heading font-bold text-wp-text text-sm">{f.gruppe}</div>
+                    <div className="text-wp-text2 text-xs mt-0.5">{f.status}</div>
+                  </div>
                 </div>
               ))}
             </div>
+          </div>
 
-          {/* FAQ */}
-                    {/* H3 Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+              4 wichtige Fragen zur Wärmeplanung in {city.name}
+            </h2>
+            <div className="space-y-4">
+              {WAS_BEDEUTET.map((w,i)=>(
+                <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
+                  <div className="font-heading font-bold text-wp-text text-sm mb-2">❓ {w.frage}</div>
+                  <p className="text-wp-text2 text-sm leading-relaxed">{w.antwort}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Was tun? — Je nach Stadttyp in {city.name}
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                  {['Ihr Gebiet','Empfehlung','Zeitplan'].map(h=>(
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {GEG_STADTTYPEN.map((r,i)=>(
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${i===1?'bg-wp-greenxlt':''}`}>
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{r.typ}</td>
+                      <td className={`px-4 py-3 text-sm ${i===1?'text-wp-green font-bold':'text-wp-text2'}`}>{r.action}</td>
+                      <td className="px-4 py-3 text-xs text-wp-text3">{r.wann}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-wp-text3 mt-2">WP-Eignungsgebiet trifft auf die meisten Wohnlagen in {city.name} zu. Im Zweifel: Anfrage beim Stadtplanungsamt.</p>
+          </div>
+
+          <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{city.name} — Jetzt WP-Förderung sichern</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm mb-4">
+              {[
+                [foerd.gesamtSatz+'%','KfW-Förderquote (aktiv)'],
+                [fmtEuro(foerd.zuschuss),'Zuschuss'],
+                [fmtEuro(foerd.eigenanteil),'Eigenanteil'],
+                [fmtEuro(calc.wpKosten)+'/J.','WP-Betriebskosten'],
+                [fmtEuro(calc.ersparnis)+'/J.','Ersparnis vs. Gas'],
+                [fristText,'Wärmeplan-Frist'],
+              ].map(([v,l],i)=>(
+                <div key={i}><div className="text-wp-text3 text-xs">{l}</div><div className="font-bold text-wp-text">{v}</div></div>
+              ))}
+            </div>
+            <p className="text-sm text-wp-text2">Die KfW-Förderung gilt jetzt unabhängig vom kommunalen Wärmeplan. Nach Vorliegen des Plans könnten Konditionen angepasst werden — wer jetzt handelt ist auf der sicheren Seite.</p>
+          </div>
+
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
               <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
-          <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-wp-border last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="border-t border-wp-border">
-                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                </div>
-              </details>
-            ))}
-          </div>
 
-          {/* Nachbarstädte + Cross-Links */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Kommunale Wärmeplanung {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq,i)=>(
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border"><p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p></div>
+                </details>
+              ))}
+            </div>
+          </div>
 
           <div className="grid sm:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
-              <div className="flex flex-wrap gap-2">
-                {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {n.name}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">{nearby.map(n=>(
+                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+              ))}</div>
             </div>
-            <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
-              <div className="flex flex-wrap gap-2">
-                {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
-                    {kw.keyword.replace('[Stadt]', city.name)}
-                  </Link>
-                ))}
-              </div>
+            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">{(keyword.crossLinks??[]).map((slug:string)=>(
+                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                </Link>
+              ))}</div>
             </div>
           </div>
         </div>
 
-        {/* STICKY SIDEBAR */}
-        <div id="angebot" className="sticky top-24 space-y-4">
-          {/* Quick Stats */}
-          <div className="bg-wp-dark rounded-2xl p-5 shadow-wp-xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">{city.name} — Auf einen Blick</p>
-            {[
-              {l:'Eigenanteil nach KfW', v: fmtEuro(foerd.eigenanteil), c:'text-wp-amber'},
-              {l:`Förderung (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c:'text-green-400'},
-              {l:'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c:'text-wp-green3'},
-              {l:'JAZ in '+city.name, v: String(jaz), c:'text-white'},
-              {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-wp-amber'},
-            ].map(r => (
-              <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
-                <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
-              </div>
-            ))}
-          </div>
-          {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-          <AuthorBox keywordSlug={keyword.slug} />
-          {/* Trust */}
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
-              </div>
-            ))}
-          </div>
+        <div><div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+          <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Wärmeplanung</div>
+          {[['Wärmeplan-Frist',fristText],['Stadtgröße',city.einwohner.toLocaleString('de-DE')+' EW'],
+            ['KfW-Zuschuss jetzt',fmtEuro(foerd.zuschuss)],['Förderquote',foerd.gesamtSatz+'%'],
+            ['Eigenanteil',fmtEuro(foerd.eigenanteil)],['Ersparnis/Jahr',fmtEuro(calc.ersparnis)],
+          ].map(([l,v],i)=>(
+            <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+              <span className="text-wp-text2">{l}</span><span className="font-bold text-wp-text">{v}</span>
+            </div>
+          ))}
+          <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+        </div></div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">WPG 2023 · GEG BMWSB 2024 · KfW BEG 458 · Stand März 2026</div>
       </div>
     </div>
   );
