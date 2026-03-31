@@ -110,7 +110,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'InstallateurTemplate',
-    titleTemplate: 'Wärmepumpe Installateur {stadt} {year}',
+    titleTemplate: 'WP Installateur {stadt} {year}',
     metaTemplate: 'Geprüfte Wärmepumpen-Installateure in {stadt} ✓ Lokale Meisterbetriebe ✓ Kostenlos bis zu 3 Angebote ✓ Alle Betriebe HWK-geprüft und KfW-registriert.',
     h1Template: 'Geprüfte Wärmepumpen-Installateure in {stadt} {year}',
     featuredSnippetQuestions: [
@@ -138,7 +138,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'FoerderungTemplate',
     titleTemplate: 'Wärmepumpe Förderung {stadt} {year}',
-    metaTemplate: 'Wärmepumpe Förderung {stadt} {year}: Bis 70% KfW-Zuschuss = max. €21.000 + {bundesland}-Landesförderung ✓ Förderrechner ✓ Antragsprozess ✓ Kostenlos.',
+    metaTemplate: 'Wärmepumpe Förderung {stadt} {year}: Bis 70% KfW-Zuschuss = max. €21.000 + {bundesland}-Landesförderung ✓ Förderrechner ✓ Antragsprozess ✓ Jetzt anfragen.',
     h1Template: 'Wärmepumpe Förderung {stadt} {year} — KfW & {bundesland}-Programme',
     featuredSnippetQuestions: [
       'Wie hoch ist die Förderung für Wärmepumpen in {stadt}?',
@@ -165,7 +165,7 @@ export const KEYWORDS: Keyword[] = [
     intent: 'info_commercial',
     template: 'LuftWasserTemplate',
     titleTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}',
-    metaTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}: JAZ {jaz} bei {avgTemp}°C Jahresmittel ✓ 92% Marktanteil ✓ Kosten ab {preisVon} ✓ Kostenloser Installateur-Vergleich.',
+    metaTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}: JAZ {jaz} bei {avgTemp}°C Jahresmittel ✓ 92% Marktanteil ✓ Kosten ab {preisVon} ✓ Kostenloser Installateur-Vergleich. Jetzt.',
     h1Template: 'Luft-Wasser-Wärmepumpe {stadt} — Effizienz, Kosten & Installateure {year}',
     featuredSnippetQuestions: [
       'Wie effizient ist eine Luft-Wasser-Wärmepumpe in {stadt}?',
@@ -256,7 +256,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'commercial',
     template: 'HeizungTauschenTemplate',
-    titleTemplate: 'Heizung tauschen {stadt} {year}',
+    titleTemplate: 'Heizung tauschen {stadt}',
     metaTemplate: 'Heizung tauschen {stadt} {year} ✓ WP vs. Gas vs. Pellet ehrlicher Vergleich ✓ GEG-konforme Lösungen ✓ Stadtspezifische Betriebskosten ✓ Kostenlos anfragen.',
     h1Template: 'Heizung tauschen in {stadt} {year} — Alle Optionen im Vergleich',
     featuredSnippetQuestions: [
@@ -279,8 +279,8 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'InstallationTemplate',
-    titleTemplate: 'Wärmepumpe Installation {stadt} {year}',
-    metaTemplate: 'Wärmepumpe Installation {stadt} ✓ Vollständiger Ablauf & Zeitplan {year} ✓ Genehmigungen {bundesland} ✓ HWK-Betriebe vor Ort ✓ KfW-Antragsbegleitung.',
+    titleTemplate: 'WP Installation {stadt} {year}',
+    metaTemplate: 'Wärmepumpe Installation {stadt} ✓ Vollständiger Ablauf & Zeitplan {year} ✓ Genehmigungen {bundesland} ✓ HWK-Betriebe vor Ort ✓ KfW-Antragsbegleitung inklusive.',
     h1Template: 'Wärmepumpe Installation {stadt} {year} — Ablauf, Kosten & Genehmigungen',
     featuredSnippetQuestions: [
       'Wie läuft die Installation einer Wärmepumpe in {stadt} ab?',
@@ -302,7 +302,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'niedrig',
     intent: 'informational',
     template: 'WaermeplanungTemplate',
-    titleTemplate: 'Kommunale Wärmeplanung {stadt} {year}',
+    titleTemplate: 'Kommunale Wärmeplanung {stadt}',
     metaTemplate: 'Kommunale Wärmeplanung {stadt} {year}: Fristen, Pflichten & was das für Ihre Heizung bedeutet ✓ GEG-Kontext ✓ Wärmepumpe als sichere GEG-konforme Alternative.',
     h1Template: 'Kommunale Wärmeplanung {stadt} {year} — Was Hausbesitzer wissen müssen',
     featuredSnippetQuestions: [
@@ -314,7 +314,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was ist die kommunale Wärmeplanung in {stadt}?', a: 'Alle Kommunen über 10.000 Einwohner müssen bis 2028 einen Wärmeplan vorlegen, der zeigt, wie die Wärmeversorgung bis 2045 klimaneutral wird. {stadtWaermeplanStatus}' },
     ],
     sitemapPriority: 0.72,
-    crossLinks: ['waermepumpe', 'heizung-tauschen', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe', 'heizung-tauschen', 'waermepumpe-foerderung', 'waermepumpe-kosten', 'waermepumpe-installateur'],
   },
   // ── TIER 3 ────────────────────────────────────────────────────
   {
@@ -518,7 +518,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'informational',
     template: 'StromverbrauchTemplate',
-    titleTemplate: 'Wärmepumpe Stromverbrauch {stadt} {year}',
+    titleTemplate: 'WP Stromverbrauch {stadt} {year}',
     metaTemplate: 'Wärmepumpe Stromverbrauch {stadt} {year}: Berechnung mit lokalem Strompreis {strompreis} ct/kWh, JAZ {jaz} ✓ Optimierungstipps ✓ WP-Sondertarif & PV-Kombination.',
     h1Template: 'Wärmepumpe Stromverbrauch {stadt} {year} — Berechnung & Optimierung',
     featuredSnippetQuestions: [

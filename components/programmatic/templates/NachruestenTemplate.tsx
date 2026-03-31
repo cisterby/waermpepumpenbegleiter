@@ -1,8 +1,7 @@
 // components/programmatic/templates/NachruestenTemplate.tsx
 // "waermepumpe-nachruesten" — commercial
 'use client';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
@@ -12,18 +11,27 @@ import { estimateJAZ } from '@/lib/city-utils';
 import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
-import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 
 const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 
 export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* HERO */}
       <section className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
@@ -94,7 +102,7 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
 
           {/* Keyword-spezifischer Hauptinhalt */}
           <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.5vw,36px)' }}>
-            {fillTemplate('Wie rüste ich in {stadt} auf eine Wärmepumpe um?', city, jaz)}
+            {fillTemplate('Schritt für Schritt: Umrüstung auf Wärmepumpe in {stadt}', city, jaz)}
           </h2>
           <p className="text-wp-text2 text-base leading-relaxed mb-5">
               Die Umrüstung von einer bestehenden Heizung auf eine Wärmepumpe in <strong>{city.name}</strong> dauert typisch <strong>6–12 Wochen</strong> von der Anfrage bis zur fertigen Anlage. Der Ablauf ist klar strukturiert.
@@ -123,27 +131,19 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
           </h2>
           <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
             {faqs.map((faq, i) => (
-              <div key={i} className={i < faqs.length - 1 ? 'border-b border-wp-border' : ''}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full bg-transparent border-none px-5 py-4 flex justify-between items-center cursor-pointer text-left gap-3">
+              <details key={i} className="group border-b border-wp-border last:border-0">
+                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
                   <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
-                </button>
-                <AnimatePresence>
-                  {openFaq === i && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }}>
-                      <p className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                </summary>
+                <div className="border-t border-wp-border">
+                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              </details>
             ))}
           </div>
 
           {/* Nachbarstädte + Cross-Links */}
-          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
-
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
