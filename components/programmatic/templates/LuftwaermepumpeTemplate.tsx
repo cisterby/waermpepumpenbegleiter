@@ -1,170 +1,292 @@
 // components/programmatic/templates/LuftwaermepumpeTemplate.tsx
-// luftwaermepumpe — Technik, JAZ, stadtspezifische Klimazone, Hersteller, PV
+// luftwaermepumpe — vollständig standalone, 500+ Wörter unique content
 'use client';
+import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { cityHash } from '@/lib/content-variation';
-import { CheckCircle, Zap } from 'lucide-react';
-import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import LeadForm from '@/components/programmatic/LeadForm';
+import AuthorBox from '@/components/programmatic/AuthorBox';
 
-export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1, allCities }: CityPageRouterProps) {
-  const isUrgent = city.einwohner >= 100000;
-  const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
-  const v = cityHash(city, 4, 88);
-  const isMild = city.avgTemp >= 10.0;
-  const isKalt = city.avgTemp < 8.5;
+const IMG = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80';
 
-  const jazMild = Math.min(parseFloat((jaz + 0.2).toFixed(1)), 4.5);
-  const jazKalt = Math.max(parseFloat((jaz - 0.2).toFixed(1)), 2.8);
-  const jazFBH = Math.min(parseFloat((jaz + 0.5).toFixed(1)), 4.8);
+const HERSTELLER = [
+  { name: 'Viessmann Vitocal 250-A', cop: '4,0', maxVL: '65°C', kaeltemittel: 'R290', kfwBonus: true, schall: '48 dB', preis: '€11–18k' },
+  { name: 'Vaillant aroTHERM plus', cop: '3,8', maxVL: '65°C', kaeltemittel: 'R290', kfwBonus: true, schall: '52 dB', preis: '€10–17k' },
+  { name: 'Buderus Logatherm WLW', cop: '3,9', maxVL: '70°C', kaeltemittel: 'R454B', kfwBonus: false, schall: '28,5 dB', preis: '€11–17k' },
+  { name: 'Stiebel Eltron WPL 19+', cop: '3,9', maxVL: '70°C', kaeltemittel: 'R454B', kfwBonus: false, schall: '50 dB', preis: '€10–16k' },
+  { name: 'Nibe Fighter 2040', cop: '3,8', maxVL: '65°C', kaeltemittel: 'R32', kfwBonus: false, schall: '45 dB', preis: '€9–15k' },
+];
 
-  const klimaNote = isMild
-    ? `${city.name} mit ${city.avgTemp}°C Jahresmittel ist ideal für Luftwärmepumpen. Die JAZ von ${jaz} liegt über dem Bundesdurchschnitt — im Winter sinkt sie auf ${jazKalt}, im milden Frühjahr/Herbst steigt sie auf ${jazMild}+.`
-    : isKalt
-    ? `${city.name} mit ${city.avgTemp}°C Jahresmittel ist klimatisch anspruchsvoller für Luft-WP. JAZ ${jaz} ist trotzdem wirtschaftlich — moderne Geräte arbeiten bis -20°C zuverlässig. Hochtemperatur-WP empfohlen für ältere Heizkörper.`
-    : `${city.name} (${city.avgTemp}°C Jahresmittel) bietet gute Bedingungen für Luftwärmepumpen. JAZ ${jaz} entspricht dem Bundesdurchschnitt. Optimierung durch hydraulischen Abgleich und WP-Sondertarif bringt weitere ${fmtEuro(Math.round(calc.ersparnis * 0.15))}/Jahr.`;
+const JAZ_SZENARIEN = [
+  { system: 'Fußbodenheizung (35°C Vorlauf)', note: 'Optimal — höchste Effizienz' },
+  { system: 'Flachheizkörper modern (45°C)', note: 'Standard in Neubauten' },
+  { system: 'Heizkörper Standard (55°C)', note: 'Standard in Bestandsgebäuden' },
+  { system: 'Altbau hohe Vorlauftemp. (70°C)', note: 'Hochtemperatur-WP erforderlich' },
+];
+
+const LW_VS_SW = [
+  { kriterium: 'Installationskosten', lw: '€18.000–€28.000', sw: '€22.000–€35.000', besser: 'LW' },
+  { kriterium: 'Typische JAZ', lw: 'JAZ 3,0–4,5', sw: 'JAZ 4,0–5,5', besser: 'SW' },
+  { kriterium: 'Betriebskosten', lw: 'Mittel', sw: 'Niedrig', besser: 'SW' },
+  { kriterium: 'KfW-Bonus', lw: '+5% mit R290', sw: '+5% immer', besser: 'SW' },
+  { kriterium: 'Genehmigung', lw: 'Meist genehmigungsfrei', sw: 'Bergamt, Wasserrecht', besser: 'LW' },
+  { kriterium: 'Montageaufwand', lw: '1–3 Tage', sw: '5–10 Tage + Bohrung', besser: 'LW' },
+  { kriterium: 'Schallentwicklung', lw: '45–55 dB', sw: 'Keine (innen)', besser: 'SW' },
+  { kriterium: 'Marktanteil Deutschland', lw: '92%', sw: '8%', besser: 'LW' },
+];
+
+export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+  const jazFBH = Math.min(jaz + 0.5, 4.8).toFixed(1);
+  const jazHT  = Math.max(jaz - 0.5, 2.5).toFixed(1);
 
   const intros = [
-    `Eine Luftwärmepumpe (Luft-Wasser-WP) ist die häufigste WP-Art in ${city.name} — 92% Marktanteil 2025. Sie entzieht der Außenluft Wärme, auch bei −20°C. In ${city.name} mit ${city.avgTemp}°C Jahresmitteltemperatur erreicht sie eine JAZ von ${jaz} — ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis gegenüber Erdgas.`,
-    `Luftwärmepumpe in ${city.name}: ${klimaNote} Betriebskosten: ${fmtEuro(calc.wpKosten)}/Jahr bei ${city.strompreis} ct/kWh. Mit KfW-Förderung ${foerd.gesamtSatz}%: Eigenanteil ab ${fmtEuro(foerd.eigenanteil)}.`,
-    `Warum sind Luft-WP so dominant in ${city.name}? Keine Erdarbeiten nötig, keine Genehmigung, Montage in 1–3 Tagen. Hochtemperatur-Varianten bis 70°C Vorlauf sind für die meisten Bestandsgebäude in ${city.bundesland} geeignet. JAZ ${jaz} → ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis.`,
-    `Luftwärmepumpe ${city.name}: COP ${(jaz * 1.1).toFixed(1)} (Prüfbedingung A7/W35) klingt besser als die reale JAZ ${jaz} — aber beide sind gut. Der Unterschied liegt in der Jahresbetrachtung unter echten ${city.bundesland}-Klimabedingungen. Entscheidend für Sie: ${fmtEuro(calc.wpKosten)}/Jahr Betriebskosten statt ${fmtEuro(calc.altKosten)}/Jahr Gas.`,
+    `Warum sind Luft-WP so dominant in ${city.name}? Keine Erdarbeiten nötig, keine Genehmigung, Montage in 1–3 Tagen. Hochtemperatur-Varianten bis 70°C Vorlauf sind für die meisten Bestandsgebäude in ${city.bundesland} geeignet. JAZ ${jaz} → ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis in ${city.name}.`,
+    `Luft-Wasser-WP ${city.name}: JAZ ${jazHT}–${jazFBH} je nach Vorlauftemperatur. Bei ${city.avgTemp}°C Jahresmittel ist die Luft-WP die wirtschaftlichste und am schnellsten installierbare Heizlösung. 92% Marktanteil in Deutschland 2024.`,
+    `${city.name} (${city.bundesland}): Mit ${city.normAussentemp}°C Normaußentemperatur und ${city.avgTemp}°C Jahresmittel erreicht eine Luft-WP JAZ ${jaz}. Betriebskosten ${fmtEuro(calc.wpKosten)}/Jahr — ${fmtEuro(calc.ersparnis)} günstiger als Gas. Propan-Geräte (R290) liefern +5% KfW-Bonus.`,
+    `Luft-WP vs. Sole-WP ${city.name}: Luft-WP: günstiger (${fmtEuro(18000)}–${fmtEuro(28000)}), schnelle Montage, JAZ ${jaz}. Sole-WP: teurer (€22–35k), JAZ ${Math.min(jaz + 1.0, 5.5).toFixed(1)}, aber +5% KfW immer. Für die meisten in ${city.name}: Luft-WP optimal.`,
   ];
 
-  const heroStats = [
-    { val: `JAZ ${jaz}`, label: 'in ' + city.name, sub: city.avgTemp + '°C Jahresmittel' },
-    { val: fmtEuro(calc.wpKosten), label: 'Betriebskosten/Jahr', sub: city.strompreis + ' ct/kWh' },
-    { val: `${foerd.gesamtSatz}%`, label: 'KfW-Förderung', sub: fmtEuro(foerd.zuschuss) + ' Zuschuss' },
-    { val: fmtEuro(foerd.eigenanteil), label: 'Eigenanteil', sub: 'nach Förderung' },
-  ];
-
-  const sections = (
-    <>
-      <div className="bg-white border border-wp-border border-l-4 border-l-wp-green rounded-xl p-6 shadow-wp-sm">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-          {fillTemplate('Luftwärmepumpe in {stadt} — Kosten, Effizienz und Eignung', city, jaz)}
-        </h2>
-        <p className="text-wp-text2 text-base leading-relaxed">{intros[v]}</p>
-      </div>
-
-      {/* Klimazone + Bild */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        <div className="relative rounded-2xl overflow-hidden h-64">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"
-            alt={`Luftwärmepumpe ${city.name}`} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-wp-dark/60 flex items-end p-5">
-            <div>
-              <p className="font-heading font-bold text-white text-base">{isMild ? '☀️ Mildes Klima' : isKalt ? '❄️ Kühles Klima' : '🌡️ Gemäßigtes Klima'} — {city.name}</p>
-              <p className="text-white/60 text-xs">{city.avgTemp}°C · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · JAZ {jaz}</p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h3 className="font-heading font-bold text-wp-text text-lg mb-3">JAZ-Szenarien in {city.name}</h3>
-          <div className="space-y-2">
-            {[
-              { label: 'Heizkörper (Vorlauf 55°C)', jaz_val: jaz, note: 'Standard in ' + city.name },
-              { label: 'Fußbodenheizung (Vorlauf 35°C)', jaz_val: jazFBH, note: 'Optimal — höchste Effizienz' },
-              { label: 'Altbau Hochtemperatur (70°C)', jaz_val: jazKalt, note: 'Hochtemperatur-WP nötig' },
-              { label: 'Mit PV-Eigenverbrauch', jaz_val: jaz, note: 'Effektivkosten <2 ct/kWh Wärme' },
-            ].map(({ label, jaz_val, note }, i) => (
-              <div key={i} className={`rounded-xl border p-3 ${i === 1 ? 'bg-wp-greenlt border-wp-green3/30' : 'bg-white border-wp-border'} shadow-wp-sm`}>
-                <div className="flex justify-between">
-                  <span className="text-wp-text2 text-xs">{label}</span>
-                  <span className={`font-mono font-bold text-sm ${i === 1 ? 'text-wp-green' : i === 2 ? 'text-wp-text3' : 'text-wp-text'}`}>JAZ {jaz_val}</span>
-                </div>
-                <p className="text-wp-text3 text-xs">{note}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Klimazone Text + Kosten */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-          Klima {city.name} — Auswirkung auf die Luftwärmepumpe
-        </h2>
-        <div className="bg-white border border-wp-border rounded-xl p-5 shadow-wp-sm mb-4">
-          <p className="text-wp-text2 text-base leading-relaxed mb-4">{klimaNote}</p>
-          <div className="grid sm:grid-cols-3 gap-3">
-            {[
-              { label: 'Jahresmitteltemperatur', val: city.avgTemp + '°C', sub: 'Basis für JAZ-Berechnung' },
-              { label: 'Heizgradtage', val: city.heizgradtage.toLocaleString('de-DE'), sub: 'Jährlicher Wärmebedarf' },
-              { label: 'Normaussentemperatur', val: (city.normAussentemp || -12) + '°C', sub: 'Auslegungspunkt Heizlast' },
-            ].map(({ label, val, sub }, i) => (
-              <div key={i} className="bg-wp-bg rounded-xl p-3 text-center">
-                <p className="font-mono font-bold text-wp-text text-lg">{val}</p>
-                <p className="text-wp-text3 text-xs font-semibold">{label}</p>
-                <p className="text-wp-text3 text-xs">{sub}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Hersteller-Vergleich */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-          Luftwärmepumpen für {city.name} — Hersteller im Vergleich 2026
-        </h2>
-        <div className="overflow-x-auto rounded-xl border border-wp-border shadow-wp-sm">
-          <table className="w-full bg-white min-w-[560px]">
-            <thead>
-              <tr className="bg-wp-dark">
-                {['Modell', 'COP A7/W35', 'Max. Vorlauf', 'Kältemittel', 'KfW-Bonus', 'Schallpegel'].map((h, i) => (
-                  <th key={i} className={`px-3 py-3 text-xs font-bold uppercase ${i === 0 ? 'text-left text-white' : 'text-right ' + (i === 4 ? 'text-wp-green3' : 'text-[rgba(255,255,255,0.40)]')}`}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ['Viessmann Vitocal 250-A', '4,0', '65°C', 'R290', '✓ +5%', '48 dB'],
-                ['Vaillant aroTHERM plus', '3,8', '65°C', 'R290', '✓ +5%', '52 dB'],
-                ['Buderus Logatherm WLW', '3,9', '70°C', 'R454B', '—', '28,5 dB'],
-                ['Stiebel Eltron WPL 19+', '3,9', '70°C', 'R454B', '—', '50 dB'],
-                ['Nibe Fighter 2040', '3,8', '65°C', 'R32', '—', '45 dB'],
-              ].map((row, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-wp-bg/40'}>
-                  <td className="px-3 py-2.5 font-semibold text-wp-text text-xs border-b border-wp-border">{row[0]}</td>
-                  {row.slice(1).map((cell, j) => (
-                    <td key={j} className={`px-3 py-2.5 text-xs text-right border-b border-wp-border ${j === 3 ? (cell.includes('✓') ? 'text-wp-green font-semibold' : 'text-wp-text3') : 'text-wp-text2'}`}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="relative rounded-2xl overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80"
-          alt={`Luft-WP ${city.name} Einfamilienhaus`} className="w-full h-48 object-cover" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.93) 0%, rgba(10,25,16,0.4) 100%)' }} />
-        <div className="absolute inset-0 flex items-center px-8">
-          <div>
-            <p className="font-heading font-extrabold text-white text-xl mb-2">Luftwärmepumpe in {city.name}</p>
-            <div className="space-y-1">
-              {[`JAZ ${jaz} · ${fmtEuro(calc.wpKosten)}/Jahr Betriebskosten`, `KfW ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)} · Eigenanteil ${fmtEuro(foerd.eigenanteil)}`, `${fmtEuro(calc.ersparnis)}/Jahr Ersparnis vs. Gasheizung`].map((t, i) => (
-                <div key={i} className="flex items-center gap-2 text-white text-sm">
-                  <CheckCircle size={12} className="text-wp-green3 shrink-0" />{t}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question', name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
 
   return (
-    <RichTemplateBase
-      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1} allCities={allCities}
-      heroImg="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80"
-      heroStats={heroStats}
-      {...(isUrgent ? { urgencyBadge: `GEG-Frist ${city.name}: ${gegFristFormatted}` } : {})}
-      sections={sections}
-    />
+    <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      <div className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          {city.einwohner >= 100000 && (
+            <div className="inline-block bg-wp-amber text-wp-dark text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              GEG-Frist {city.name}: {city.gegFrist.split('-').reverse().join('.')}
+            </div>
+          )}
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: `JAZ ${jazHT}–${jazFBH}`, label: 'Effizienzspanne', sub: city.avgTemp + '°C Jahresmittel' },
+              { val: '92%', label: 'Marktanteil DE', sub: 'BWP 2024' },
+              { val: '1–3 Tage', label: 'Montagezeit', sub: 'Inkl. Inbetriebnahme' },
+              { val: fmtEuro(calc.ersparnis) + '/J.', label: 'Ersparnis', sub: 'vs. Gasheizung' },
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="text-xl font-extrabold text-white">{s.val}</div>
+                <div className="text-white/50 text-xs">{s.label}</div>
+                <div className="text-white/30 text-xs">{s.sub}</div>
+              </div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Kostenloses Angebot →
+          </a>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          {/* Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Luftwärmepumpe in {stadt} — Kosten, Effizienz und Eignung', city, jaz)}
+            </h2>
+            <p className="text-wp-text2 text-base leading-relaxed">
+              Eine Luftwärmepumpe in <strong>{city.name}</strong> ({city.bundesland}) erreicht bei {city.avgTemp}°C Jahresmitteltemperatur eine JAZ von {jaz}. Das entspricht Heizkosten von {fmtEuro(calc.wpKosten)}/Jahr für ein 120 m² EFH — statt {fmtEuro(calc.altKosten)}/Jahr mit Gas. 92% aller neu installierten WP in Deutschland sind Luft-Wasser-WP: günstiger, schneller und ohne Erdarbeiten.
+            </p>
+          </div>
+
+          {/* JAZ-Szenarien */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              JAZ-Szenarien in {city.name} nach Heizsystem
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-wp-bg border-b border-wp-border">
+                    {['Heizsystem', 'JAZ in ' + city.name, 'Jahreskosten', 'Hinweis'].map(h => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { jaz: Number(jazFBH), note: JAZ_SZENARIEN[0].note },
+                    { jaz: Number((jaz + 0.2).toFixed(1)), note: JAZ_SZENARIEN[1].note },
+                    { jaz: jaz, note: JAZ_SZENARIEN[2].note },
+                    { jaz: Number(jazHT), note: JAZ_SZENARIEN[3].note },
+                  ].map((r, i) => (
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${i === 2 ? 'bg-wp-greenxlt' : ''}`}>
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{JAZ_SZENARIEN[i].system}</td>
+                      <td className="px-4 py-3 font-mono font-bold text-wp-green">{r.jaz.toFixed(1)}</td>
+                      <td className="px-4 py-3 font-mono text-wp-text2">{fmtEuro(Math.round(15000 / r.jaz * city.strompreis / 100))}/J.</td>
+                      <td className="px-4 py-3 text-xs text-wp-text3">{r.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Hersteller */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Luftwärmepumpen-Hersteller für {city.name} — Vergleich 2026
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
+              <table className="w-full text-sm min-w-[600px]">
+                <thead>
+                  <tr className="bg-wp-bg border-b border-wp-border">
+                    {['Modell', 'COP A7/W35', 'Max. VL', 'Kältemittel', 'KfW+5%', 'Schall', 'Preis'].map(h => (
+                      <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {HERSTELLER.map((h, i) => (
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-3 py-3 font-semibold text-wp-text text-sm">{h.name}</td>
+                      <td className="px-3 py-3 font-mono text-wp-green font-bold">{h.cop}</td>
+                      <td className="px-3 py-3 font-mono text-wp-text2">{h.maxVL}</td>
+                      <td className="px-3 py-3 text-xs text-wp-text2">{h.kaeltemittel}</td>
+                      <td className="px-3 py-3 text-sm">{h.kfwBonus ? '✅ +5%' : '—'}</td>
+                      <td className="px-3 py-3 font-mono text-xs">{h.schall}</td>
+                      <td className="px-3 py-3 font-mono text-xs text-wp-text3">{h.preis}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-wp-text3 mt-2">Herstellerunabhängig — wir empfehlen das für Ihr Haus in {city.name} passende Gerät.</p>
+          </div>
+
+          {/* LW vs SW Vergleich */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Luft-WP vs. Sole-WP (Erdwärme) in {city.name}
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-wp-bg border-b border-wp-border">
+                    {['Kriterium', 'Luft-WP', 'Sole-WP', 'Vorteil'].map(h => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {LW_VS_SW.map((r, i) => (
+                    <tr key={i} className="border-b border-wp-border last:border-0">
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{r.kriterium}</td>
+                      <td className={`px-4 py-3 text-sm ${r.besser === 'LW' ? 'text-wp-green font-bold' : 'text-wp-text2'}`}>{r.lw}</td>
+                      <td className={`px-4 py-3 text-sm ${r.besser === 'SW' ? 'text-wp-green font-bold' : 'text-wp-text2'}`}>{r.sw}</td>
+                      <td className="px-4 py-3 text-xs font-bold text-wp-text3">{r.besser === 'LW' ? '🌬️ Luft' : '🌍 Sole'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* H3 + FAQ */}
+          {faqs.length > 0 && (
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            </div>
+          )}
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Luftwärmepumpe {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq, i) => (
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border">
+                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">
+                {nearby.map(n => (
+                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">
+                {(keyword.crossLinks ?? []).map((slug: string) => (
+                  <Link key={slug} href={`/${slug}/${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Luft-WP Kennzahlen</div>
+            {[
+              ['JAZ in ' + city.name, String(jaz)],
+              ['JAZ mit FBH', jazFBH],
+              ['Betriebskosten', fmtEuro(calc.wpKosten) + '/J.'],
+              ['Ersparnis vs. Gas', fmtEuro(calc.ersparnis) + '/J.'],
+              ['Montagezeit', '1–3 Tage'],
+              ['KfW-Zuschuss', fmtEuro(foerd.zuschuss)],
+              ['Eigenanteil', fmtEuro(foerd.eigenanteil)],
+            ].map(([l, v], i) => (
+              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+                <span className="text-wp-text2">{l}</span>
+                <span className="font-bold text-wp-text">{v}</span>
+              </div>
+            ))}
+            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">JAZ: Fraunhofer ISE · BWP Marktdaten 2024 · DWD Klimadaten · Stand März 2026</div>
+      </div>
+    </div>
   );
 }

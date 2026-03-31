@@ -135,7 +135,7 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
           {/* FAQ */}
                     {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-greenborder rounded-2xl">
+            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
               <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>

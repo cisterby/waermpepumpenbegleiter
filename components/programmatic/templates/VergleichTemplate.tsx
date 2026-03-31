@@ -1,196 +1,274 @@
-// VergleichTemplate — waermepumpe-oder-gas — maximale Uniqueness
+// components/programmatic/templates/VergleichTemplate.tsx
+// waermepumpe-oder-gas — vollständig standalone, 500+ Wörter unique content
 'use client';
+import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { cityHash } from '@/lib/content-variation';
-import { CheckCircle, AlertTriangle } from 'lucide-react';
-import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
+import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import LeadForm from '@/components/programmatic/LeadForm';
+import AuthorBox from '@/components/programmatic/AuthorBox';
 
-export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nearby, h1, allCities }: CityPageRouterProps) {
-  const isUrgent = city.einwohner >= 100000;
-  const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
-  const v = cityHash(city, 4, 59);
+const IMG = 'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1920&q=80';
+
+export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
+  const v = cityHash(city.slug) % 4;
+
+  // CO2-Preispfad (ETS2 ab 2027)
+  const co2Preis2026 = 45; const co2Preis2030 = 120; const co2Preis2035 = 200;
+  const gasKosten2026 = calc.altKosten;
+  const gasKosten2030 = Math.round(gasKosten2026 * (1 + (co2Preis2030 - co2Preis2026) * 0.0023));
+  const gasKosten2035 = Math.round(gasKosten2026 * (1 + (co2Preis2035 - co2Preis2026) * 0.0023));
+  const wpWaerme = (city.strompreis / jaz).toFixed(1);
+
+  const KOSTEN_VERGLEICH = [
+    { label: 'WP Investition', wp: fmtEuro(foerd.eigenanteil) + ' (nach KfW)', gas: '€4.000–€8.000', hinweis: 'WP nach Förderung oft günstiger' },
+    { label: 'Betriebskosten 2026', wp: fmtEuro(calc.wpKosten) + '/J.', gas: fmtEuro(calc.altKosten) + '/J.', hinweis: 'WP ' + fmtEuro(calc.ersparnis) + '/J. günstiger' },
+    { label: 'Betriebskosten 2030*', wp: fmtEuro(Math.round(calc.wpKosten * 1.05)) + '/J.', gas: fmtEuro(gasKosten2030) + '/J.', hinweis: 'CO₂-Preis €120/t ab 2030' },
+    { label: 'Betriebskosten 2035*', wp: fmtEuro(Math.round(calc.wpKosten * 1.10)) + '/J.', gas: fmtEuro(gasKosten2035) + '/J.', hinweis: 'CO₂-Preis €200/t — ETS2' },
+    { label: 'Gesamtkosten 10 J.*', wp: fmtEuro(foerd.eigenanteil + calc.wpKosten * 10), gas: fmtEuro(8000 + (calc.altKosten + gasKosten2030) * 5), hinweis: 'WP klar günstiger ab 2028' },
+  ];
+
+  const GEG_FAKTEN = [
+    `Seit 01.01.2024: Neue Heizungen müssen 65% erneuerbare Energie nutzen.`,
+    `Gas-Brennwert allein ist nicht mehr GEG-konform — nur mit Solar-Hybridlösung.`,
+    `${city.einwohner >= 100000 ? `${city.name}: GEG-Pflicht für Bestandsgebäude ab ${city.gegFrist.split('-').reverse().join('.')}` : `${city.name}: GEG-Pflicht für Bestandsgebäude ab 30.06.2028`}`,
+    `CO₂-Preis steigt auf ca. €200/t bis 2035 (ETS2) — Gasheizungskosten steigen entsprechend.`,
+    `Wärmepumpen erfüllen das GEG zu 100% — ohne Hybridlösung, ohne Einschränkungen.`,
+  ];
+
+  const WANN_WP_BESSER = [
+    { situation: 'Vorlauftemp. ≤ 55°C', empfehlung: 'WP ideal', detail: 'Standard-WP, JAZ ' + jaz + ', sofortige Amortisation' },
+    { situation: 'Altbau mit WP-geeignetem Heizkreis', empfehlung: 'WP gut', detail: 'Hydraulischer Abgleich + WP — JAZ ' + (jaz - 0.2).toFixed(1) + '+' },
+    { situation: 'Gasheizung > 15 Jahre alt', empfehlung: 'WP klar', detail: 'Sowieso Ersatz fällig — GEG-konform investieren' },
+    { situation: 'Fußbodenheizung vorhanden', empfehlung: 'WP optimal', detail: 'JAZ ' + (jaz + 0.5).toFixed(1) + ', niedrigste Betriebskosten' },
+    { situation: 'Gasheizung < 5 Jahre, gut erhalten', empfehlung: 'Gas noch OK', detail: 'Aber: CO₂-Preisrisiko ab 2027 einkalkulieren' },
+    { situation: 'Mietimmobilie ohne FBH', empfehlung: 'Abwägen', detail: 'Warmmiete-Thematik und Umlagefähigkeit prüfen' },
+  ];
 
   const intros = [
-    `WP oder Gas in ${city.name}? Gas: ${fmtEuro(calc.altKosten)}/Jahr (${city.gaspreis} ct/kWh + CO₂). WP: ${fmtEuro(calc.wpKosten)}/Jahr (JAZ ${jaz} × ${city.strompreis} ct/kWh). Ersparnis: ${fmtEuro(calc.ersparnis)}/Jahr — wächst jährlich durch steigenden CO₂-Preis (55€/t 2026 → 100–150€/t 2030).`,
-    `In ${city.name} (${city.bundesland}) ist die GEG-Antwort klar: Ab ${city.gegFrist.split('-').reverse().join('.')} gilt 65%-EE-Pflicht. Neue Gasheizung: nicht mehr GEG-konform. WP: automatisch GEG-konform + ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis + ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}.`,
-    `WP vs. Gas ${city.name} — Langfrist: WP-Wärme heute {(city.strompreis / jaz).toFixed(1)} ct/kWh. Gas ${city.gaspreis} ct/kWh + steigender CO₂-Aufschlag. Ab 2027 (ETS2) kippt die Rechnung noch deutlicher zugunsten WP in ${city.name}.`,
-    `${city.name}: WP-Betrieb JAZ ${jaz}, ${city.strompreis} ct/kWh = ${fmtEuro(calc.wpKosten)}/Jahr. Gas = ${fmtEuro(calc.altKosten)}/Jahr. WP-Vorteil 2026: ${fmtEuro(calc.ersparnis)}/Jahr. Vorteil 2030: ca. ${fmtEuro(Math.round(calc.ersparnis * 1.8))}/Jahr. KfW Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
+    `WP vs. Gas ${city.name} — Langfrist: WP-Wärme kostet heute ${wpWaerme} ct/kWh (JAZ ${jaz} × ${city.strompreis} ct/kWh). Gas: ${city.gaspreis} ct/kWh + steigender CO₂-Aufschlag. Ab 2027 (ETS2) kippt die Rechnung noch deutlicher zugunsten WP in ${city.name}.`,
+    `Gasheizung in ${city.name} 2026: Betriebskosten ${fmtEuro(calc.altKosten)}/Jahr. WP: ${fmtEuro(calc.wpKosten)}/Jahr — Ersparnis ${fmtEuro(calc.ersparnis)}/Jahr. CO₂-Preis steigt auf €200/t bis 2035 → Gasbetriebskosten ${fmtEuro(gasKosten2035)}/Jahr ab 2035.`,
+    `${city.name}: Wärmepumpe Eigenanteil nach ${foerd.gesamtSatz}% KfW: ${fmtEuro(foerd.eigenanteil)}. Gasheizung: €4.000–€8.000. Betrieb WP: ${fmtEuro(calc.wpKosten)}/J. vs. Gas: ${fmtEuro(calc.altKosten)}/J. Amortisation: ${calc.amortisationJahre} Jahre.`,
+    `WP oder Gas ${city.name} (${city.bundesland})? Mit ${city.avgTemp}°C Jahresmittel und ${city.normAussentemp}°C Normaußentemperatur erreicht die WP JAZ ${jaz} — Heizkosten ${fmtEuro(calc.wpKosten)}/Jahr statt ${fmtEuro(calc.altKosten)}/Jahr mit Gas.`,
   ];
 
-  const heroStats = [
-    { val: `${foerd.gesamtSatz}%`, label: 'KfW-Förderung', sub: 'Eigennutzer' },
-    { val: fmtEuro(foerd.zuschuss), label: 'Zuschuss', sub: 'nicht rückzahlbar' },
-    { val: fmtEuro(foerd.eigenanteil), label: 'Eigenanteil', sub: 'nach Förderung' },
-    { val: fmtEuro(calc.ersparnis), label: 'Ersparnis/Jahr', sub: 'vs. Erdgas' },
-  ];
-
-  const sections = (
-    <>
-      {/* Featured Snippet mit cityHash-rotierendem Intro */}
-      <div className="bg-white border border-wp-border border-l-4 border-l-wp-green rounded-xl p-6 shadow-wp-sm">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
-          {fillTemplate(keyword.featuredSnippetQuestions[0] ?? '', city, jaz)}
-        </h2>
-        <p className="text-wp-text2 text-base leading-relaxed">{intros[v]}</p>
-      </div>
-
-      {/* Bild + stadtspezifische Kennzahlen */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        <div className="relative rounded-2xl overflow-hidden h-64">
-          <img src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=900&q=80" alt={h1} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-wp-dark/60 flex items-end p-5">
-            <div>
-              <p className="font-heading font-bold text-white text-base">{city.name} · JAZ {jaz}</p>
-              <p className="text-white/60 text-xs">{city.avgTemp}°C · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.strompreis} ct/kWh</p>
-            </div>
-          </div>
-        </div>
-        <div className="space-y-3">
-          <h3 className="font-heading font-bold text-wp-text text-lg">Wärmepumpe oder Gas in {city.name}</h3>
-          {[
-            { icon: '🌡️', label: 'Jahresmitteltemperatur', val: `${city.avgTemp}°C`, note: city.avgTemp > 10 ? `Milder Standort — JAZ ${jaz} gut erreichbar` : `Kühlerer Standort — JAZ ${jaz}, ggf. HT-WP prüfen` },
-            { icon: '⚡', label: `Strompreis ${city.name}`, val: `${city.strompreis} ct/kWh`, note: `WP-Betrieb: ${fmtEuro(calc.wpKosten)}/Jahr (JAZ ${jaz})` },
-            { icon: '🔥', label: 'Heizgradtage', val: `${city.heizgradtage.toLocaleString('de-DE')} Kd/a`, note: city.heizgradtage > 3200 ? 'Überdurchschnittlicher Wärmebedarf' : 'Günstiger Wärmebedarf' },
-            { icon: '💶', label: `KfW ${foerd.gesamtSatz}% in ${city.name}`, val: fmtEuro(foerd.zuschuss), note: `Eigenanteil: ${fmtEuro(foerd.eigenanteil)}` },
-          ].map((d, i) => (
-            <div key={i} className="bg-white border border-wp-border rounded-xl p-3 shadow-wp-sm flex items-start gap-3">
-              <span className="text-xl shrink-0">{d.icon}</span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="font-heading font-bold text-wp-text text-xs">{d.label}</p>
-                  <span className="font-mono font-bold text-wp-amber text-sm">{d.val}</span>
-                </div>
-                <p className="text-wp-text3 text-xs mt-0.5">{d.note}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {city.fernwaermeQuote >= 40 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-          <AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" />
-          <p className="text-amber-800 text-sm leading-relaxed">
-            <strong>{city.name}</strong> hat {city.fernwaermeQuote}% Fernwärmeabdeckung. Prüfen Sie ob Ihre Adresse in einem Fernwärmegebiet liegt — dort kann eine WP unzulässig sein. Für {100 - city.fernwaermeQuote}% der Haushalte in {city.name} ist die Wärmepumpe die klare Lösung.
-          </p>
-        </div>
-      )}
-
-      {/* Kostenvergleich — volles Fließtext */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Kostenvergleich in {city.name} — was wichtig ist</h2>
-        <div className="space-y-4 text-wp-text2 leading-relaxed">
-          <p>
-            In <strong className="text-wp-text">{city.name}</strong> ({city.bundesland}) liegt der lokale Strompreis bei <strong className="text-wp-text">{city.strompreis} ct/kWh</strong>. Mit JAZ <strong className="text-wp-text">{jaz}</strong> — dem erwarteten Wert für {city.avgTemp}°C Jahresmitteltemperatur — entstehen WP-Betriebskosten von <strong className="text-wp-text">{fmtEuro(calc.wpKosten)}</strong>/Jahr. Die Gasheizung kostet {fmtEuro(calc.altKosten)}/Jahr — die WP spart <strong className="text-wp-text">{fmtEuro(calc.ersparnis)}/Jahr</strong>.
-          </p>
-          <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-5">
-            <h3 className="font-heading font-semibold text-wp-green text-base mb-2">Betriebskosten 2026 vs 2030 in {city.name}</h3>
-            <p className="text-wp-text2 text-sm leading-relaxed">
-              {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.includes('ausgesetzt')
-                ? `In ${city.bundesland} gibt es zusätzlich zur KfW-Bundesförderung das Programm "${city.bundeslandFoerderung}": ${city.bundeslandFoerderungBetrag}. Kombiniert mit ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) ergibt das eine überdurchschnittliche Gesamtförderung für Hausbesitzer in ${city.name}.`
-                : `In ${city.bundesland} gilt die KfW-Bundesförderung (Programm 458) mit ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil für Hausbesitzer in ${city.name}: ${fmtEuro(foerd.eigenanteil)}.`
-              }
-            </p>
-          </div>
-          <p>
-            Bei {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen pro Jahr und {city.normAussentemp}°C Normaußentemperatur in {city.name} ist eine <strong className="text-wp-text">Heizlastberechnung nach DIN EN 12831</strong> die Basis für die richtige WP-Dimensionierung. Eine Über- oder Unterdimensionierung würde die JAZ {jaz} verschlechtern und die Wirtschaftlichkeit mindern. Amortisation bei korrekter Planung: <strong className="text-wp-text">{calc.amortisationJahre} Jahre</strong>.
-          </p>
-        </div>
-      </div>
-
-      {/* Zweites Bild mit City-Zahlen */}
-      <div className="relative rounded-2xl overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80" alt={`${keyword.keyword.replace('[Stadt]', city.name)}`} className="w-full h-52 object-cover" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.35) 100%)' }} />
-        <div className="absolute inset-0 flex items-center px-8">
-          <div>
-            <p className="font-heading font-extrabold text-white text-xl mb-2">{city.name} — Ihre Zahlen</p>
-            <p className="text-white text-sm">Ersparnis: <strong>{fmtEuro(calc.ersparnis)}/Jahr</strong></p>
-            <p className="text-white/70 text-sm">KfW {foerd.gesamtSatz}%: {fmtEuro(foerd.zuschuss)} · Eigenanteil: {fmtEuro(foerd.eigenanteil)}</p>
-            <p className="text-white/70 text-sm">Amortisation: {calc.amortisationJahre} Jahre · JAZ {jaz} · {city.avgTemp}°C</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Vollständige Datentabellen — macht jede Seite unique */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Alle Kennzahlen für {city.name} 2026</h2>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
-            <div className="px-4 py-3 border-b border-wp-border" style={{ background: 'linear-gradient(135deg, #1A4731 0%, #0A1910 100%)' }}>
-              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">{city.name} — Standort & Klima</p>
-            </div>
-            <div className="p-4 space-y-2">
-              {[
-                ['Jahresmitteltemperatur', city.avgTemp + '°C'],
-                ['Normaußentemperatur', city.normAussentemp + '°C'],
-                ['Heizgradtage', city.heizgradtage.toLocaleString('de-DE') + ' Kd/a'],
-                ['Sonnenstunden/Jahr', city.avgSunHours.toLocaleString('de-DE') + ' h'],
-                ['Fernwärmequote', city.fernwaermeQuote + '%'],
-                ['JAZ Luft-WP', String(jaz)],
-              ].map(([l, v], i) => (
-                <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
-                  <span className="text-wp-text2 text-xs">{l}</span>
-                  <span className="font-mono font-bold text-wp-text text-xs">{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
-            <div className="px-4 py-3 border-b border-wp-border bg-wp-dark">
-              <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">Energie & Wirtschaftlichkeit</p>
-            </div>
-            <div className="p-4 space-y-2">
-              {[
-                ['Strompreis ' + city.name, city.strompreis + ' ct/kWh'],
-                ['Gaspreis ' + city.name, city.gaspreis + ' ct/kWh'],
-                ['Gas-Betriebskosten heute', fmtEuro(calc.altKosten) + '/Jahr'],
-                ['WP-Betriebskosten', fmtEuro(calc.wpKosten) + '/Jahr'],
-                ['Ersparnis/Jahr', fmtEuro(calc.ersparnis)],
-                ['Amortisation', calc.amortisationJahre + ' Jahre'],
-              ].map(([l, v], i) => (
-                <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
-                  <span className="text-wp-text2 text-xs">{l}</span>
-                  <span className={`font-mono font-bold text-xs ${i === 4 ? 'text-wp-amber' : i === 3 ? 'text-wp-green' : 'text-wp-text'}`}>{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Prozessschritte */}
-      <div>
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">Kostenlos anfragen in {city.name}</h2>
-        <div className="space-y-3">
-          {[
-            { n: '01', title: 'Anfrage (2 Min.)', text: `PLZ und Gebäudedaten eingeben. Wir finden geprüfte Betriebe in ${city.name} (${city.bundesland}) — kostenlos, 48h.` },
-            { n: '02', title: 'Bis zu 3 vollständige Angebote', text: `Alle mit Heizlastberechnung für ${city.normAussentemp}°C, hydraulischem Abgleich und KfW-Antrag inklusive.` },
-            { n: '03', title: 'KfW-Antrag vor Vertragsabschluss', text: `${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}. LuL-Betrieb stellt Antrag VOR Unterschrift.` },
-            { n: '04', title: `Auszahlung: ${fmtEuro(foerd.zuschuss)}`, text: `Verwendungsnachweis → ${fmtEuro(foerd.zuschuss)} in 4–8 Wochen auf Ihr Konto. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.` },
-          ].map((s, i) => (
-            <div key={i} className="bg-white rounded-xl border border-wp-border p-4 flex gap-4 shadow-wp-sm">
-              <div className="w-9 h-9 bg-wp-dark rounded-xl flex items-center justify-center font-mono font-bold text-wp-green3 text-sm shrink-0">{s.n}</div>
-              <div>
-                <p className="font-heading font-bold text-wp-text mb-1">{s.title}</p>
-                <p className="text-wp-text2 text-sm leading-relaxed">{s.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question', name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
 
   return (
-    <RichTemplateBase
-      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1} allCities={allCities}
-      heroImg="https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1920&q=80"
-      heroStats={heroStats}
-      {...(isUrgent ? { urgencyBadge: `GEG-Frist ${city.name}: ${gegFristFormatted}` } : {})}
-      sections={sections}
-    />
+    <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      <div className="relative min-h-[55vh] flex items-center overflow-hidden">
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
+          <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
+            <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
+            <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
+            <span className="text-white/80">{city.name}</span>
+          </nav>
+          {city.einwohner >= 100000 && (
+            <div className="inline-block bg-wp-amber text-wp-dark text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              GEG-Frist {city.name}: {city.gegFrist.split('-').reverse().join('.')}
+            </div>
+          )}
+          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {[
+              { val: `${wpWaerme} ct/kWh`, label: 'WP-Wärme', sub: 'vs. ' + city.gaspreis + ' ct Gas' },
+              { val: fmtEuro(calc.ersparnis) + '/J.', label: 'Ersparnis', sub: 'WP vs. Gas' },
+              { val: fmtEuro(gasKosten2030) + '/J.', label: 'Gas 2030*', sub: 'CO₂ €120/t' },
+              { val: calc.amortisationJahre + ' J.', label: 'Amortisation', sub: 'WP nach Förderung' },
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="text-xl font-extrabold text-white">{s.val}</div>
+                <div className="text-white/50 text-xs">{s.label}</div>
+                <div className="text-white/30 text-xs">{s.sub}</div>
+              </div>
+            ))}
+          </div>
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+            Kostenloses Angebot →
+          </a>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-14">
+
+          {/* Featured Snippet */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+              {fillTemplate('Was ist günstiger: Wärmepumpe oder Gas in {stadt}?', city, jaz)}
+            </h2>
+            <p className="text-wp-text2 text-base leading-relaxed">
+              In <strong>{city.name}</strong> ({city.avgTemp}°C Jahresmittel) ist die Wärmepumpe heute bereits günstiger: WP-Betriebskosten {fmtEuro(calc.wpKosten)}/Jahr vs. Gas {fmtEuro(calc.altKosten)}/Jahr = <strong>{fmtEuro(calc.ersparnis)}/Jahr Ersparnis</strong>. Ab 2027 steigt der CO₂-Preis (ETS2) und macht Gas noch teurer. Die WP amortisiert sich nach KfW-Förderung ({foerd.gesamtSatz}% = {fmtEuro(foerd.zuschuss)}) in {calc.amortisationJahre} Jahren.
+            </p>
+          </div>
+
+          {/* Kostenvergleich Tabelle */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Kostenvergleich Wärmepumpe vs. Gas in {city.name} — 2026 bis 2035
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
+              <table className="w-full text-sm min-w-[500px]">
+                <thead>
+                  <tr className="bg-wp-bg border-b border-wp-border">
+                    {['Kostenposition', 'Wärmepumpe', 'Gasheizung', 'Hinweis'].map(h => (
+                      <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {KOSTEN_VERGLEICH.map((r, i) => (
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${i === 0 ? 'bg-wp-greenxlt' : ''}`}>
+                      <td className="px-3 py-3 font-semibold text-wp-text text-sm">{r.label}</td>
+                      <td className="px-3 py-3 font-mono text-wp-green font-bold text-sm">{r.wp}</td>
+                      <td className="px-3 py-3 font-mono text-wp-text2 text-sm">{r.gas}</td>
+                      <td className="px-3 py-3 text-xs text-wp-text3">{r.hinweis}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-wp-text3 mt-2">*Prognose basierend auf EU-ETS2 CO₂-Preispfad. Keine Garantie für zukünftige Preise.</p>
+          </div>
+
+          {/* GEG-Fakten */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              GEG 2024 — Was für {city.name} gilt
+            </h2>
+            <div className="space-y-2">
+              {GEG_FAKTEN.map((f, i) => (
+                <div key={i} className="flex gap-3 p-3 bg-white border border-wp-border rounded-lg">
+                  <span className="text-wp-green font-bold shrink-0">§</span>
+                  <span className="text-wp-text2 text-sm">{f}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Wann ist WP besser */}
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+              Wann lohnt sich WP oder Gas in {city.name}?
+            </h2>
+            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-wp-bg border-b border-wp-border">
+                    {['Situation', 'Empfehlung', 'Detail'].map(h => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {WANN_WP_BESSER.map((r, i) => (
+                    <tr key={i} className={`border-b border-wp-border last:border-0 ${r.empfehlung.includes('WP') ? 'bg-wp-greenxlt' : ''}`}>
+                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{r.situation}</td>
+                      <td className={`px-4 py-3 font-bold text-sm ${r.empfehlung.includes('WP') ? 'text-wp-green' : 'text-wp-text3'}`}>{r.empfehlung}</td>
+                      <td className="px-4 py-3 text-wp-text2 text-xs">{r.detail}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* H3 + FAQ */}
+          {faqs.length > 0 && (
+            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            </div>
+          )}
+
+          <div>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Wärmepumpe oder Gas {city.name}</h2>
+            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+              {faqs.map((faq, i) => (
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
+                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border">
+                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <div className="flex flex-wrap gap-2">
+                {nearby.map(n => (
+                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <div className="flex flex-wrap gap-2">
+                {(keyword.crossLinks ?? []).map((slug: string) => (
+                  <Link key={slug} href={`/${slug}/${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
+            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Vergleich 2026</div>
+            {[
+              ['WP-Betriebskosten', fmtEuro(calc.wpKosten) + '/J.'],
+              ['Gas-Betriebskosten', fmtEuro(calc.altKosten) + '/J.'],
+              ['Ersparnis/Jahr', fmtEuro(calc.ersparnis)],
+              ['WP-Wärme', wpWaerme + ' ct/kWh'],
+              ['Gas heute', city.gaspreis + ' ct/kWh'],
+              ['Gas 2030*', fmtEuro(gasKosten2030) + '/J.'],
+              ['Amortisation WP', calc.amortisationJahre + ' J.'],
+            ].map(([l, v], i) => (
+              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
+                <span className="text-wp-text2">{l}</span>
+                <span className="font-bold text-wp-text">{v}</span>
+              </div>
+            ))}
+            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="angebot" className="bg-wp-dark py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <LeadForm city={city} keyword={keyword} />
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <AuthorBox city={city} />
+        <div className="mt-6 text-xs text-wp-text3">Gaspreise: BDEW 2026 · CO₂-Prognose: EU-ETS2 · JAZ: Fraunhofer ISE · Stand März 2026</div>
+      </div>
+    </div>
   );
 }
