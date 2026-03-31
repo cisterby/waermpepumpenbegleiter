@@ -1,15 +1,13 @@
 // components/programmatic/templates/InstallateurTemplate.tsx
 // "waermepumpe-installateur" — vollständig, 1500+ Wörter, Bilder, visuell stark
 'use client';
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Star } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
-import { AdditionalContentBlocks } from '@/components/programmatic/AdditionalContentBlocks';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -51,7 +49,6 @@ const CHECKLIST = [
 ];
 
 export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const market = getMarketData(city.einwohner);
@@ -66,8 +63,19 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
     `Die Verbraucherzentrale empfiehlt: Mindestens 3 Vergleichsangebote einholen, alle Positionen einzeln ausweisen lassen und nur KfW-LuL-registrierte Betriebe beauftragen. In ${city.name} holen wir diese Angebote für Sie kostenlos ein — in 48 Stunden, vollständig vergleichbar.`,
   ];
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.slice(0, 5).map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ══ HERO ══════════════════════════════════════════════ */}
       <div className="relative min-h-[70vh] flex items-center overflow-hidden">
@@ -380,8 +388,6 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </div>
           )}
 
-          <AdditionalContentBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} foerd={foerd} />
-
           {/* Stadtspezifische Standortdaten — macht jede Seite unique */}
           <div className="grid sm:grid-cols-2 gap-4 mt-4">
             <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
@@ -434,21 +440,15 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
               {faqs.map((faq, i) => (
-                <div key={i} className={i < faqs.length - 1 ? 'border-b border-wp-border' : ''}>
-                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full bg-transparent border-none px-5 py-4 flex justify-between items-center cursor-pointer text-left gap-3">
+                <details key={i} className="group border-b border-wp-border last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
                     <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {openFaq === i && (
-                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }}>
-                        <p className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="border-t border-wp-border">
+                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  </div>
+                </details>
               ))}
             </div>
           </div>
