@@ -13,10 +13,10 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
   const v = cityHash(city, 4, 53);
 
   const intros = [
-    `WP-Beratung {city.name}: {city.fernwaermeQuote >= 40 ? city.fernwaermeQuote + '% Fernwärme — wir prüfen ob Ihre Adresse betroffen ist' : 'Nur ' + city.fernwaermeQuote + '% Fernwärme — WP ist Ihre klare Option'}. Förderung: {foerd.gesamtSatz}% KfW = {fmtEuro(foerd.zuschuss)}. Kostenlos, herstellerunabhängig.`,
-    `Fundierte Beratung für {city.name}: JAZ {jaz} bei {city.avgTemp}°C, {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage, Strom {city.strompreis} ct/kWh → Betrieb {fmtEuro(calc.wpKosten)}/Jahr. Wer diese Zahlen nicht kennt, kann kein seriöses Angebot machen.`,
-    `Beratung {city.name} ({city.bundesland}): Drei Fragen — Ist Ihr Haus geeignet? Wie hoch ist die Förderung in {city.bundesland}? {city.einwohner >= 200000 ? 'Welcher Betrieb hat Kapazität in ' + city.name + ' (Wartezeit ggf. 6–12 Wochen)' : 'Welche geprüften Betriebe sind verfügbar'}. Kostenlos.`,
-    `Beratung {city.name}: Heizlastberechnung für {city.normAussentemp}°C Normaußentemperatur. Kommunalplan prüfen — {city.name} muss bis {city.einwohner >= 100000 ? '2026' : '2028'} Wärmeplan vorlegen. Dann 3 Angebote von LuL-Betrieben — wir übernehmen das kostenlos.`,
+    `WP-Beratung ${city.name}: ${city.fernwaermeQuote >= 40 ? city.fernwaermeQuote + '% Fernwärme — wir prüfen ob Ihre Adresse betroffen ist' : 'Nur ' + city.fernwaermeQuote + '% Fernwärme — WP ist Ihre klare Option'}. Förderung: ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}. Kostenlos, herstellerunabhängig.`,
+    `Fundierte Beratung für ${city.name}: JAZ ${jaz} bei ${city.avgTemp}°C, ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtage, Strom ${city.strompreis} ct/kWh → Betrieb ${fmtEuro(calc.wpKosten)}/Jahr. Wer diese Zahlen nicht kennt, kann kein seriöses Angebot machen.`,
+    `Beratung ${city.name} (${city.bundesland}): Drei Fragen — Ist Ihr Haus geeignet? Wie hoch ist die Förderung in ${city.bundesland}? ${city.einwohner >= 200000 ? 'Welcher Betrieb hat Kapazität in ' + city.name + ' (Wartezeit ggf. 6–12 Wochen)' : 'Welche geprüften Betriebe sind verfügbar'}. Kostenlos.`,
+    `Beratung ${city.name}: Heizlastberechnung für ${city.normAussentemp}°C Normaußentemperatur. Kommunalplan prüfen — ${city.name} muss bis ${city.einwohner >= 100000 ? '2026' : '2028'} Wärmeplan vorlegen. Dann 3 Angebote von LuL-Betrieben — wir übernehmen das kostenlos.`,
   ];
 
   const heroStats = [
