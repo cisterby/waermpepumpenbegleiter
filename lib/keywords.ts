@@ -256,7 +256,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'commercial',
     template: 'HeizungTauschenTemplate',
-    titleTemplate: 'Heizung tauschen {stadt} {year}',
+    titleTemplate: 'Heizung tauschen {stadt}',
     metaTemplate: 'Heizung tauschen {stadt} {year} ✓ WP vs. Gas vs. Pellet ehrlicher Vergleich ✓ GEG-konforme Lösungen ✓ Stadtspezifische Betriebskosten ✓ Kostenlos anfragen.',
     h1Template: 'Heizung tauschen in {stadt} {year} — Alle Optionen im Vergleich',
     featuredSnippetQuestions: [
