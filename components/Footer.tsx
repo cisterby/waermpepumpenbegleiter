@@ -10,8 +10,14 @@ const navigation = [
 ];
 
 const staedte = [
-  'Berlin', 'Hamburg', 'München', 'Köln',
-  'Frankfurt', 'Stuttgart', 'Düsseldorf', 'Hannover',
+  { name: 'Berlin', slug: 'berlin' },
+  { name: 'Hamburg', slug: 'hamburg' },
+  { name: 'München', slug: 'muenchen' },
+  { name: 'Köln', slug: 'koeln' },
+  { name: 'Frankfurt', slug: 'frankfurt-am-main' },
+  { name: 'Stuttgart', slug: 'stuttgart' },
+  { name: 'Düsseldorf', slug: 'duesseldorf' },
+  { name: 'Hannover', slug: 'hannover' },
 ];
 
 const rechtliches = [
@@ -37,13 +43,19 @@ export default function Footer() {
               Ihr unabhängiger Begleiter für die Heizungswende.
             </p>
             <div className="flex gap-4">
-              {['LinkedIn', 'Instagram', 'Facebook'].map((social) => (
+              {[
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/company/waermepumpenbegleiter' },
+                { label: 'Instagram', href: 'https://www.instagram.com/waermepumpenbegleiter' },
+                { label: 'Facebook', href: 'https://www.facebook.com/waermepumpenbegleiter' },
+              ].map((social) => (
                 <a
-                  key={social}
-                  href="https://www.linkedin.com/company/waermepumpenbegleiter"
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-body text-xs text-wp-primary-mid hover:text-wp-primary-light transition-colors"
                 >
-                  {social}
+                  {social.label}
                 </a>
               ))}
             </div>
@@ -73,10 +85,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {staedte.map((stadt) => (
-                <li key={stadt}>
-                  <span className="font-body text-sm text-wp-text-on-dark/60">
-                    {stadt}
-                  </span>
+                <li key={stadt.slug}>
+                  <Link
+                    href={`/waermepumpe/${stadt.slug}`}
+                    className="font-body text-sm text-wp-text-on-dark/60 hover:text-wp-primary-mid transition-colors"
+                  >
+                    {stadt.name}
+                  </Link>
                 </li>
               ))}
             </ul>
