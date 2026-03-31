@@ -356,7 +356,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Wie viele Angebote sollte ich in {stadt} einholen?', a: 'Mindestens 3. Die Verbraucherzentrale empfiehlt ausdrücklich, mehrere Angebote zu vergleichen — Preisunterschiede von 30–50% sind keine Seltenheit.' },
     ],
     sitemapPriority: 0.72,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung'],
   },
   {
     id: 14, tier: 3,
