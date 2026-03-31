@@ -13,10 +13,10 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
   const v = cityHash(city, 4, 59);
 
   const intros = [
-    `WP oder Gas in {city.name}? Gas: {fmtEuro(calc.altKosten)}/Jahr ({city.gaspreis} ct/kWh + CO₂). WP: {fmtEuro(calc.wpKosten)}/Jahr (JAZ {jaz} × {city.strompreis} ct/kWh). Ersparnis: {fmtEuro(calc.ersparnis)}/Jahr — wächst jährlich durch steigenden CO₂-Preis (55€/t 2026 → 100–150€/t 2030).`,
-    `In {city.name} ({city.bundesland}) ist die GEG-Antwort klar: Ab {city.gegFrist.split('-').reverse().join('.')} gilt 65%-EE-Pflicht. Neue Gasheizung: nicht mehr GEG-konform. WP: automatisch GEG-konform + {fmtEuro(calc.ersparnis)}/Jahr Ersparnis + {foerd.gesamtSatz}% KfW = {fmtEuro(foerd.zuschuss)}.`,
-    `WP vs. Gas {city.name} — Langfrist: WP-Wärme heute {(city.strompreis / jaz).toFixed(1)} ct/kWh. Gas {city.gaspreis} ct/kWh + steigender CO₂-Aufschlag. Ab 2027 (ETS2) kippt die Rechnung noch deutlicher zugunsten WP in {city.name}.`,
-    `{city.name}: WP-Betrieb JAZ {jaz}, {city.strompreis} ct/kWh = {fmtEuro(calc.wpKosten)}/Jahr. Gas = {fmtEuro(calc.altKosten)}/Jahr. WP-Vorteil 2026: {fmtEuro(calc.ersparnis)}/Jahr. Vorteil 2030: ca. {fmtEuro(Math.round(calc.ersparnis * 1.8))}/Jahr. KfW Eigenanteil: {fmtEuro(foerd.eigenanteil)}.`,
+    `WP oder Gas in ${city.name}? Gas: ${fmtEuro(calc.altKosten)}/Jahr (${city.gaspreis} ct/kWh + CO₂). WP: ${fmtEuro(calc.wpKosten)}/Jahr (JAZ ${jaz} × ${city.strompreis} ct/kWh). Ersparnis: ${fmtEuro(calc.ersparnis)}/Jahr — wächst jährlich durch steigenden CO₂-Preis (55€/t 2026 → 100–150€/t 2030).`,
+    `In ${city.name} (${city.bundesland}) ist die GEG-Antwort klar: Ab ${city.gegFrist.split('-').reverse().join('.')} gilt 65%-EE-Pflicht. Neue Gasheizung: nicht mehr GEG-konform. WP: automatisch GEG-konform + ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis + ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}.`,
+    `WP vs. Gas ${city.name} — Langfrist: WP-Wärme heute {(city.strompreis / jaz).toFixed(1)} ct/kWh. Gas ${city.gaspreis} ct/kWh + steigender CO₂-Aufschlag. Ab 2027 (ETS2) kippt die Rechnung noch deutlicher zugunsten WP in ${city.name}.`,
+    `${city.name}: WP-Betrieb JAZ ${jaz}, ${city.strompreis} ct/kWh = ${fmtEuro(calc.wpKosten)}/Jahr. Gas = ${fmtEuro(calc.altKosten)}/Jahr. WP-Vorteil 2026: ${fmtEuro(calc.ersparnis)}/Jahr. Vorteil 2030: ca. ${fmtEuro(Math.round(calc.ersparnis * 1.8))}/Jahr. KfW Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
   ];
 
   const heroStats = [
