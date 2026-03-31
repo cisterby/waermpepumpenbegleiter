@@ -13,7 +13,7 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
 
   const heroStats = [
-    { val: `JAZ ${jaz}`, label: "Jahresarbeitszahl", sub: "in ${city.name}" },
+    { val: `JAZ ${jaz}`, label: "Jahresarbeitszahl", sub: `in ${city.name}` },
         { val: `${foerd.gesamtSatz}%`, label: "KfW-Förderung", sub: "Eigennutzer" },
         { val: `${fmtEuro(foerd.eigenanteil)}`, label: "Eigenanteil", sub: "nach Förderung" },
         { val: `${calc.amortisationJahre} J.`, label: "Amortisation", sub: "inkl. KfW" }
