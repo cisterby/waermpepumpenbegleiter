@@ -8,7 +8,7 @@ import { cityHash } from '@/lib/content-variation';
 import { CheckCircle, Zap } from 'lucide-react';
 import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
 
-export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1, allCities }: CityPageRouterProps) {
   const isUrgent = city.einwohner >= 100000;
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
   const v = cityHash(city, 4, 88);
@@ -160,7 +160,7 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
 
   return (
     <RichTemplateBase
-      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1}
+      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1} allCities={allCities}
       heroImg="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80"
       heroStats={heroStats}
       {...(isUrgent ? { urgencyBadge: `GEG-Frist ${city.name}: ${gegFristFormatted}` } : {})}

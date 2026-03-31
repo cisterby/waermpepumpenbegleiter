@@ -7,7 +7,7 @@ import { cityHash } from '@/lib/content-variation';
 import { CheckCircle, AlertTriangle } from 'lucide-react';
 import RichTemplateBase from '@/components/programmatic/RichTemplateBase';
 
-export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, nearby, h1, allCities }: CityPageRouterProps) {
   const isUrgent = city.einwohner >= 100000;
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
   const v = cityHash(city, 4, 71);
@@ -186,7 +186,7 @@ export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, n
 
   return (
     <RichTemplateBase
-      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1}
+      city={city} keyword={keyword} calc={calc} foerd={foerd} jaz={jaz} nearby={nearby} h1={h1} allCities={allCities}
       heroImg="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80"
       heroStats={heroStats}
       {...(isUrgent ? { urgencyBadge: `GEG-Frist ${city.name}: ${gegFristFormatted}` } : {})}
