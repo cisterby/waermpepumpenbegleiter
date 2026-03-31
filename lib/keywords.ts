@@ -302,7 +302,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'niedrig',
     intent: 'informational',
     template: 'WaermeplanungTemplate',
-    titleTemplate: 'Kommunale Wärmeplanung {stadt} {year}',
+    titleTemplate: 'Kommunale Wärmeplanung {stadt}',
     metaTemplate: 'Kommunale Wärmeplanung {stadt} {year}: Fristen, Pflichten & was das für Ihre Heizung bedeutet ✓ GEG-Kontext ✓ Wärmepumpe als sichere GEG-konforme Alternative.',
     h1Template: 'Kommunale Wärmeplanung {stadt} {year} — Was Hausbesitzer wissen müssen',
     featuredSnippetQuestions: [
@@ -314,7 +314,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was ist die kommunale Wärmeplanung in {stadt}?', a: 'Alle Kommunen über 10.000 Einwohner müssen bis 2028 einen Wärmeplan vorlegen, der zeigt, wie die Wärmeversorgung bis 2045 klimaneutral wird. {stadtWaermeplanStatus}' },
     ],
     sitemapPriority: 0.72,
-    crossLinks: ['waermepumpe', 'heizung-tauschen', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe', 'heizung-tauschen', 'waermepumpe-foerderung', 'waermepumpe-kosten', 'waermepumpe-installateur'],
   },
   // ── TIER 3 ────────────────────────────────────────────────────
   {
