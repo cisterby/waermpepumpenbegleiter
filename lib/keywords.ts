@@ -332,7 +332,6 @@ export const KEYWORDS: Keyword[] = [
       'Eignet sich mein Grundstück in {stadt} für eine Erdwärmepumpe?',
       'Was kostet eine Erdwärmepumpe in {stadt}?',
     ],
-          crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur'],
       faqPool: [
       { q: 'Eignet sich {stadt} für Erdwärme?', a: 'In {bundesland} sind die geologischen Bedingungen überwiegend gut für Erdwärmesonden geeignet. Eine Genehmigung beim zuständigen Bergamt ist erforderlich. Ihr lokaler Fachbetrieb beantragt diese für Sie.' },
     ],
@@ -353,7 +352,6 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Wo bekomme ich kostenlose WP-Angebote in {stadt}?',
     ],
-          crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung'],
       faqPool: [
       { q: 'Wie viele Angebote sollte ich in {stadt} einholen?', a: 'Mindestens 3. Die Verbraucherzentrale empfiehlt ausdrücklich, mehrere Angebote zu vergleichen — Preisunterschiede von 30–50% sind keine Seltenheit.' },
     ],
@@ -375,7 +373,6 @@ export const KEYWORDS: Keyword[] = [
       'Was kostet eine Wärmepumpe in {stadt} im Jahr {year}?',
       'Wie haben sich die WP-Preise in {stadt} entwickelt?',
     ],
-          crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
             crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
       faqPool: [
       { q: 'Was kostet eine Wärmepumpe aktuell in {stadt}?', a: 'Luft-Wasser-WP: €18.000–€28.000 komplett. Sole-Wasser: €22.000–€35.000. Wasser-Wasser: €25.000–€40.000. Die Preise sind 2025/26 nach dem Boom stabil geblieben.' },
@@ -397,12 +394,11 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Welche Wärmepumpen-Anbieter gibt es in {stadt}?',
     ],
-          crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-fachbetrieb'],
       faqPool: [
       { q: 'Lokaler Betrieb oder bundesweiter Anbieter (Thermondo/Enpal) in {stadt}?', a: 'Lokale Betriebe kennen die örtlichen Gegebenheiten in {stadt} besser, sind bei Störungen schneller vor Ort und bieten oft flexiblere Lösungen. Bundesweite Anbieter können günstiger sein, arbeiten aber mit Subunternehmern.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe', 'waermepumpe-fachbetrieb'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe', 'waermepumpe-fachbetrieb', 'waermepumpe-kosten'],
   },
   {
     id: 16, tier: 3,
