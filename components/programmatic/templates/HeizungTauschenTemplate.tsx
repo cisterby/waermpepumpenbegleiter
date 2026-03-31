@@ -36,8 +36,8 @@ const HEIZUNG_VERGLEICH = [
 ];
 
 export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
-  const v = cityHash(city.slug) % 4;
+  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const v = cityHash(city, 4);
 
   const intros = [
     `Heizung tauschen ${city.name}: Seit 2024 gilt die 65%-EE-Pflicht — Gas-Brennwert allein nicht mehr GEG-konform. WP-Eigenanteil nach ${foerd.gesamtSatz}% KfW: ${fmtEuro(foerd.eigenanteil)}. Ersparnis vs. altem Gas: ${fmtEuro(calc.ersparnis)}/Jahr.`,
@@ -218,11 +218,11 @@ export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, ja
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
-          <LeadForm city={city} keyword={keyword} />
+          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox city={city} />
+        <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">GEG BMWSB 2024 · KfW BEG 458 · BDEW 2026 · Stand März 2026</div>
       </div>
     </div>

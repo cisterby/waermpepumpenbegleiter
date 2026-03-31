@@ -13,8 +13,8 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 const IMG = 'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1920&q=80';
 
 export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
-  const v = cityHash(city.slug) % 4;
+  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const v = cityHash(city, 4);
 
   // CO2-Preispfad (ETS2 ab 2027)
   const co2Preis2026 = 45; const co2Preis2030 = 120; const co2Preis2035 = 200;
@@ -262,11 +262,11 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
-          <LeadForm city={city} keyword={keyword} />
+          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox city={city} />
+        <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">Gaspreise: BDEW 2026 · CO₂-Prognose: EU-ETS2 · JAZ: Fraunhofer ISE · Stand März 2026</div>
       </div>
     </div>

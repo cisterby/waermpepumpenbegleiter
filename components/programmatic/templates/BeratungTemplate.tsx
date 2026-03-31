@@ -38,8 +38,8 @@ const CHECKLISTE = [
 ];
 
 export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
-  const faqs = getRotatingFAQs(keyword.slug, city, calc, foerd, jaz);
-  const v = cityHash(city.slug) % 4;
+  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const v = cityHash(city, 4);
 
   const intros = [
     `Eine Wärmepumpen-Beratung in ${city.name} ist die Voraussetzung für eine wirtschaftliche Entscheidung. Mit ${city.strompreis} ct/kWh Strompreis und JAZ ${jaz} bei ${city.avgTemp}°C Jahresmittel liegt die Ersparnis gegenüber Erdgas bei ${fmtEuro(calc.ersparnis)}/Jahr. Wer falsch dimensioniert oder den KfW-Antrag zu spät stellt, verliert Förderung und Effizienz.`,
@@ -277,12 +277,12 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
           <p className="text-white/60 text-center text-sm mb-8">Kostenlos · Herstellerunabhängig · KfW-Begleitung inklusive</p>
-          <LeadForm city={city} keyword={keyword} />
+          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox city={city} />
+        <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">Klimadaten: DWD · Förderrecht: KfW/BAFA · Effizienz: Fraunhofer ISE · Stand März 2026</div>
       </div>
     </div>
