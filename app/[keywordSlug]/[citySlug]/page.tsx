@@ -66,10 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title, description: desc, url,
       type: 'website', locale: 'de_DE',
     },
-    twitter: {
-      card: 'summary_large_image', title, description: desc,
-      images: [`/waermepumpe-${params.citySlug}/og`],
-    },
+    twitter: { card: 'summary_large_image', title, description: desc },
     robots: { index: true, follow: true },
   };
 }
