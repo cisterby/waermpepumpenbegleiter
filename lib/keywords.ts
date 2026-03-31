@@ -418,11 +418,11 @@ export const KEYWORDS: Keyword[] = [
     featuredSnippetQuestions: [
       'Was ist der Unterschied zwischen Luft-Wasser und Luft-Luft in {stadt}?',
     ],
-    faqPool: [
+faqPool: [
       { q: 'Luft-Wasser oder Luft-Luft in {stadt}?', a: 'Luft-Wasser-WP (Heizung + Warmwasser) ist in {stadt} der Standardfall für EFH. Luft-Luft ist günstiger, hat aber keinen Warmwasserkreislauf und ist in Deutschland weniger verbreitet.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe', 'erdwaermepumpe'],
+    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur'],
   },
   {
     id: 17, tier: 3,
