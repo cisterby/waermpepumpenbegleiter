@@ -369,13 +369,15 @@ export const KEYWORDS: Keyword[] = [
     intent: 'commercial',
     template: 'PreiseTemplate',
     titleTemplate: 'Wärmepumpe Preise {stadt} {year}',
-    metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW-Förderung bis €21.000 ✓ Kostenlos.',
+    metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW bis €21.000 ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe Preise {stadt} {year} — Aktuelle Kosten aller Typen',
     featuredSnippetQuestions: [
       'Was kostet eine Wärmepumpe in {stadt} im Jahr {year}?',
       'Wie haben sich die WP-Preise in {stadt} entwickelt?',
     ],
-    faqPool: [
+          crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
+            crossLinks: ['waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-foerderung'],
+      faqPool: [
       { q: 'Was kostet eine Wärmepumpe aktuell in {stadt}?', a: 'Luft-Wasser-WP: €18.000–€28.000 komplett. Sole-Wasser: €22.000–€35.000. Wasser-Wasser: €25.000–€40.000. Die Preise sind 2025/26 nach dem Boom stabil geblieben.' },
     ],
     sitemapPriority: 0.75,
