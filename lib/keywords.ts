@@ -476,7 +476,7 @@ faqPool: [
     featuredSnippetQuestions: ['Was macht einen guten WP-Fachbetrieb in {stadt} aus?'],
     faqPool: [{ q: 'Was unterscheidet einen WP-Fachbetrieb von einem normalen SHK-Betrieb?', a: 'Spezialisierte WP-Fachbetriebe haben mehr als 5 WP-Installationen durchgeführt, kennen die Förderprozesse und sind oft BWP-Mitglied. Das sichert Qualität und Förderkonformität.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe-anbieter', 'waermepumpe'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-anbieter', 'waermepumpe', 'waermepumpe-kosten'],
   },
   {
     id: 20, tier: 4,
