@@ -67,8 +67,6 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const gewinnNach20 = Math.round(calc.ersparnis * 20 - foerd.eigenanteil);
   const gewinnNach25 = Math.round(calc.ersparnis * 25 - foerd.eigenanteil);
 
-  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
-
   return (
     <>
     <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
@@ -360,6 +358,7 @@ export default function WaermepumpeTemplate({
 
   // Intro-Textvarianten (stadtspezifisch + deterministisch)
   // Intro-Paragraphen: 8 × 4 Stadtgrößen × 6 Keyword-Kategorien = unique pro Stadt
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
   const [introText] = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   // FAQs rotierend aus Pool (20+ Fragen je Keyword-Kategorie, 6 pro Stadt-Hash)
