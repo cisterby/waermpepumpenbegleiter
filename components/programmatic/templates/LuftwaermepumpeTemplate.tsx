@@ -15,11 +15,7 @@ const IMG = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=f
 /* HERSTELLER moved inside component */
 
 /* JAZ_SZENARIEN moved inside component */
-const JAZ_SZENARIEN_PLACEHOLDER = [];
-  { system: 'Flachheizkörper modern (45°C)', note: 'Standard in Neubauten' },
-  { system: 'Heizkörper Standard (55°C)', note: 'Standard in Bestandsgebäuden' },
-  { system: 'Altbau hohe Vorlauftemp. (70°C)', note: 'Hochtemperatur-WP erforderlich' },
-];
+/* JAZ_SZENARIEN_PLACEHOLDER removed */
 
 /* LW_VS_SW moved inside component */
 

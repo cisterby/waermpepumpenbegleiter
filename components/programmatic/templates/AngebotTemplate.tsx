@@ -15,12 +15,7 @@ const IMG = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=f
 /* ANGEBOT_MUSS moved inside component */
 
 /* ROTE_FLAGGEN moved inside component */
-const ROTE_FLAGGEN_PLACEHOLDER = [];
-  { signal: 'Pauschalpreis ohne Positionsaufschlüsselung', risiko: 'Intransparenz — Vergleich unmöglich, Nachtragsrisiko hoch' },
-  { signal: 'Kein hydraulischer Abgleich erwähnt', risiko: 'KfW-Pflicht verletzt — Förderantrag abgelehnt' },
-  { signal: 'Betrieb nicht KfW-LuL-registriert', risiko: 'KfW-Antrag nicht möglich — voller Förderverlust bis €21.000' },
-  { signal: 'Sehr kurze Gewährleistung (< 2 Jahre)', risiko: 'Gesetzliches Minimum — deutet auf Qualitätsprobleme hin' },
-];
+/* orphaned ROTE_FLAGGEN body removed */
 
 /* ANGEBOTSVERGLEICH moved inside component */
 

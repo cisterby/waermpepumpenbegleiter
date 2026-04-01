@@ -13,12 +13,7 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 const IMG = 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1920&q=80';
 
 /* SCHRITTE moved inside component */
-const SCHRITTE_PLACEHOLDER = [];
-  { icon: '🏠', nr: '2', title: 'Vor-Ort-Begehung durch Fachbetrieb', text: 'Aufstellort, Heizkreis, Pufferspeicher, Elektroanschluss. Basis für die Heizlastberechnung nach DIN EN 12831. Dauer: 1–2 Stunden.' },
-  { icon: '📊', nr: '3', title: 'Heizlastberechnung & Dimensionierung', text: 'Ohne korrekte Heizlast kein richtiges Gerät. Über- oder Unterdimensionierung senkt JAZ und Wirtschaftlichkeit. KfW verlangt diesen Nachweis seit 2024 zwingend.' },
-  { icon: '💶', nr: '4', title: 'Förderberechnung & KfW-Antragsbegleitung', text: 'KfW 458: 30% Grundförderung + 20% Klima-Speed-Bonus + ggf. 30% Einkommensbonus + 5% Effizienzbonus. Antrag muss zwingend VOR Baubeginn gestellt werden.' },
-  { icon: '📋', nr: '5', title: 'Angebotsvergleich (mind. 3 Betriebe)', text: 'Vollständige Angebote mit Heizlast, Hydraulik, Elektrik und KfW-Begleitung. Preisunterschiede von 20–40% bei identischer Leistung sind in der Praxis häufig.' },
-];
+/* orphaned SCHRITTE body removed */
 
 /* THEMEN moved inside component */
 
