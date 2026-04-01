@@ -26,14 +26,26 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
   const v = cityHash(city, 4);
 
   const MONOBLOCK_SPLIT = [
-    { kriterium: 'Kältemittel draußen?', mono: 'Ja — nur Wasser führt ins Haus', split: 'Nein — Kältemittelleitungen ins Gebäude' },
+    { kriterium: 'Kältemittel draußen?', monoblock: 'Ja — nur Wasser ins Haus', split: 'Nein — Kältemittelleitungen innen', besser: 'Monoblock' },
+    { kriterium: 'Installation', monoblock: `Einfacher in ${city.name} — kein F-Gas innen`, split: 'F-Gas-Kälteschlosser Pflicht', besser: 'Monoblock' },
+    { kriterium: 'Leitungsverluste', monoblock: 'Leicht höher bei langen Wegen', split: 'Gering', besser: 'Split' },
+    { kriterium: 'Schall', monoblock: `Alles außen — besser für dichte Bebauung in ${city.name}`, split: 'Innengerät trägt Schall', besser: 'Monoblock' },
+    { kriterium: 'Marktanteil', monoblock: '70% (Trend)', split: '30% (rückläufig)', besser: 'Monoblock' },
+  ];, mono: 'Ja — nur Wasser führt ins Haus', split: 'Nein — Kältemittelleitungen ins Gebäude' },
     { kriterium: 'Installation', mono: `Einfacher in ${city.name} — kein F-Gas innen`, split: 'F-Gas-Kälteschlosser Pflicht (EU 517/2014)' },
     { kriterium: 'Leitungsverluste', mono: `Leicht höher bei langen Wegen in ${city.name}`, split: 'Gering — Wärmetauscher innen' },
     { kriterium: 'Schall', mono: `Alles außen — besser für enge Bebauung in ${city.name}`, split: 'Innengerät trägt Schall — Körperschallschutz wichtig' },
     { kriterium: 'Marktanteil', mono: '70% (Trend)', split: '30% (rückläufig)' },
   ];
   const COP_BEI_TEMP = [
-    { temp: `${city.normAussentemp}°C (Normaußentemp. ${city.name})`, cop: (jaz - 1.0).toFixed(1) + '–' + (jaz - 0.5).toFixed(1), note: 'Kältester Auslegungspunkt' },
+    { aussentemp: `${city.normAussentemp}°C (Norm ${city.name})`, cop: (jaz - 1.0).toFixed(1)+'–'+(jaz - 0.5).toFixed(1), note: 'Kältester Auslegungspunkt' },
+    { aussentemp: '-15°C', cop: (jaz - 0.8).toFixed(1)+'–'+(jaz - 0.3).toFixed(1), note: 'Sehr kalt' },
+    { aussentemp: '-7°C', cop: (jaz - 0.4).toFixed(1)+'–'+jaz.toFixed(1), note: 'Kalt' },
+    { aussentemp: '0°C', cop: jaz.toFixed(1)+'–'+(jaz + 0.4).toFixed(1), note: 'Häufig im Winter' },
+    { aussentemp: '+7°C', cop: (jaz + 0.3).toFixed(1)+'–'+(jaz + 0.7).toFixed(1), note: 'DIN-Nennpunkt' },
+    { aussentemp: `+${city.avgTemp}°C (Ø ${city.name})`, cop: (jaz + 0.7).toFixed(1)+'–'+(jaz + 1.2).toFixed(1), note: 'JAZ-Basis-Betriebspunkt' },
+    { aussentemp: '+15°C', cop: (jaz + 1.2).toFixed(1)+'–'+(jaz + 1.8).toFixed(1), note: 'Übergangszeit — sehr effizient' },
+  ]; `${city.normAussentemp}°C (Normaußentemp. ${city.name})`, cop: (jaz - 1.0).toFixed(1) + '–' + (jaz - 0.5).toFixed(1), note: 'Kältester Auslegungspunkt' },
     { temp: '-10°C', cop: (jaz - 0.8).toFixed(1) + '–' + (jaz - 0.3).toFixed(1), note: 'Sehr kalt' },
     { temp: '0°C', cop: jaz.toFixed(1) + '–' + (jaz + 0.4).toFixed(1), note: 'Häufig in Winter' },
     { temp: '7°C (DIN Nennpunkt)', cop: (jaz + 0.3).toFixed(1) + '–' + (jaz + 0.7).toFixed(1), note: 'Normprüfpunkt' },
@@ -41,7 +53,11 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
     { temp: '20°C (Übergang)', cop: (jaz + 1.2).toFixed(1) + '–' + (jaz + 1.8).toFixed(1), note: 'Sehr effizient' },
   ];
   const WW_INTEGRATION = [
-    { methode: 'Integrierter WW-Speicher', kosten: '0 € extra', effekt: `Bestes System für ${city.name} — JAZ ${(jaz - 0.1).toFixed(1)} inkl. WW`, note: 'In Kombispeicher integriert' },
+    { system: 'Integrierter WW-Speicher', kosten: '0 € extra', vorteil: `Bestes System für ${city.name} — JAZ ${(jaz-0.1).toFixed(1)} inkl. WW`, nachteil: 'Kombispeicher nötig' },
+    { system: 'Externer WW-Speicher', kosten: '€800–2.500', vorteil: `Flexibel — JAZ ${jaz.toFixed(1)} separat optimierbar`, nachteil: 'Mehr Platzbedarf' },
+    { system: 'Trinkwasser-WP parallel', kosten: '€800–1.500', vorteil: 'Unabhängig von Heizungs-WP', nachteil: `Zweites Gerät — nur bei hohem WW-Bedarf in ${city.name}` },
+    { system: 'Elektrischer Heizstab (Backup)', kosten: '€200–400', vorteil: 'Legionellenschutz-Aufheizung', nachteil: 'Stromintensiv — nur als Backup' },
+  ];, kosten: '0 € extra', effekt: `Bestes System für ${city.name} — JAZ ${(jaz - 0.1).toFixed(1)} inkl. WW`, note: 'In Kombispeicher integriert' },
     { methode: 'Externer WW-Speicher', kosten: '€800–2.500', effekt: `Flexibel — JAZ ${jaz.toFixed(1)} separat optimierbar`, note: 'Empfohlen wenn Platz vorhanden' },
     { methode: 'Trinkwasser-WP parallel', kosten: '€800–1.500', effekt: 'Unabhängig von Heizungs-WP', note: `In ${city.name} sinnvoll bei hohem WW-Bedarf` },
     { methode: 'Elektrischer Heizstab (Backup)', kosten: '€200–400', effekt: 'Legionellenschutz-Aufheizung', note: 'Pflicht in allen WP-Anlagen' },

@@ -25,7 +25,13 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
   const v = cityHash(city, 4);
 
   const BOHRUNG_VS_KOLLEKTOR = [
-    { kriterium: 'Grundstücksgröße', bohrung: 'Ab 100 m² — 1 Bohrung ca. 2 m²', kollektor: `Mind. ${Math.round(calc.wpKosten / 10 * 8)} m² Grundstück (10-fache Heizfläche)` },
+    { kriterium: 'Grundstücksgröße', bohrung: 'Ab 100 m² — 1 Bohrung ca. 2 m²', kollektor: `Mind. ${Math.round(calc.wpKosten / 10 * 8)} m² Grundstück`, besser: 'Bohrung' },
+    { kriterium: 'Investitionskosten', bohrung: '€6.000–€15.000', kollektor: '€3.000–€8.000', besser: 'Kollektor' },
+    { kriterium: `JAZ in ${city.name}`, bohrung: `${(jaz + 0.8).toFixed(1)}–${(jaz + 1.2).toFixed(1)}`, kollektor: `${(jaz + 0.5).toFixed(1)}–${(jaz + 0.9).toFixed(1)}`, besser: 'Bohrung' },
+    { kriterium: `Genehmigung ${city.bundesland}`, bohrung: `Wasserrechtliche Genehmigung ${city.bundesland}`, kollektor: 'Meist genehmigungsfrei', besser: 'Kollektor' },
+    { kriterium: 'KfW-Bonus', bohrung: '+5% (Erdwärme)', kollektor: '+5% (Erdwärme)', besser: 'gleich' },
+    { kriterium: 'Betrieb', bohrung: 'Wartungsarm, konstant', kollektor: 'Witterungsabhängig im Winter', besser: 'Bohrung' },
+  ];, bohrung: 'Ab 100 m² — 1 Bohrung ca. 2 m²', kollektor: `Mind. ${Math.round(calc.wpKosten / 10 * 8)} m² Grundstück (10-fache Heizfläche)` },
     { kriterium: 'Investitionskosten', bohrung: '€6.000–€15.000 (Bohrung)', kollektor: '€3.000–€8.000 (Aushub)' },
     { kriterium: 'JAZ in ' + city.name, bohrung: `${(jaz + 0.8).toFixed(1)}–${(jaz + 1.2).toFixed(1)}`, kollektor: `${(jaz + 0.5).toFixed(1)}–${(jaz + 0.9).toFixed(1)}` },
     { kriterium: 'Genehmigung ' + city.bundesland, bohrung: `Wasserrechtliche Genehmigung in ${city.bundesland} — Tiefbohrunternehmen beantragt`, kollektor: 'Meist genehmigungsfrei' },
@@ -33,7 +39,12 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
     { kriterium: 'Betrieb', bohrung: 'Wartungsarm, konstante Effizienz', kollektor: 'Witterungsabhängige Effizienz im Winter' },
   ];
   const GENEHMIGUNG = [
-    { schritt: 'Hydrogeologisches Gutachten', pflicht: true, detail: `In ${city.bundesland} vor jeder Tiefenbohrung — Dauer 2–4 Wochen` },
+    { step: 'Hydrogeologisches Gutachten', beschreibung: `In ${city.bundesland} vor jeder Tiefenbohrung Pflicht — Dauer 2–4 Wochen` },
+    { step: 'Wasserrechtliche Genehmigung', beschreibung: `Untere Wasserbehörde ${city.bundesland} — typisch 4–8 Wochen` },
+    { step: 'Bohrprotokoll', beschreibung: `Für KfW-Nachweis und Behörde in ${city.bundesland} erforderlich` },
+    { step: 'Grundstücksgrenzen prüfen', beschreibung: `Abstand zur Grenze in ${city.bundesland}: meist mind. 3 m` },
+    { step: 'Denkmalschutz prüfen', beschreibung: `In Altstadtlagen von ${city.name} relevant` },
+  ];, pflicht: true, detail: `In ${city.bundesland} vor jeder Tiefenbohrung — Dauer 2–4 Wochen` },
     { schritt: 'Wasserrechtliche Genehmigung', pflicht: true, detail: `Untere Wasserbehörde ${city.bundesland} — typisch 4–8 Wochen` },
     { schritt: 'Bohrprotokoll', pflicht: true, detail: `Für KfW-Nachweis und Behörde in ${city.bundesland} erforderlich` },
     { schritt: 'Grundstücksgrenzen prüfen', pflicht: true, detail: `Abstand zur Grenze in ${city.bundesland}: meist mind. 3 m` },

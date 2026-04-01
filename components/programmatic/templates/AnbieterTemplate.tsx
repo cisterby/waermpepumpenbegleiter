@@ -25,24 +25,34 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
   const v = cityHash(city, 4);
 
   const ANBIETER_TYPEN = [
-    { typ: 'Lokaler SHK-Meisterbetrieb', vorteil: `Kennt ${city.name} und ${city.bundesland} — kurze Anfahrt, persönlicher Service`, nachteil: 'Evtl. kleinere Modellauswahl' },
-    { typ: 'Regionaler WP-Spezialist', vorteil: `WP-Erfahrung in ${city.bundesland}, dediziertes Team`, nachteil: 'Höhere Auslastung in der Saison' },
-    { typ: 'Bundesweiter Online-Anbieter', vorteil: 'Oft günstige Gerätepreise', nachteil: `Kein lokaler Service in ${city.name} — bei Störungen langsam` },
-    { typ: 'Hersteller-Direktvertrieb', vorteil: 'Maximale Herstellerunterstützung', nachteil: `Nicht herstellerunabhängig — nur eine Marke` },
+    { icon: '🏘️', typ: 'Lokaler SHK-Meisterbetrieb', vorteile: `Kennt ${city.name} und ${city.bundesland} — kurze Anfahrt, persönlicher Service`, nachteile: 'Evtl. kleinere Modellauswahl', kfw: true },
+    { icon: '🔧', typ: 'Regionaler WP-Spezialist', vorteile: `WP-Erfahrung in ${city.bundesland}, dediziertes Team`, nachteile: 'Höhere Auslastung in der Saison', kfw: true },
+    { icon: '🌐', typ: 'Bundesweiter Online-Anbieter', vorteile: 'Oft günstige Gerätepreise', nachteile: `Kein lokaler Service in ${city.name} — bei Störungen langsam`, kfw: false },
+    { icon: '🏭', typ: 'Hersteller-Direktvertrieb', vorteile: 'Maximale Herstellerunterstützung', nachteile: 'Nicht herstellerunabhängig — nur eine Marke', kfw: false },
+  ];, typ: 'Lokaler SHK-Meisterbetrieb', vorteile: `Kennt ${city.name} und ${city.bundesland} — kurze Anfahrt, persönlicher Service`, nachteile: 'Evtl. kleinere Modellauswahl' },
+    { icon: '🔧', typ: 'Regionaler WP-Spezialist', vorteile: `WP-Erfahrung in ${city.bundesland}, dediziertes Team`, nachteile: 'Höhere Auslastung in der Saison' },
+    { icon: '🌐', typ: 'Bundesweiter Online-Anbieter', vorteile: 'Oft günstige Gerätepreise', nachteile: `Kein lokaler Service in ${city.name} — bei Störungen langsam` },
+    { icon: '🏭', typ: 'Hersteller-Direktvertrieb', vorteile: 'Maximale Herstellerunterstützung', nachteile: 'Nicht herstellerunabhängig — nur eine Marke' },
   ];
   const ANBIETER_KRITERIEN = [
-    { kriterium: 'KfW-LuL-Registrierung', wichtig: true, detail: `Pflicht für KfW-Förderung in ${city.name} — ohne diese kein BEG-Zuschuss` },
-    { kriterium: 'HWK-Eintragung', wichtig: true, detail: `Aktive Eintragung in der Handwerksrolle ${city.bundesland}` },
-    { kriterium: 'F-Gas-Zertifikat', wichtig: true, detail: 'Pflicht für Kältemittelbefüllung nach EU 517/2014' },
-    { kriterium: 'WP-Referenzen', wichtig: true, detail: `Mindestens 5 WP-Installationen nachweisbar — in ${city.bundesland} und Umgebung` },
-    { kriterium: 'Heizlastberechnung inklusive', wichtig: true, detail: `DIN EN 12831 — auf ${city.normAussentemp}°C Normaußentemperatur ${city.name} ausgelegt` },
-    { kriterium: 'Reaktionszeit', wichtig: false, detail: `Lokaler Betrieb in ${city.name}: schnell vor Ort bei Störungen` },
-    { kriterium: 'Bewertungen', wichtig: false, detail: `Mindestens 4,0/5 auf Google — für ${city.name} prüfen` },
+    { kriterium: 'KfW-LuL-Registrierung', pflicht: true, warum: `Pflicht für KfW-Förderung in ${city.name} — ohne diese kein BEG-Zuschuss möglich` },
+    { kriterium: 'HWK-Eintragung aktiv', pflicht: true, warum: `Aktive Eintragung in der Handwerksrolle ${city.bundesland} — Pflicht für Heizungsbau` },
+    { kriterium: 'F-Gas-Zertifikat', pflicht: true, warum: 'EU 517/2014 — Pflicht für Kältemittelbefüllung' },
+    { kriterium: 'Mind. 5 WP-Referenzen', pflicht: true, warum: `Nachweisbare WP-Erfahrung in ${city.bundesland} und Umgebung` },
+    { kriterium: 'Heizlastberechnung DIN EN 12831', pflicht: true, warum: `Für ${city.normAussentemp}°C Normaußentemperatur ${city.name} — KfW-Pflicht` },
+    { kriterium: 'Reaktionszeit ≤ 48h', pflicht: false, warum: `Lokaler Betrieb in ${city.name}: schnell vor Ort bei Störungen` },
+    { kriterium: 'Bewertung ≥ 4,0/5', pflicht: false, warum: `Google-Bewertung für ${city.name} prüfen — Mindeststandard` },
   ];
   const ANGEBOTSVERGLEICH = [
-    { frage: 'Wie viele Angebote in ${city.name} einholen?', antwort: `Mindestens 3 Angebote — in ${city.name} typisch 20–40% Preisunterschied. Wir holen sie in 48h für Sie ein.` },
-    { frage: 'Was muss im Angebot stehen?', antwort: `Heizlastberechnung DIN EN 12831, hydraulischer Abgleich (KfW-Pflicht), alle Positionen separat ausgewiesen.` },
-    { frage: 'Wie lange gilt das Angebot?', antwort: `Typisch 30 Tage — Preise in ${city.bundesland} können bei Material-Engpässen steigen. Zügig entscheiden.` },
+    { pos: 'Heizlastberechnung DIN EN 12831', typ: 'Pflicht', note: `Grundlage für korrekte Dimensionierung in ${city.name} — KfW-Pflicht` },
+    { pos: 'Hydraulischer Abgleich', typ: 'Pflicht (KfW)', note: `Ohne diesen: Förderantrag für ${city.name} abgelehnt` },
+    { pos: 'WP-Modell + kW-Leistung', typ: 'Pflicht', note: 'Vollständige Gerätespezifikation mit COP-Angabe' },
+    { pos: 'Pufferspeicher-Volumen', typ: 'Pflicht', note: `Mind. 30 l/kW — für ${city.name} Heizlast` },
+    { pos: 'Elektroinstallation separat', typ: 'Pflicht', note: `Starkstromkreis + Netzbetreiber ${city.name}` },
+    { pos: 'Wärmemengenzähler', typ: 'Pflicht (2026)', note: 'KfW-Pflicht ab 2026' },
+    { pos: 'Kältemittelangabe', typ: 'Empfohlen', note: '+5% KfW-Bonus für R290' },
+    { pos: 'KfW-Begleitung inklusive', typ: 'Empfohlen', note: `Seriöse Betriebe in ${city.name} bieten das an` },
+    { pos: 'Garantiezeiten', typ: 'Empfohlen', note: `Herstellergarantie in ${city.bundesland}: 5–7 Jahre` },
   ];
 
   const intros = [
