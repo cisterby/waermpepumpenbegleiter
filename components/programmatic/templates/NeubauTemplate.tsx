@@ -112,7 +112,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
             </h2>
             <div className="space-y-3">
               {GEG_ANFORDERUNGEN.map((a, i) => (
-                <div key={i} className={`p-4 rounded-xl border ${a.nr === 'i' ? 'bg-wp-amberlt border-amber-200' : 'bg-white border-wp-border'}`}>
+                <div key={i} className={`p-4 rounded-xl border ${i === 0 ? 'bg-wp-amberlt border-amber-200' : 'bg-white border-wp-border'}`}>
                   <div className="font-heading font-bold text-wp-text text-sm mb-1">{a.titel}</div>
                   <p className="text-wp-text2 text-sm leading-relaxed">{a.text}</p>
                 </div>
