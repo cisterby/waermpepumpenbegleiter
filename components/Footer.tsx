@@ -1,6 +1,6 @@
 // components/Footer.tsx
 import Link from 'next/link';
-import { Leaf, Phone, Mail, MapPin, ExternalLink } from 'lucide-react';
+import { Leaf, Phone, Mail, MapPin } from 'lucide-react';
 
 const navLinks = [
   { href: '/wie-es-funktioniert', label: 'Wie es funktioniert' },
@@ -11,84 +11,100 @@ const navLinks = [
 ];
 
 const topCities = [
-  { name: 'Berlin', slug: 'berlin' },
-  { name: 'Hamburg', slug: 'hamburg' },
-  { name: 'München', slug: 'muenchen' },
-  { name: 'Köln', slug: 'koeln' },
-  { name: 'Frankfurt', slug: 'frankfurt-am-main' },
-  { name: 'Stuttgart', slug: 'stuttgart' },
+  { name: 'Berlin',     slug: 'berlin' },
+  { name: 'Hamburg',    slug: 'hamburg' },
+  { name: 'München',    slug: 'muenchen' },
+  { name: 'Köln',       slug: 'koeln' },
+  { name: 'Frankfurt',  slug: 'frankfurt-am-main' },
+  { name: 'Stuttgart',  slug: 'stuttgart' },
   { name: 'Düsseldorf', slug: 'duesseldorf' },
-  { name: 'Leipzig', slug: 'leipzig' },
+  { name: 'Leipzig',    slug: 'leipzig' },
 ];
 
 const rechtliches = [
-  { href: '/impressum', label: 'Impressum' },
+  { href: '/impressum',   label: 'Impressum' },
   { href: '/datenschutz', label: 'Datenschutz' },
-  { href: '/agb', label: 'AGB' },
+  { href: '/agb',         label: 'AGB' },
 ];
+
+// Contrast rule: on #0F1F16 background, use white at min 75% for readability
+// WCAG AA requires 4.5:1 — white/75 on #0F1F16 achieves ~7:1 ✓
 
 export default function Footer() {
   return (
-    <footer style={{ background: 'linear-gradient(180deg, #0F1F16 0%, #0A1510 100%)' }}>
+    <footer style={{ background: '#0F1F16' }}>
 
-      {/* Top CTA strip */}
-      <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+      {/* CTA strip — light bg for contrast */}
+      <div style={{ background: '#1A4731', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div>
-            <p className="text-white font-semibold text-lg leading-tight">
+            <p className="text-white text-lg font-semibold leading-tight">
               Bereit für Ihre Wärmepumpe?
             </p>
-            <p className="text-white/60 text-sm mt-1">
+            <p className="text-white/80 text-sm mt-1">
               Kostenlos · HWK-geprüfte Betriebe · KfW-Antrag inklusive
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <a href="tel:+4915563566199"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-white text-sm font-medium transition-all">
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-medium transition-all"
+              style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)' }}>
               <Phone size={15} />
               +49 15563 566199
             </a>
             <Link href="/kontakt"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
-              style={{ background: '#D97706', color: 'white' }}>
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
+              style={{ background: '#D97706' }}>
               Kostenloses Angebot →
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Main footer grid */}
+      {/* Main grid */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
 
-          {/* Brand col — 2 cols wide */}
+          {/* Brand — 2 cols */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-5">
+            <Link href="/" className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: 'rgba(76,175,125,0.2)', border: '1px solid rgba(76,175,125,0.3)' }}>
-                <Leaf size={18} className="text-[#4CAF7D]" strokeWidth={2.5} />
+                style={{ background: 'rgba(76,175,125,0.2)', border: '1px solid rgba(76,175,125,0.4)' }}>
+                <Leaf size={18} style={{ color: '#4CAF7D' }} strokeWidth={2.5} />
               </div>
               <div>
-                <span className="font-semibold text-[15px] text-white block leading-none">Wärmepumpenbegleiter</span>
-                <span className="text-[10px] font-medium tracking-widest uppercase text-white/50 mt-0.5 block">kostenlose Vermittlung</span>
+                {/* white text on dark bg — always readable */}
+                <span className="text-white font-semibold text-[15px] block leading-none">
+                  Wärmepumpenbegleiter
+                </span>
+                <span className="text-[11px] uppercase tracking-wider block mt-0.5"
+                  style={{ color: '#4CAF7D' }}>
+                  kostenlose Vermittlung
+                </span>
               </div>
             </Link>
-            <p className="text-white/55 text-sm leading-relaxed max-w-xs mb-6">
-              Ihr unabhängiger Begleiter für die Heizungswende. Wir verbinden Hausbesitzer kostenlos mit geprüften WP-Fachbetrieben — ohne Verkaufsdruck.
+
+            {/* Body text: white/80 = clearly readable on dark */}
+            <p className="text-sm leading-relaxed mb-6 max-w-xs" style={{ color: 'rgba(255,255,255,0.80)' }}>
+              Ihr unabhängiger Begleiter für die Heizungswende. Kostenlos, herstellerunabhängig, ohne Verkaufsdruck.
             </p>
-            <div className="space-y-2.5">
+
+            <div className="space-y-3">
               <a href="tel:+4915563566199"
-                className="flex items-center gap-2.5 text-sm text-white/70 hover:text-[#4CAF7D] transition-colors">
-                <Phone size={14} className="text-[#4CAF7D] shrink-0" />
+                className="flex items-center gap-2.5 text-sm transition-colors"
+                style={{ color: 'rgba(255,255,255,0.85)' }}>
+                <Phone size={14} style={{ color: '#4CAF7D' }} className="shrink-0" />
                 +49 15563 566199
               </a>
               <a href="mailto:info@waermepumpenbegleiter.de"
-                className="flex items-center gap-2.5 text-sm text-white/70 hover:text-[#4CAF7D] transition-colors">
-                <Mail size={14} className="text-[#4CAF7D] shrink-0" />
+                className="flex items-center gap-2.5 text-sm"
+                style={{ color: 'rgba(255,255,255,0.85)' }}>
+                <Mail size={14} style={{ color: '#4CAF7D' }} className="shrink-0" />
                 info@waermepumpenbegleiter.de
               </a>
-              <div className="flex items-center gap-2.5 text-sm text-white/50">
-                <MapPin size={14} className="text-[#4CAF7D] shrink-0" />
+              <div className="flex items-center gap-2.5 text-sm"
+                style={{ color: 'rgba(255,255,255,0.70)' }}>
+                <MapPin size={14} style={{ color: '#4CAF7D' }} className="shrink-0" />
                 Weißenfels, Sachsen-Anhalt
               </div>
             </div>
@@ -96,14 +112,16 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <h4 className="text-white font-semibold text-xs uppercase tracking-widest mb-4">
               Navigation
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {navLinks.map(item => (
                 <li key={item.href}>
+                  {/* white/85 — clearly readable on #0F1F16 */}
                   <Link href={item.href}
-                    className="text-white/55 hover:text-white text-sm transition-colors">
+                    className="text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {item.label}
                   </Link>
                 </li>
@@ -111,16 +129,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Top cities */}
+          {/* Cities */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <h4 className="text-white font-semibold text-xs uppercase tracking-widest mb-4">
               Große Städte
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {topCities.map(city => (
                 <li key={city.slug}>
                   <Link href={`/waermepumpe/${city.slug}`}
-                    className="text-white/55 hover:text-[#4CAF7D] text-sm transition-colors">
+                    className="text-sm transition-colors"
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {city.name}
                   </Link>
                 </li>
@@ -128,16 +147,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal + trust */}
+          {/* Legal */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <h4 className="text-white font-semibold text-xs uppercase tracking-widest mb-4">
               Rechtliches
             </h4>
-            <ul className="space-y-2.5 mb-7">
+            <ul className="space-y-3 mb-7">
               {rechtliches.map(item => (
                 <li key={item.href}>
                   <Link href={item.href}
-                    className="text-white/55 hover:text-white text-sm transition-colors">
+                    className="text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {item.label}
                   </Link>
                 </li>
@@ -145,14 +165,17 @@ export default function Footer() {
             </ul>
 
             {/* Trust badges */}
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-                <span className="text-[#4CAF7D] text-lg">🔒</span>
-                <span className="text-white/60 text-xs">DSGVO-konform</span>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg"
+                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                <span className="text-base">🔒</span>
+                {/* explicit color — no opacity trick */}
+                <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.90)' }}>DSGVO-konform</span>
               </div>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-                <span className="text-[#D97706] text-lg">✓</span>
-                <span className="text-white/60 text-xs">Kostenloser Service</span>
+              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg"
+                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                <span className="text-base">✓</span>
+                <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.90)' }}>Kostenloser Service</span>
               </div>
             </div>
           </div>
@@ -161,16 +184,17 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10">
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-white/35 text-xs">
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.60)' }}>
             © 2026 Wärmepumpenbegleiter.de — Webflott GbR, Weißenfels
           </p>
-          <p className="text-white/30 text-xs text-center max-w-md">
+          <p className="text-xs text-center max-w-md" style={{ color: 'rgba(255,255,255,0.55)' }}>
             Wir erhalten eine Vermittlungsprovision von Installateuren. Für Hausbesitzer ist unser Service kostenlos.
           </p>
         </div>
       </div>
+
     </footer>
   );
 }
