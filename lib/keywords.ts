@@ -72,7 +72,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Welche Wärmepumpe ist in {stadt} am besten geeignet?', a: 'Mit einer Jahresmitteltemperatur von {avgTemp}°C in {stadt} erreicht eine Luft-Wasser-WP eine Jahresarbeitszahl von ca. {jaz}. Das ist wirtschaftlich sehr attraktiv.' },
     ],
     sitemapPriority: 0.9,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'luft-wasser-waermepumpe'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'luft-wasser-waermepumpe', 'waermepumpe-altbau', 'heizung-tauschen', 'waermepumpe-nachruesten'],
   },
   {
     id: 2, tier: 1,
@@ -100,7 +100,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Gibt es in {bundesland} zusätzliche Förderungen?', a: '{bundeslandFoerderungInfo}. Kombiniert mit KfW lässt sich der Eigenanteil in bestimmten Fällen auf unter €5.000 senken.' },
     ],
     sitemapPriority: 0.9,
-    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-preise'],
+    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-preise', 'luft-wasser-waermepumpe', 'erdwaermepumpe', 'waermepumpe-oder-gas'],
   },
   {
     id: 3, tier: 1,
@@ -127,7 +127,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Haben die Installateure in {stadt} KfW-Erfahrung?', a: 'Alle unsere Partnerbetriebe in {stadt} haben bereits KfW-Förderanträge begleitet und kennen den Prozess. Sie werden beim Antrag aktiv unterstützt.' },
     ],
     sitemapPriority: 0.85,
-    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installation', 'waermepumpe-fachbetrieb'],
+    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installation', 'waermepumpe-fachbetrieb', 'waermepumpe-foerderung', 'waermepumpe-angebot', 'waermepumpe-anbieter'],
   },
   {
     id: 4, tier: 1,
@@ -154,7 +154,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Wie lange dauert die KfW-Auszahlung?', a: 'Nach Antragstellung und Installationsabschluss dauert die Auszahlung typisch 4–8 Wochen. Der Zuschuss wird direkt auf Ihr Konto überwiesen.' },
     ],
     sitemapPriority: 0.9,
-    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe-beratung'],
+    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe-beratung', 'kommunale-waermeplanung', 'waermepumpe-oder-gas', 'heizung-tauschen'],
   },
   {
     id: 5, tier: 1,
@@ -178,7 +178,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Wie laut ist eine Luft-Wasser-WP in {stadt}?', a: 'Ca. 45–55 dB auf 1 Meter Abstand. Mit korrekter Aufstellung (Abstand Grundstücksgrenze, Antivibrationsmatten) ist die Nachbarschaft i.d.R. kein Thema.' },
     ],
     sitemapPriority: 0.85,
-    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'erdwaermepumpe', 'luftwaermepumpe'],
+    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'erdwaermepumpe', 'luftwaermepumpe', 'waermepumpe-installateur', 'waermepumpe-neubau', 'waermepumpe-altbau'],
   },
   // ── TIER 2 ────────────────────────────────────────────────────
   {
@@ -201,7 +201,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Welche Hersteller sind in {stadt} empfehlenswert?', a: 'Bewährte Hersteller: Viessmann (Testsieger Stiftung Warentest 2025), Vaillant, Bosch/Buderus, Stiebel Eltron, Nibe. Entscheidend ist die fachgerechte Dimensionierung — kein zu großes Gerät kaufen.' },
     ],
     sitemapPriority: 0.8,
-    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur', 'luft-wasser-waermepumpe'],
+    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-nachruesten', 'luft-wasser-waermepumpe', 'waermepumpe-installateur', 'waermepumpe-foerderung', 'waermepumpe-angebot'],
   },
   {
     id: 7, tier: 2,
@@ -225,7 +225,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was ist ein hydraulischer Abgleich und was kostet er in {stadt}?', a: 'Der hydraulische Abgleich optimiert die Wärmeverteilung im Haus. Er kostet in {stadt} ca. €500–1.500 und ist Voraussetzung für die volle KfW-Förderung.' },
     ],
     sitemapPriority: 0.8,
-    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-nachruesten', 'luft-wasser-waermepumpe'],
+    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-nachruesten', 'luft-wasser-waermepumpe', 'heizung-tauschen', 'waermepumpe-installateur', 'waermepumpe-foerderung'],
   },
   {
     id: 8, tier: 2,
@@ -246,7 +246,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was kostet die Nachrüstung in {stadt}?', a: 'Die Umrüstung auf eine Luft-Wasser-WP kostet in {stadt} brutto €18.000–€28.000. Mit KfW-Förderung (typisch 50–55%) reduziert sich der Eigenanteil auf €9.000–€14.000.' },
     ],
     sitemapPriority: 0.78,
-    crossLinks: ['waermepumpe', 'waermepumpe-altbau', 'heizung-tauschen', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe', 'waermepumpe-altbau', 'heizung-tauschen', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe-installation'],
   },
   {
     id: 9, tier: 2,
@@ -269,7 +269,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was ist die günstigste Alternative zur Gasheizung in {stadt}?', a: 'Die Wärmepumpe hat nach KfW-Förderung oft den geringsten Eigenanteil. Gas-Brennwert erfüllt das GEG nicht mehr ohne EE-Anteil. Pellet-Heizungen sind förderfähig, aber wartungsintensiver.' },
     ],
     sitemapPriority: 0.8,
-    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-altbau', 'waermepumpe-oder-gas'],
+    crossLinks: ['waermepumpe', 'waermepumpe-kosten', 'waermepumpe-altbau', 'waermepumpe-oder-gas', 'waermepumpe-foerderung', 'waermepumpe-nachruesten', 'kommunale-waermeplanung'],
   },
   {
     id: 10, tier: 2,
@@ -292,7 +292,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Wie lange dauert die Installation in {stadt}?', a: 'Die eigentliche Montage dauert 1–3 Tage. Inklusive Planung, KfW-Antrag (vor Baubeginn!) und Lieferzeit sollten Sie 6–12 Wochen von der Anfrage bis zur Inbetriebnahme einplanen.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe-montage', 'waermepumpe'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe-montage', 'waermepumpe', 'waermepumpe-foerderung', 'luft-wasser-waermepumpe', 'waermepumpe-fachbetrieb'],
   },
   {
     id: 11, tier: 2,
@@ -314,7 +314,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was ist die kommunale Wärmeplanung in {stadt}?', a: 'Alle Kommunen über 10.000 Einwohner müssen bis 2028 einen Wärmeplan vorlegen, der zeigt, wie die Wärmeversorgung bis 2045 klimaneutral wird. {stadtWaermeplanStatus}' },
     ],
     sitemapPriority: 0.72,
-    crossLinks: ['waermepumpe', 'heizung-tauschen', 'waermepumpe-foerderung', 'waermepumpe-kosten', 'waermepumpe-installateur'],
+    crossLinks: ['waermepumpe', 'heizung-tauschen', 'waermepumpe-foerderung', 'waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe-oder-gas', 'waermepumpe-neubau'],
   },
   // ── TIER 3 ────────────────────────────────────────────────────
   {
@@ -336,7 +336,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Eignet sich {stadt} für Erdwärme?', a: 'In {bundesland} sind die geologischen Bedingungen überwiegend gut für Erdwärmesonden geeignet. Eine Genehmigung beim zuständigen Bergamt ist erforderlich. Ihr lokaler Fachbetrieb beantragt diese für Sie.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'luftwaermepumpe'],
+    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'luftwaermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-neubau'],
   },
   {
     id: 13, tier: 3,
@@ -356,7 +356,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Wie viele Angebote sollte ich in {stadt} einholen?', a: 'Mindestens 3. Die Verbraucherzentrale empfiehlt ausdrücklich, mehrere Angebote zu vergleichen — Preisunterschiede von 30–50% sind keine Seltenheit.' },
     ],
     sitemapPriority: 0.72,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-anbieter', 'waermepumpe-fachbetrieb', 'luft-wasser-waermepumpe'],
   },
   {
     id: 14, tier: 3,
@@ -377,7 +377,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Was kostet eine Wärmepumpe aktuell in {stadt}?', a: 'Luft-Wasser-WP: €18.000–€28.000 komplett. Sole-Wasser: €22.000–€35.000. Wasser-Wasser: €25.000–€40.000. Die Preise sind 2025/26 nach dem Boom stabil geblieben.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'luft-wasser-waermepumpe', 'erdwaermepumpe', 'waermepumpe-oder-gas'],
   },
   {
     id: 15, tier: 3,
@@ -397,7 +397,7 @@ export const KEYWORDS: Keyword[] = [
       { q: 'Lokaler Betrieb oder bundesweiter Anbieter (Thermondo/Enpal) in {stadt}?', a: 'Lokale Betriebe kennen die örtlichen Gegebenheiten in {stadt} besser, sind bei Störungen schneller vor Ort und bieten oft flexiblere Lösungen. Bundesweite Anbieter können günstiger sein, arbeiten aber mit Subunternehmern.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe', 'waermepumpe-fachbetrieb', 'waermepumpe-kosten'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-angebot', 'waermepumpe', 'waermepumpe-kosten', 'waermepumpe-fachbetrieb', 'luft-wasser-waermepumpe', 'waermepumpe-foerderung'],
   },
   {
     id: 16, tier: 3,
@@ -417,7 +417,7 @@ faqPool: [
       { q: 'Luft-Wasser oder Luft-Luft in {stadt}?', a: 'Luft-Wasser-WP (Heizung + Warmwasser) ist in {stadt} der Standardfall für EFH. Luft-Luft ist günstiger, hat aber keinen Warmwasserkreislauf und ist in Deutschland weniger verbreitet.' },
     ],
     sitemapPriority: 0.75,
-    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur'],
+    crossLinks: ['luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe', 'waermepumpe-installateur', 'erdwaermepumpe', 'waermepumpe-foerderung', 'waermepumpe-altbau'],
   },
   {
     id: 17, tier: 3,
@@ -438,7 +438,7 @@ faqPool: [
       { q: 'Ist eine WP im Neubau in {stadt} Pflicht?', a: 'Seit 1.1.2024 muss jede neue Heizung 65% EE nutzen. Eine Wärmepumpe erfüllt das automatisch und ist damit die häufigste Wahl bei Neubauten in {stadt}.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe', 'luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur'],
+    crossLinks: ['waermepumpe', 'luft-wasser-waermepumpe', 'waermepumpe-kosten', 'waermepumpe-installateur', 'waermepumpe-foerderung', 'erdwaermepumpe', 'kommunale-waermeplanung'],
   },
   // ── TIER 4 ────────────────────────────────────────────────────
   {
@@ -455,7 +455,7 @@ faqPool: [
     featuredSnippetQuestions: ['Wo bekomme ich eine unabhängige WP-Beratung in {stadt}?'],
     faqPool: [{ q: 'Was ist der iSFP und bringt er Vorteile in {stadt}?', a: 'Der individuelle Sanierungsfahrplan (iSFP) kostet ca. €500–1.000, wird aber mit 80% gefördert. Mit iSFP erhöht sich der KfW-BEG-Zuschuss um 5 Prozentpunkte.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-kosten'],
+    crossLinks: ['waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-installateur', 'waermepumpe-kosten', 'waermepumpe-angebot', 'luft-wasser-waermepumpe', 'heizung-tauschen'],
   },
   {
     id: 19, tier: 4,
@@ -471,7 +471,7 @@ faqPool: [
     featuredSnippetQuestions: ['Was macht einen guten WP-Fachbetrieb in {stadt} aus?'],
     faqPool: [{ q: 'Was unterscheidet einen WP-Fachbetrieb von einem normalen SHK-Betrieb?', a: 'Spezialisierte WP-Fachbetriebe haben mehr als 5 WP-Installationen durchgeführt, kennen die Förderprozesse und sind oft BWP-Mitglied. Das sichert Qualität und Förderkonformität.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe-installateur', 'waermepumpe-anbieter', 'waermepumpe', 'waermepumpe-kosten'],
+    crossLinks: ['waermepumpe-installateur', 'waermepumpe-anbieter', 'waermepumpe', 'waermepumpe-kosten', 'waermepumpe-angebot', 'waermepumpe-foerderung', 'waermepumpe-installation'],
   },
   {
     id: 20, tier: 4,
@@ -487,7 +487,7 @@ faqPool: [
     featuredSnippetQuestions: ['Wo kann ich die Wärmepumpe in {stadt} aufstellen?'],
     faqPool: [{ q: 'Welche Abstände muss ich beim Aufstellen in {stadt} einhalten?', a: 'In {bundesland} gelten in der Regel 3 Meter Abstand zur Grundstücksgrenze. Je nach Lärmpegel kann eine Ausnahmegenehmigung erforderlich sein. Ihr Installateur beantragt das für Sie.' }],
     sitemapPriority: 0.65,
-    crossLinks: ['waermepumpe-installation', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-kosten'],
+    crossLinks: ['waermepumpe-installation', 'waermepumpe-installateur', 'waermepumpe', 'waermepumpe-kosten', 'luft-wasser-waermepumpe', 'waermepumpe-foerderung', 'waermepumpe-fachbetrieb'],
   },
   {
     id: 21, tier: 4,
@@ -508,7 +508,7 @@ faqPool: [
       { q: 'Ist Wärmepumpe wirklich günstiger als Gas in {stadt}?', a: 'Aktuell ja, wenn man den steigenden CO₂-Preis einrechnet: 2026 kostet Gas ca. {gaspreis} ct/kWh. Bis 2030 wird Erdgas durch den EU-ETS2 deutlich teurer. Die WP wird mit steigendem EE-Anteil im Stromnetz effizienter.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe', 'heizung-tauschen', 'waermepumpe-stromverbrauch'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe', 'heizung-tauschen', 'waermepumpe-stromverbrauch', 'waermepumpe-foerderung', 'kommunale-waermeplanung', 'waermepumpe-altbau'],
   },
   {
     id: 22, tier: 4,
@@ -530,7 +530,7 @@ faqPool: [
       { q: 'Lohnt sich PV für die Wärmepumpe in {stadt}?', a: 'Sehr. Mit einer PV-Anlage sinken die Betriebskosten der WP um 30–40%. Die optimale Kombination für {stadt}: 8–12 kWp PV + Wärmepumpe + optional Batteriespeicher.' },
     ],
     sitemapPriority: 0.7,
-    crossLinks: ['waermepumpe-kosten', 'waermepumpe-oder-gas', 'waermepumpe', 'waermepumpe-installateur'],
+    crossLinks: ['waermepumpe-kosten', 'waermepumpe-oder-gas', 'waermepumpe', 'waermepumpe-installateur', 'luft-wasser-waermepumpe', 'waermepumpe-foerderung', 'erdwaermepumpe'],
   },
 ]
 
