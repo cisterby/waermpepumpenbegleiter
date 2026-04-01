@@ -100,7 +100,7 @@ export default function CityKeywordPage({ params }: Props) {
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: keyword.faqPool.slice(0, 4).map(item => ({
+    mainEntity: (keyword.faqPool ?? []).slice(0, 4).map(item => ({
       '@type': 'Question',
       name: fillTemplate(item.q, city, jaz, calc.wpKosten, calc.ersparnis),
       acceptedAnswer: {

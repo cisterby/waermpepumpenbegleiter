@@ -23,7 +23,7 @@ const BUNDESLAENDER: Record<string, { name: string; slug: string; foerderung: st
   'thueringen':              { name: 'Thüringen',                slug: 'thueringen',               foerderung: 'Thüringer Aufbaubank',      foerderungBetrag: 'Zinsgünstige Darlehen', foerderungUrl: 'https://www.aufbaubank.de' },
   'sachsen-anhalt':          { name: 'Sachsen-Anhalt',           slug: 'sachsen-anhalt',           foerderung: 'IB Sachsen-Anhalt',         foerderungBetrag: 'Ergänzungsfinanzierung', foerderungUrl: 'https://www.ib-sachsen-anhalt.de' },
   'mecklenburg-vorpommern':  { name: 'Mecklenburg-Vorpommern',   slug: 'mecklenburg-vorpommern',   foerderung: 'Landesförderinstitut MV',   foerderungBetrag: 'Energiesparförderung', foerderungUrl: 'https://www.lfi-mv.de' },
-  'brandon':                 { name: 'Brandenburg',              slug: 'brandon',                  foerderung: 'ILB Brandenburg',           foerderungBetrag: 'RENplus Programm', foerderungUrl: 'https://www.ilb.de' },
+  'brandenburg':             { name: 'Brandenburg',              slug: 'brandenburg',                  foerderung: 'ILB Brandenburg',           foerderungBetrag: 'RENplus Programm', foerderungUrl: 'https://www.ilb.de' },
   'schleswig-holstein':      { name: 'Schleswig-Holstein',       slug: 'schleswig-holstein',       foerderung: 'IB.SH Energieeffizienz',   foerderungBetrag: 'Ergänzungsförderung', foerderungUrl: 'https://www.ib-sh.de' },
   'saarland':                { name: 'Saarland',                 slug: 'saarland',                 foerderung: 'SIKB Saarland',             foerderungBetrag: 'Zinsgünstige Darlehen', foerderungUrl: 'https://www.sikb.de' },
   'bremen':                  { name: 'Bremen',                   slug: 'bremen',                   foerderung: 'Bremer Aufbaubank BAB',     foerderungBetrag: 'Klimaförderung', foerderungUrl: 'https://www.bab-bremen.de' },
@@ -86,9 +86,12 @@ export default function BundeslandPage({ params }: Props) {
             {kw} {bl.name} 2026 — {cities.length} Städte
           </h1>
           <p className="text-white/60 text-base leading-relaxed max-w-2xl mb-6">
-            Alle {cities.length} {bl.name}-Städte mit stadtspezifischen Preisen, JAZ-Berechnungen und{' '}
-            {bl.foerderung ? `${bl.foerderung} Landesförderung` : 'KfW-Bundesförderung bis 70%'}.
-            Geprüfte Fachbetriebe kostenlos vergleichen.
+            {[
+              `${cities.length} ${bl.name}-Städte mit stadtspezifischen JAZ-Werten, lokalen Strompreisen und ${bl.foerderung ? bl.foerderung + ' Landesförderung' : 'KfW-Bundesförderung bis 70%'}. Geprüfte Fachbetriebe kostenlos vergleichen.`,
+              `In ${bl.name} gibt es ${cities.length} Städte mit Wärmepumpen-Bedarf. ${bl.foerderung ? `Zusätzlich zur KfW: ${bl.foerderung} (${bl.foerderungBetrag}).` : 'KfW-Bundesförderung bis 70% gilt hier ohne Einschränkung.'} Jetzt kostenlos Fachbetrieb finden.`,
+              `${bl.name}: ${cities.length} Städte, stadtspezifische Klimadaten, lokale Installateure. ${bl.foerderung ? `${bl.foerderung}: ${bl.foerderungBetrag}.` : 'KfW-Förderung bis 70% — kein Landeseigenprogramm nötig.'} Alles kostenlos über uns.`,
+              `Alle ${cities.length} Städte in ${bl.name} — mit spezifischer JAZ, Heizgradtagen und lokalem Strompreis. ${bl.foerderung ? `Landesförderung: ${bl.foerderung}.` : `In ${bl.name} gilt die volle KfW-Bundesförderung bis €21.000.`}`,
+            ][Math.abs(bl.name.charCodeAt(0) + bl.name.charCodeAt(1)) % 4]}
           </p>
           {/* Bundesland-Förderung */}
           {bl.foerderung && (

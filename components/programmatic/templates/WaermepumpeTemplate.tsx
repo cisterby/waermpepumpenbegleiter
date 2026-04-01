@@ -16,9 +16,9 @@ import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectio
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
-  "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=75",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=75",
+  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=75",
 ];
 const SIDE_IMGS = [
   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
@@ -339,7 +339,11 @@ export default function WaermepumpeTemplate({
       <section className="relative min-h-[82vh] flex items-center overflow-hidden">
         <img src={heroImg} alt={`Wärmepumpe ${city.name}`}
           className="absolute inset-0 w-full h-full object-cover"
-          loading="eager" />
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width={1200}
+          height={800} />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/94 via-[#0A1910]/80 to-[#0A1910]/30" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
@@ -418,7 +422,11 @@ export default function WaermepumpeTemplate({
                 shadow-2xl border border-white/20">
                 <div className="relative h-52">
                   <img src={sideImg} alt={`Wärmepumpe ${city.name}`}
-                    className="w-full h-full object-cover" loading="eager" />
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    fetchPriority="high"
+                    width={420}
+                    height={208} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between">
                     <div className="bg-white/95 rounded-lg px-3 py-2">
