@@ -138,12 +138,75 @@ export default function CityKeywordPage({ params }: Props) {
     },
   };
 
+
+  // HowTo Schema — für Ablauf-Keywords
+  const HOWTO_KEYWORDS: Record<string, { name: string; steps: string[] }> = {
+    'waermepumpe-installation': {
+      name: `Wärmepumpe installieren in ${city.name} — Schritt für Schritt`,
+      steps: [
+        `KfW-Antrag stellen — vor Auftragserteilung, zwingend`,
+        `Fachbetrieb beauftragen — KfW-LuL-registrierter Meisterbetrieb in ${city.name}`,
+        `Außeneinheit aufstellen — Standort, Kernbohrung, Kältemittelleitungen`,
+        `Hydraulischen Abgleich durchführen — KfW-Pflicht, €500–1.500`,
+        `Wärmepumpe in Betrieb nehmen — F-Gas-Protokoll, KfW-Dokumentation`,
+      ],
+    },
+    'waermepumpe-montage': {
+      name: `Wärmepumpe montieren in ${city.name} — 3-Tage-Plan`,
+      steps: [
+        `Tag 1: Außeneinheit aufstellen, Kernbohrung (60–80 mm), Kältemittelleitungen verlegen`,
+        `Tag 2: Kältemittelkreis befüllen (F-Gas-Zertifikat Pflicht), Pufferspeicher anschließen, Elektroinstallation`,
+        `Tag 3: Hydraulischer Abgleich (KfW-Pflicht), Heizungsprogrammierung, Inbetriebnahme, KfW-Protokoll`,
+      ],
+    },
+    'waermepumpe-nachruesten': {
+      name: `Wärmepumpe nachrüsten in ${city.name} — Ablauf`,
+      steps: [
+        `Vorlauftemperatur prüfen — unter 70°C: Standard-WP, bis 70°C: Hochtemperatur-WP`,
+        `KfW-Antrag stellen — vor Auftragserteilung in ${city.name}`,
+        `Hydraulischen Abgleich durchführen — senkt Vorlauftemperatur um 5–10°C`,
+        `Pufferspeicher und Starkstrom vorbereiten — 200–500 l, 3×16A`,
+        `Wärmepumpe montieren und in Betrieb nehmen — 2–3 Tage`,
+      ],
+    },
+    'heizung-tauschen': {
+      name: `Heizung tauschen in ${city.name} — GEG-konformer Ablauf`,
+      steps: [
+        `Heizsystem prüfen — welche Option ist GEG-konform in ${city.name}?`,
+        `KfW-Antrag stellen — zwingend vor Auftragserteilung`,
+        `Fachbetrieb beauftragen — KfW-LuL-registrierter Betrieb in ${city.bundesland}`,
+        `Alte Heizung demontieren, neue WP installieren — 2–3 Tage Montage`,
+        `Hydraulischen Abgleich und Inbetriebnahme — KfW-Verwendungsnachweis einreichen`,
+      ],
+    },
+  };
+
+  const howToData = HOWTO_KEYWORDS[keyword.slug];
+  const howToSchema = howToData ? {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: howToData.name,
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    step: howToData.steps.map((text, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: text.split(' — ')[0] ?? text,
+      text,
+    })),
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'EUR',
+      value: `${Math.round(foerd.eigenanteil)}`,
+    },
+  } : null;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBizSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
       <CityPageRouter
         city={city}
         keyword={keyword}

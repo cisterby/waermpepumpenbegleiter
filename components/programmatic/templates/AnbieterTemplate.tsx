@@ -126,8 +126,8 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {/* Anbieter-Typen */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Welche 4 Anbieter-Typen gibt es in {city.name} im Vergleich
-            </h2>
+              Welche WP-Anbieter-Typen gibt es in {city.name} im Vergleich
+            ?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {ANBIETER_TYPEN.map((a, i) => (
                 <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
@@ -144,8 +144,8 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {/* 7 Kriterien */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Woran erkenne ich einen guten Anbieter in {city.name}
-            </h2>
+              Wie erkenne ich einen seriösen WP-Anbieter in {city.name}
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
                 <thead>
@@ -285,7 +285,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

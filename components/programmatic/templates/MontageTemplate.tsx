@@ -140,8 +140,8 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
           {/* 3-Tage-Ablauf */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Montageablauf in {city.name} — 3 Tage im Detail
-            </h2>
+              Wie läuft die Montage in {city.name} — 3 Tage im Detail
+            ?</h2>
             <div className="space-y-4">
               {MONTAGE_ABLAUF.map((tag, i) => (
                 <div key={i} className="bg-white border border-wp-border rounded-xl p-5 shadow-wp-sm">
@@ -164,8 +164,8 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
           {/* Kostentabelle */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Komplette Kostenübersicht WP-Montage {city.name}
-            </h2>
+              Was kostet die WP-Montage komplett in {city.name}
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
                 <thead>
@@ -289,7 +289,7 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

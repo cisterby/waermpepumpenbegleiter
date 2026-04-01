@@ -73,7 +73,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
       {/* Header */}
       <div className="relative h-36 overflow-hidden">
         <img src={STRIP_IMGS[0]} alt="WP Kostenrechner"
-          className="w-full h-full object-cover" loading="lazy" />
+          className="w-full h-full object-cover" loading="eager" fetchPriority="low" decoding="async" />
         <div className="absolute inset-0 bg-[#1B5E37]/85" />
         <div className="absolute inset-0 flex items-center px-8">
           <div>

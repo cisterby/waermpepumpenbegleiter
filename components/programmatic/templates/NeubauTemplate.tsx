@@ -122,7 +122,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
               Welche GEG-Anforderungen gelten für den Neubau in {city.name} — was gilt
-            </h2>
+            ?</h2>
             <div className="space-y-3">
               {GEG_ANFORDERUNGEN.map((a, i) => (
                 <div key={i} className={`p-4 rounded-xl border ${i === 0 ? 'bg-wp-amberlt border-amber-200' : 'bg-white border-wp-border'}`}>
@@ -133,11 +133,11 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
             </div>
           </div>
 
-          {/* Heizungsvergleich Neubau */}
+          {/* Welche Heizung ist im Neubau in */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Heizungsvergleich Neubau {city.name} 2026
-            </h2>
+              Welche Heizung ist im Neubau in {city.name} 2026
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
               <table className="w-full text-sm min-w-[500px]">
                 <thead>
@@ -275,7 +275,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

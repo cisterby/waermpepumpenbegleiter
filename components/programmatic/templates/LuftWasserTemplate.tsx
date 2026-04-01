@@ -114,8 +114,8 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Wie effizient arbeitet die Luft-WP bei verschiedenen Temperaturen in — {city.name}
-            </h2>
+              Wie effizient ist die Luft-WP bei Kälte in {city.name}
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
                 <thead><tr className="bg-wp-bg border-b border-wp-border">
@@ -164,8 +164,8 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Wie integriere ich Warmwasser in die Luft-WP in {city.name}
-            </h2>
+              Wie funktioniert Warmwasser mit der Luft-WP in {city.name}
+            ?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {WW_INTEGRATION.map((w,i)=>(
                 <div key={i} className={`p-4 rounded-xl border ${i===0?'bg-wp-greenxlt border-wp-borderl':'bg-white border-wp-border'}`}>
@@ -233,7 +233,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
