@@ -46,7 +46,7 @@ export default function AuthorBox({ keywordSlug = '' }: { keywordSlug?: string }
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="font-heading font-bold text-wp-text text-sm">Dr. Markus Sommer</p>
+            <p className="font-heading font-bold text-wp-text text-sm">Bastian Saupe</p>
             <span className="bg-wp-greenlt text-wp-green text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
               <Shield size={10} /> Energieberater IHK
             </span>
