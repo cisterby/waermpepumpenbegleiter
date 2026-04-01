@@ -1,13 +1,15 @@
 // app/ueber-uns/layout.tsx
-// Metadata + Person Schema für Über-uns-Seite (E-E-A-T)
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Über uns — Wärmepumpenbegleiter.de',
-  description: 'Das Team: Energieberater IHK, Dipl.-Ing. Gebäudetechnik und SHK-Meister. Herstellerunabhängig, transparent, kostenlos für Hausbesitzer.',
-  alternates: { canonical: 'https://waermepumpenbegleiter.de/ueber-uns' },
+  title: 'Über uns — Wärmepumpenbegleiter.de | Webflott',
+  description: 'Wärmepumpenbegleiter.de ist ein unabhängiges Vermittlungsportal von Webflott. Wir verbinden Hausbesitzer kostenlos mit geprüften WP-Fachbetrieben in ihrer Region.',
+  alternates: {
+    canonical: 'https://waermepumpenbegleiter.de/ueber-uns',
+  },
+  robots: { index: true, follow: true },
 };
 
-export default function UeberUnsLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children;
 }
