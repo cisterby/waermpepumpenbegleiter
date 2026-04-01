@@ -166,10 +166,10 @@ export default function Rechner() {
             {/* Förderung */}
             <div className="card">
               <div className="card-title">Ihre Fördersituation</div>
-              <Toggle label="Ich nutze das Gebäude selbst" sub="Eigennutzer erhalten höhere Boni als Vermieter" value={eigen} onChange={setEigen}/>
-              <Toggle label="Ich ersetze eine fossile Heizung" sub="Öl, Gas oder Kohle → +20% Klima-Speed-Bonus" value={altFos} onChange={setAltFos}/>
-              <Toggle label="Haushaltseinkommen unter €40.000 netto/Jahr" sub="Einkommens-Bonus +30% (nur für Eigennutzer)" value={eink} onChange={setEink}/>
-              <Toggle label="Interesse an natürlichem Kältemittel (R290)" sub="Propan-Wärmepumpen erhalten +5% Bonus" value={r290} onChange={setR290}/>
+              [Toggle label="Ich nutze das Gebäude selbst" sub="Eigennutzer erhalten höhere Boni als Vermieter" value={eigen} onChange={setEigen}|]
+              [Toggle label="Ich ersetze eine fossile Heizung" sub="Öl, Gas oder Kohle → +20% Klima-Speed-Bonus" value={altFos} onChange={setAltFos}|]
+              [Toggle label="Haushaltseinkommen unter €40.000 netto|Jahr" sub="Einkommens-Bonus +30% (nur für Eigennutzer)" value={eink} onChange={setEink}|]
+              [Toggle label="Interesse an natürlichem Kältemittel (R290)" sub="Propan-Wärmepumpen erhalten +5% Bonus" value={r290} onChange={setR290}|]
             </div>
 
             {/* Info box with image */}

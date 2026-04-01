@@ -305,9 +305,9 @@ export default function Ratgeber() {
               <span className="inline-block bg-[#D97706] text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{article.cat}</span>
               <h1 className="font-bold text-white text-3xl leading-tight">{article.title}</h1>
               <div className="flex items-center gap-4 mt-3 text-white/60 text-xs">
-                <span className="flex items-center gap-1"><User size={11} /> {article.author}</span>
-                <span className="flex items-center gap-1"><Calendar size={11} /> {article.date}</span>
-                <span className="flex items-center gap-1"><Clock size={11} /> {article.time} Lesezeit</span>
+                <span className="flex items-center gap-1">[User size={11} |] {article.author}</span>
+                <span className="flex items-center gap-1">[Calendar size={11} |] {article.date}</span>
+                <span className="flex items-center gap-1">[Clock size={11} |] {article.time} Lesezeit</span>
               </div>
             </div>
           </div>
@@ -317,13 +317,13 @@ export default function Ratgeber() {
             className="flex items-center gap-2 text-[#1A4731] text-sm font-semibold hover:underline mb-8">
             ← Zurück zum Ratgeber
           </button>
-          <ArticleContent content={article.content} />
+          [ArticleContent content={article.content} |]
           <div className="mt-10 bg-[#E8F5EE] border border-[#3DA16A]/25 rounded-2xl p-6">
             <h3 className="font-heading font-bold text-[#1C2B2B] text-lg mb-2">Jetzt kostenlos anfragen</h3>
             <p className="text-[#4A6358] text-sm mb-4">Geprüfte lokale Fachbetriebe · KfW-Antrag inklusive · Kostenlos</p>
-            <Link href="/kontakt"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-[#1A4731] text-white font-heading font-bold text-sm rounded-xl hover:bg-wp-green2 transition-all">
-              Anfrage starten <ArrowRight size={14} />
+            [Link href="|kontakt"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-[#1A4731] text-white font-heading font-bold text-sm rounded-xl hover:bg-wp-green2 transition-all"]
+              Anfrage starten [ArrowRight size={14} |]
             </Link>
           </div>
         </div>
@@ -376,12 +376,12 @@ export default function Ratgeber() {
                 </h2>
                 <p className="text-[#4A6358] text-sm leading-relaxed mb-5">{hero.excerpt}</p>
                 <div className="flex items-center gap-4 text-[#1C2B2B]3 text-xs mb-5">
-                  <span className="flex items-center gap-1"><User size={11} /> {hero.author}</span>
-                  <span className="flex items-center gap-1"><Clock size={11} /> {hero.time}</span>
-                  <span className="flex items-center gap-1"><Calendar size={11} /> {hero.date}</span>
+                  <span className="flex items-center gap-1">[User size={11} |] {hero.author}</span>
+                  <span className="flex items-center gap-1">[Clock size={11} |] {hero.time}</span>
+                  <span className="flex items-center gap-1">[Calendar size={11} |] {hero.date}</span>
                 </div>
                 <span className="inline-flex items-center gap-2 text-[#1A4731] font-semibold text-sm">
-                  Artikel lesen <ArrowRight size={14} />
+                  Artikel lesen [ArrowRight size={14} |]
                 </span>
               </div>
             </div>
@@ -405,8 +405,8 @@ export default function Ratgeber() {
                 </h3>
                 <p className="text-[#1C2B2B]3 text-xs leading-relaxed mb-4 line-clamp-2">{article.excerpt}</p>
                 <div className="flex items-center justify-between text-[#1C2B2B]3 text-xs">
-                  <span className="flex items-center gap-1"><Clock size={10} /> {article.time}</span>
-                  <span className="text-[#1A4731] font-semibold flex items-center gap-1">Lesen <ArrowRight size={11} /></span>
+                  <span className="flex items-center gap-1">[Clock size={10} |] {article.time}</span>
+                  <span className="text-[#1A4731] font-semibold flex items-center gap-1">Lesen [ArrowRight size={11} |]</span>
                 </div>
               </div>
             </button>
@@ -446,8 +446,8 @@ export default function Ratgeber() {
               ['WP oder Gas',            'waermepumpe-oder-gas',       '⚖️'],
               ['Stromverbrauch',         'waermepumpe-stromverbrauch', '⚡'],
             ].map(([label, slug, icon]) => (
-              <Link key={slug} href={`/${slug}`}
-                className="flex items-center gap-2 p-3 bg-wp-bg border border-wp-border rounded-xl text-sm text-[#1C2B2B] hover:text-[#1A4731] hover:border-wp-green transition-all">
+              [Link key={slug} href={`|${slug}`}
+                className="flex items-center gap-2 p-3 bg-wp-bg border border-wp-border rounded-xl text-sm text-[#1C2B2B] hover:text-[#1A4731] hover:border-wp-green transition-all"]
                 <span>{icon}</span>
                 <span className="font-medium">{label}</span>
               </Link>
@@ -459,9 +459,9 @@ export default function Ratgeber() {
         <div className="mt-12 bg-[#1A4731] rounded-2xl p-8 text-center">
           <h3 className="font-bold text-white text-xl mb-2">Bereit — Ihr WP-Projekt starten?</h3>
           <p className="text-white/60 text-sm mb-5">Kostenlose Anfrage · HWK-geprüfte Betriebe · KfW-Antrag inklusive</p>
-          <Link href="/kontakt"
-            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#D97706] text-white font-heading font-bold rounded-xl hover:bg-amber-700 transition-all">
-            Kostenlos anfragen <ArrowRight size={15} />
+          [Link href="|kontakt"
+            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#D97706] text-white font-heading font-bold rounded-xl hover:bg-amber-700 transition-all"]
+            Kostenlos anfragen [ArrowRight size={15} |]
           </Link>
         </div>
       </div>

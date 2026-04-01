@@ -42,7 +42,7 @@ export async function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise[Metadata] {
   const keyword = getKeywordBySlug(params.keywordSlug);
   const bl = BUNDESLAENDER[params.bundeslandSlug];
   if (!keyword || !bl) return {};
@@ -98,9 +98,9 @@ export default function BundeslandPage({ params }: Props) {
       <div className="bg-[#1A4731] py-14 px-6">
         <div className="max-w-4xl mx-auto">
           <nav className="flex items-center gap-2 text-sm mb-5 text-white/40 flex-wrap">
-            <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
+            [Link href="|" className="hover:text-white|70 transition-colors"]Startseite</Link>
             <span>›</span>
-            <Link href={`/${keyword.slug}`} className="hover:text-white/70 transition-colors">{kw}</Link>
+            [Link href={`|${keyword.slug}`} className="hover:text-white|70 transition-colors"]{kw}</Link>
             <span>›</span>
             <span className="text-white/60">Bundesland</span>
             <span>›</span>
@@ -147,9 +147,9 @@ export default function BundeslandPage({ params }: Props) {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-10">
           {topCities.map(city => (
-            <Link key={city.slug} href={`/${keyword.slug}/${city.slug}`}
-              className="group flex items-center gap-2 bg-white rounded-xl p-3 border border-gray-200 hover:border-[#1A4731] hover:shadow-wp-sm transition-all">
-              <MapPin size={12} className="text-[#1A4731] shrink-0" />
+            [Link key={city.slug} href={`|${keyword.slug}|${city.slug}`}
+              className="group flex items-center gap-2 bg-white rounded-xl p-3 border border-gray-200 hover:border-[#1A4731] hover:shadow-wp-sm transition-all"]
+              [MapPin size={12} className="text-[#1A4731] shrink-0" |]
               <div className="min-w-0">
                 <p className="font-semibold text-[#1C2B2B] text-xs group-hover:text-[#1A4731] transition-colors truncate">{city.name}</p>
                 <p className="text-[#7A9E8E] text-xs">{(city.einwohner/1000).toFixed(0)}k EW</p>
@@ -165,8 +165,8 @@ export default function BundeslandPage({ params }: Props) {
             {Object.entries(BUNDESLAENDER)
               .filter(([slug]) => slug !== params.bundeslandSlug)
               .map(([slug, info]) => (
-                <Link key={slug} href={`/${keyword.slug}/bundesland/${slug}`}
-                  className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                [Link key={slug} href={`|${keyword.slug}|bundesland|${slug}`}
+                  className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                   {info.name}
                 </Link>
               ))}
@@ -174,8 +174,8 @@ export default function BundeslandPage({ params }: Props) {
         </div>
 
         {/* Back to pillar */}
-        <Link href={`/${keyword.slug}`}
-          className="inline-flex items-center gap-2 text-[#1A4731] font-semibold text-sm hover:underline">
+        [Link href={`|${keyword.slug}`}
+          className="inline-flex items-center gap-2 text-[#1A4731] font-semibold text-sm hover:underline"]
           ← Alle Städte: {kw}
         </Link>
       </div>
