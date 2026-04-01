@@ -351,7 +351,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <strong>Was Sie für den KfW-Antrag in {city.name} brauchen:</strong> (1) KfW-Lieferanten- und Leistungserbringer (LuL)-Nummer des Installateurbetriebs — prüfbar auf kdnr.kfw.de. (2) Bestätigung zum Antrag (BzA) vom Fachbetrieb. (3) Registrierung im KfW-Portal „Meine KfW". (4) IBAN für Auszahlung. Bearbeitungszeit: meist 1–5 Werktage.
           </p>
           <p>
-            <strong>Maximale Förderung für {city.name} berechnet:</strong> Brutto-Investition {fmtEuro(foerd.brutto)} × {foerd.gesamtSatz}% KfW-Förderquote = {fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil: {fmtEuro(foerd.eigenanteil)}. Dazu §35a-Steuerbonus: bis €1.200 im Installationsjahr. Gesamtersparnis gegenüber Listenpreis: {fmtEuro(foerd.zuschuss + 1200)}.
+            <strong>Maximale Förderung für {city.name} berechnet:</strong> Brutto-Investition {fmtEuro(foerd.foerderfaehigeBasis)} × {foerd.gesamtSatz}% KfW-Förderquote = {fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil: {fmtEuro(foerd.eigenanteil)}. Dazu §35a-Steuerbonus: bis €1.200 im Installationsjahr. Gesamtersparnis gegenüber Listenpreis: {fmtEuro(foerd.zuschuss + 1200)}.
           </p>
           <p>
             <strong>Verwendungsnachweis in {city.name}:</strong> Nach Installation müssen eingereicht werden: Rechnung mit allen Positionen, Inbetriebnahmeprotokoll (F-Gas-Pflicht), Nachweis Hydraulischer Abgleich (KfW-Pflicht), Wärmemengenzähler-Einbaubestätigung. Auszahlung danach: 4–8 Wochen. Wir helfen bei der Dokumentation kostenlos.
