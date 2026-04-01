@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -57,6 +57,8 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
     `WP oder Gas ${city.name} (${city.bundesland})? Mit ${city.avgTemp}°C Jahresmittel und ${city.normAussentemp}°C Normaußentemperatur erreicht die WP JAZ ${jaz} — Heizkosten ${fmtEuro(calc.wpKosten)}/Jahr statt ${fmtEuro(calc.altKosten)}/Jahr mit Gas.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -286,7 +288,82 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox keywordSlug={keyword.slug} />
+  
+
+      {/* ── VERGLEICH CONTENT ──────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 pb-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+          Wärmepumpe vs. Gas in {city.name} — alle Zahlen im Vergleich
+        </h2>
+        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+          <p>
+            <strong>Betriebskosten {city.name} 2026:</strong> Wärmepumpe: {fmtEuro(calc.wpKosten)}/Jahr (bei {city.strompreis} ct/kWh, JAZ {jaz}). Gasheizung: {fmtEuro(calc.altKosten)}/Jahr (bei {city.gaspreis} ct/kWh inkl. CO₂-Aufschlag €55/t). Jährliche Ersparnis: {fmtEuro(calc.ersparnis)}. Bis 2030 steigt der CO₂-Preis auf ca. €100/t → weitere €200–300 Mehrkosten/Jahr für Gas.
+          </p>
+          <p>
+            <strong>Amortisation in {city.name}:</strong> Eigenanteil nach {foerd.gesamtSatz}% KfW: {fmtEuro(foerd.eigenanteil)}. Jährliche Ersparnis: {fmtEuro(calc.ersparnis)}. Einfache Amortisation: {Math.round(foerd.eigenanteil / calc.ersparnis)} Jahre. Mit CO₂-Preisanstieg auf €100/t bis 2030: ca. {Math.max(5, Math.round(foerd.eigenanteil / (calc.ersparnis + 300)))} Jahre.
+          </p>
+          <p>
+            <strong>Was der CO₂-Preis für {city.bundesland} bedeutet:</strong> Jede Tonne CO₂ kostet seit 2026 €55. Gasheizungen emittieren ca. 200 g CO₂/kWh → bei 20.000 kWh Jahresverbrauch ca. 4 t CO₂/Jahr. Bei €100/t (2030): ca. €400 Mehrkosten. Bei €150/t (2035): ca. €600 Mehrkosten — jedes Jahr. Eine WP in {city.name} hat kein CO₂-Preisrisiko.
+          </p>
+          <p>
+            <strong>Restwertvergleich:</strong> Eine WP erhöht den Immobilienwert um 10–15% (energieeffizienter Gebäudestandard). Gasheizungen verlieren ab 2030 an Wert durch GEG-Nachrüstpflichten. In {city.name} mit {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und steigende Energiepreisen: Langfristig klar für die WP.
+          </p>
+        </div>
+      </div>
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
+      <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">Gaspreise: BDEW 2026 · CO₂-Prognose: EU-ETS2 · JAZ: Fraunhofer ISE · Stand März 2026</div>
       </div>
     </div>

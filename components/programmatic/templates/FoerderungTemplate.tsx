@@ -6,7 +6,7 @@ import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Info, TrendingDown
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -19,6 +19,10 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
   const isUrgent = city.einwohner >= 100000;
   const hasLandFoerderung = !!city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.includes('ausgesetzt');
   const isFernwaerme = city.fernwaermeQuote >= 50;
+  // IBB Berlin: Effiziente GebäudePLUS vergibt 2026 keine Zuschüsse mehr; ENEO ausgelaufen
+  const berlinNote = city.bundesland === 'Berlin'
+    ? 'Hinweis für Berlin 2026: Das Programm Effiziente GebäudePLUS vergibt aktuell keine Direktzuschüsse mehr. ENEO ist ausgelaufen. Die IBB bietet über „IBB Wohnraum modernisieren" zinsgünstige Kredite bis €100.000/WE. Kombinierbar mit der KfW-Förderung.'
+    : null;
 
   const boni = [
     { pct: 30, label: 'Grundförderung', info: 'Für alle Eigennutzer und Vermieter — immer verfügbar', badge: 'Immer', badgeColor: 'bg-wp-green text-white' },
@@ -28,6 +32,8 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
     { pct: 5,  label: 'iSFP-Bonus', info: `Individueller Sanierungsfahrplan → +${fmtEuro(Math.round(25000 * 0.05))} bei €25.000 Invest · Eigenanteil ca. €60–140 nach BAFA-Förderung`, badge: '+5%', badgeColor: 'bg-wp-amberlt text-wp-amber' },
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -69,6 +75,11 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             In {city.name} ({city.bundesland}) beträgt die KfW-Förderung typisch {foerd.gesamtSatz}% — das sind{' '}
             <strong className="text-white">{fmtEuro(foerd.zuschuss)}</strong> nicht rückzahlbarer Zuschuss.
             {hasLandFoerderung ? ` Dazu kommt in ${city.bundesland}: ${city.bundeslandFoerderung}.` : ''}
+            {berlinNote && (
+              <span className="block mt-2 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2">
+                ⚠ {berlinNote}
+              </span>
+            )}
           </p>
 
           {/* Hero Stats */}
@@ -325,6 +336,81 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           <div id="angebot">
             <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
           </div>
+
+
+      {/* ── FÖRDERUNG DETAIL ────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 pb-8">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+          Wie beantrage ich die Förderung in {city.name} — Schritt für Schritt?
+        </h2>
+        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+          <p>
+            <strong>Reihenfolge ist bindend:</strong> Der KfW-Antrag muss zwingend VOR der Auftragserteilung gestellt werden. Kein Nachantrag möglich. Ausnahme: Vertrag mit aufschiebender Bedingung (Förderklausel). Wir unterstützen bei der korrekten Vertragsgestaltung.
+          </p>
+          <p>
+            <strong>Was Sie für den KfW-Antrag in {city.name} brauchen:</strong> (1) KfW-Lieferanten- und Leistungserbringer (LuL)-Nummer des Installateurbetriebs — prüfbar auf kdnr.kfw.de. (2) Bestätigung zum Antrag (BzA) vom Fachbetrieb. (3) Registrierung im KfW-Portal „Meine KfW". (4) IBAN für Auszahlung. Bearbeitungszeit: meist 1–5 Werktage.
+          </p>
+          <p>
+            <strong>Maximale Förderung für {city.name} berechnet:</strong> Brutto-Investition {fmtEuro(foerd.brutto)} × {foerd.gesamtSatz}% KfW-Förderquote = {fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil: {fmtEuro(foerd.eigenanteil)}. Dazu §35a-Steuerbonus: bis €1.200 im Installationsjahr. Gesamtersparnis gegenüber Listenpreis: {fmtEuro(foerd.zuschuss + 1200)}.
+          </p>
+          <p>
+            <strong>Verwendungsnachweis in {city.name}:</strong> Nach Installation müssen eingereicht werden: Rechnung mit allen Positionen, Inbetriebnahmeprotokoll (F-Gas-Pflicht), Nachweis Hydraulischer Abgleich (KfW-Pflicht), Wärmemengenzähler-Einbaubestätigung. Auszahlung danach: 4–8 Wochen. Wir helfen bei der Dokumentation kostenlos.
+          </p>
+        </div>
+      </div>
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
           <AuthorBox keywordSlug={keyword.slug} />
           <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
             {['KfW-Antrag inklusive', 'LuL-registrierte Betriebe', 'Herstellerunabhängig', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (

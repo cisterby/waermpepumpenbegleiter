@@ -7,7 +7,7 @@ import { ChevronDown, CheckCircle, XCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -58,6 +58,8 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
     `${city.name} (${city.bundesland}): Bei ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und ${city.avgTemp}°C Jahresmittel ist die Nachrüstung wirtschaftlich. Eigenanteil nach ${foerd.gesamtSatz}% KfW: ${fmtEuro(foerd.eigenanteil)}. Betriebskosten: ${fmtEuro(calc.wpKosten)}/Jahr.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -169,7 +171,7 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Ablauf: WP nachrüsten in {city.name} — 5 Schritte
+              Wie läuft die WP-Nachrüstung in {city.name} — in 5 Schritten?
             </h2>
             <div className="space-y-3">
               {ABLAUF_NACHRUESTEN.map((s,i)=>(
@@ -244,7 +246,82 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox keywordSlug={keyword.slug} />
+  
+
+      {/* ── NACHRÜSTEN CONTENT ──────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 pb-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+          Wie läuft die WP-Nachrüstung in {city.name} konkret ab?
+        </h2>
+        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+          <p>
+            <strong>Eignungscheck in {city.name}:</strong> 80% aller Bestandsgebäude in {city.bundesland} sind nachrüstbar. Die 3 wichtigsten Prüfpunkte: (1) Vorlauftemperatur — messbar über Heizkörper-Thermostat bei -10°C Außentemperatur. Über 65°C → Hochtemperatur-WP nötig. (2) Außeneinheit-Standort — Abstand zur Nachbargrenze, TA-Lärm. (3) Kellerplatz für Pufferspeicher 200–300 l.
+          </p>
+          <p>
+            <strong>Ablauf der Nachrüstung in {city.name} — 5 Schritte:</strong> (1) KfW-Antrag vor Auftragserteilung stellen. (2) Hydraulischen Abgleich durchführen lassen — senkt Vorlauftemperatur um 5–10°C, verbessert JAZ von ca. {(jaz-0.4).toFixed(1)} auf {jaz}. (3) Elektro-Upgrade falls nötig: Starkstromanschluss 3×16A. (4) Pufferspeicher installieren. (5) WP-Montage + Inbetriebnahme (2–3 Tage).
+          </p>
+          <p>
+            <strong>GEG-Fristen für {city.name}:</strong> Städte mit mehr als 100.000 Einwohnern: kommunale Wärmeplanung bis 30.06.2026. Kleinere Gemeinden in {city.bundesland}: bis 30.06.2028. Nach Veröffentlichung des Wärmeplans gilt eine Übergangsfrist. Wichtig: Die KfW-Förderung ist unabhängig von der GEG-Frist und gilt sofort.
+          </p>
+          <p>
+            <strong>Kosten der Nachrüstung in {city.name}:</strong> WP-System: {fmtEuro(foerd.eigenanteil)} Eigenanteil nach {foerd.gesamtSatz}% KfW. Anpassungsarbeiten: Hydraulischer Abgleich €500–1.500 (KfW-Pflicht), ggf. Heizkörpertausch €200–500/Stück, Pufferspeicher €600–2.000, Elektro-Upgrade €500–1.500. Jährliche Ersparnis danach: ca. {fmtEuro(calc.ersparnis)}.
+          </p>
+        </div>
+      </div>
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
+      <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">BWP Marktdaten 2024 · KfW BEG 458 · GEG BMWSB · Stand März 2026</div>
       </div>
     </div>

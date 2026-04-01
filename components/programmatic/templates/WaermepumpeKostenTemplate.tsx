@@ -7,7 +7,7 @@ import { ArrowRight, CheckCircle, AlertTriangle, TrendingUp, Calculator } from '
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -43,6 +43,8 @@ export default function WaermepumpeKostenTemplate({
     `${city.bundesland}: ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} nicht rückzahlbarer Zuschuss für Hausbesitzer in ${city.name}. Jahresarbeitszahl ${jazLuft} bei ${city.normAussentemp}°C Normaußentemperatur. Betriebskosten Wärmepumpe: ${fmtEuro(calc.wpKosten)}/Jahr — gegenüber ${fmtEuro(calc.altKosten)}/Jahr Gas.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -540,6 +542,60 @@ export default function WaermepumpeKostenTemplate({
             <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
           </div>
 
+
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
           <AuthorBox keywordSlug={keyword.slug} />
 
           <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">

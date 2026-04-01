@@ -6,7 +6,7 @@ import { ChevronDown, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -53,6 +53,8 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
     `Neubau ${city.name} 2026: ${city.normAussentemp}°C Normaußentemperatur, ${city.avgTemp}°C Jahresmittel, ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtage. Fußbodenheizung + WP → JAZ ${jazNeubau}. Betriebskosten: ${fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -165,8 +167,8 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {/* Planungs-Checkliste */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Planungs-Checkliste WP-Neubau {city.name}
-            </h2>
+              Was muss ich für die WP-Planung im Neubau in {city.name}
+            ?</h2>
             <div className="space-y-4">
               {NEUBAU_PLANUNG.map((p, i) => (
                 <div key={i} className="bg-white border border-wp-border rounded-xl p-5">
@@ -280,7 +282,82 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox keywordSlug={keyword.slug} />
+  
+
+      {/* ── NEUBAU CONTENT ───────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 pb-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+          Wärmepumpe im Neubau in {city.name} — was zählt wirklich?
+        </h2>
+        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+          <p>
+            Im Neubau in {city.name} ist die Wärmepumpe das effizienteste Heizsystem — weil die Randbedingungen ideal sind: Fußbodenheizung mit 30–35°C Vorlauftemperatur, gute Dämmung (KfW-55 oder besser), JAZ-Potenzial bis {(jaz + 0.7).toFixed(1)}. Der Eigenanteil nach KfW berechnet sich anders als beim Bestandsbau: Kein Klima-Speed-Bonus (kein fossiles System zum Ersetzen), dafür KFN-Kredit (Klimafreundlicher Neubau) möglich.
+          </p>
+          <p>
+            <strong>Planungs-Checkliste für {city.name}:</strong> (1) Fußbodenheizung bereits im Rohbauplan vorsehen — nachträglich 4× teurer. (2) Außeneinheit-Standort in der Baugenehmigung berücksichtigen. (3) Starkstromanschluss 3×16A für WP einplanen. (4) Pufferspeicher 200–300 l im Keller einkalkulieren. (5) Netzbetreiber-Anmeldung 6 Wochen vor Inbetriebnahme.
+          </p>
+          <p>
+            <strong>Kosten Neubau {city.name} 2026:</strong> Luft-Wasser-WP: €16.000–26.000 komplett. Erdwärme: €22.000–35.000. Im Neubau Förderung über KfW KFN (§ 297 ff. GEG): zinsgünstige Kredite statt Direktzuschuss. Betriebskosten mit JAZ {(jaz + 0.5).toFixed(1)}: ca. {fmtEuro(Math.round(calc.wpKosten * 0.78))}/Jahr — dank Fußbodenheizung ca. 22% günstiger als im Bestandsbau.
+          </p>
+          <p>
+            <strong>WP + PV im Neubau in {city.name}:</strong> Die optimale Kombination. 10 kWp PV erzeugen in {city.name} ca. 8.500–10.000 kWh/Jahr. 40–60% davon direkt für WP nutzbar — Stromkosten effektiv auf 4 ct/kWh statt {city.strompreis} ct/kWh. Amortisationszeit PV+WP zusammen: 8–12 Jahre.
+          </p>
+        </div>
+      </div>
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
+      <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">GEG: BMWSB 2024 · KfW 297/298 · DWD Klimadaten · Stand März 2026</div>
       </div>
     </div>

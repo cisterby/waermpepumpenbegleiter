@@ -6,7 +6,7 @@ import { ChevronDown, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -61,6 +61,8 @@ export default function InstallationTemplate({ city, keyword, calc, foerd, jaz, 
     `${city.name}: Installationsdauer 2–3 Tage, Kernbohrung Ø 80mm durch Außenwand, Starkstromanschluss 3×16A. KfW-Förderung ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)}. Eigenanteil nach Förderung: ${fmtEuro(foerd.eigenanteil)}.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -167,8 +169,8 @@ export default function InstallationTemplate({ city, keyword, calc, foerd, jaz, 
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Genehmigungen & Vorschriften in {city.bundesland}
-            </h2>
+              Welche Genehmigungen & Vorschriften gelten für WP in {city.bundesland}
+            ?</h2>
             <div className="space-y-3">
               {GENEHMIGUNG_BUNDESLAND.map((g,i)=>(
                 <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
@@ -238,7 +240,82 @@ export default function InstallationTemplate({ city, keyword, calc, foerd, jaz, 
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox keywordSlug={keyword.slug} />
+  
+
+      {/* ── INSTALLATION CONTENT ────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 pb-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+          WP-Installation in {city.name} — was passiert wann?
+        </h2>
+        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+          <p>
+            <strong>Gesamtzeitplan für {city.name}:</strong> Planung + Angebote: 1–2 Wochen. KfW-Antrag stellen + Genehmigung abwarten: 1–2 Wochen. Netzbetreiber-Anmeldung (Pflicht): 4–6 Wochen Vorlauf. Installateur-Terminbuchung in {city.bundesland}: 4–12 Wochen Wartezeit 2026. Montage: 2–3 Tage. Inbetriebnahme + Dokumentation: 1 Tag. Gesamtprozess: 8–20 Wochen → frühzeitig planen.
+          </p>
+          <p>
+            <strong>Genehmigungen in {city.bundesland}:</strong> Luft-Wasser-WP: in {city.bundesland} meist keine Baugenehmigung erforderlich, aber formlose Anzeige beim Bauamt. Geräuschemissionen müssen TA-Lärm einhalten: 45 dB(A) tags / 35 dB(A) nachts an der Grundstücksgrenze. Seit 01.01.2026: nur noch Geräte mit 10 dB Unterschreitung des Grenzwerts KfW-förderfähig.
+          </p>
+          <p>
+            <strong>Bauliche Voraussetzungen in {city.name}:</strong> Außenfläche min. 0,5 m² + Abstand zur Grundstücksgrenze. Kellerraum für Pufferspeicher 200–300 l (min. 0,8 m²). Starkstromanschluss 3×16A (falls nicht vorhanden: €500–1.500 Upgrade). Kernbohrung 60–80 mm durch Außenwand. Alle diese Punkte klärt der Installateur beim Vorab-Check.
+          </p>
+          <p>
+            <strong>Installationskosten in {city.name} aufgeschlüsselt:</strong> Außeneinheit + Montage: €2.500–4.500. Hydraulischer Abgleich (KfW-Pflicht): €500–1.500. Starkstrom-Anschluss: €500–1.500. Wärmemengenzähler (KfW 2026): €300–600. Kernbohrung: €150–400. Pufferspeicher: €600–2.000. Inbetriebnahme + F-Gas-Protokoll: €200–400. Gesamt Montage: €4.750–10.900.
+          </p>
+        </div>
+      </div>
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
+      <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">F-Gas-Verordnung · KfW BEG 458 · TA Lärm · Stand März 2026</div>
       </div>
     </div>

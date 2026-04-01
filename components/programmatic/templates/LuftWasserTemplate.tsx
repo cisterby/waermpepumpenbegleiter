@@ -7,7 +7,7 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -56,6 +56,8 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
     `LW-WP ${city.name} (${city.bundesland}): JAZ ${jaz} Jahresarbeitszahl — das ist der Durchschnitt über alle Außentemperaturen. Im Sommer COP 6–8 (Warmwasser), im Winter COP 2–3 (${city.normAussentemp}°C). KfW: ${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)}.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -238,7 +240,82 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox keywordSlug={keyword.slug} />
+  
+
+      {/* ── TECHNIK-TIEFE: Luft-Wasser-WP ──────────────── */}
+      <div className="max-w-3xl mx-auto px-6 pb-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+          Wie funktioniert die Luft-Wasser-WP in {city.name} im Detail?
+        </h2>
+        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+          <p>
+            Die Luft-Wasser-Wärmepumpe entzieht der Außenluft Wärme und überträgt diese über einen Kältemittelkreislauf auf das Heizwasser. Bei {city.normAussentemp}°C Normaußentemperatur in {city.name} und einer Vorlauftemperatur von 45–55°C erreicht ein modernes Gerät eine JAZ von {jaz}. Das bedeutet: Aus 1 kWh Strom (aktuell {city.strompreis} ct/kWh in {city.name}) entstehen {jaz} kWh Wärme.
+          </p>
+          <p>
+            <strong>Monoblock vs. Split für {city.name}:</strong> Monoblock-Geräte (70% Marktanteil) verbinden sich über Wasserleitungen mit dem Haus — kein Kältemittel im Innenraum, einfachere Installation, günstigere Wartung. Split-Systeme trennen Außen- und Inneneinheit durch Kältemittelleitungen — etwas effizienter bei langen Leitungswegen, aber komplexer. Für die meisten Häuser in {city.bundesland} gilt: Monoblock.
+          </p>
+          <p>
+            <strong>Warmwasser-Integration in {city.name}:</strong> Option 1 — Warmwasserspeicher 200–300 l integriert in WP-System. Option 2 — externer Speicher (flexibler bei beengten Verhältnissen). Option 3 — Frischwasserstation (hygienischer, kein Legionellenrisiko). Option 4 — Brauchwasser-Wärmepumpe zusätzlich. Empfehlung für {city.name}: integrierter Speicher falls Platz vorhanden, da eine gemeinsame Steuerung die JAZ optimiert.
+          </p>
+          <p>
+            <strong>Jahresarbeitszahl-Realwerte für {city.bundesland}:</strong> Mit {city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und {city.normAussentemp}°C Normaußentemperatur in {city.name} sind folgende JAZ realistisch: Fußbodenheizung 35°C Vorlauf → JAZ {(jaz + 0.5).toFixed(1)}, Niedertemperatursystem 45°C → JAZ {jaz}, Altbau-Heizkörper 55°C → JAZ {(jaz - 0.4).toFixed(1)}.
+          </p>
+        </div>
+      </div>
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
+      <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">DIN EN 14511 (COP-Norm) · BWP Marktdaten 2024 · DWD Klimadaten {city.name} · Stand März 2026</div>
       </div>
     </div>

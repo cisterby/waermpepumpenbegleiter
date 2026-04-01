@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -56,6 +56,8 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
     `${city.name}: JAZ ${jaz} → Heizstrom ${heizStrom.toLocaleString('de-DE')} kWh + Warmwasserstrom ${wwStrom.toLocaleString('de-DE')} kWh = ${gesamtStrom.toLocaleString('de-DE')} kWh/Jahr. Bei ${city.strompreis} ct/kWh Strompreis: ${fmtEuro(kostenNormal)}/Jahr. Das sind ${fmtEuro(calc.ersparnis)}/Jahr weniger als Gasheizung.`,
   ];
 
+
+  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
@@ -165,8 +167,8 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {/* Tarifvergleich */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Tarif-Vergleich für WP in {city.name}
-            </h2>
+              Welcher Tarif ist optimal für die WP in {city.name}
+            ?</h2>
             <div className="space-y-3">
               {TARIF_VERGLEICH.map((t, i) => (
                 <div key={i} className={`p-4 rounded-xl border ${i === 2 ? 'bg-wp-greenxlt border-wp-borderl' : 'bg-white border-wp-border'}`}>
@@ -188,8 +190,8 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {/* Optimierungen */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              4 Wege den Stromverbrauch in {city.name} zu optimieren
-            </h2>
+              Wie reduziere ich den WP-Stromverbrauch in {city.name} zu optimieren
+            ?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {OPTIMIERUNG.map((o, i) => (
                 <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
@@ -281,7 +283,61 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-        <AuthorBox keywordSlug={keyword.slug} />
+  
+      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+        ?</h2>
+        <div className="space-y-4">
+
+          {/* GEG-Reform */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+          </div>
+
+          {/* Neue Lärmvorschrift */}
+          {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            </div>
+          )}
+
+          {/* Steuerliche Absetzbarkeit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            </div>
+          )}
+
+          {/* KfW-Ergänzungskredit */}
+          {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            </div>
+          )}
+
+          {/* Wartungskosten */}
+          {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
+              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            </div>
+          )}
+
+          {/* Finanzierung */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+          </div>
+
+        </div>
+      </div>
+      <AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-wp-text3">JAZ-Daten: Fraunhofer ISE · Strompreise: BDEW 2026 · DWD Klimadaten · Stand März 2026</div>
       </div>
     </div>
