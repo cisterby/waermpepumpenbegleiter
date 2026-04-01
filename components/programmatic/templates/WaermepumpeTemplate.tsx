@@ -12,7 +12,7 @@ import type { CityPageRouterProps } from "@/components/programmatic/CityPageRout
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
-import { getRotatingFAQs, getIntroParagraphs } from "@/lib/content-variation";
+import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectionIntros } from "@/lib/content-variation";
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [

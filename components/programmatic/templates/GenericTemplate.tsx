@@ -8,7 +8,7 @@ import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getKwCategory, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
 // ── Keyword-Kategorien → spezifischer Hauptinhalt ────────────────────────────
