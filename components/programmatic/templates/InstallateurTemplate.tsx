@@ -84,9 +84,9 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
           <nav className="flex items-center gap-2 text-sm mb-6 flex-wrap" aria-label="Breadcrumb">
-            <Link href="/" className="text-[rgba(255,255,255,0.40)] hover:text-white transition-colors">Startseite</Link>
+            [Link href="|" className="text-[rgba(255,255,255,0.40)] hover:text-white transition-colors"]Startseite</Link>
             <span className="text-[rgba(255,255,255,0.25)]">›</span>
-            <Link href={`/${keyword.slug}`} className="text-[rgba(255,255,255,0.40)] hover:text-white transition-colors">
+            [Link href={`|${keyword.slug}`} className="text-[rgba(255,255,255,0.40)] hover:text-white transition-colors"]
               {keyword.keyword.replace('[Stadt]', '').trim()}
             </Link>
             <span className="text-[rgba(255,255,255,0.25)]">›</span>
@@ -95,7 +95,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           {isUrgent && (
             <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/50 rounded-full px-4 py-2 mb-5">
-              <Clock size={13} className="text-amber-400" />
+              [Clock size={13} className="text-amber-400" |]
               <span className="text-amber-300 text-xs font-bold uppercase tracking-widest">Wartezeit in {city.name}: {market.wartezeit}</span>
             </div>
           )}
@@ -126,7 +126,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div className="flex flex-col sm:flex-row gap-4 mb-10">
             <a href="#angebot"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1A4731] text-white font-bold font-bold rounded-xl hover:bg-[#2D7A52] transition-all hover:-translate-y-0.5 shadow-lg shadow-green-900/30">
-              3 Angebote anfordern <ArrowRight size={16} />
+              3 Angebote anfordern [ArrowRight size={16} |]
             </a>
             <a href="#checkliste"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[rgba(255,255,255,0.10)] border border-[rgba(255,255,255,0.20)] text-white font-bold font-semibold rounded-xl hover:bg-[rgba(255,255,255,0.15)] transition-all">
@@ -155,11 +155,11 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
       <div className="bg-[#1A4731] border-b border-[rgba(255,255,255,0.08)] py-3 px-6">
         <div className="max-w-6xl mx-auto flex items-center gap-5 flex-wrap">
           <span className="text-[#3DA16A] text-xs font-bold uppercase tracking-widest shrink-0 flex items-center gap-1.5">
-            <Shield size={12} />6 Qualitätskriterien
+            [Shield size={12} |]6 Qualitätskriterien
           </span>
           {['HWK-Eintragung', 'Meisterbetrieb', 'KfW-LuL', '5+ WP-Inst.', 'Haftpflicht', 'Ø 4,6/5 Bewertung'].map(s => (
             <span key={s} className="text-[rgba(255,255,255,0.50)] text-xs font-semibold flex items-center gap-1">
-              <CheckCircle size={10} className="text-[#3DA16A] shrink-0" />{s}
+              [CheckCircle size={10} className="text-[#3DA16A] shrink-0" |]{s}
             </span>
           ))}
         </div>
@@ -172,7 +172,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {/* Marktdaten */}
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { icon: <Clock size={20} className="text-[#D97706]" />, label: 'Wartezeit in ' + city.name, val: market.wartezeit, sub: market.note, bg: 'bg-white border-gray-200' },
+              { icon: [Clock size={20} className="text-[#D97706]" |], label: 'Wartezeit in ' + city.name, val: market.wartezeit, sub: market.note, bg: 'bg-white border-gray-200' },
               { icon: '💶', label: 'Ø Investitionskosten', val: market.kosten, sub: 'Brutto inkl. Installation & Zubehör', bg: 'bg-white border-gray-200' },
               { icon: '📋', label: 'KfW-Zuschuss', val: fmtEuro(foerd.zuschuss), sub: `${foerd.gesamtSatz}% Eigennutzer + Klima-Speed`, bg: 'bg-[#E8F5EE] border-[#3DA16A]/30' },
             ].map((d, i) => (
@@ -212,7 +212,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-bold text-sm mb-1">Geprüfter Fachbetrieb</p>
                   <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => <Star key={i} size={12} className="text-[#D97706] fill-wp-amber" />)}
+                    {[...Array(5)].map((_, i) => [Star key={i} size={12} className="text-[#D97706] fill-wp-amber" |])}
                     <span className="text-white text-xs ml-1">Ø 4,6 / 5,0</span>
                   </div>
                 </div>
@@ -228,7 +228,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               </div>
             </div>
             <div className="bg-[#E8F5EE] border border-[#3DA16A]/30 rounded-xl p-4 flex items-start gap-3">
-              <CheckCircle size={16} className="text-[#1A4731] shrink-0 mt-0.5" />
+              [CheckCircle size={16} className="text-[#1A4731] shrink-0 mt-0.5" |]
               <p className="text-[#4A6358] text-sm leading-relaxed">
                 <strong className="text-[#1C2B2B]">Laufendes Monitoring:</strong> Nach jeder Vermittlung → Kundenfeedback. Unter Ø 3,5/5 nach 10+ Bewertungen → automatisch entfernt. Kein Betrieb kann sich eine bessere Bewertung erkaufen.
               </p>
@@ -306,7 +306,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md">
                 {CHECKLIST.map((item, i) => (
                   <div key={i} className={`flex items-start gap-3 px-4 py-3 ${i < CHECKLIST.length - 1 ? 'border-b border-gray-200' : ''}`}>
-                    <CheckCircle size={13} className={`mt-0.5 shrink-0 ${item.crit ? 'text-[#1A4731]' : 'text-[#7A9E8E]'}`} />
+                    [CheckCircle size={13} className={`mt-0.5 shrink-0 ${item.crit ? 'text-[#1A4731]' : 'text-[#7A9E8E]'}`} |]
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-[#1C2B2B] text-xs leading-tight">{item.item}</p>
                       <p className="text-[#7A9E8E] text-xs mt-0.5">{item.note}</p>
@@ -401,7 +401,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {/* GEG Urgency */}
           {isUrgent && (
             <div className="bg-amber-50 border border-amber-300 rounded-2xl p-6 flex items-start gap-4">
-              <AlertTriangle size={22} className="text-amber-600 shrink-0 mt-0.5" />
+              [AlertTriangle size={22} className="text-amber-600 shrink-0 mt-0.5" |]
               <div>
                 <p className="font-bold font-bold text-amber-900 text-xl mb-2">GEG-Frist {city.name}: {gegFristFormatted}</p>
                 <p className="text-amber-800 text-sm leading-relaxed mb-3">
@@ -411,7 +411,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 </p>
                 <a href="#angebot"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 text-white font-bold font-bold text-sm rounded-xl hover:bg-amber-700 transition-colors">
-                  Jetzt Angebot anfordern <ArrowRight size={14} />
+                  Jetzt Angebot anfordern [ArrowRight size={14} |]
                 </a>
               </div>
             </div>
@@ -479,7 +479,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 <details key={i} className="group border-b border-gray-200 last:border-0">
                   <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
                     <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
+                    [ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" |]
                   </summary>
                   <div className="border-t border-gray-200">
                     <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
@@ -494,8 +494,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Installateure in der Region</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {n.name}
                   </Link>
                 ))}
@@ -505,8 +505,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen für {city.name}</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={kw.slug} href={`|${kw.slug}|${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {kw.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -539,13 +539,13 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               </div>
               <a href="#angebot"
                 className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#1A4731] text-white rounded-xl font-bold font-bold text-sm hover:bg-[#2D7A52] transition-colors">
-                3 Angebote anfordern <ArrowRight size={14} />
+                3 Angebote anfordern [ArrowRight size={14} |]
               </a>
               <p className="text-[rgba(255,255,255,0.25)] text-xs text-center mt-2">Kostenlos · Unverbindlich · 48h</p>
             </div>
           </div>
           <div id="angebot">
-            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+            [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
           </div>
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
@@ -601,11 +601,11 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
         </div>
       </div>
-          <AuthorBox keywordSlug={keyword.slug} />
+          [AuthorBox keywordSlug={keyword.slug} |]
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {['HWK-geprüfte Meisterbetriebe', 'KfW-LuL-Registrierung', 'Heizlastberechnung inklusive', `Lokal in ${city.name}`, '100% kostenlos für Sie'].map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
-                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
+                [CheckCircle size={12} className="text-[#1A4731] shrink-0" |]{t}
               </div>
             ))}
           </div>

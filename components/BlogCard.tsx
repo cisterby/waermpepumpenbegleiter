@@ -32,7 +32,7 @@ export function BlogCardHero({ article, index }: { article: BlogArticle; index: 
         <div className="flex items-center gap-4">
           <span className="font-body text-xs text-white/60">{article.readTime} Lesezeit · {article.date}</span>
           <span className="font-body text-sm font-medium text-white flex items-center gap-1 group-hover:gap-2 transition-all">
-            Weiterlesen <ArrowRight className="w-4 h-4" />
+            Weiterlesen [ArrowRight className="w-4 h-4" |]
           </span>
         </div>
       </div>

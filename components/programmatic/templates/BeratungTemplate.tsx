@@ -78,9 +78,9 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/90 via-[#0A1910]/70 to-[#0A1910]/20" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
-            <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
+            [Link href="|" className="hover:text-white transition-colors"]Startseite</Link>
             <span>›</span>
-            <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors">{keyword.keyword.replace(' [Stadt]','')}</Link>
+            [Link href={`|${keyword.slug}`} className="hover:text-white transition-colors"]{keyword.keyword.replace(' [Stadt]','')}</Link>
             <span>›</span>
             <span className="text-white/80">{city.name}</span>
           </nav>
@@ -236,7 +236,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
                 <details key={i} className="group border-b border-gray-200 last:border-0">
                   <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
                     <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
+                    [ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" |]
                   </summary>
                   <div className="border-t border-gray-200">
                     <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
@@ -252,8 +252,8 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">{n.name}</Link>
+                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]{n.name}</Link>
                 ))}
               </div>
             </div>
@@ -261,8 +261,8 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {(keyword.crossLinks ?? []).map((slug: string) => (
-                  <Link key={slug} href={`/${slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={slug} href={`|${slug}|${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ').replace('foerderung','Förderung').replace('installateur','Installateur')} {city.name}
                   </Link>
                 ))}
@@ -300,7 +300,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="font-bold font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <p className="text-white/60 text-center text-sm mb-8">Kostenlos · Herstellerunabhängig · KfW-Begleitung inklusive</p>
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+          [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
         </div>
       </div>
 
@@ -395,7 +395,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
 
         </div>
       </div>
-      <AuthorBox keywordSlug={keyword.slug} />
+      [AuthorBox keywordSlug={keyword.slug} |]
         <div className="mt-6 text-xs text-[#7A9E8E]">Klimadaten: DWD · Förderrecht: KfW/BAFA · Effizienz: Fraunhofer ISE · Stand März 2026</div>
       </div>
     </div>

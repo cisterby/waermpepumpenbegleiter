@@ -1,6 +1,6 @@
 // components/programmatic/CityVariationBlocks.tsx
 // Stadtspezifische Content-Blöcke für alle 22 Templates
-// Nutzung: CityVariationBlocks city={city} keyword={keyword} jaz={jaz} calc={calc}
+// Nutzung: [CityVariationBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} /]
 'use client';
 import { getCityVariationData } from '@/lib/content-variation';
 import type { City } from '@/lib/city-utils';
@@ -87,10 +87,10 @@ export function CTABlock({ city, keyword, jaz, calc }: Props) {
 export function CityVariationMasterBlock({ city, keyword, jaz, calc }: Props) {
   return (
     <div className="space-y-10">
-      <USPBar city={city} keyword={keyword} jaz={jaz} calc={calc} />
-      <IntroParagraphs city={city} keyword={keyword} jaz={jaz} calc={calc} />
-      <RotatingFAQs city={city} keyword={keyword} jaz={jaz} calc={calc} count={6} />
-      <CTABlock city={city} keyword={keyword} jaz={jaz} calc={calc} />
+      [USPBar city={city} keyword={keyword} jaz={jaz} calc={calc} |]
+      [IntroParagraphs city={city} keyword={keyword} jaz={jaz} calc={calc} |]
+      [RotatingFAQs city={city} keyword={keyword} jaz={jaz} calc={calc} count={6} |]
+      [CTABlock city={city} keyword={keyword} jaz={jaz} calc={calc} |]
     </div>
   );
 }

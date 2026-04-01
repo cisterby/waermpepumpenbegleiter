@@ -69,10 +69,10 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-[68px]">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
+            [Link href="|" className="flex items-center gap-2.5 group"]
               <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
                 style={{ background: scrolled ? '#1A4731' : 'rgba(255,255,255,0.22)' }}>
-                <Leaf size={17} style={{ color: 'white' }} strokeWidth={2.5} />
+                [Leaf size={17} style={{ color: 'white' }} strokeWidth={2.5} |]
               </div>
               <div>
                 <span className="font-semibold text-[14px] leading-none block"
@@ -89,10 +89,10 @@ export default function Navigation() {
             {/* Desktop links */}
             <div className="hidden lg:flex items-center gap-0.5">
               {NAV_LINKS.map(link => (
-                <Link key={link.href} href={link.href}
+                [Link key={link.href} href={link.href}
                   className="text-[14px] font-medium px-4 py-2 rounded-lg transition-all"
                   style={linkStyle()}
-                  onMouseEnter={e => (e.currentTarget.style.background = scrolled ? S_HOVER_BG : T_HOVER_BG)}
+                  onMouseEnter={e =] (e.currentTarget.style.background = scrolled ? S_HOVER_BG : T_HOVER_BG)}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                   {link.label}
                 </Link>
@@ -106,20 +106,20 @@ export default function Navigation() {
                 style={subStyle()}
                 onMouseEnter={e => (e.currentTarget.style.background = scrolled ? S_HOVER_BG : T_HOVER_BG)}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                <Phone size={13} />
+                [Phone size={13} |]
                 +49 15563 566199
               </a>
-              <Link href="/kontakt"
+              [Link href="|kontakt"
                 className="text-[14px] font-medium px-4 py-2 rounded-lg transition-all"
                 style={subStyle()}
-                onMouseEnter={e => (e.currentTarget.style.background = scrolled ? S_HOVER_BG : T_HOVER_BG)}
+                onMouseEnter={e =] (e.currentTarget.style.background = scrolled ? S_HOVER_BG : T_HOVER_BG)}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                 Kontakt
               </Link>
-              <Link href="/rechner"
+              [Link href="|rechner"
                 className="text-white text-[14px] font-semibold px-5 py-2.5 rounded-xl transition-all ml-1"
                 style={{ background: '#1A4731' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#2D7A52')}
+                onMouseEnter={e =] (e.currentTarget.style.background = '#2D7A52')}
                 onMouseLeave={e => (e.currentTarget.style.background = '#1A4731')}>
                 Kostenloses Angebot →
               </Link>
@@ -131,14 +131,14 @@ export default function Navigation() {
               className="lg:hidden p-2.5 rounded-lg transition-colors"
               style={{ color: scrolled ? '#1A4731' : 'white' }}
               aria-label="Menü öffnen">
-              <Menu size={22} />
+              [Menu size={22} |]
             </button>
           </div>
         </div>
       </motion.nav>
 
       {/* Mobile drawer */}
-      <AnimatePresence>
+      [AnimatePresence]
         {mobileOpen && (
           <motion.div
             initial={{ x: '100%' }}
@@ -151,10 +151,10 @@ export default function Navigation() {
             {/* Header */}
             <div className="flex items-center justify-between px-5 h-[68px]"
               style={{ borderBottom: '1px solid #E5E7EB' }}>
-              <Link href="/" className="flex items-center gap-2.5" onClick={() => setMobileOpen(false)}>
+              [Link href="|" className="flex items-center gap-2.5" onClick={() =] setMobileOpen(false)}>
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: '#1A4731' }}>
-                  <Leaf size={17} style={{ color: 'white' }} strokeWidth={2.5} />
+                  [Leaf size={17} style={{ color: 'white' }} strokeWidth={2.5} |]
                 </div>
                 <span className="font-semibold text-[14px]" style={{ color: '#1A4731' }}>
                   Wärmepumpenbegleiter
@@ -173,7 +173,7 @@ export default function Navigation() {
               className="mx-5 mt-5 flex items-center justify-center gap-2.5 py-4 rounded-2xl font-semibold text-[15px]"
               style={{ background: 'rgba(26,71,49,0.10)', border: '1.5px solid rgba(26,71,49,0.25)', color: '#1A4731' }}
               onClick={() => setMobileOpen(false)}>
-              <Phone size={18} />
+              [Phone size={18} |]
               +49 15563 566199
             </a>
 
@@ -184,13 +184,13 @@ export default function Navigation() {
                   initial={{ opacity: 0, x: 16 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}>
-                  <Link href={link.href} onClick={() => setMobileOpen(false)}
+                  [Link href={link.href} onClick={() =] setMobileOpen(false)}
                     className="flex items-center justify-between px-4 py-3.5 rounded-xl text-[16px] font-medium transition-all"
                     style={{ color: '#1C2B2B' }}
                     onMouseEnter={e => (e.currentTarget.style.background = 'rgba(26,71,49,0.08)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                     {link.label}
-                    <ChevronRight size={16} style={{ color: '#7A9E8E' }} />
+                    [ChevronRight size={16} style={{ color: '#7A9E8E' }} |]
                   </Link>
                 </motion.div>
               ))}
@@ -198,7 +198,7 @@ export default function Navigation() {
 
             {/* CTA */}
             <div className="p-5" style={{ borderTop: '1px solid #E5E7EB' }}>
-              <Link href="/rechner" onClick={() => setMobileOpen(false)}
+              [Link href="|rechner" onClick={() =] setMobileOpen(false)}
                 className="block w-full text-center text-white font-semibold py-4 rounded-2xl text-[15px] transition-all"
                 style={{ background: '#1A4731' }}>
                 Kostenloses Angebot anfordern →

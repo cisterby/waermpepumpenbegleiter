@@ -9,7 +9,6 @@ import {
   TrendingDown, Home, Wrench, AlertTriangle, BarChart2
 } from "lucide-react";
 import type { CityPageRouterProps } from "@/components/programmatic/CityPageRouter";
-import type { Keyword } from "@/lib/keywords";
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity } from "@/lib/cities";
 import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
@@ -49,16 +48,12 @@ function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
 }
 
-// ── Type-Aliases ────────────────────────────────────────────────────────────
-type HeizungTyp = "erdgas" | "heizoel" | "nachtspeicher";
-type WpTyp      = "luft" | "sole" | "wasser";
-
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
-  const [heizung,  setHeizung]  = useState<HeizungTyp>("erdgas");
-  const [wpTyp,    setWpTyp]    = useState<WpTyp>("luft");
+  const [heizung,  setHeizung]  = useState("erdgas" as "erdgas" | "heizoel" | "nachtspeicher");
+  const [wpTyp,    setWpTyp]    = useState("luft" as "luft" | "sole" | "wasser");
   const [vorlauf,  setVorlauf]  = useState(35);
   const [selfOcc,  setSelfOcc]  = useState(true);
   const [fossil,   setFossil]   = useState(true);
@@ -310,7 +305,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
 
 // ── FAQ Accordion ────────────────────────────────────────────────────────────
 function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState(null as number | null);
   return (
     <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
       {faqs.map((faq, i) => (
@@ -318,7 +313,7 @@ function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
           <summary className="w-full flex items-center justify-between gap-4 p-5 text-left
             bg-white hover:bg-gray-50 transition-colors cursor-pointer list-none">
             <span className="font-semibold text-gray-900 text-[15px] leading-snug">{faq.q}</span>
-            <ChevronDown size={18} className="flex-shrink-0 text-gray-400 group-open:rotate-180 transition-transform" />
+            [ChevronDown size={18} className="flex-shrink-0 text-gray-400 group-open:rotate-180 transition-transform" |]
           </summary>
           <div className="border-t border-gray-100">
             <p className="px-5 py-4 text-gray-600 text-[15px] leading-relaxed bg-white">{faq.a}</p>
@@ -352,7 +347,8 @@ export default function WaermepumpeTemplate({
   // Cross-Links
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))
-    .filter((k) => k != null) as Keyword[];
+    .filter((k) => k != null)
+    ;
 
   return (
     <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
@@ -380,9 +376,9 @@ export default function WaermepumpeTemplate({
 
               {/* Breadcrumb */}
               <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap" style={{ color: "rgba(255,255,255,0.90)" }}>
-                <Link href="/" className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.90)" }}>Startseite</Link>
+                [Link href="|" className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.90)" }}]Startseite</Link>
                 <span>›</span>
-                <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.90)" }}>
+                [Link href={`|${keyword.slug}`} className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.90)" }}]
                   {keyword.keyword.replace(" [Stadt]", "")}
                 </Link>
                 <span>›</span>
@@ -422,7 +418,7 @@ export default function WaermepumpeTemplate({
                   className="inline-flex items-center gap-2 px-8 py-4 bg-[#1B5E37] text-white
                     font-bold rounded-xl hover:bg-[#154d2c] hover:-translate-y-0.5
                     transition-all shadow-lg shadow-[#1B5E37]/40 text-base">
-                  Kosten berechnen <ArrowRight size={18} />
+                  Kosten berechnen [ArrowRight size={18} |]
                 </a>
                 <a href="#foerderung"
                   className="inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl text-white transition-all text-base"
@@ -436,10 +432,10 @@ export default function WaermepumpeTemplate({
               {/* Quick-Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { icon: <Thermometer size={16} />, val: `JAZ ${jaz}`, lbl: "Jahresarbeitszahl" },
-                  { icon: <Euro size={16} />,        val: fmtEuro(calc.ersparnis), lbl: "Ersparnis/Jahr" },
-                  { icon: <Zap size={16} />,          val: `${city.strompreis} ct`, lbl: "Strompreis lokal" },
-                  { icon: <Leaf size={16} />,         val: `${calc.co2Ersparnis} t`, lbl: "CO₂ gespart/J." },
+                  { icon: [Thermometer size={16} |], val: `JAZ ${jaz}`, lbl: "Jahresarbeitszahl" },
+                  { icon: [Euro size={16} |],        val: fmtEuro(calc.ersparnis), lbl: "Ersparnis/Jahr" },
+                  { icon: [Zap size={16} |],          val: `${city.strompreis} ct`, lbl: "Strompreis lokal" },
+                  { icon: [Leaf size={16} |],         val: `${calc.co2Ersparnis} t`, lbl: "CO₂ gespart/J." },
                 ].map((s, i) => (
                   <div key={i} className="rounded-xl px-3 py-3 border" style={{ background: "rgba(5,18,10,0.72)", backdropFilter: "blur(8px)", borderColor: "rgba(255,255,255,0.18)" }}>
                     <div className="flex items-center gap-1.5 mb-1" style={{ color: "#4CAF7D" }}>{s.icon}
@@ -579,10 +575,10 @@ export default function WaermepumpeTemplate({
 
               <div className="grid sm:grid-cols-2 gap-5 mb-6">
                 {[
-                  { icon: <Thermometer size={20} className="text-[#1B5E37]" />, title: "Jahresarbeitszahl (JAZ)", val: jaz.toString(), sub: `Bei ${city.avgTemp}°C Ø-Temperatur in ${city.name}`, note: "Aus 1 kWh Strom werden " + jaz + " kWh Wärme" },
-                  { icon: <BarChart2 size={20} className="text-[#D97706]" />,   title: "Heizgradtage",            val: city.heizgradtage.toLocaleString("de-DE") + " Kd/a", sub: "Wärmebedarf des Standorts", note: "Quelle: IWU Gradtagzahlen DE" },
-                  { icon: <Zap size={20} className="text-[#1B5E37]" />,         title: "Regionaler Strompreis",   val: city.strompreis + " ct/kWh", sub: "WP-Sondertarif " + city.name, note: "Quelle: BDEW/Verivox 2026" },
-                  { icon: <TrendingDown size={20} className="text-[#D97706]" />, title: "Gaspreis aktuell",        val: city.gaspreis + " ct/kWh", sub: "inkl. CO₂-Abgabe 2026", note: "Steigt bis 2030 durch ETS2" },
+                  { icon: [Thermometer size={20} className="text-[#1B5E37]" |], title: "Jahresarbeitszahl (JAZ)", val: jaz.toString(), sub: `Bei ${city.avgTemp}°C Ø-Temperatur in ${city.name}`, note: "Aus 1 kWh Strom werden " + jaz + " kWh Wärme" },
+                  { icon: [BarChart2 size={20} className="text-[#D97706]" |],   title: "Heizgradtage",            val: city.heizgradtage.toLocaleString("de-DE") + " Kd/a", sub: "Wärmebedarf des Standorts", note: "Quelle: IWU Gradtagzahlen DE" },
+                  { icon: [Zap size={20} className="text-[#1B5E37]" |],         title: "Regionaler Strompreis",   val: city.strompreis + " ct/kWh", sub: "WP-Sondertarif " + city.name, note: "Quelle: BDEW/Verivox 2026" },
+                  { icon: [TrendingDown size={20} className="text-[#D97706]" |], title: "Gaspreis aktuell",        val: city.gaspreis + " ct/kWh", sub: "inkl. CO₂-Abgabe 2026", note: "Steigt bis 2030 durch ETS2" },
                 ].map((c, i) => (
                   <div key={i} className="bg-white rounded-xl p-5 border border-gray-200 flex gap-4">
                     <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center flex-shrink-0">
@@ -649,7 +645,7 @@ export default function WaermepumpeTemplate({
                 `Stadtspezifischer Rechner: WP-Kosten und Ersparnis in ${city.name}`,
               ][cityHash(city, 4, 150)]}
               </h2>
-              <WPKostenRechner city={city} />
+              [WPKostenRechner city={city} |]
             </motion.section>
 
             {/* KfW Förderung */}
@@ -756,28 +752,28 @@ export default function WaermepumpeTemplate({
                     a: `Ja — in den meisten Altbauten in ${city.name}. Entscheidend ist die benötigte Vorlauftemperatur. Moderne Geräte (z.B. Viessmann Vitocal, Stiftung Warentest 2,0) arbeiten bis 70°C und sind mit normalen Heizkörpern kompatibel.`,
                     badge: "Kein Problem",
                     badgeColor: "bg-[#E8F5EE] text-[#1B5E37]",
-                    icon: <Home size={22} className="text-[#1B5E37]" />,
+                    icon: [Home size={22} className="text-[#1B5E37]" |],
                   },
                   {
                     q: "Ist eine WP in " + city.name + " zu laut?",
                     a: `Moderne Luft-WP erzeugen 45–55 dB auf 1 Meter — wie normales Gespräch. Mit korrekter Aufstellung (Abstand zur Grenze in ${city.bundesland}: mind. 3m) ist Lärm kein Problem.`,
                     badge: "Kein Problem",
                     badgeColor: "bg-[#E8F5EE] text-[#1B5E37]",
-                    icon: <Shield size={22} className="text-[#1B5E37]" />,
+                    icon: [Shield size={22} className="text-[#1B5E37]" |],
                   },
                   {
                     q: "Lohnt WP ohne PV in " + city.name + "?",
                     a: `Ja. Auch ohne PV spart eine WP in ${city.name} bei ${city.gaspreis} ct/kWh Gas vs. ${city.strompreis} ct/kWh WP-Strom und JAZ ${jaz} rund ${fmtEuro(calc.ersparnis)}/Jahr. Mit PV sinken die Kosten um weitere 30–40%.`,
                     badge: "Kein Problem",
                     badgeColor: "bg-[#E8F5EE] text-[#1B5E37]",
-                    icon: <Zap size={22} className="text-[#1B5E37]" />,
+                    icon: [Zap size={22} className="text-[#1B5E37]" |],
                   },
                   {
                     q: "Gibt es versteckte Kosten in " + city.name + "?",
                     a: `Häufig unterschätzt: hydraulischer Abgleich (€500–1.500), Fundament (€300–800), Elektroinstallation (€500–1.500). Wir stellen sicher, dass alle Betriebe in ${city.name} diese Positionen vollständig ausweisen.`,
                     badge: "Wichtig",
                     badgeColor: "bg-amber-100 text-amber-800",
-                    icon: <AlertTriangle size={22} className="text-amber-600" />,
+                    icon: [AlertTriangle size={22} className="text-amber-600" |],
                   },
                 ].map((item, i) => (
                   <div key={i} className="bg-white rounded-xl p-5 border border-gray-200 flex gap-3">
@@ -881,7 +877,7 @@ export default function WaermepumpeTemplate({
                       </div>
                       {t.pros.map(p => (
                         <div key={p} className="flex items-center gap-2 text-sm text-gray-600 mb-1.5">
-                          <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />
+                          [CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" |]
                           {p}
                         </div>
                       ))}
@@ -935,7 +931,7 @@ export default function WaermepumpeTemplate({
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
                 {h2s.faq}
               </h2>
-              <FAQAccordion faqs={faqs} />
+              [FAQAccordion faqs={faqs} |]
             </motion.section>
 
             {/* Nachbarstädte */}
@@ -948,10 +944,10 @@ export default function WaermepumpeTemplate({
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {nearby.map(n => (
-                  <Link key={n.slug}
-                    href={`/${keyword.slug}/${n.slug}`}
+                  [Link key={n.slug}
+                    href={`|${keyword.slug}|${n.slug}`}
                     className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl text-sm font-medium
-                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-all group">
+                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-all group"]
                     <span className="w-2 h-2 rounded-full bg-[#4CAF7D] shrink-0 group-hover:scale-125 transition-transform" />
                     {n.name}
                   </Link>
@@ -969,10 +965,10 @@ export default function WaermepumpeTemplate({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug}
-                    href={`/${kw.slug}/${city.slug}`}
+                  [Link key={kw.slug}
+                    href={`|${kw.slug}|${city.slug}`}
                     className="px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium
-                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-colors">
+                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-colors"]
                     {kw.keyword.replace("[Stadt]", city.name)}
                   </Link>
                 ))}
@@ -1032,7 +1028,7 @@ export default function WaermepumpeTemplate({
                 ].map(t => (
                   <div key={t} className="flex items-center gap-2 text-sm text-gray-700 py-1.5
                     border-b border-gray-100 last:border-0">
-                    <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />
+                    [CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" |]
                     {t}
                   </div>
                 ))}

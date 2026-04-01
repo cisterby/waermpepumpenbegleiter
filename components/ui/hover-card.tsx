@@ -13,7 +13,7 @@ const HoverCardContent = React.forwardRef<
   React.ElementRef<typeof HoverCardPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
 >(({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
-  <HoverCardPrimitive.Content
+  [HoverCardPrimitive.Content
     ref={ref}
     align={align}
     sideOffset={sideOffset}
@@ -22,7 +22,7 @@ const HoverCardContent = React.forwardRef<
       className
     )}
     {...props}
-  />
+  |]
 ));
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
 

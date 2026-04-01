@@ -1,5 +1,5 @@
 // components/programmatic/templates/WaermepumpeKostenTemplate.tsx
-// VOLLSTÄNDIG GEFIXT: Kein doppelter H2, FAQs native details-Tag, Ersparnis differenziert, FAQPage Schema, voller Fliesstext
+// VOLLSTÄNDIG GEFIXT: Kein doppelter H2, FAQs native [details], Ersparnis differenziert, FAQPage Schema, voller Fließtext
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -56,9 +56,9 @@ export default function WaermepumpeKostenTemplate({
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
           <nav className="flex items-center gap-2 text-xs mb-6 text-[rgba(255,255,255,0.40)] flex-wrap">
-            <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
+            [Link href="|" className="hover:text-white transition-colors"]Startseite</Link>
             <span>›</span>
-            <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors">
+            [Link href={`|${keyword.slug}`} className="hover:text-white transition-colors"]
               {keyword.keyword.replace('[Stadt]', '').trim()}
             </Link>
             <span>›</span>
@@ -67,7 +67,7 @@ export default function WaermepumpeKostenTemplate({
 
           {isUrgent && (
             <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/40 rounded-full px-4 py-2 mb-5">
-              <AlertTriangle size={12} className="text-amber-400" />
+              [AlertTriangle size={12} className="text-amber-400" |]
               <span className="text-amber-300 text-xs font-bold uppercase tracking-wider">
                 GEG-Frist {city.name}: {gegFristFormatted}
               </span>
@@ -114,11 +114,11 @@ export default function WaermepumpeKostenTemplate({
           <div className="flex gap-3 mt-8 flex-wrap">
             <a href="#angebot"
               className="inline-flex items-center gap-2 px-7 py-4 bg-[#D97706] text-white rounded-xl font-bold font-bold text-sm hover:bg-amber-700 transition-all hover:-translate-y-0.5 shadow-xl">
-              Kostenloses Angebot <ArrowRight size={16} />
+              Kostenloses Angebot [ArrowRight size={16} |]
             </a>
             <a href="#rechner"
               className="inline-flex items-center gap-2 px-7 py-4 bg-[rgba(255,255,255,0.10)] border border-[rgba(255,255,255,0.20)] text-white rounded-xl font-bold font-bold text-sm hover:bg-[rgba(255,255,255,0.15)] transition-all">
-              <Calculator size={16} /> Kosten berechnen
+              [Calculator size={16} |] Kosten berechnen
             </a>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function WaermepumpeKostenTemplate({
           {/* ── FERNWÄRME-WARNING ── */}
           {city.fernwaermeQuote >= 30 && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-              <AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" />
+              [AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" |]
               <p className="text-amber-800 text-sm leading-relaxed">
                 <strong>{city.name}</strong> hat {city.fernwaermeQuote}% Fernwärmeabdeckung. Prüfen Sie ob Ihre Adresse in einem Fernwärme-Vorranggebiet liegt — dort kann eine Wärmepumpe eingeschränkt oder unzulässig sein. Für die übrigen <strong>{100 - city.fernwaermeQuote}% der Haushalte</strong> in {city.name} ist die Wärmepumpe die klare Wahl.
               </p>
@@ -430,7 +430,7 @@ export default function WaermepumpeKostenTemplate({
           {/* ── GEG-FRIST ── */}
           <div className={`rounded-xl border p-5 flex gap-4 ${isUrgent ? 'bg-amber-50 border-amber-300' : 'bg-[#E8F5EE] border-[#3DA16A]/30'}`}>
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isUrgent ? 'bg-amber-100' : 'bg-[#1A4731]/10'}`}>
-              {isUrgent ? <AlertTriangle size={18} className="text-amber-600" /> : <CheckCircle size={18} className="text-[#1A4731]" />}
+              {isUrgent ? [AlertTriangle size={18} className="text-amber-600" |] : [CheckCircle size={18} className="text-[#1A4731]" |]}
             </div>
             <div>
               <p className={`font-bold font-bold text-lg mb-1 ${isUrgent ? 'text-amber-900' : 'text-[#1A4731]'}`}>
@@ -482,8 +482,8 @@ export default function WaermepumpeKostenTemplate({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {n.name}
                   </Link>
                 ))}
@@ -495,8 +495,8 @@ export default function WaermepumpeKostenTemplate({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={kw.slug} href={`|${kw.slug}|${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {kw.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -529,13 +529,13 @@ export default function WaermepumpeKostenTemplate({
               </div>
               <a href="#angebot"
                 className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#D97706] text-white rounded-xl font-bold font-bold text-sm hover:bg-amber-700 transition-colors">
-                Kostenloses Angebot <ArrowRight size={14} />
+                Kostenloses Angebot [ArrowRight size={14} |]
               </a>
             </div>
           </div>
 
           <div id="angebot">
-            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+            [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
           </div>
 
 
@@ -592,7 +592,7 @@ export default function WaermepumpeKostenTemplate({
 
         </div>
       </div>
-          <AuthorBox keywordSlug={keyword.slug} />
+          [AuthorBox keywordSlug={keyword.slug} |]
 
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {[
@@ -603,7 +603,7 @@ export default function WaermepumpeKostenTemplate({
               '100% kostenlos',
             ].map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
-                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
+                [CheckCircle size={12} className="text-[#1A4731] shrink-0" |]{t}
               </div>
             ))}
           </div>

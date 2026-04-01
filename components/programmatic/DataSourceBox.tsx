@@ -45,13 +45,13 @@ export default function DataSourceBox({ keywordSlug = '', cityName = '', classNa
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Shield size={15} className="text-wp-green shrink-0" />
+          [Shield size={15} className="text-wp-green shrink-0" |]
           <p className="font-heading font-semibold text-wp-text text-sm">
             Redaktioneller Hinweis
           </p>
         </div>
         <div className="flex items-center gap-1.5 text-wp-text3 text-xs">
-          <RefreshCw size={11} />
+          [RefreshCw size={11} |]
           <span>März 2026</span>
         </div>
       </div>
@@ -75,7 +75,7 @@ export default function DataSourceBox({ keywordSlug = '', cityName = '', classNa
             <span className="font-semibold text-wp-green text-xs">{src.org}</span>
             <span className="text-wp-text3">·</span>
             {src.label}
-            <ExternalLink size={10} className="text-wp-text3 shrink-0" />
+            [ExternalLink size={10} className="text-wp-text3 shrink-0" |]
           </a>
         ))}
       </div>

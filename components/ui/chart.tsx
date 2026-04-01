@@ -22,13 +22,13 @@ type ChartContextProps = {
   config: ChartConfig;
 };
 
-const ChartContext = React.createContext<ChartContextProps | null>(null);
+const ChartContext = React.createContext[ChartContextProps | null](null);
 
 function useChart() {
   const context = React.useContext(ChartContext);
 
   if (!context) {
-    throw new Error('useChart must be used within a <ChartContainer />');
+    throw new Error('useChart must be used within a [ChartContainer |]');
   }
 
   return context;
@@ -47,7 +47,7 @@ const ChartContainer = React.forwardRef<
   const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
 
   return (
-    <ChartContext.Provider value={{ config }}>
+    [ChartContext.Provider value={{ config }}]
       <div
         data-chart={chartId}
         ref={ref}
@@ -57,8 +57,8 @@ const ChartContainer = React.forwardRef<
         )}
         {...props}
       >
-        <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>
+        [ChartStyle id={chartId} config={config} |]
+        [RechartsPrimitive.ResponsiveContainer]
           {children}
         </RechartsPrimitive.ResponsiveContainer>
       </div>
@@ -261,7 +261,7 @@ const ChartLegend = RechartsPrimitive.Legend;
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> &
-    Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
+    Pick[RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'] & {
       hideIcon?: boolean;
       nameKey?: string;
     }

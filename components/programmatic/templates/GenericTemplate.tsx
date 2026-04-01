@@ -234,9 +234,9 @@ export default function GenericTemplate({
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
         <div className="max-w-5xl mx-auto">
           <nav className="flex items-center gap-2 text-sm mb-5 text-white/80 flex-wrap">
-            <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
+            [Link href="|" className="hover:text-white|70 transition-colors"]Startseite</Link>
             <span className="text-white/70">›</span>
-            <Link href={`/${keyword.slug}`} className="hover:text-white/70 transition-colors">{kw}</Link>
+            [Link href={`|${keyword.slug}`} className="hover:text-white|70 transition-colors"]{kw}</Link>
             <span className="text-white/70">›</span>
             <span className="text-white/80">{city.name}</span>
           </nav>
@@ -363,7 +363,7 @@ export default function GenericTemplate({
               <details key={i} className="group border-b border-gray-200 last:border-0">
                 <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
                   <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
+                  [ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" |]
                 </summary>
                 <div className="border-t border-gray-200">
                   <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
@@ -378,8 +378,8 @@ export default function GenericTemplate({
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {n.name}
                   </Link>
                 ))}
@@ -389,8 +389,8 @@ export default function GenericTemplate({
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw2 => kw2 && (
-                  <Link key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={kw2.slug} href={`|${kw2.slug}|${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {kw2.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -421,13 +421,13 @@ export default function GenericTemplate({
             </div>
             <a href="/rechner"
               className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#D97706] text-white rounded-xl font-bold font-bold text-sm hover:bg-amber-700 transition-colors mb-2">
-              Kostenloses Angebot <ArrowRight size={15} />
+              Kostenloses Angebot [ArrowRight size={15} |]
             </a>
             <p className="text-white/70 text-xs text-center">Kostenlos · Unverbindlich · Kein Spam</p>
           </div>
 
           <div className="px-6 pb-8">
-            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+            [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
           </div>
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
@@ -483,13 +483,13 @@ export default function GenericTemplate({
 
         </div>
       </div>
-          <AuthorBox keywordSlug={keyword.slug} />
+          [AuthorBox keywordSlug={keyword.slug} |]
 
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-3">Warum Wärmepumpenbegleiter?</p>
             {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
-                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
+                [CheckCircle size={12} className="text-[#1A4731] shrink-0" |]{t}
               </div>
             ))}
           </div>

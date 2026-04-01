@@ -48,13 +48,13 @@ export default function AuthorBox({ keywordSlug = '' }: { keywordSlug?: string }
           <div className="flex items-center gap-2 flex-wrap">
             <p className="font-bold font-bold text-[#1C2B2B] text-sm">Bastian Saupe</p>
             <span className="bg-[#E8F5EE] text-[#1A4731] text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-              <Shield size={10} /> Energieberater IHK
+              [Shield size={10} |] Energieberater IHK
             </span>
           </div>
           <p className="text-[#7A9E8E] text-xs mt-0.5">14 Jahre Erfahrung · Ehemals Verbraucherzentrale NRW · Geprüft März 2026</p>
           <p className="text-[#4A6358] text-xs mt-1.5 leading-relaxed">
             Spezialist für Heizsystemvergleiche und KfW-Förderanträge. Hat über 800 Haushalte bei der Wärmepumpen-Entscheidung begleitet.{' '}
-            <Link href="/ueber-uns" className="text-[#1A4731] hover:underline font-medium">Über uns →</Link>
+            [Link href="|ueber-uns" className="text-[#1A4731] hover:underline font-medium"]Über uns →</Link>
           </p>
         </div>
       </div>
@@ -69,7 +69,7 @@ export default function AuthorBox({ keywordSlug = '' }: { keywordSlug?: string }
                 <p className="text-[#4A6358] text-xs font-semibold group-hover:text-[#1A4731] transition-colors truncate">{s.label}</p>
                 <p className="text-[#7A9E8E] text-xs">{s.desc}</p>
               </div>
-              <ExternalLink size={11} className="text-[#7A9E8E] group-hover:text-[#1A4731] transition-colors shrink-0" />
+              [ExternalLink size={11} className="text-[#7A9E8E] group-hover:text-[#1A4731] transition-colors shrink-0" |]
             </a>
           ))}
         </div>

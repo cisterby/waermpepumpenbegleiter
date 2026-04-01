@@ -61,16 +61,16 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
         <div className="max-w-5xl mx-auto">
           <nav className="flex items-center gap-2 text-sm mb-6 text-[rgba(255,255,255,0.40)] flex-wrap">
-            <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
+            [Link href="|" className="hover:text-white transition-colors"]Startseite</Link>
             <span>›</span>
-            <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors">{keyword.keyword.replace('[Stadt]', '').trim()}</Link>
+            [Link href={`|${keyword.slug}`} className="hover:text-white transition-colors"]{keyword.keyword.replace('[Stadt]', '').trim()}</Link>
             <span>›</span>
             <span className="text-white">{city.name}</span>
           </nav>
 
           {isUrgent && (
             <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/40 rounded-full px-4 py-2 mb-5">
-              <AlertTriangle size={13} className="text-amber-400" />
+              [AlertTriangle size={13} className="text-amber-400" |]
               <span className="text-amber-300 text-xs font-bold uppercase tracking-wider">GEG-Frist {city.name}: {gegFristFormatted}</span>
             </div>
           )}
@@ -139,7 +139,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <div className="space-y-3">
               {isFernwaerme && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-                  <AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" />
+                  [AlertTriangle size={15} className="text-amber-600 shrink-0 mt-0.5" |]
                   <p className="text-amber-800 text-sm leading-relaxed">
                     <strong>{city.name}</strong> hat {city.fernwaermeQuote}% Fernwärmeabdeckung. Prüfen Sie ob Ihre Straße in einem Fernwärmegebiet liegt — dort kann eine Wärmepumpe unzulässig sein.
                   </p>
@@ -147,7 +147,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
               )}
               {city.bundeslandFoerderungBetrag?.includes('ausgesetzt') && (
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
-                  <Info size={15} className="text-blue-600 shrink-0 mt-0.5" />
+                  [Info size={15} className="text-blue-600 shrink-0 mt-0.5" |]
                   <p className="text-blue-800 text-sm leading-relaxed">
                     <strong>{city.bundesland}:</strong> {city.bundeslandFoerderung} ist derzeit ausgesetzt. Die KfW-Bundesförderung gilt vollständig und ohne Einschränkung.
                   </p>
@@ -290,7 +290,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
                 <details key={i} className="group border-b border-gray-200 last:border-0">
                   <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
                     <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
+                    [ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" |]
                   </summary>
                   <div className="border-t border-gray-200">
                     <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
@@ -305,8 +305,8 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Förderung in der Region</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {n.name}
                   </Link>
                 ))}
@@ -316,8 +316,8 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
-                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                  [Link key={kw.slug} href={`|${kw.slug}|${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
                     {kw.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -348,13 +348,13 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
                 ))}
               </div>
               <a href="#angebot" className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#D97706] text-white rounded-xl font-bold font-bold text-sm hover:bg-amber-700 transition-colors">
-                Förderung berechnen <ArrowRight size={14} />
+                Förderung berechnen [ArrowRight size={14} |]
               </a>
               <p className="text-[rgba(255,255,255,0.25)] text-xs text-center mt-2">Kostenlos · Unverbindlich</p>
             </div>
           </div>
           <div id="angebot">
-            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+            [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
           </div>
 
 
@@ -431,11 +431,11 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
         </div>
       </div>
-          <AuthorBox keywordSlug={keyword.slug} />
+          [AuthorBox keywordSlug={keyword.slug} |]
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {['KfW-Antrag inklusive', 'LuL-registrierte Betriebe', 'Herstellerunabhängig', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
-                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
+                [CheckCircle size={12} className="text-[#1A4731] shrink-0" |]{t}
               </div>
             ))}
           </div>

@@ -55,7 +55,7 @@ function AnimatedNumber({ item, inView }: { item: StatItem; inView: boolean }) {
 }
 
 export default function StatsCounter() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef[HTMLDivElement](null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
@@ -69,7 +69,7 @@ export default function StatsCounter() {
                 i < stats.length - 1 ? 'lg:border-r lg:border-white/10' : ''
               }`}
             >
-              <AnimatedNumber item={item} inView={inView} />
+              [AnimatedNumber item={item} inView={inView} |]
               <p className="font-body text-xs md:text-sm text-wp-text-on-dark/60 mt-2 whitespace-pre-line">
                 {item.label}
               </p>

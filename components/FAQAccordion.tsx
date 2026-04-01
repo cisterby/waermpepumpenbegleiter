@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import type { FAQItem } from '@/lib/types';
 
 export default function FAQAccordion({ items }: { items: FAQItem[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState(null as number | null);
 
   return (
     <div className="space-y-3">
@@ -27,10 +27,10 @@ export default function FAQAccordion({ items }: { items: FAQItem[] }) {
               transition={{ duration: 0.2 }}
               className="flex-shrink-0"
             >
-              <ChevronDown className="w-4 h-4 text-wp-text-light" />
+              [ChevronDown className="w-4 h-4 text-wp-text-light" |]
             </motion.div>
           </button>
-          <AnimatePresence>
+          [AnimatePresence]
             {openIndex === i && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
