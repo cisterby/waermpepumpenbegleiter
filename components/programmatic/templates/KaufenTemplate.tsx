@@ -12,7 +12,12 @@ import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualit
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
+// Image pools (city-hash varied, no duplicate content risk)
+const HERO_IMGS = ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=85', 'https://images.unsplash.com/photo-1598228723793-52759bba239c?w=1920&q=85', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=85', 'https://images.unsplash.com/photo-1416331108676-a22ccbe8c3f1?w=1920&q=85'];
+const SEC1_IMGS = ['https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=85', 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1920&q=85', 'https://images.unsplash.com/photo-1611117775350-ac3950990985?w=1920&q=85'];
+const SEC2_IMGS = ['https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85', 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85', 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=1920&q=85'];
+const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
+  arr[Math.abs(Math.round(lat * 7 + lng * 13 + salt)) % arr.length];
 
 export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
@@ -28,17 +33,18 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* HERO */}
       <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
+          src={ className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              <Link href="/" className="text-white/45 hover:text-white/70 transition-colors">Startseite</Link>
-              <span className="text-white/25">›</span>
-              <Link href={`/${keyword.slug}`} className="text-white/45 hover:text-white/70 transition-colors">
+              <Link href="/" className="text-white/80 hover:text-white/70 transition-colors">Startseite</Link>
+              <span className="text-white/70">›</span>
+              <Link href={`/${keyword.slug}`} className="text-white/80 hover:text-white/70 transition-colors">
                 {keyword.keyword.replace('[Stadt]', '').trim()}
               </Link>
-              <span className="text-white/25">›</span>
+              <span className="text-white/70">›</span>
               <span className="text-white/80">{city.name}</span>
             </nav>
             <h1 className="font-bold font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
@@ -232,7 +238,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               {l:'Amortisation', v: calc.amortisationJahre+' Jahre', c:'text-[#D97706]'},
             ].map(r => (
               <div key={r.l} className="flex justify-between py-2 border-b border-white/8">
-                <span className="text-white/45 text-xs">{r.l}</span>
+                <span className="text-white/80 text-xs">{r.l}</span>
                 <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
               </div>
             ))}
@@ -240,6 +246,25 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
           {/* Formspree Form */}
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
 
+
+      {/* ── VISUELLER TRENNER ─────────────────────── */}
+      <div className="relative rounded-2xl overflow-hidden my-8" style={{ height: '180px' }}>
+        <img
+          src={pickImg(SEC1_IMGS, city.lat, city.lng, 5)}
+          alt={`${keyword.keyword.replace('[Stadt]', city.name)} Übersicht`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.88) 0%, rgba(10,25,16,0.45) 60%, rgba(10,25,16,0.15) 100%)' }} />
+        <div className="absolute inset-y-0 left-0 flex items-center px-8">
+          <div>
+            <p className="text-white font-bold text-lg leading-tight">{keyword.keyword.replace('[Stadt]', city.name)}</p>
+            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.78)' }}>
+              {fmtEuro(foerd.eigenanteil)} Eigenanteil · JAZ {jaz} · {foerd.gesamtSatz}% KfW-Förderung
+            </p>
+          </div>
+        </div>
+      </div>
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">

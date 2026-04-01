@@ -190,6 +190,18 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
 }
 
 // ══ HAUPTKOMPONENTE ═══════════════════════════════════════════════════════════
+
+// ── Bildpool ─────────────────────────────────────────────
+const HERO_IMGS = [
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85",
+  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85",
+  "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85",
+];
+const SEC1_IMGS = ["https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85", "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85", "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85"];
+const SEC2_IMGS = ["https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85", "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85", "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85"];
+const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
+  arr[Math.abs(Math.round(lat * 7 + lng * 13 + salt)) % arr.length];
+
 export default function GenericTemplate({
   city, keyword, calc, foerd, jaz, nearby, h1,
 }: CityPageRouterProps) {
@@ -211,13 +223,21 @@ export default function GenericTemplate({
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* HERO */}
-      <div className="bg-[#1A4731] pt-20 pb-14 px-6">
+      <div className="relative min-h-[52vh] flex items-end overflow-hidden">
+        <img
+          src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
+          alt={h1}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager" fetchPriority="high" decoding="async"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.25) 100%)' }} />
+        <div className="relative z-10 w-full pt-28 pb-14 px-6">
         <div className="max-w-5xl mx-auto">
-          <nav className="flex items-center gap-2 text-sm mb-5 text-white/40 flex-wrap">
+          <nav className="flex items-center gap-2 text-sm mb-5 text-white/80 flex-wrap">
             <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
-            <span className="text-white/25">›</span>
+            <span className="text-white/70">›</span>
             <Link href={`/${keyword.slug}`} className="hover:text-white/70 transition-colors">{kw}</Link>
-            <span className="text-white/25">›</span>
+            <span className="text-white/70">›</span>
             <span className="text-white/80">{city.name}</span>
           </nav>
 
@@ -254,7 +274,7 @@ export default function GenericTemplate({
               <div key={i} className="bg-white/10 rounded-xl p-3 border border-white/10">
                 <div className="font-mono font-bold text-white text-lg leading-none mb-0.5">{s.val}</div>
                 <div className="text-[#3DA16A] text-xs font-semibold">{s.label}</div>
-                <div className="text-white/35 text-xs">{s.sub}</div>
+                <div className="text-white/75 text-xs">{s.sub}</div>
               </div>
             ))}
           </div>
@@ -384,7 +404,7 @@ export default function GenericTemplate({
           <div className="bg-[#1A4731] rounded-2xl p-6 shadow-2xl">
             <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-1">{ctaVariation.headline}</p>
             <p className="font-mono font-bold text-white text-4xl leading-none mb-0.5">{fmtEuro(calc.ersparnis)}</p>
-            <p className="text-white/35 text-xs mb-5">jährliche Ersparnis in {city.name} vs. Erdgas</p>
+            <p className="text-white/75 text-xs mb-5">jährliche Ersparnis in {city.name} vs. Erdgas</p>
             <div className="space-y-2 mb-5">
               {[
                 { l: 'Heizkosten heute', v: fmtEuro(calc.altKosten) + '/J', c: 'text-[#D97706]' },
@@ -394,7 +414,7 @@ export default function GenericTemplate({
                 { l: 'Amortisation', v: calc.amortisationJahre + ' Jahre', c: 'text-[#D97706]' },
               ].map(r => (
                 <div key={r.l} className="flex justify-between py-1.5 border-b border-white/8">
-                  <span className="text-white/45 text-xs">{r.l}</span>
+                  <span className="text-white/80 text-xs">{r.l}</span>
                   <span className={`font-mono font-bold text-xs ${r.c}`}>{r.v}</span>
                 </div>
               ))}
@@ -403,7 +423,7 @@ export default function GenericTemplate({
               className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#D97706] text-white rounded-xl font-bold font-bold text-sm hover:bg-amber-700 transition-colors mb-2">
               Kostenloses Angebot <ArrowRight size={15} />
             </a>
-            <p className="text-white/25 text-xs text-center">Kostenlos · Unverbindlich · Kein Spam</p>
+            <p className="text-white/70 text-xs text-center">Kostenlos · Unverbindlich · Kein Spam</p>
           </div>
 
           <div className="px-6 pb-8">

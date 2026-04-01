@@ -1,4 +1,13 @@
-// components/programmatic/templates/FoerderungTemplate.tsx
+      {/* ── HERO ─────────────────────────────────────── */}
+      <div className="relative min-h-[55vh] flex items-end overflow-hidden">
+        <img
+          src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
+          alt={`Wärmepumpe Förderung ${city.name}`}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager" fetchPriority="high" decoding="async"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.30) 100%)' }} />
+        <div className="relative z-10 w-full pt-28 pb-14 px-6">// components/programmatic/templates/FoerderungTemplate.tsx
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -9,6 +18,18 @@ import { fmtEuro } from '@/lib/calculations';
 import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+
+
+// ── Bildpool ─────────────────────────────────────────────
+const HERO_IMGS = [
+  "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=85",
+  "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1920&q=85",
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85",
+];
+const SEC1_IMGS = ["https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1920&q=85", "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85", "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=85"];
+const SEC2_IMGS = ["https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85", "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=85", "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1920&q=85"];
+const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
+  arr[Math.abs(Math.round(lat * 7 + lng * 13 + salt)) % arr.length];
 
 export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);

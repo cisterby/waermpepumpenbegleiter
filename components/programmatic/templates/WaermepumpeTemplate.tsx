@@ -16,20 +16,32 @@ import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectio
 
 // ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
 const HERO_IMGS = [
-  "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=75",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=75",
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=75",
+  // Moderne Häuser bei Dämmerung — warm beleuchtet, hoher Kontrast für weißen Text
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=85",
+  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85",
+  "https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=1920&q=85",
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=85",
+  "https://images.unsplash.com/photo-1416331108676-a22ccbe8c3f1?auto=format&fit=crop&w=1920&q=85",
 ];
 const SIDE_IMGS = [
-  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+  // Fachmann / Installation / Handwerk — professionell, vertrauenswürdig
+  "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&w=800&q=85",
 ];
 const STRIP_IMGS = [
-  "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80",
+  // Natur / grüne Energie / Landschaft — für visuelle Abwechslung in Sektionen
+  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1540188757-e5be54c62e4b?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1509391111902-de5d52b3f785?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
 ];
+// Abschnittsspezifische Bilder
+const IMG_FOERDERUNG = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80";
+const IMG_ALTBAU     = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80";
+const IMG_TEAM       = "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80";
+const IMG_KOSTEN     = "https://images.unsplash.com/photo-1611117775350-ac3950990985?auto=format&fit=crop&w=800&q=80";
 
 function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
@@ -72,7 +84,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
 
       {/* Header */}
       <div className="relative h-36 overflow-hidden">
-        <img src={STRIP_IMGS[0]} alt="WP Kostenrechner"
+        <img src={IMG_KOSTEN} alt="WP Kostenrechner"
           className="w-full h-full object-cover" loading="eager" fetchPriority="low" decoding="async" />
         <div className="absolute inset-0 bg-[#1B5E37]/85" />
         <div className="absolute inset-0 flex items-center px-8">
@@ -235,7 +247,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 { l: "Jährliche Ersparnis",           v: fmtEuro(calc.ersparnis),         c: "text-white font-bold text-base" },
               ].map((r, i) => (
                 <div key={i} className="flex justify-between border-b border-white/10 pb-1.5">
-                  <span className="text-white/50">{r.l}</span>
+                  <span style={{ color: "rgba(255,255,255,0.80)" }}>{r.l}</span>
                   <span className={r.c}>{r.v}</span>
                 </div>
               ))}
@@ -252,7 +264,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 { l: "Gewinn nach 25 Jahren",    v: `+${fmtEuro(gewinnNach25)}`, c: "text-[#4CAF7D]" },
               ].map((r, i) => (
                 <div key={i} className="flex justify-between">
-                  <span className="text-white/40">{r.l}</span>
+                  <span className="text-white/80">{r.l}</span>
                   <span className={r.c ?? "text-white"}>{r.v}</span>
                 </div>
               ))}
@@ -265,7 +277,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 { l: "Jahresarbeitszahl", v: `JAZ ${jaz}` },
               ].map((r, i) => (
                 <div key={i} className="flex justify-between mb-1">
-                  <span className="text-white/30">{r.l}</span>
+                  <span className="text-white/75">{r.l}</span>
                   <span className="text-white/70">{r.v}</span>
                 </div>
               ))}
@@ -278,8 +290,8 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
             Kostenloses Angebot in {city.name} →
           </a>
           <div className="mt-3 flex flex-col gap-2">
-            <a href="/kontakt" className="block w-full text-center py-3 text-sm font-semibold text-wp-green border border-wp-green rounded-xl hover:bg-wp-greenlt transition-all">Kostenlose Beratung →</a>
-            <a href="tel:+4915563566199" className="block w-full text-center py-2.5 text-sm text-wp-text2 hover:text-wp-green transition-colors">📞 +49 15563 566199</a>
+            <a href="/kontakt" className="block w-full text-center py-3 text-sm font-semibold text-[#1A4731] border border-[#1A4731] rounded-xl hover:bg-[#2D7A52]lt transition-all">Kostenlose Beratung →</a>
+            <a href="tel:+4915563566199" className="block w-full text-center py-2.5 text-sm text-[#4A6358] hover:text-[#1A4731] transition-colors">📞 +49 15563 566199</a>
           </div>
           <p className="text-center text-xs text-gray-400">
             Kostenlos & unverbindlich · Keine Weitergabe · Bis 3 lokale Betriebe
@@ -337,7 +349,7 @@ export default function WaermepumpeTemplate({
     .filter(Boolean);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
 
 
       {/* ── HERO ────────────────────────────────────────────────────────── */}
@@ -349,7 +361,7 @@ export default function WaermepumpeTemplate({
           decoding="async"
           width={1200}
           height={800} />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/94 via-[#0A1910]/80 to-[#0A1910]/30" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(105deg, rgba(10,25,16,0.96) 0%, rgba(10,25,16,0.82) 55%, rgba(10,25,16,0.25) 100%)" }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
           <div className="grid lg:grid-cols-[54%_46%] gap-14 items-center">
@@ -359,7 +371,7 @@ export default function WaermepumpeTemplate({
               transition={{ duration: 0.65 }}>
 
               {/* Breadcrumb */}
-              <nav className="flex items-center gap-2 text-white/45 text-sm mb-5 flex-wrap">
+              <nav className="flex items-center gap-2 text-white/80 text-sm mb-5 flex-wrap">
                 <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
                 <span>›</span>
                 <Link href={`/${keyword.slug}`} className="hover:text-white/70 transition-colors">
@@ -381,7 +393,7 @@ export default function WaermepumpeTemplate({
               </h1>
               {/* Preis-Badge */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -424,7 +436,7 @@ export default function WaermepumpeTemplate({
                     <div className="flex items-center gap-1.5 text-[#4CAF7D] mb-1">{s.icon}
                       <span className="font-mono font-bold text-white text-lg">{s.val}</span>
                     </div>
-                    <p className="text-white/45 text-xs">{s.lbl}</p>
+                    <p className="text-white/80 text-xs">{s.lbl}</p>
                   </div>
                 ))}
               </div>
@@ -445,7 +457,7 @@ export default function WaermepumpeTemplate({
                     fetchPriority="high"
                     width={420}
                     height={208} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-[#0A1910]/15" />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between">
                     <div className="bg-white/95 rounded-lg px-3 py-2">
                       <p className="text-xs text-gray-500 mb-0.5">Jährl. Ersparnis</p>
@@ -477,12 +489,19 @@ export default function WaermepumpeTemplate({
       </section>
 
       {/* ── TRUST BAR ────────────────────────────────────────────────────── */}
-      <div className="bg-white border-b border-gray-200 py-3.5">
-        <div className="max-w-7xl mx-auto px-6 flex items-center gap-6 flex-wrap text-sm">
-          <span className="font-bold text-gray-400 text-xs uppercase tracking-widest">Datenquellen</span>
-          {["KfW BEG", "BAFA", "BWP", "Fraunhofer ISE", "DWD", "Verbraucherzentrale", "BDEW"].map(s => (
-            <span key={s} className="text-gray-400 font-semibold">{s}</span>
-          ))}
+      <div className="bg-white border-b border-gray-200 py-4">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-5 flex-wrap">
+            <span className="font-bold text-gray-400 text-xs uppercase tracking-widest">Datenquellen</span>
+            {["KfW BEG", "BAFA", "BWP", "Fraunhofer ISE", "DWD", "Verbraucherzentrale", "BDEW"].map(s => (
+              <span key={s} className="text-gray-500 font-semibold text-sm hover:text-[#1A4731] transition-colors cursor-default">{s}</span>
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            {["✓ DSGVO-konform", "✓ HWK-geprüfte Betriebe", "✓ Kostenloser Service"].map(b => (
+              <span key={b} className="text-xs font-semibold text-[#1A4731] bg-[#E8F5EE] px-3 py-1.5 rounded-full hidden sm:inline">{b}</span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -524,7 +543,31 @@ export default function WaermepumpeTemplate({
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 {h2s.klimadaten}
               </h2>
-            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.klimadaten}</p>
+            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.klimadaten}</p>
+              {/* Klimabild — stadtspezifisch per pick() */}
+              <div className="relative rounded-2xl overflow-hidden mb-6 h-48">
+                <img
+                  src={pick(STRIP_IMGS, city.lat, city.lng, 10)}
+                  alt={`Klimadaten ${city.name}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(10,25,16,0.78) 0%, rgba(10,25,16,0.3) 100%)" }} />
+                <div className="absolute inset-0 flex items-center px-7 gap-8">
+                  {[
+                    { label: city.heizgradtage.toLocaleString("de-DE"), sub: "Heizgradtage/Jahr" },
+                    { label: `${city.normAussentemp}°C`, sub: "Normaußentemperatur" },
+                    { label: `JAZ ${jaz}`, sub: "Erreichbare Jahresarbeitszahl" },
+                    { label: `${city.avgTemp}°C`, sub: "Jahresmitteltemperatur" },
+                  ].map((s, i) => (
+                    <div key={i} className="text-center">
+                      <p className="font-mono font-bold text-white text-xl leading-none">{s.label}</p>
+                      <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.72)" }}>{s.sub}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="grid sm:grid-cols-2 gap-5 mb-6">
                 {[
                   { icon: <Thermometer size={20} className="text-[#1B5E37]" />, title: "Jahresarbeitszahl (JAZ)", val: jaz.toString(), sub: `Bei ${city.avgTemp}°C Ø-Temperatur in ${city.name}`, note: "Aus 1 kWh Strom werden " + jaz + " kWh Wärme" },
@@ -562,8 +605,8 @@ export default function WaermepumpeTemplate({
               viewport={{ once: true }}
               className="relative overflow-hidden rounded-2xl">
               <img src={stripImg} alt="Wärmepumpe Umwelt"
-                className="w-full h-52 object-cover" loading="lazy" />
-              <div className="absolute inset-0 bg-[#1B5E37]/80" />
+                className="w-full h-64 object-cover" loading="lazy" />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(10,60,30,0.90) 0%, rgba(26,71,49,0.82) 100%)" }} />
               <div className="absolute inset-0 flex items-center px-8 gap-12">
                 {[
                   { icon: "🌿", val: `${calc.co2Ersparnis} t`, lbl: "CO₂ gespart pro Jahr" },
@@ -613,7 +656,22 @@ export default function WaermepumpeTemplate({
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 {h2s.foerderung}
               </h2>
-            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.foerderung}</p>
+            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.foerderung}</p>
+              {/* KfW-Prozess-Bild */}
+              <div className="relative rounded-xl overflow-hidden mb-5 h-36">
+                <img src={IMG_FOERDERUNG} alt="KfW Förderung beantragen"
+                  className="w-full h-full object-cover" loading="lazy" />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(10,25,16,0.85) 0%, rgba(10,25,16,0.45) 100%)" }} />
+                <div className="absolute inset-0 flex items-center px-6 gap-8">
+                  {["1. KfW-Antrag", "2. Genehmigung", "3. Installation", "4. Auszahlung"].map((step, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-[#4CAF7D] text-white text-xs font-bold flex items-center justify-center shrink-0">{i+1}</span>
+                      <span className="text-white text-xs font-medium hidden sm:block">{step.slice(3)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <p className="text-gray-600 leading-relaxed mb-6">
                 Die KfW-Bundesförderung ist nicht an einen Standort gebunden — Sie gilt überall in Deutschland,
                 also auch in {city.name}. Der Antrag muss{" "}
@@ -740,10 +798,31 @@ export default function WaermepumpeTemplate({
                 uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 Welche WP passt zu mir?
               </span>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 {h2s.typen}
               </h2>
-            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.typen}</p>
+              <p className="text-[#4A6358] text-base leading-relaxed mb-5">{si.typen}</p>
+
+              {/* Vergleichs-Bild: drei WP-Typen visuell */}
+              <div className="relative rounded-2xl overflow-hidden mb-6 h-44">
+                <img
+                  src={pick(STRIP_IMGS, city.lat, city.lng, 20)}
+                  alt={`Wärmepumpe Typen ${city.name}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,25,16,0.55) 0%, rgba(10,25,16,0.80) 100%)" }} />
+                <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end">
+                  <div>
+                    <p className="text-white font-bold text-base leading-none">Luft · Sole · Wasser</p>
+                    <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.72)" }}>JAZ-Vergleich für {city.name} bei {city.avgTemp}°C Jahresmittel</p>
+                  </div>
+                  <span className="bg-[#D97706] text-white text-xs font-bold px-3 py-1.5 rounded-lg">
+                    92% wählen Luft-WP
+                  </span>
+                </div>
+              </div>
+
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   {
@@ -809,8 +888,9 @@ export default function WaermepumpeTemplate({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="bg-white rounded-2xl border border-gray-200 p-6 flex gap-5">
-              <div className="w-14 h-14 rounded-full bg-[#E8F5EE] flex items-center justify-center
-                font-bold text-[#1B5E37] text-xl flex-shrink-0 font-sans">MS</div>
+              <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#E8F5EE]">
+                <img src={IMG_TEAM} alt="Bastian Saupe" className="w-full h-full object-cover object-top" />
+              </div>
               <div>
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
                   <span className="font-bold text-gray-900">Bastian Saupe</span>
@@ -838,9 +918,9 @@ export default function WaermepumpeTemplate({
               </span>
                             {/* H3 Featured Snippet */}
               {faqs.length > 0 && (
-                <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-                  <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-                  <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+                <div className="mb-6 p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+                  <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+                  <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
                 </div>
               )}
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -857,13 +937,14 @@ export default function WaermepumpeTemplate({
               <h3 className="text-xl font-bold text-gray-900 mb-4">
                 Wärmepumpe in der Region {city.bundesland}
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug}
                     href={`/${keyword.slug}/${n.slug}`}
-                    className="px-4 py-2 bg-[#E8F5EE] text-[#1B5E37] rounded-lg text-sm font-medium
-                      border border-[#1B5E37]/15 hover:bg-[#1B5E37] hover:text-white transition-colors">
-                    Wärmepumpe {n.name}
+                    className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl text-sm font-medium
+                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-all group">
+                    <span className="w-2 h-2 rounded-full bg-[#4CAF7D] shrink-0 group-hover:scale-125 transition-transform" />
+                    {n.name}
                   </Link>
                 ))}
               </div>
@@ -901,7 +982,7 @@ export default function WaermepumpeTemplate({
                 <p className="text-white font-bold text-xl mb-1">
                   Angebot für {city.name}
                 </p>
-                <p className="text-white/50 text-xs mb-5">
+                <p className="text-xs mb-5" style={{ color: "rgba(255,255,255,0.78)" }}>
                   Bis zu 3 geprüfte lokale Betriebe · 48h
                 </p>
 
@@ -913,7 +994,7 @@ export default function WaermepumpeTemplate({
                     { l: "Amortisation",   v: calc.amortisationJahre + " Jahre", c: "text-amber-300" },
                   ].map(r => (
                     <div key={r.l} className="flex justify-between text-sm border-b border-white/10 pb-1.5">
-                      <span className="text-white/50">{r.l}</span>
+                      <span style={{ color: "rgba(255,255,255,0.80)" }}>{r.l}</span>
                       <span className={`font-mono font-bold ${r.c}`}>{r.v}</span>
                     </div>
                   ))}
@@ -924,7 +1005,7 @@ export default function WaermepumpeTemplate({
                     rounded-xl hover:bg-[#b45309] transition-colors mb-2.5 text-sm">
                   Kostenloses Angebot anfordern →
                 </a>
-                <p className="text-center text-xs text-white/30">
+                <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.65)" }}>
                   Kostenlos · Unverbindlich · Kein Spam
                 </p>
               </div>
@@ -973,33 +1054,48 @@ export default function WaermepumpeTemplate({
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
-          Was sich 2026 geändert hat — und was das für {city.name} bedeutet
-        </h2>
+        {/* Trenner-Bild */}
+        <div className="relative rounded-2xl overflow-hidden mb-8 h-44">
+          <img src={pick(STRIP_IMGS, city.lat, city.lng, 30)}
+            alt="Wärmepumpe 2026 Änderungen"
+            className="w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.55) 100%)" }} />
+          <div className="absolute inset-0 flex items-center px-8">
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-3"
+                style={{ background: "rgba(76,175,125,0.25)", color: "#4CAF7D", border: "1px solid rgba(76,175,125,0.4)" }}>
+                Aktuell · 2026
+              </span>
+              <h2 className="text-white text-xl font-bold leading-tight">
+                Was sich 2026 geändert hat — und was das für {city.name} bedeutet
+              </h2>
+            </div>
+          </div>
+        </div>
         <div className="space-y-4">
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
             <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
           </div>
           <div className="bg-green-50 border border-green-200 rounded-xl p-5">
             <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
           </div>
           <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
             <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
           </div>
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
             <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
           </div>
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
         </div>
       </div>

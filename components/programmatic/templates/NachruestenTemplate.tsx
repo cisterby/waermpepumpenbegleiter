@@ -11,7 +11,12 @@ import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualit
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=75';
+// Image pools (city-hash varied, no duplicate content risk)
+const HERO_IMGS = ['https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&q=85', 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1920&q=85', 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=85'];
+const SEC1_IMGS = ['https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85', 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85', 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=1920&q=85'];
+const SEC2_IMGS = ['https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=85', 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1920&q=85', 'https://images.unsplash.com/photo-1611117775350-ac3950990985?w=1920&q=85'];
+const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
+  arr[Math.abs(Math.round(lat * 7 + lng * 13 + salt)) % arr.length];
 
 /* arrays moved inside component */
 
@@ -66,8 +71,9 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
-        <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
+        pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
+          src={ className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/90 via-[#0A1910]/70 to-[#0A1910]/20" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
             <Link href="/" className="hover:text-white">Startseite</Link><span>›</span>
@@ -102,7 +108,7 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
               { val: fmtEuro(calc.ersparnis)+'/J.', label: 'Ersparnis', sub: 'vs. Gasheizung' },
             ].map((s,i) => (
               <div key={i}><div className="text-xl font-extrabold text-white">{s.val}</div>
-              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
+              <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/75 text-xs">{s.sub}</div></div>
             ))}
           </div>
           <a href="#angebot" className="inline-flex items-center gap-2 bg-[#1A4731] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#2D7A52] transition-colors">
@@ -287,6 +293,25 @@ export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, n
           </div>
         </div>
       )}
+
+      {/* ── VISUELLER TRENNER ─────────────────────── */}
+      <div className="relative rounded-2xl overflow-hidden my-8" style={{ height: '180px' }}>
+        <img
+          src={pickImg(SEC1_IMGS, city.lat, city.lng, 5)}
+          alt={`${keyword.keyword.replace('[Stadt]', city.name)} Übersicht`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.88) 0%, rgba(10,25,16,0.45) 60%, rgba(10,25,16,0.15) 100%)' }} />
+        <div className="absolute inset-y-0 left-0 flex items-center px-8">
+          <div>
+            <p className="text-white font-bold text-lg leading-tight">{keyword.keyword.replace('[Stadt]', city.name)}</p>
+            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.78)' }}>
+              {fmtEuro(foerd.eigenanteil)} Eigenanteil · JAZ {jaz} · {foerd.gesamtSatz}% KfW-Förderung
+            </p>
+          </div>
+        </div>
+      </div>
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
