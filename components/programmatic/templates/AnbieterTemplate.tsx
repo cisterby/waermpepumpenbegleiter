@@ -12,39 +12,38 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1920&q=80';
 
-const ANBIETER_TYPEN = [
-  { icon: '🔧', typ: 'Lokaler SHK-Fachbetrieb', vorteile: 'Persönlicher Service, Ortskenntnis, Wartung inklusive, KfW-Begleitung', nachteile: 'Begrenzte Kapazität, Wartezeiten 4–12 Wochen', kfw: true },
-  { icon: '🏭', typ: 'Systemanbieter (ENGIE, E.ON etc.)', vorteile: 'Komplettservice, Finanzierung, bundesweit', nachteile: 'Oft höhere Preise, weniger Flexibilität bei Gerätwahl', kfw: true },
-  { icon: '🛒', typ: 'Online-WP-Portale', vorteile: 'Preisvergleich, viele Angebote', nachteile: 'Qualitätskontrolle eingeschränkt, keine direkte Verantwortung', kfw: false },
-  { icon: '🏗️', typ: 'Direkthersteller-Service (Viessmann etc.)', vorteile: 'Herstellergarantie, Herstellersupport', nachteile: 'Nur eigene Geräte, teuer', kfw: true },
-];
+/* ANBIETER_TYPEN moved inside component */
 
-const ANBIETER_KRITERIEN = [
-  { kriterium: 'KfW-LuL Registrierung aktiv', pflicht: true, warum: 'Ohne LuL kein KfW-Antrag möglich — Sie verlieren die gesamte Förderung' },
-  { kriterium: 'HWK-eingetragener Meisterbetrieb', pflicht: true, warum: 'Handwerksrechtliche Pflicht für Heizungsbau in Deutschland' },
-  { kriterium: '5+ WP-Installationen in 24 Monaten', pflicht: true, warum: 'WP-Erfahrung entscheidet über Dimensionierung und JAZ' },
-  { kriterium: 'Heizlastberechnung im Angebot', pflicht: true, warum: 'KfW-Pflicht — und die einzige Basis für korrekte Gerätewahl' },
-  { kriterium: 'Hydraulischer Abgleich inklusive', pflicht: true, warum: 'KfW-Pflicht Verfahren B — fehlt in >60% aller Angebote' },
-  { kriterium: 'Schriftliche Festpreisgarantie', pflicht: false, warum: 'Verhindert Nachtragsrechnung bei Mehraufwand' },
-  { kriterium: 'Kundenbewertung ≥ 3,5 auf Google', pflicht: false, warum: 'Qualitätsindikator — unter 3,5 aus unserem Netzwerk ausgeschlossen' },
-];
+/* ANBIETER_KRITERIEN moved inside component */
 
-const ANGEBOTSVERGLEICH = [
-  { pos: 'Heizlastberechnung DIN EN 12831', typ: 'Pflichtposition', note: 'Ohne diese: Angebot ablehnen' },
-  { pos: 'WP-Gerät: Fabrikat, Modell, kW', typ: 'Pflichtposition', note: 'Keine Pauschale "Wärmepumpe 10 kW"' },
-  { pos: 'Hydraulischer Abgleich Verfahren B', typ: 'Pflichtposition', note: 'KfW-Pflicht — in Rechnung ausweisen' },
-  { pos: 'Wärmemengenzähler', typ: 'Pflichtposition (neu 2026)', note: 'KfW-Pflicht ab 2026' },
-  { pos: 'KfW-LuL Antragsbegleitung', typ: 'Pflichtposition', note: 'Betrieb muss LuL-registriert sein' },
-  { pos: 'Elektroinstallation', typ: 'Optional prüfen', note: 'Oft separat: €500–1.500' },
-  { pos: 'Schallschutzgutachten', typ: 'Optional prüfen', note: 'Ab 10 dB unter Grenzwert: KfW-Bonus' },
-  { pos: 'Wartungsvertrag', typ: 'Optional prüfen', note: 'Empfohlen — schützt KfW-Förderung' },
-];
+/* ANGEBOTSVERGLEICH moved inside component */
 
 export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const ANBIETER_TYPEN = [
+    { typ: 'Lokaler SHK-Meisterbetrieb', vorteil: `Kennt ${city.name} und ${city.bundesland} — kurze Anfahrt, persönlicher Service`, nachteil: 'Evtl. kleinere Modellauswahl' },
+    { typ: 'Regionaler WP-Spezialist', vorteil: `WP-Erfahrung in ${city.bundesland}, dediziertes Team`, nachteil: 'Höhere Auslastung in der Saison' },
+    { typ: 'Bundesweiter Online-Anbieter', vorteil: 'Oft günstige Gerätepreise', nachteil: `Kein lokaler Service in ${city.name} — bei Störungen langsam` },
+    { typ: 'Hersteller-Direktvertrieb', vorteil: 'Maximale Herstellerunterstützung', nachteil: `Nicht herstellerunabhängig — nur eine Marke` },
+  ];
+  const ANBIETER_KRITERIEN = [
+    { kriterium: 'KfW-LuL-Registrierung', wichtig: true, detail: `Pflicht für KfW-Förderung in ${city.name} — ohne diese kein BEG-Zuschuss` },
+    { kriterium: 'HWK-Eintragung', wichtig: true, detail: `Aktive Eintragung in der Handwerksrolle ${city.bundesland}` },
+    { kriterium: 'F-Gas-Zertifikat', wichtig: true, detail: 'Pflicht für Kältemittelbefüllung nach EU 517/2014' },
+    { kriterium: 'WP-Referenzen', wichtig: true, detail: `Mindestens 5 WP-Installationen nachweisbar — in ${city.bundesland} und Umgebung` },
+    { kriterium: 'Heizlastberechnung inklusive', wichtig: true, detail: `DIN EN 12831 — auf ${city.normAussentemp}°C Normaußentemperatur ${city.name} ausgelegt` },
+    { kriterium: 'Reaktionszeit', wichtig: false, detail: `Lokaler Betrieb in ${city.name}: schnell vor Ort bei Störungen` },
+    { kriterium: 'Bewertungen', wichtig: false, detail: `Mindestens 4,0/5 auf Google — für ${city.name} prüfen` },
+  ];
+  const ANGEBOTSVERGLEICH = [
+    { frage: 'Wie viele Angebote in ${city.name} einholen?', antwort: `Mindestens 3 Angebote — in ${city.name} typisch 20–40% Preisunterschied. Wir holen sie in 48h für Sie ein.` },
+    { frage: 'Was muss im Angebot stehen?', antwort: `Heizlastberechnung DIN EN 12831, hydraulischer Abgleich (KfW-Pflicht), alle Positionen separat ausgewiesen.` },
+    { frage: 'Wie lange gilt das Angebot?', antwort: `Typisch 30 Tage — Preise in ${city.bundesland} können bei Material-Engpässen steigen. Zügig entscheiden.` },
+  ];
 
   const intros = [
     `WP-Anbieter ${city.name}: Nicht jeder Heizungsbauer ist ein WP-Spezialist. Nur KfW-LuL-registrierte Betriebe können den Förderantrag (${foerd.gesamtSatz}% = ${fmtEuro(foerd.zuschuss)}) korrekt begleiten. Wir prüfen alle unsere Partnerbetriebe in ${city.name} nach 7 Kriterien vorab.`,

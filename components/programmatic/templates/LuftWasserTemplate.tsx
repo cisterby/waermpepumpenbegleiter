@@ -13,37 +13,39 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80';
 
-const MONOBLOCK_SPLIT = [
-  { kriterium: 'Kältemittel-Leitungen im Haus', monoblock: 'Keine — nur Wasserleitungen', split: 'Ja — Kältemittelleitungen innen', besser: 'Monoblock' },
-  { kriterium: 'Frostschutz bei -20°C', monoblock: 'Nötig (Glykol-Beimischung)', split: 'Kein Problem — WW-seitig', besser: 'Split' },
-  { kriterium: 'F-Gas Pflicht für Inbetriebnahme', monoblock: 'Nein — nur Klempner', split: 'Ja — F-Gas-Fachbetrieb Pflicht', besser: 'Monoblock' },
-  { kriterium: 'Installationskosten', monoblock: 'Günstiger', split: 'Teurer (+€500–1.500)', besser: 'Monoblock' },
-  { kriterium: 'COP bei -10°C', monoblock: 'Ca. 2,0–2,5', split: 'Ca. 2,3–2,8', besser: 'Split minimal' },
-  { kriterium: 'Rohrlänge Innen-Außen', monoblock: 'Max. 15 m (Wasser)', split: 'Max. 30–60 m (Kältemittel)', besser: 'Split bei langen Wegen' },
-  { kriterium: 'Marktanteil DE 2024', monoblock: '~72%', split: '~28%', besser: 'Monoblock dominiert' },
-];
+/* MONOBLOCK_SPLIT moved inside component */
 
-const COP_BEI_TEMP = [
-  { aussentemp: '+20°C', cop: '6,5–8,0', note: 'Sommerbetrieb / Warmwasser' },
-  { aussentemp: '+7°C', cop: '3,8–5,0', note: 'Normaler Heizbetrieb (A7/W35)' },
-  { aussentemp: '0°C', cop: '3,0–3,8', note: 'Kälterer Wintertag' },
-  { aussentemp: '-7°C', cop: '2,2–3,0', note: 'Kältester Standardtest (A-7/W35)' },
-  { aussentemp: '-15°C', cop: '1,5–2,0', note: 'Extremkälte — WP läuft noch' },
-  { aussentemp: '-20°C', cop: '1,2–1,5', note: 'Unter Betriebslimit mancher Geräte' },
-];
+/* COP_BEI_TEMP moved inside component */
 
-const WW_INTEGRATION = [
-  { system: 'Kombispeicher (Heizung + WW)', kosten: '€1.500–€3.500', vorteil: 'Ein Tank für alles — platzsparend', nachteil: 'WW-Temp begrenzt auf 55°C' },
-  { system: 'Pufferspeicher + separater WW-Speicher', kosten: '€1.200–€4.000', vorteil: 'Optimale Temperaturen für beides', nachteil: 'Mehr Platz, mehr Installationsaufwand' },
-  { system: 'Frischwasserstation (hygienisch)', kosten: '€800–€2.000', vorteil: 'Kein stehendes Warmwasser — hygienisch', nachteil: 'Geringerer Komfort bei Spitzenbedarf' },
-  { system: 'Zusätzliche Trinkwasser-WP', kosten: '€1.000–€2.500', vorteil: 'Unabhängig — kann Abwärme nutzen', nachteil: 'Zweites Gerät, Kellerkühlung im Sommer' },
-];
+/* WW_INTEGRATION moved inside component */
 
 export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const MONOBLOCK_SPLIT = [
+    { kriterium: 'Kältemittel draußen?', mono: 'Ja — nur Wasser führt ins Haus', split: 'Nein — Kältemittelleitungen ins Gebäude' },
+    { kriterium: 'Installation', mono: `Einfacher in ${city.name} — kein F-Gas innen`, split: 'F-Gas-Kälteschlosser Pflicht (EU 517/2014)' },
+    { kriterium: 'Leitungsverluste', mono: `Leicht höher bei langen Wegen in ${city.name}`, split: 'Gering — Wärmetauscher innen' },
+    { kriterium: 'Schall', mono: `Alles außen — besser für enge Bebauung in ${city.name}`, split: 'Innengerät trägt Schall — Körperschallschutz wichtig' },
+    { kriterium: 'Marktanteil', mono: '70% (Trend)', split: '30% (rückläufig)' },
+  ];
+  const COP_BEI_TEMP = [
+    { temp: `${city.normAussentemp}°C (Normaußentemp. ${city.name})`, cop: (jaz - 1.0).toFixed(1) + '–' + (jaz - 0.5).toFixed(1), note: 'Kältester Auslegungspunkt' },
+    { temp: '-10°C', cop: (jaz - 0.8).toFixed(1) + '–' + (jaz - 0.3).toFixed(1), note: 'Sehr kalt' },
+    { temp: '0°C', cop: jaz.toFixed(1) + '–' + (jaz + 0.4).toFixed(1), note: 'Häufig in Winter' },
+    { temp: '7°C (DIN Nennpunkt)', cop: (jaz + 0.3).toFixed(1) + '–' + (jaz + 0.7).toFixed(1), note: 'Normprüfpunkt' },
+    { temp: `${city.avgTemp}°C (Jahresmittel ${city.name})`, cop: (jaz + 0.5).toFixed(1) + '–' + (jaz + 1.0).toFixed(1), note: 'Jahresarbeitszahl-Basis' },
+    { temp: '20°C (Übergang)', cop: (jaz + 1.2).toFixed(1) + '–' + (jaz + 1.8).toFixed(1), note: 'Sehr effizient' },
+  ];
+  const WW_INTEGRATION = [
+    { methode: 'Integrierter WW-Speicher', kosten: '0 € extra', effekt: `Bestes System für ${city.name} — JAZ ${(jaz - 0.1).toFixed(1)} inkl. WW`, note: 'In Kombispeicher integriert' },
+    { methode: 'Externer WW-Speicher', kosten: '€800–2.500', effekt: `Flexibel — JAZ ${jaz.toFixed(1)} separat optimierbar`, note: 'Empfohlen wenn Platz vorhanden' },
+    { methode: 'Trinkwasser-WP parallel', kosten: '€800–1.500', effekt: 'Unabhängig von Heizungs-WP', note: `In ${city.name} sinnvoll bei hohem WW-Bedarf` },
+    { methode: 'Elektrischer Heizstab (Backup)', kosten: '€200–400', effekt: 'Legionellenschutz-Aufheizung', note: 'Pflicht in allen WP-Anlagen' },
+  ];
   const coldDays = city.normAussentemp <= -12 ? '15–25' : city.normAussentemp <= -8 ? '8–15' : '3–8';
 
   const intros = [

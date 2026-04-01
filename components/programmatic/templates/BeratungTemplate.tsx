@@ -12,36 +12,50 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1920&q=80';
 
-const SCHRITTE = [
-  { icon: '📞', nr: '1', title: 'Erstkontakt & Gebäudecheck (kostenlos)', text: 'Wohnfläche, Baujahr, aktuelle Heizung, Vorlauftemperatur und Dämmzustand. Dauer ca. 10 Minuten. Ergebnis: erste Einschätzung ob WP sinnvoll ist.' },
+/* SCHRITTE moved inside component */
+const SCHRITTE_PLACEHOLDER = [];
   { icon: '🏠', nr: '2', title: 'Vor-Ort-Begehung durch Fachbetrieb', text: 'Aufstellort, Heizkreis, Pufferspeicher, Elektroanschluss. Basis für die Heizlastberechnung nach DIN EN 12831. Dauer: 1–2 Stunden.' },
   { icon: '📊', nr: '3', title: 'Heizlastberechnung & Dimensionierung', text: 'Ohne korrekte Heizlast kein richtiges Gerät. Über- oder Unterdimensionierung senkt JAZ und Wirtschaftlichkeit. KfW verlangt diesen Nachweis seit 2024 zwingend.' },
   { icon: '💶', nr: '4', title: 'Förderberechnung & KfW-Antragsbegleitung', text: 'KfW 458: 30% Grundförderung + 20% Klima-Speed-Bonus + ggf. 30% Einkommensbonus + 5% Effizienzbonus. Antrag muss zwingend VOR Baubeginn gestellt werden.' },
   { icon: '📋', nr: '5', title: 'Angebotsvergleich (mind. 3 Betriebe)', text: 'Vollständige Angebote mit Heizlast, Hydraulik, Elektrik und KfW-Begleitung. Preisunterschiede von 20–40% bei identischer Leistung sind in der Praxis häufig.' },
 ];
 
-const THEMEN = [
-  { icon: '🔧', title: 'Geräteauswahl & Hersteller', text: 'Luft-Wasser vs. Sole-Wasser, Hochtemperatur vs. Standard, Propan (R290) für +5% KfW-Bonus. Kein Hersteller passt für jedes Haus.' },
-  { icon: '💰', title: 'Wirtschaftlichkeitsberechnung', text: 'Amortisation abhängig von lokalem Strompreis, JAZ, Gasersatz und KfW-Quote. Wir rechnen mit Ihren stadtspezifischen Werten durch.' },
-  { icon: '📜', title: 'GEG-Compliance & Fristen', text: 'In Großstädten ab 30.06.2026 gilt die 65%-EE-Pflicht. Eine Wärmepumpe erfüllt das GEG automatisch — ohne Einschränkungen und ohne Risiko.' },
-  { icon: '⚠️', title: 'Häufige Fehler vermeiden', text: 'Fehlende Heizlastberechnung, KfW-Antrag nach Baubeginn gestellt, falsche Dimensionierung. Durch strukturierte Beratung alle drei vermeidbar.' },
-];
+/* THEMEN moved inside component */
 
-const CHECKLISTE = [
-  { item: 'Vorlauftemperatur des aktuellen Heizkreises', why: 'Entscheidet ob Standard- oder Hochtemperatur-WP' },
-  { item: 'Baujahr und Dämmzustand des Gebäudes', why: 'Basis für Heizlastberechnung' },
-  { item: 'Aktuelle Jahres-Heizkostenabrechnung', why: 'Verbrauchsdaten für Wirtschaftlichkeitsberechnung' },
-  { item: 'Grundriss / Wohnfläche je Etage', why: 'Für Heizkreisplanung und Gerätedimensionierung' },
-  { item: 'Keller: Nutzung, Größe, Zugangsmöglichkeiten', why: 'Aufstellort Inneneinheit und Pufferspeicher' },
-  { item: 'Außenwand: Abstände zur Grundstücksgrenze', why: 'Schallschutz-Anforderungen, ggf. Genehmigungspflicht' },
-  { item: 'Stromanschluss: Hauptsicherung, Platz im Verteiler', why: 'WP braucht eigenen Starkstrom-Kreis, ca. €500–1.500 extra' },
-];
+/* CHECKLISTE moved inside component */
 
 export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const THEMEN = [
+    { icon: '🔧', title: 'Geräteauswahl & Hersteller', text: `Luft-Wasser vs. Sole-Wasser, Hochtemperatur vs. Standard, R290-Bonus für +5% KfW. Für ${city.name} mit ${city.avgTemp}°C Jahresmittel empfehlen wir meist die Luft-WP.` },
+    { icon: '🏛️', title: 'KfW-Förderung & Landesförderung', text: `${foerd.gesamtSatz}% KfW für Ihre Situation in ${city.name}${city.bundeslandFoerderung ? ` + ${city.bundeslandFoerderung}` : ''}. Antrag muss vor Baubeginn gestellt werden.` },
+    { icon: '💶', title: 'Kostenrahmen & Wirtschaftlichkeit', text: `Betriebskosten in ${city.name}: ${fmtEuro(calc.wpKosten)}/Jahr (bei ${city.strompreis} ct/kWh, JAZ ${jaz}). Ersparnis vs. Gas: ${fmtEuro(calc.ersparnis)}/Jahr.` },
+    { icon: '🏚️', title: 'Altbau-Eignung', text: `In ${city.name}: 70–80% aller Altbauten geeignet. Vorlauftemperatur entscheidet — Hochtemperatur-WP löst fast alle Fälle.` },
+    { icon: '📅', title: 'GEG & Fristen', text: `GEG-Frist ${city.name}: ${city.gegFrist.split('-').reverse().join('.')}. Wer jetzt plant, sichert sich volle Förderung und Installateurkapazitäten.` },
+  ];
+  const CHECKLISTE = [
+    { item: 'Vorlauftemperatur des aktuellen Heizkreises', why: `Entscheidet ob Standard- oder Hochtemperatur-WP für ${city.name}` },
+    { item: 'Wohnfläche und Baujahr', why: `Grundlage Heizlastberechnung nach DIN EN 12831 für ${city.normAussentemp}°C Normaußentemperatur ${city.name}` },
+    { item: 'Platz im Keller (mind. 1 m²)', why: 'Pufferspeicher 200–500 l — Pflicht für Taktschutz' },
+    { item: 'Eigentümer oder Vermieter?', why: `Eigennutzer bekommen höhere KfW-Förderung in ${city.name} (bis 70%)` },
+    { item: 'Aktuelle Heizung (Gas/Öl/Nachtspeicher?)', why: 'Bestimmt Klima-Speed-Bonus (+20%) und GEG-Frist' },
+    { item: 'Stromtarif-Situation', why: `${city.strompreis} ct/kWh in ${city.name} — WP-Sondertarif kann ${fmtEuro(Math.round(calc.wpKosten * 0.12))} sparen` },
+    { item: 'Fördersituation: Einkommen unter €40.000?', why: '+30% Einkommensbonus KfW' },
+    { item: 'PV-Anlage vorhanden oder geplant?', why: 'PV + WP Kombination spart weitere 30–40% Betriebskosten' },
+  ];
+
+  const SCHRITTE = [
+    { icon: '📞', nr: '1', title: 'Erstkontakt & Gebäudecheck (kostenlos)', text: `Wohnfläche, Baujahr, aktuelle Heizung, Vorlauftemperatur und Dämmzustand — auf Ihr Haus in ${city.name} zugeschnitten. Dauer ca. 10 Minuten. Ergebnis: erste Einschätzung ob WP sinnvoll ist.` },
+    { icon: '📊', nr: '2', title: 'Wirtschaftlichkeitsanalyse', text: `Stadtspezifische Kalkulation für ${city.name}: ${city.strompreis} ct/kWh Strom, JAZ ${jaz}, ${city.gaspreis} ct/kWh Gas. Ergebnis: ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis und Amortisationszeit.` },
+    { icon: '🏛️', nr: '3', title: 'Fördercheck', text: `KfW-Förderquote für Ihre Situation in ${city.name}: typisch ${foerd.gesamtSatz}%. ${city.bundeslandFoerderung ? `Plus ${city.bundeslandFoerderung} (${city.bundeslandFoerderungBetrag}).` : `In ${city.bundesland} gilt die volle KfW-Bundesförderung.`}` },
+    { icon: '🔧', nr: '4', title: 'Fachbetrieb-Matching', text: `Wir verbinden Sie mit bis zu 3 geprüften Betrieben in ${city.name} — HWK-eingetragen, KfW-LuL-registriert, mit WP-Erfahrung in ${city.bundesland}.` },
+    { icon: '📋', nr: '5', title: 'Angebotsvergleich', text: `Alle 3 Angebote aus ${city.name} werden vollständig verglichen — Gerät, Montage, Hydraulik, Elektrik. Versteckte Posten werden aufgedeckt.` },
+    { icon: '✅', nr: '6', title: 'KfW-Antragsbegleitung', text: `KfW-Antrag MUSS vor Baubeginn gestellt werden — wir stellen sicher, dass das in ${city.name} korrekt und rechtzeitig passiert.` },
+  ];
 
   const intros = [
     `Eine Wärmepumpen-Beratung in ${city.name} ist die Voraussetzung für eine wirtschaftliche Entscheidung. Mit ${city.strompreis} ct/kWh Strompreis und JAZ ${jaz} bei ${city.avgTemp}°C Jahresmittel liegt die Ersparnis gegenüber Erdgas bei ${fmtEuro(calc.ersparnis)}/Jahr. Wer falsch dimensioniert oder den KfW-Antrag zu spät stellt, verliert Förderung und Effizienz.`,

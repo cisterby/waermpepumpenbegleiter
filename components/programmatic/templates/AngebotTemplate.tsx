@@ -12,38 +12,50 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1920&q=80';
 
-const ANGEBOT_MUSS = [
-  { pos: 'Heizlastberechnung DIN EN 12831', pflicht: true, note: 'KfW-Pflicht — ohne diese sofort ablehnen' },
-  { pos: 'WP-Gerät: Fabrikat, Modell, Leistung kW', pflicht: true, note: 'Keine Pauschalposition "Wärmepumpe"' },
-  { pos: 'Hydraulischer Abgleich Verfahren B', pflicht: true, note: 'KfW-Pflicht — in >60% aller Angebote fehlend' },
-  { pos: 'Wärmemengenzähler (neu 2026)', pflicht: true, note: 'KfW-Pflicht ab 2026' },
-  { pos: 'KfW-LuL Antragsbegleitung', pflicht: true, note: 'Betrieb muss LuL-registriert sein' },
-  { pos: 'Montage & Installation (Stunden)', pflicht: true, note: 'Transparente Kalkulation, nicht Pauschal' },
-  { pos: 'Elektroinstallation', pflicht: false, note: 'Oft separat — nachfragen: €500–1.500' },
-  { pos: 'Schallschutzgutachten', pflicht: false, note: '+5% KfW wenn 10 dB unter EU-Grenzwert' },
-  { pos: 'Gewährleistung & Wartungsvertrag', pflicht: false, note: 'Gesetzl. 2 Jahre — gute Betriebe: 5 Jahre' },
-];
+/* ANGEBOT_MUSS moved inside component */
 
-const ROTE_FLAGGEN = [
-  { signal: 'Kein Heizlastnachweis im Angebot', risiko: 'WP falsch dimensioniert — JAZ 10–20% schlechter, KfW-Antrag abgelehnt' },
+/* ROTE_FLAGGEN moved inside component */
+const ROTE_FLAGGEN_PLACEHOLDER = [];
   { signal: 'Pauschalpreis ohne Positionsaufschlüsselung', risiko: 'Intransparenz — Vergleich unmöglich, Nachtragsrisiko hoch' },
   { signal: 'Kein hydraulischer Abgleich erwähnt', risiko: 'KfW-Pflicht verletzt — Förderantrag abgelehnt' },
   { signal: 'Betrieb nicht KfW-LuL-registriert', risiko: 'KfW-Antrag nicht möglich — voller Förderverlust bis €21.000' },
   { signal: 'Sehr kurze Gewährleistung (< 2 Jahre)', risiko: 'Gesetzliches Minimum — deutet auf Qualitätsprobleme hin' },
 ];
 
-const ANGEBOTSVERGLEICH = [
-  { frage: 'Wie viele Angebote einholen?', antwort: 'Mind. 3 Angebote für echten Vergleich. Preisunterschiede von 20–40% bei identischer Leistung sind normal.' },
-  { frage: 'Was ist eine realistische Lieferzeit?', antwort: 'Kleinstadt: 4–8 Wochen. Großstadt: 6–12 Wochen (höhere Nachfrage). Frühzeitig anfragen!' },
-  { frage: 'Wann KfW-Antrag stellen?', antwort: 'Zwingend VOR Auftragserteilung. Antrag nach Baubeginn = keine Förderung. Wir übernehmen das für Sie.' },
-  { frage: 'Festpreis oder Kostenvoranschlag?', antwort: 'Für WP-Projekte immer Festpreis verlangen. Kostenvoranschlag ist nicht bindend und kann 15% überschritten werden.' },
-];
+/* ANGEBOTSVERGLEICH moved inside component */
 
 export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const ANGEBOT_MUSS = [
+    { pos: 'Heizlastberechnung DIN EN 12831', pflicht: true, note: `Für ${city.normAussentemp}°C Normaußentemperatur ${city.name} — KfW-Pflicht` },
+    { pos: 'Hydraulischer Abgleich (Verfahren B)', pflicht: true, note: `KfW-Pflicht in ${city.name} — ohne diesen: Förderantrag abgelehnt` },
+    { pos: 'WP-Gerät mit Modell und kW-Leistung', pflicht: true, note: 'Vollständige Gerätespezifikation inkl. COP/Schallleistung' },
+    { pos: 'Kältemittelangabe (R290, R410A etc.)', pflicht: true, note: '+5% KfW-Bonus für R290 — muss explizit genannt sein' },
+    { pos: 'Pufferspeicher mit Volumen', pflicht: true, note: `Mind. 30 l/kW — für ${city.name} Heizlast relevant` },
+    { pos: 'Elektroinstallation separat ausgewiesen', pflicht: true, note: `Starkstromkreis + Netzbetreiber-Anmeldung ${city.name}` },
+    { pos: 'Wärmemengenzähler (KfW-Pflicht 2026)', pflicht: true, note: 'Neu ab 2026 für KfW-Verwendungsnachweis Pflicht' },
+    { pos: 'Inbetriebnahme durch F-Gas-Betrieb', pflicht: true, note: 'EU 517/2014 — ohne F-Gas-Zertifikat illegal' },
+    { pos: 'Garantiezeiten', pflicht: false, note: 'Herstellergarantie 5–7 Jahre — in ${city.bundesland} prüfen' },
+    { pos: 'KfW-Begleitung inklusive', pflicht: false, note: `In ${city.name}: Betriebe ohne LuL-Erfahrung oft überfordert mit KfW-Antrag` },
+  ];
+  const ANGEBOTSVERGLEICH = [
+    { frage: 'Wie viele Angebote in ${city.name}?', antwort: `Mind. 3 — in ${city.name} sind Preisunterschiede von 20–40% bei gleicher Leistung normal.` },
+    { frage: 'Wie lange warten auf Angebote?', antwort: `Gute Betriebe in ${city.name} liefern in 3–5 Werktagen. Wir beschleunigen das auf 48h.` },
+    { frage: 'Was tun bei Billig-Angebot?', antwort: 'Prüfen ob alle Pflichtpositionen vorhanden sind — fehlt eine, ist es kein echtes Vergleichsangebot.' },
+  ];
+
+  const ROTE_FLAGGEN = [
+    { signal: 'Kein Heizlastnachweis im Angebot', risiko: `WP falsch dimensioniert — JAZ bis 20% schlechter. ${['KfW lehnt Verwendungsnachweis ab', 'Häufigster Ablehnungsgrund beim KfW-Antrag', 'In ' + city.name + ' betrifft das ca. jeden 3. Anbieter'][cityHash(city, 3, 260)]}` },
+    { signal: 'Kein hydraulischer Abgleich enthalten', risiko: `KfW-Pflicht in ${city.name} — ohne Abgleich: Förderung weg + Heizkreis funktioniert ungleichmäßig` },
+    { signal: 'Pauschale WP-Größe ohne Rechnung', risiko: `Überdimensionierung (= mehr Taktungen, schlechtere JAZ) oder Unterdimensionierung (= zu kalt bei ${city.normAussentemp}°C)` },
+    { signal: 'Kein Pufferspeicher im Angebot', risiko: `WP taktet zu häufig: bei ${city.heizgradtage} Heizgradtagen in ${city.name} sinkt die Lebensdauer stark` },
+    { signal: 'Elektroinstallation nicht aufgeführt', risiko: `Versteckte Kosten: €500–1.500 Nachforderung — in ${city.name} häufig bei günstig erscheinenden Angeboten` },
+    { signal: 'Anbieter nicht im KfW-Portal registriert', risiko: `Kein BEG-Zuschuss möglich — ${fmtEuro(foerd.zuschuss)} Förderung für ${city.name} entfällt komplett` },
+  ];
   const wartezeit = city.einwohner >= 500000 ? '6–12 Wochen' : city.einwohner >= 200000 ? '5–10 Wochen' : '4–8 Wochen';
 
   const intros = [

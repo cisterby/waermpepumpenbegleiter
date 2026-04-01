@@ -12,36 +12,41 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=1920&q=80';
 
-const BOHRUNG_VS_KOLLEKTOR = [
-  { kriterium: 'Grundstücksfläche nötig', bohrung: 'Gering (5×5m Bohrstelle)', kollektor: 'Groß (1,5–2× Wohnfläche)', besser: 'Bohrung' },
-  { kriterium: 'Kosten Erdarbeiten', bohrung: '€6.000–€15.000', kollektor: '€3.000–€8.000', besser: 'Kollektor' },
-  { kriterium: 'Effizienz (JAZ)', bohrung: 'JAZ 4,5–5,5', kollektor: 'JAZ 4,0–4,8', besser: 'Bohrung' },
-  { kriterium: 'Genehmigung', bohrung: 'Bergamt + Wasserrecht', kollektor: 'Meist genehmigungsfrei', besser: 'Kollektor' },
-  { kriterium: 'Bohrtiefe', bohrung: '80–200m je nach Geologie', kollektor: '1,0–1,5m tief', besser: 'Je nach Platz' },
-  { kriterium: 'Saisonale Schwankung', bohrung: 'Keine — konstant 10–12°C', kollektor: 'Gering (±2°C)', besser: 'Bohrung' },
-  { kriterium: 'KfW-Bonus', bohrung: '+5% immer', kollektor: '+5% immer', besser: 'Beide gleich' },
-];
+/* BOHRUNG_VS_KOLLEKTOR moved inside component */
 
-const GENEHMIGUNG = [
-  { step: 'Grundwassergutachten', beschreibung: 'Hydrogeologisches Gutachten prüft Grundwassertiefe und Fließrichtung. Kostenpflichtig: €300–800.' },
-  { step: 'Bergamt-Antrag', beschreibung: 'Tiefenbohrungen > 100m benötigen in vielen Bundesländern eine Genehmigung beim zuständigen Bergamt. Bearbeitungszeit: 4–12 Wochen.' },
-  { step: 'Wasserrechtliche Erlaubnis', beschreibung: 'Untere Wasserbehörde prüft ob Bohrung Grundwasser gefährdet. In manchen Trinkwasserschutzzonen verboten.' },
-  { step: 'Fachbetrieb F-Gas zertifiziert', beschreibung: 'Kältemittelarbeiten nur durch F-Gas-zertifizierten Kälteanlagenbauer — Pflicht unabhängig von Genehmigungen.' },
-];
+/* GENEHMIGUNG moved inside component */
 
-const KOSTEN_ERDWAERME = [
-  { pos: 'Sole-WP-Gerät', von: 10000, bis: 18000, note: 'Hocheffizienz, kein Schall' },
-  { pos: 'Tiefenbohrung (100–150m)', von: 6000, bis: 14000, note: '€50–80/m Bohrmeter' },
-  { pos: 'Sole-Kreislauf & Pumpen', von: 1500, bis: 3000, note: 'Frostschutzmittel, Verteiler' },
-  { pos: 'Montage & Hydraulik', von: 2500, bis: 5000, note: 'Wie bei Luft-WP' },
-  { pos: 'Genehmigungen', von: 300, bis: 1500, note: 'Je nach Bundesland' },
-];
+/* KOSTEN_ERDWAERME moved inside component */
 
 export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const BOHRUNG_VS_KOLLEKTOR = [
+    { kriterium: 'Grundstücksgröße', bohrung: 'Ab 100 m² — 1 Bohrung ca. 2 m²', kollektor: `Mind. ${Math.round(calc.wpKosten / 10 * 8)} m² Grundstück (10-fache Heizfläche)` },
+    { kriterium: 'Investitionskosten', bohrung: '€6.000–€15.000 (Bohrung)', kollektor: '€3.000–€8.000 (Aushub)' },
+    { kriterium: 'JAZ in ' + city.name, bohrung: `${(jaz + 0.8).toFixed(1)}–${(jaz + 1.2).toFixed(1)}`, kollektor: `${(jaz + 0.5).toFixed(1)}–${(jaz + 0.9).toFixed(1)}` },
+    { kriterium: 'Genehmigung ' + city.bundesland, bohrung: `Wasserrechtliche Genehmigung in ${city.bundesland} — Tiefbohrunternehmen beantragt`, kollektor: 'Meist genehmigungsfrei' },
+    { kriterium: 'KfW-Bonus', bohrung: '+5% (Erdwärme)', kollektor: '+5% (Erdwärme)' },
+    { kriterium: 'Betrieb', bohrung: 'Wartungsarm, konstante Effizienz', kollektor: 'Witterungsabhängige Effizienz im Winter' },
+  ];
+  const GENEHMIGUNG = [
+    { schritt: 'Hydrogeologisches Gutachten', pflicht: true, detail: `In ${city.bundesland} vor jeder Tiefenbohrung — Dauer 2–4 Wochen` },
+    { schritt: 'Wasserrechtliche Genehmigung', pflicht: true, detail: `Untere Wasserbehörde ${city.bundesland} — typisch 4–8 Wochen` },
+    { schritt: 'Bohrprotokoll', pflicht: true, detail: `Für KfW-Nachweis und Behörde in ${city.bundesland} erforderlich` },
+    { schritt: 'Grundstücksgrenzen prüfen', pflicht: true, detail: `Abstand zur Grenze in ${city.bundesland}: meist mind. 3 m` },
+    { schritt: 'Denkmalschutz prüfen', pflicht: false, detail: `In Altstadtlagen von ${city.name} relevant` },
+  ];
+  const KOSTEN_ERDWAERME = [
+    { pos: 'WP-Gerät Sole-Wasser', von: 10000, bis: 18000, note: `Preis in ${city.bundesland} 2026` },
+    { pos: 'Tiefenbohrung (100–200 m)', von: 8000, bis: 16000, note: `Ca. €80–100/m in ${city.bundesland}` },
+    { pos: 'Hydraulik & Montage', von: 3000, bis: 6000, note: 'Inklusive Sole-Befüllung' },
+    { pos: 'Genehmigungen', von: 1000, bis: 3000, note: `Wasserrecht ${city.bundesland}` },
+    { pos: 'Hydraulischer Abgleich', von: 500, bis: 1500, note: 'KfW-Pflicht' },
+    { pos: 'Elektroinstallation', von: 500, bis: 1500, note: `Netzbetreiber ${city.name}` },
+  ];
   const jazSole = Math.min(jaz + 1.0, 5.5).toFixed(1);
   const kostenSole = Math.round(calc.wpKosten * (jaz / (jaz + 1.0)));
   const gesamtMin = KOSTEN_ERDWAERME.reduce((s,p) => s+p.von, 0);

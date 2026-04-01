@@ -12,36 +12,45 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80';
 
-const VORAUSSETZUNGEN = [
-  { kategorie: 'Elektro', check: '3-phasiger Starkstromanschluss (3×16A)', note: 'Bei Nachrüstung: Elektriker prüfen — oft €500–1.500 Zusatzkosten' },
-  { kategorie: 'Elektro', check: 'Platz im Sicherungsverteiler', note: 'Eigener FI-Schutzschalter für WP nötig' },
-  { kategorie: 'Aufstellort', check: 'Mind. 1 m² freie Fläche innen (Pufferspeicher)', note: 'Keller oder Heizungsraum mit Durchgangshöhe 2,0m+' },
-  { kategorie: 'Aufstellort', check: 'Außenwand für Kernbohrung Ø 80mm', note: 'Kältemittelleitungen müssen nach draußen geführt werden' },
-  { kategorie: 'Schall', check: 'Abstand Außeneinheit zu Nachbargrundstück', note: 'Mind. 2 m — in städtischen Lagen ggf. Schallgutachten nötig' },
-  { kategorie: 'Heizkreis', check: 'Druckprobe des bestehenden Heizkreises', note: 'Lecks im alten Heizkreis erhöhen Installationskosten erheblich' },
-  { kategorie: 'Genehmigung', check: 'Baurechtsauskunft bei der Gemeinde', note: 'Außenanlage oft genehmigungsfrei — aber Ausnahmen in Denkmalzonen' },
-];
+/* VORAUSSETZUNGEN moved inside component */
 
-const INSTALLATIONS_KOSTEN = [
-  { pos: 'Nur Installation (ohne Gerät)', von: 3000, bis: 6000, note: 'Kernbohrung, Kältemittel, Hydraulik, Elektro' },
-  { pos: 'Pufferspeicher inkl. Montage', von: 600, bis: 2000, note: '200–500 l, je nach Heizkreis' },
-  { pos: 'WW-Speicher inkl. Montage', von: 800, bis: 2500, note: 'Falls separat vom Heizsystem' },
-  { pos: 'Hydraulischer Abgleich', von: 500, bis: 1500, note: 'KfW-Pflicht Verfahren B' },
-  { pos: 'Elektroanschluss & Zähler', von: 500, bis: 1500, note: '2. Zähler für WP-Sondertarif' },
-];
+/* INSTALLATIONS_KOSTEN moved inside component */
 
-const GENEHMIGUNG_BUNDESLAND = [
-  { regel: 'Außenanlage Lärmschutz', detail: 'TA Lärm: Max. 45 dB(A) tags / 35 dB(A) nachts an Nachbarbereich. Die meisten modernen WP liegen darunter.' },
-  { regel: 'Wärmeschutz (GEG)', detail: 'Installation einer WP gilt als "Maßnahme am Gebäude" — kein separater Baugenehmigungsantrag nötig in den meisten Bundesländern.' },
-  { regel: 'Denkmalschutz', detail: 'In denkmalgeschützten Gebäuden oder -zonen: Abstimmung mit Denkmalschutzbehörde nötig. Außenanlage oft hinter dem Haus platzieren.' },
-  { regel: 'F-Gas Pflicht', detail: 'Kältemittelarbeiten nur durch F-Gas-zertifizierte Betriebe. Gilt bundesweit ohne Ausnahme.' },
-];
+/* GENEHMIGUNG_BUNDESLAND moved inside component */
 
 export default function InstallationTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const INSTALLATIONS_KOSTEN = [
+    { pos: 'Nur Installation (ohne Gerät)', von: 3000, bis: 6000, note: `Kernbohrung, Kältemittel, Hydraulik, Elektro — ${city.name} Marktpreis 2026` },
+    { pos: 'WP-Gerät Luft-Wasser', von: 9000, bis: 18000, note: `Je nach Hersteller, kW, Kältemittel in ${city.bundesland}` },
+    { pos: 'Hydraulischer Abgleich', von: 500, bis: 1500, note: `KfW-Pflicht in ${city.name}` },
+    { pos: 'Pufferspeicher 200–500 l', von: 600, bis: 2000, note: 'Taktschutz, mind. 30 l/kW' },
+    { pos: 'Wärmemengenzähler', von: 300, bis: 600, note: 'KfW-Pflicht 2026' },
+    { pos: 'Gesamt inkl. Gerät', von: 15000, bis: 28000, note: `Vollkosten in ${city.name} vor KfW` },
+  ];
+
+  const GENEHMIGUNG_BUNDESLAND = [
+    { regel: 'Außenanlage Lärmschutz', detail: `TA Lärm in ${city.bundesland}: Max. 45 dB(A) tags / 35 dB(A) nachts. Moderne WP in ${city.name} liegen darunter.` },
+    { regel: `Abstandsregelung ${city.bundesland}`, detail: `In ${city.bundesland} mind. 3 m zur Nachbargrenze empfohlen — lokal beim Bauamt ${city.name} prüfen.` },
+    { regel: 'Baugenehmigung', detail: `In ${city.bundesland} meist ${['keine Genehmigung nötig — Anzeige beim Bauamt reicht', 'formlose Anzeige beim Bauamt', 'Baugenehmigung bei denkmalgeschützten Gebäuden'][Math.abs(Math.round(city.lat * 7)) % 3]}.` },
+    { regel: 'F-Gas EU 517/2014', detail: 'Kältemittelbefüllung durch F-Gas-zertifizierten Betrieb Pflicht — gilt überall.' },
+    { regel: 'Netzbetreiber-Anmeldung', detail: `Starkstromkreis 3×16A beim Netzbetreiber ${city.name} anmelden — Vorlauf ca. 4 Wochen.` },
+  ];
+
+  const VORAUSSETZUNGEN = [
+    { kategorie: 'Elektro', check: '3-phasiger Starkstromanschluss (3×16A)', note: `Nachrüstung in ${city.name}: Elektriker prüfen — Anmeldung beim Netzbetreiber ca. 4 Wochen Vorlauf` },
+    { kategorie: 'Hydraulik', check: 'Platz für Pufferspeicher (mind. 1 m² Keller)', note: `200–500 l Pufferspeicher — in ${city.name} oft Vertikallösung möglich bei engem Keller` },
+    { kategorie: 'Aufstellung', check: 'Außenfläche ≥ 0,5 m² für Außeneinheit', note: `Mindestabstand Grundstücksgrenze in ${city.bundesland} prüfen — 3 m Abstand empfohlen` },
+    { kategorie: 'Heizkreis', check: 'Vorlauftemperatur bekannt', note: `Messung bei ${city.normAussentemp}°C nötig (Normaußentemperatur ${city.name}) — Fachbetrieb prüft vor Ort` },
+    { kategorie: 'Keller', check: 'Zugang für Kernbohrung (60–80 mm)', note: 'Wand zwischen innen/außen durchgängig — Fachbetrieb prüft vorab' },
+    { kategorie: 'Schall', check: 'Abstand zu Schlafzimmerfenstern ≥ 3 m', note: `TA Lärm in ${city.bundesland}: Max. 45 dB(A) tags — die meisten modernen WP liegen darunter` },
+    { kategorie: 'Genehmigung', check: `Baugenehmigung in ${city.bundesland} prüfen`, note: `In ${city.bundesland} ${['ist keine Baugenehmigung nötig, Anzeige beim Bauamt reicht', 'ggf. Baugenehmigung je nach Gemeinde', 'ist eine formlose Anzeige beim Bauamt ausreichend'][cityHash(city, 3, 220)]}` },
+    { kategorie: 'Boden', check: 'Kein Gefälle > 10° am Aufstellort', note: 'Anti-Vibrations-Untergestell nivelliert leichte Unebenheiten' },
+  ];
   const installMin = INSTALLATIONS_KOSTEN.reduce((s,p) => s+p.von, 0);
   const installMax = INSTALLATIONS_KOSTEN.reduce((s,p) => s+p.bis, 0);
 

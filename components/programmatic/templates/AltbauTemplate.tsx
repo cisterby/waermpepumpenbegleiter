@@ -12,32 +12,24 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1920&q=80';
 
-const EIGNUNG_TEST = [
-  { frage: 'Vorlauftemperatur des Heizkreises', ja: '≤ 55°C → Standard-WP', nein: '55–70°C → Hochtemperatur-WP (+€2.000)', detail: 'Messung am Heizkessel bei -5°C Außentemperatur. Der lokale Fachbetrieb prüft das vor Ort.' },
-  { frage: 'Heizkörpergröße', ja: 'Alte, große Heizkörper → oft 55°C ausreichend', nein: 'Kleine moderne Heizkörper → höhere VL-Temp nötig', detail: 'Größere Heizkörper = mehr Fläche = niedrigere Vorlauftemperatur möglich.' },
-  { frage: 'Dämmzustand Außenwände', ja: 'WDVS oder Kerndämmung vorhanden', nein: 'Ungedämmtes Mauerwerk → WP immer noch möglich', detail: 'WP funktioniert in ungedämmten Altbauten — nur die JAZ und Betriebskosten sind etwas höher.' },
-  { frage: 'Baujahr Gebäude', ja: 'Kein Ausschlusskriterium für WP', nein: 'Kein Ausschlusskriterium', detail: 'Auch Altbauten von 1900 können problemlos mit WP beheizt werden — entscheidend ist die VL-Temperatur.' },
-];
+/* EIGNUNG_TEST + SANIERUNGS_REIHENFOLGE moved inside component */
 
-const SANIERUNGS_REIHENFOLGE = [
-  { schritt: '1. Hydraulischer Abgleich', kosten: '€500–€1.500', effekt: 'VL-Temp um 5–10°C senken — KfW-Pflicht', kfw: true },
-  { schritt: '2. Heizkörpertausch (falls nötig)', kosten: '€200–€500 pro Heizkörper', effekt: 'VL-Temp von 70°C auf 55°C senken', kfw: false },
-  { schritt: '3. WP-Installation', kosten: `${fmtEuro(18000)} – ${fmtEuro(28000)}`, effekt: 'Hauptinvestition — KfW 50–70% Förderung', kfw: true },
-  { schritt: '4. Fußbodenheizung (optional)', kosten: '€5.000–€15.000', effekt: 'VL-Temp auf 35°C senken, JAZ +0,5–1,0', kfw: false },
-];
-
-const JAZ_ALTBAU = [
-  { typ: 'Unsaniert, alte Heizkörper (70°C VL)', jaz: '2,5–3,2', betrieb: 'Hochtemperatur-WP nötig' },
-  { typ: 'Standard-Altbau (55°C VL)', jaz: '3,0–3,8', betrieb: 'Standard Luft-WP, gute Wirtschaftlichkeit' },
-  { typ: 'Teilsaniert mit Hydr. Abgleich (50°C)', jaz: '3,4–4,0', betrieb: 'Gute JAZ, empfohlen' },
-  { typ: 'Vollsaniert mit FBH (35°C VL)', jaz: '4,0–5,0', betrieb: 'Maximale Effizienz' },
-];
+/* JAZ_ALTBAU moved inside component */
 
 export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const jazAltbau = Math.max(jaz - 0.3, 2.8).toFixed(1);
+  const jazOptimiert = Math.min(jaz + 0.3, 4.5).toFixed(1);
+  const JAZ_ALTBAU = [
+    { typ: 'Unsaniert, alte Heizkörper (70°C VL)', jaz: `${Math.max(jaz - 1.0, 2.5).toFixed(1)}–${Math.max(jaz - 0.6, 3.0).toFixed(1)}`, betrieb: `Hochtemperatur-WP nötig in ${city.name}` },
+    { typ: 'Standard-Altbau (55°C VL)', jaz: `${Math.max(jaz - 0.4, 2.9).toFixed(1)}–${jaz.toFixed(1)}`, betrieb: 'Standard Luft-WP, gute Wirtschaftlichkeit' },
+    { typ: 'Teilsaniert mit Hydr. Abgleich (50°C)', jaz: `${jaz.toFixed(1)}–${Math.min(jaz + 0.3, 4.2).toFixed(1)}`, betrieb: `Empfohlen für ${city.name} — gute JAZ` },
+    { typ: 'Vollsaniert mit FBH (35°C VL)', jaz: `${Math.min(jaz + 0.4, 4.0).toFixed(1)}–${Math.min(jaz + 0.9, 4.8).toFixed(1)}`, betrieb: `Maximale Effizienz bei ${city.avgTemp}°C Jahresmittel` },
+  ];
   const jazAltbau = Math.max(jaz - 0.3, 2.8).toFixed(1);
   const jazOptimiert = Math.min(jaz + 0.3, 4.5).toFixed(1);
 

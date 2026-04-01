@@ -12,37 +12,50 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80';
 
-const HERSTELLER = [
-  { name: 'Viessmann Vitocal 250-A', cop: '4,0', maxVL: '65°C', kaeltemittel: 'R290', kfwBonus: true, schall: '48 dB', preis: '€11–18k' },
-  { name: 'Vaillant aroTHERM plus', cop: '3,8', maxVL: '65°C', kaeltemittel: 'R290', kfwBonus: true, schall: '52 dB', preis: '€10–17k' },
-  { name: 'Buderus Logatherm WLW', cop: '3,9', maxVL: '70°C', kaeltemittel: 'R454B', kfwBonus: false, schall: '28,5 dB', preis: '€11–17k' },
-  { name: 'Stiebel Eltron WPL 19+', cop: '3,9', maxVL: '70°C', kaeltemittel: 'R454B', kfwBonus: false, schall: '50 dB', preis: '€10–16k' },
-  { name: 'Nibe Fighter 2040', cop: '3,8', maxVL: '65°C', kaeltemittel: 'R32', kfwBonus: false, schall: '45 dB', preis: '€9–15k' },
-];
+/* HERSTELLER moved inside component */
 
-const JAZ_SZENARIEN = [
-  { system: 'Fußbodenheizung (35°C Vorlauf)', note: 'Optimal — höchste Effizienz' },
+/* JAZ_SZENARIEN moved inside component */
+const JAZ_SZENARIEN_PLACEHOLDER = [];
   { system: 'Flachheizkörper modern (45°C)', note: 'Standard in Neubauten' },
   { system: 'Heizkörper Standard (55°C)', note: 'Standard in Bestandsgebäuden' },
   { system: 'Altbau hohe Vorlauftemp. (70°C)', note: 'Hochtemperatur-WP erforderlich' },
 ];
 
-const LW_VS_SW = [
-  { kriterium: 'Installationskosten', lw: '€18.000–€28.000', sw: '€22.000–€35.000', besser: 'LW' },
-  { kriterium: 'Typische JAZ', lw: 'JAZ 3,0–4,5', sw: 'JAZ 4,0–5,5', besser: 'SW' },
-  { kriterium: 'Betriebskosten', lw: 'Mittel', sw: 'Niedrig', besser: 'SW' },
-  { kriterium: 'KfW-Bonus', lw: '+5% mit R290', sw: '+5% immer', besser: 'SW' },
-  { kriterium: 'Genehmigung', lw: 'Meist genehmigungsfrei', sw: 'Bergamt, Wasserrecht', besser: 'LW' },
-  { kriterium: 'Montageaufwand', lw: '1–3 Tage', sw: '5–10 Tage + Bohrung', besser: 'LW' },
-  { kriterium: 'Schallentwicklung', lw: '45–55 dB', sw: 'Keine (innen)', besser: 'SW' },
-  { kriterium: 'Marktanteil Deutschland', lw: '92%', sw: '8%', besser: 'LW' },
-];
+/* LW_VS_SW moved inside component */
 
 export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const HERSTELLER = [
+    { name: 'Viessmann Vitocal 250-A', cop: '4,0', maxVL: '65°C', kaeltemittel: 'R290', kfwBonus: true, schall: '48 dB', preis: '€11–18k', note: `In ${city.bundesland} beliebt` },
+    { name: 'Vaillant aroTHERM plus', cop: '4,2', maxVL: '70°C', kaeltemittel: 'R290', kfwBonus: true, schall: '49 dB', preis: '€12–19k', note: 'Stiftung Warentest 2,0' },
+    { name: 'Stiebel Eltron WPL-A', cop: '3,9', maxVL: '65°C', kaeltemittel: 'R410A', kfwBonus: false, schall: '47 dB', preis: '€10–16k', note: `Marktführer in ${city.bundesland}` },
+    { name: 'Bosch CS7000i AW', cop: '4,0', maxVL: '65°C', kaeltemittel: 'R32', kfwBonus: false, schall: '50 dB', preis: '€11–17k', note: `${city.avgTemp >= 10 ? 'Für mildes Klima gut geeignet' : 'Auch für kühlere Standorte geeignet'}` },
+    { name: 'Nibe S2125', cop: '4,1', maxVL: '65°C', kaeltemittel: 'R290', kfwBonus: true, schall: '46 dB', preis: '€13–20k', note: 'Sehr leise' },
+    { name: 'Daikin Altherma 3 HT', cop: '3,8', maxVL: '80°C', kaeltemittel: 'R32', kfwBonus: false, schall: '52 dB', preis: '€14–22k', note: `Hochtemperatur-Profi für Altbau in ${city.name}` },
+  ];
+  const LW_VS_SW = [
+    { kriterium: 'Investitionskosten', lw: '€18.000–€28.000', sw: '€22.000–€35.000', besser: 'LW' },
+    { kriterium: `JAZ in ${city.name}`, lw: jaz.toFixed(1), sw: (jaz + 0.8).toFixed(1), besser: 'SW' },
+    { kriterium: 'Betriebskosten', lw: fmtEuro(calc.wpKosten) + '/J.', sw: fmtEuro(Math.round(calc.wpKosten * 0.82)) + '/J.', besser: 'SW' },
+    { kriterium: 'KfW-Bonus', lw: 'Standard', sw: '+5% extra', besser: 'SW' },
+    { kriterium: 'Grundstück nötig', lw: 'Nein (nur 0,5 m²)', sw: `Ja — Tiefenbohrung oder Flächenkollektor in ${city.name}`, besser: 'LW' },
+    { kriterium: 'Genehmigung', lw: 'Keine / Anzeige', sw: `Wasserrecht ${city.bundesland}`, besser: 'LW' },
+    { kriterium: 'Montagezeit', lw: '2–3 Tage', sw: '5–10 Tage (inkl. Bohrung)', besser: 'LW' },
+    { kriterium: 'Schall', lw: '45–55 dB', sw: 'Fast lautlos', besser: 'SW' },
+    { kriterium: 'Empfehlung ' + city.name, lw: city.avgTemp >= 9 ? '✅ Empfohlen' : '✅ Gut geeignet', sw: '✅ Wenn Grundstück vorhanden', besser: 'equal' },
+  ];
+
+  const JAZ_SZENARIEN = [
+    { system: 'Fußbodenheizung (35°C Vorlauf)', jaz: (jaz + 0.5).toFixed(1), note: `Optimal für ${city.name} — ${city.avgTemp >= 10 ? 'mildes Klima begünstigt FBH-Betrieb' : 'FBH maximiert JAZ auch im kühleren Klima'}` },
+    { system: 'Moderne Heizkörper (45°C)', jaz: jaz.toFixed(1), note: `Standard für ${city.name} bei ${city.avgTemp}°C Jahresmittel` },
+    { system: 'Altbau Heizkörper (55°C)', jaz: (jaz - 0.4).toFixed(1), note: `Noch wirtschaftlich — ${fmtEuro(Math.round(calc.ersparnis * 0.85))}/Jahr Ersparnis in ${city.name}` },
+    { system: 'Hochtemperatur (65°C)', jaz: (jaz - 0.8).toFixed(1), note: `Hochtemperatur-WP nötig — trotzdem ${fmtEuro(Math.round(calc.ersparnis * 0.7))}/Jahr günstiger als Gas` },
+    { system: 'Altbau ohne Sanierung (70°C)', jaz: (jaz - 1.0).toFixed(1), note: `Grenzbereich — hydraulischer Abgleich in ${city.name} oft ausreichend für Verbesserung` },
+  ];
   const jazFBH = Math.min(jaz + 0.5, 4.8).toFixed(1);
   const jazHT  = Math.max(jaz - 0.5, 2.5).toFixed(1);
 

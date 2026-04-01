@@ -12,50 +12,53 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80';
 
-const MONTAGE_ABLAUF = [
-  { tag: 'Tag 1 (Vorbereitung)', icon: '📦', schritte: [
-    'Außeneinheit angeliefert und Fundament vorbereitet (Betonplatte oder Gummifüße)',
-    'Kältemittelleitungen durch Außenwand verlegt — Kernbohrung ca. 60–80 mm',
-    'Hydraulische Einbindung: Pufferspeicher, Heizkreisverteiler, Sicherheitsgruppe',
-    'Stromanschluss vorbereitet: eigener Starkstromkreis (Sicherungsautomat 3×16A+)',
-  ]},
-  { tag: 'Tag 2 (Hauptmontage)', icon: '🔧', schritte: [
-    'Außeneinheit aufgestellt und fixiert — Schallschutzmatte, Abstandshalter zur Wand',
-    'Kältemittelkreislauf befüllt und auf Dichtheit geprüft (Kältemittellizenz F-Gas)',
-    'Pufferspeicher angeschlossen — Volumen 30–50 l/kW WP-Nennleistung',
-    'Warmwasserspeicher optional integriert oder Trinkwasser-WP installiert',
-  ]},
-  { tag: 'Tag 3 (Inbetriebnahme)', icon: '⚙️', schritte: [
-    'Inbetriebnahme durch Kälteanlagenbauer (F-Gas-zertifiziert — Pflicht)',
-    'Hydraulischer Abgleich Verfahren B: Heizkörperventile werden eingestellt',
-    'Heizungsprogrammierung: Heizkurve, Absenkzeiten, Smart-Grid-Eingang',
-    'KfW-Inbetriebnahmeprotokoll ausgestellt und Anlagendaten für Antrag erfasst',
-  ]},
-];
-
-const KOSTEN_POSITIONEN = [
-  { pos: 'WP-Gerät (Außen- + Inneneinheit)', von: 9000, bis: 18000, note: 'Je nach Hersteller, kW, Kältemittel' },
-  { pos: 'Montage & Installation', von: 3000, bis: 6000, note: 'Kernbohrung, Kältemittel, Hydraulik' },
-  { pos: 'Hydraulischer Abgleich', von: 500, bis: 1500, note: 'KfW-Pflicht — separat ausweisen' },
-  { pos: 'Pufferspeicher 200–500 l', von: 600, bis: 2000, note: 'Inkl. Montage und Dämmung' },
-  { pos: 'Elektroinstallation', von: 500, bis: 1500, note: 'Starkstromanschluss + Zähler' },
-  { pos: 'Warmwasserspeicher (optional)', von: 800, bis: 2500, note: 'Wenn kein Kombispeicher' },
-  { pos: 'Wärmemengenzähler (KfW 2026)', von: 300, bis: 600, note: 'KfW-Pflicht ab 2026' },
-];
-
-const MONTAGE_FEHLER = [
-  { fehler: 'Außeneinheit zu nah an Grundstücksgrenze', folge: 'Schallschutz-Problem — Abstand ≥ 3 m empfohlen, lokal prüfen' },
-  { fehler: 'Pufferspeicher zu klein', folge: 'WP startet zu häufig — Lebensdauer sinkt, JAZ schlechter' },
-  { fehler: 'Kein hydraulischer Abgleich', folge: 'KfW-Antrag abgelehnt, Heizkreis ungleichmäßig versorgt' },
-  { fehler: 'Falscher Aufstellort (Wärmefalle)', folge: 'WP zieht eigene Abluft an — COP sinkt 15–25%' },
-  { fehler: 'Kein Schallschutzfundament', folge: 'Körperschall im Haus — Reklamationen, teure Nachrüstung' },
-];
+/* Static arrays moved inside component — see below */
 
 export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const MONTAGE_ABLAUF = [
+    { tag: 'Tag 1 (Vorbereitung)', icon: '📦', schritte: [
+      `Außeneinheit in ${city.name} angeliefert, Fundament vorbereitet (Betonplatte oder Anti-Vibrations-Gummifüße)`,
+      `Kältemittelleitungen durch Außenwand: Kernbohrung 60–80 mm, typischer Abstand Außeneinheit zu Technikraum in ${city.bundesland}: 5–15 m`,
+      'Hydraulische Einbindung: Pufferspeicher, Heizkreisverteiler, Sicherheitsgruppe — Vorlauf/Rücklauf nach Heizlastplan',
+      `Starkstromkreis 3×16A+ vorbereitet — ${['Netzbetreiber-Anmeldung rechtzeitig stellen', 'WP-Sondertarif beim Versorger anfragen', 'Zählerfeld-Erweiterung falls nötig'][cityHash(city, 3, 200)]}`,
+    ]},
+    { tag: 'Tag 2 (Hauptmontage)', icon: '🔧', schritte: [
+      `Außeneinheit aufgestellt: Schallschutzmatte, Abstandshalter — Mindestabstand Grundstücksgrenze in ${city.bundesland} prüfen`,
+      'Kältemittelkreislauf befüllt und auf Dichtheit geprüft — F-Gas-zertifizierter Kälteanlagenbauer Pflicht (EU 517/2014)',
+      `Pufferspeicher angeschlossen: ${['200–300 l bei kleiner Heizlast', '300–500 l Standardgröße für Einfamilienhaus', '400–500 l für optimalen Taktschutz'][cityHash(city, 3, 201)]} — mind. 30 l/kW WP-Nennleistung`,
+      'Warmwasserspeicher integriert oder Trinkwasser-WP parallel — Legionellenschutzprogramm eingestellt',
+    ]},
+    { tag: 'Tag 3 (Inbetriebnahme)', icon: '⚙️', schritte: [
+      'Inbetriebnahme durch F-Gas-zertifizierten Kälteanlagenbauer — Inbetriebnahmeprotokoll für KfW',
+      `Hydraulischer Abgleich Verfahren B: Heizkörperventile eingestellt auf ${city.normAussentemp}°C Auslegungstemperatur`,
+      `Heizungsprogrammierung: Heizkurve für ${city.avgTemp}°C Jahresmittel optimiert, Absenkzeiten, Smart-Grid-Eingang`,
+      'KfW-Dokumentation vollständig: Inbetriebnahmeprotokoll, Heizlastberechnung, Hydraulischer Abgleich',
+    ]},
+  ];
+
+  const KOSTEN_POSITIONEN = [
+    { pos: 'WP-Gerät (Außen- + Inneneinheit)', von: 9000, bis: 18000, note: `Je nach Hersteller, kW, Kältemittel — marktüblich in ${city.bundesland}` },
+    { pos: 'Montage & Installation', von: 3000, bis: 6000, note: `Kernbohrung, Kältemittelbefüllung, Hydraulik — ${city.name} Marktpreis 2026` },
+    { pos: 'Hydraulischer Abgleich', von: 500, bis: 1500, note: 'KfW-Pflicht — muss separat ausgewiesen sein' },
+    { pos: 'Pufferspeicher 200–500 l', von: 600, bis: 2000, note: 'Inkl. Montage, Dämmung, Einbindung' },
+    { pos: 'Elektroinstallation', von: 500, bis: 1500, note: `Starkstromkreis 3×16A, WP-Zähler — ${city.name} Elektriker-Marktpreis` },
+    { pos: 'Warmwasserspeicher (optional)', von: 800, bis: 2500, note: 'Wenn kein Kombispeicher vorhanden' },
+    { pos: 'Wärmemengenzähler (KfW-Pflicht 2026)', von: 300, bis: 600, note: 'Ab 2026 KfW-Pflichtnachweis' },
+  ];
+
+  const MONTAGE_FEHLER = [
+    { fehler: 'Außeneinheit zu nah an Grundstücksgrenze', folge: `Schallschutz-Problem: In ${city.bundesland} gelten TA-Lärm-Vorgaben — mindestens 3 m Abstand empfohlen, lokal prüfen` },
+    { fehler: 'Pufferspeicher zu klein', folge: `WP taktet zu häufig: Bei ${city.heizgradtage} Heizgradtagen in ${city.name} sinkt die Lebensdauer erheblich — mind. 30 l/kW einplanen` },
+    { fehler: 'Kein hydraulischer Abgleich', folge: `KfW-Antrag abgelehnt + ungleichmäßige Versorgung: ${['Häufigster Ablehnungsgrund beim KfW-Verwendungsnachweis', 'Führt zu 15–20% schlechterer JAZ und Reklamationen', 'Betrifft ca. 30% aller abgelehnten BEG-Anträge'][cityHash(city, 3, 202)]}` },
+    { fehler: 'Falscher Aufstellort (Wärmefalle)', folge: `WP zieht eigene Abluft an: COP sinkt 15–25% — besonders relevant in ${city.name} bei engen Grundstücksverhältnissen` },
+    { fehler: 'Kein Schallschutzfundament', folge: `Körperschall überträgt sich ins Gebäude: In dicht bebauten Lagen in ${city.name} führt das zu Nachbarkonflikten — Anti-Vibrations-Matte (€100–300) pflicht` },
+  ];
+
   const gesamtMin = KOSTEN_POSITIONEN.reduce((s, p) => s + p.von, 0);
   const gesamtMax = KOSTEN_POSITIONEN.reduce((s, p) => s + p.bis, 0);
 

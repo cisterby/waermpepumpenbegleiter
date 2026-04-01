@@ -12,34 +12,45 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80';
 
-const WANN_PFLICHT = [
-  { trigger: 'Gasheizung > 30 Jahre alt', pflicht: true, detail: 'GEG §72: Konstanttemperatur-Heizkessel, die vor 1994 eingebaut wurden, müssen ausgetauscht werden.' },
-  { trigger: 'Irreparabler Defekt', pflicht: true, detail: 'Bei Austausch gilt ab 2024 die 65%-EE-Pflicht für neue Heizungen. Gas-Brennwert allein nicht mehr zulässig.' },
-  { trigger: 'GEG-Frist in Ihrer Gemeinde', pflicht: true, detail: 'Kommunale Wärmeplanung ab 2026 (Städte >100.000 EW) kann frühere Fristen auslösen.' },
-  { trigger: 'Heizung funktioniert noch', pflicht: false, detail: 'Freiwilliger Tausch immer sinnvoll wenn Heizung > 15 Jahre alt — Kosten steigen mit CO₂-Preis.' },
-];
+/* WANN_PFLICHT moved inside component */
 
-const TAUSCH_ABLAUF = [
-  { step: 'Energieberatung & Heizlastberechnung', dauer: '1–2 Wochen', detail: 'KfW-Pflicht, Basis für Gerätedimensionierung. BAFA-geförderte Energieberatung (80% der Kosten).' },
-  { step: 'KfW-Antrag stellen', dauer: '1–3 Wochen', detail: 'Zwingend VOR Auftragserteilung. Wir begleiten das. Bearbeitungszeit KfW: 5–15 Werktage.' },
-  { step: '3 Angebote einholen', dauer: '2–6 Wochen', detail: 'Nur KfW-LuL-registrierte Betriebe. Wartezeit in Großstädten: 6–12 Wochen.' },
-  { step: 'Alte Heizung demontieren', dauer: '0,5 Tag', detail: 'Kosten Entsorgung: €200–500. Öl-Heizöl muss separat entsorgt werden (Gefahrgut, €80–150).' },
-  { step: 'Neue WP installieren', dauer: '2–3 Tage', detail: 'Montage, Hydraulik, hydraulischer Abgleich, Elektro, Inbetriebnahme.' },
-  { step: 'KfW-Abrechnung einreichen', dauer: '4 Wochen', detail: 'Rechnungen, Inbetriebnahmeprotokoll, hydraulischer Abgleich. KfW zahlt innerhalb von 4–6 Wochen.' },
-];
+/* TAUSCH_ABLAUF moved inside component */
 
-const HEIZUNG_VERGLEICH = [
-  { typ: 'Wärmepumpe ⭐', kosten: fmtEuro(18000)+'–'+fmtEuro(28000), kfw: '30–70%', betrieb: 'Niedrig', geg: '✅ Ja', empfehlung: 'Beste Wahl 2024+' },
-  { typ: 'Gas-Hybrid (WP+Gas)', kosten: fmtEuro(14000)+'–'+fmtEuro(24000), kfw: '30–70%', betrieb: 'Mittel', geg: '✅ Ja', empfehlung: 'Übergangs­lösung' },
-  { typ: 'Pelletheizung', kosten: fmtEuro(15000)+'–'+fmtEuro(25000), kfw: 'Ja', betrieb: 'Mittel', geg: '✅ Ja', empfehlung: 'Für ländliche Gebiete' },
-  { typ: 'Gas-Brennwert allein', kosten: fmtEuro(4000)+'–'+fmtEuro(8000), kfw: '—', betrieb: 'Steigend (CO₂)', geg: '❌ Nein', empfehlung: 'Nicht empfohlen' },
-];
+/* HEIZUNG_VERGLEICH moved inside component */
 
 export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+
+
+  const HEIZUNG_VERGLEICH = [
+    { typ: 'Wärmepumpe ⭐', kosten: fmtEuro(18000)+'–'+fmtEuro(28000), kfw: `${foerd.gesamtSatz}%`, betrieb: `${fmtEuro(calc.wpKosten)}/J. in ${city.name}`, geg: '✅ Ja', empfehlung: 'Beste Wahl 2026+' },
+    { typ: 'Gas-Hybridheizung', kosten: fmtEuro(8000)+'–'+fmtEuro(15000), kfw: '30%', betrieb: `${fmtEuro(Math.round((calc.wpKosten + calc.ersparnis) * 0.7))}/J. + CO₂-Kosten`, geg: '⚠️ Eingeschränkt', empfehlung: 'Übergangslösung' },
+    { typ: 'Pelletheizung', kosten: fmtEuro(15000)+'–'+fmtEuro(25000), kfw: '45%', betrieb: `ca. ${fmtEuro(Math.round(calc.wpKosten * 1.3))}/J.`, geg: '✅ Ja', empfehlung: `Falls kein Platz für WP in ${city.name}` },
+    { typ: 'Fernwärme', kosten: fmtEuro(3000)+'–'+fmtEuro(8000), kfw: '30%', betrieb: `Variabel — ${city.fernwaermeQuote}% Netzabdeckung in ${city.name}`, geg: '✅ Bedingt', empfehlung: `Nur wenn Anschluss in ${city.name} vorhanden` },
+    { typ: 'Neue Gasheizung', kosten: fmtEuro(5000)+'–'+fmtEuro(10000), kfw: '0%', betrieb: `${fmtEuro(wpKosten + calc.ersparnis)}/J. + CO₂-Aufschlag`, geg: '❌ Nein (solo)', empfehlung: 'Nicht empfohlen 2026+' },
+  ];
+
+  const WANN_PFLICHT = [
+    { trigger: 'Gasheizung > 30 Jahre alt', pflicht: true, detail: `GEG §72: Konstanttemperatur-Heizkessel vor 1994 müssen ausgetauscht werden — gilt auch in ${city.name}.` },
+    { trigger: 'Heizung defekt — Notfall', pflicht: true, detail: `Notfallregelung: Gasheizung darf max. 3 Jahre nach GEG-Frist weiter betrieben werden. Frist in ${city.name}: ${city.gegFrist.split('-').reverse().join('.')}.` },
+    { trigger: 'Gebäudeverkauf (ab 2025)', pflicht: true, detail: `Bei Eigentümerwechsel in ${city.name}: Neuer Eigentümer hat 2 Jahre Zeit zur GEG-konformen Umrüstung auf 65%-EE.` },
+    { trigger: 'GEG-Frist überschritten', pflicht: true, detail: `In ${city.name} gilt die GEG-Frist ab ${city.gegFrist.split('-').reverse().join('.')} — danach ist der Einbau fossiler Heizungen ohne EE-Anteil nicht mehr zulässig.` },
+    { trigger: 'Neuer freiwilliger Tausch', pflicht: false, detail: `Freiwilliger Tausch in ${city.name}: sofort 65%-EE-Pflicht. WP erfüllt das immer. Gasheizung nur noch mit Hybrid-Lösung GEG-konform.` },
+  ];
+
+  const TAUSCH_ABLAUF = [
+    { step: 'Energieberatung & Heizlast', dauer: '1–2 Wochen', detail: `KfW-Pflicht in ${city.name}: Basis für korrekte WP-Dimensionierung. BAFA-geförderte Beratung (80% der Kosten, Eigenanteil ~€60–140).` },
+    { step: 'KfW-Antrag stellen', dauer: 'Vor Auftrag!', detail: `Antrag MUSS vor Auftragserteilung gestellt werden — gilt ohne Ausnahme in ${city.name}. Wir begleiten kostenlos.` },
+    { step: 'Installateur-Auswahl', dauer: '1–2 Wochen', detail: `Mind. 3 Angebote vergleichen — in ${city.name} typischerweise 20–40% Preisunterschied. Wir holen die Vergleichsangebote für Sie ein.` },
+    { step: 'Installation & Montage', dauer: '2–3 Tage', detail: `Alte Heizung aus, WP ein. Hydraulischer Abgleich und Inbetriebnahme durch F-Gas-zertifizierten Betrieb in ${city.name}.` },
+    { step: 'Förderabrechnung', dauer: '4–8 Wochen', detail: `Rechnung + Inbetriebnahmeprotokoll einreichen. KfW zahlt ${fmtEuro(foerd.zuschuss)} direkt auf Ihr Konto.` },
+    { step: 'Betrieb & Optimierung', dauer: 'Laufend', detail: `Heizkurve nach dem ersten Winter in ${city.name} optimieren — JAZ ${jaz} ist der Zielwert bei ${city.avgTemp}°C Jahresmittel.` },
+    { step: 'WP-Wartung (empfohlen)', dauer: 'Jährlich', detail: `Kältemittelkreislauf, Filter, Drücke — Wartungskosten Ø €200–400/Jahr. Hersteller-Garantie in ${city.bundesland} oft an Wartungsvertrag gebunden.` },
+  ];
 
   const intros = [
     `Heizung tauschen ${city.name}: Seit 2024 gilt die 65%-EE-Pflicht — Gas-Brennwert allein nicht mehr GEG-konform. WP-Eigenanteil nach ${foerd.gesamtSatz}% KfW: ${fmtEuro(foerd.eigenanteil)}. Ersparnis vs. altem Gas: ${fmtEuro(calc.ersparnis)}/Jahr.`,

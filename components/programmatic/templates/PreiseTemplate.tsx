@@ -12,36 +12,34 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80';
 
-const WP_TYPEN_PREISE = [
-  { typ: 'Luft-Wasser-WP (Standard)', gerät: '€9.000–€18.000', montage: '€3.000–€6.000', gesamt: '€12.000–€28.000', kfw: true, note: '92% aller WP-Installationen' },
-  { typ: 'Luft-Wasser-WP (Hochtemperatur)', gerät: '€11.000–€20.000', montage: '€3.500–€6.500', gesamt: '€14.500–€30.000', kfw: true, note: 'Für Altbau mit VL 55–70°C' },
-  { typ: 'Sole-Wasser-WP (Erdwärme)', gerät: '€10.000–€18.000', montage: '€8.000–€18.000', gesamt: '€22.000–€38.000', kfw: true, note: 'Inkl. Tiefenbohrung 100–200m' },
-  { typ: 'Wasser-Wasser-WP (Grundwasser)', gerät: '€10.000–€17.000', montage: '€10.000–€20.000', gesamt: '€22.000–€40.000', kfw: true, note: 'Selten — Grundwasserrecht nötig' },
-];
+/* WP_TYPEN_PREISE moved inside component */
 
-const PREIS_FAKTOREN = [
-  { faktor: 'Heizlast / Gebäudegröße', einfluss: 'Hoch', detail: 'Jedes kW mehr Heizleistung = ca. €800–1.200 Mehrkosten. Heizlastberechnung vor Auswahl Pflicht.' },
-  { faktor: 'Vorlauftemperatur (VL)', einfluss: 'Mittel', detail: 'Hochtemperatur-WP (bis 70°C) kostet €1.500–3.000 mehr als Standard. Häufig in Altbauten.' },
-  { faktor: 'Kältemittel R290 (Propan)', einfluss: 'Niedrig', detail: 'R290-Geräte kosten €200–500 mehr, bringen aber +5% KfW-Bonus — rechnet sich fast immer.' },
-  { faktor: 'Pufferspeicher', einfluss: 'Mittel', detail: '200–500 l Pufferspeicher: €600–2.000. Notwendig bei kurzen Heizkreisen oder getakteter Heizung.' },
-  { faktor: 'Elektroanschluss', einfluss: 'Variabel', detail: 'Neuer Starkstromkreis + Zweitarif-Zähler: €500–1.500. Häufig unterschätzt.' },
-];
+/* PREIS_FAKTOREN moved inside component */
 
-const VERSTECKTE_KOSTEN = [
-  { pos: 'Elektroinstallation & Starkstrom', kosten: '€500–1.500', note: 'Eigener Kreis 3×16A, oft nicht im Hauptangebot' },
-  { pos: 'Hydraulischer Abgleich', kosten: '€500–1.500', note: 'KfW-Pflicht, muss separat ausgewiesen sein' },
-  { pos: 'Wärmemengenzähler (KfW-Pflicht 2026)', kosten: '€300–600', note: 'Neu ab 2026 KfW-Pflicht' },
-  { pos: 'Kernbohrung Außenwand', kosten: '€150–400', note: 'Für Kältemittelleitungen' },
-  { pos: 'Schallschutzfundament', kosten: '€200–600', note: 'Empfohlen, in städtischen Lagen Pflicht' },
-  { pos: 'WW-Speicher (falls nicht enthalten)', kosten: '€800–2.500', note: 'Warmwasserbereitung separat' },
-  { pos: 'Alte Heizung entsorgen', kosten: '€200–500', note: 'Demontage + Entsorgungskosten' },
-];
+/* VERSTECKTE_KOSTEN moved inside component */
 
 export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const WP_TYPEN_PREISE = [
+    { typ: 'Luft-Wasser-WP (Standard)', gerät: '€9.000–€18.000', montage: '€3.000–€6.000', gesamt: '€12.000–€28.000', kfw: true, note: `92% aller WP in ${city.name} — JAZ ${jaz}` },
+    { typ: 'Luft-Wasser-WP (Hochtemperatur)', gerät: '€11.000–€20.000', montage: '€3.500–€6.500', gesamt: '€14.500–€30.000', kfw: true, note: `Altbau in ${city.name} mit VL 55–70°C` },
+    { typ: 'Sole-Wasser-WP (Erdwärme)', gerät: '€10.000–€18.000', montage: '€8.000–€18.000', gesamt: '€22.000–€38.000', kfw: true, note: `+5% KfW-Bonus, JAZ ${(jaz + 0.8).toFixed(1)} in ${city.name}` },
+    { typ: 'Wasser-Wasser-WP (Grundwasser)', gerät: '€10.000–€17.000', montage: '€10.000–€20.000', gesamt: '€22.000–€40.000', kfw: true, note: `Selten — Grundwasserrecht ${city.bundesland} nötig` },
+  ];
+
+  const VERSTECKTE_KOSTEN = [
+    { pos: 'Elektroinstallation & Starkstrom', kosten: '€500–1.500', note: `Eigener Kreis 3×16A — Netzbetreiber ${city.name} oft nicht im Angebot` },
+    { pos: 'Hydraulischer Abgleich', kosten: '€500–1.500', note: `KfW-Pflicht in ${city.name} — muss separat ausgewiesen sein` },
+    { pos: 'Wärmemengenzähler (KfW-Pflicht 2026)', kosten: '€300–600', note: 'Neu ab 2026' },
+    { pos: 'Kernbohrung Außenwand', kosten: '€150–400', note: 'Kältemittelleitungen in ${city.name}' },
+    { pos: 'Schallschutzfundament', kosten: '€200–600', note: `In dicht besiedelten Lagen in ${city.name} empfohlen` },
+    { pos: 'WW-Speicher (falls nicht enthalten)', kosten: '€800–2.500', note: 'Warmwasserbereitung separat' },
+    { pos: 'Alte Heizung entsorgen', kosten: '€200–500', note: `Demontage + Entsorgungskosten in ${city.bundesland}` },
+  ];
   const eigenanteilMin = Math.round(12000 * (1 - foerd.gesamtSatz / 100));
   const eigenanteilMax = Math.round(30000 * (1 - foerd.gesamtSatz / 100));
 

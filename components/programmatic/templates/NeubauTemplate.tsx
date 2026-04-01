@@ -12,31 +12,38 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1920&q=80';
 
-const GEG_ANFORDERUNGEN = [
-  { nr: '§', titel: '65%-EE-Pflicht (seit 01.01.2024)', text: 'Jede neue Heizung muss mindestens 65% erneuerbare Energie nutzen. Wärmepumpen erfüllen das zu 100% — ohne Einschränkungen und ohne Hybridlösung.' },
-  { nr: '§', titel: 'Primärenergiefaktor', text: 'Wärmepumpen haben einen günstigen Primärenergiefaktor von 0,7×JAZ. Bei JAZ 4.2 im Neubau ergibt das 0,7×4,2 = 2,94 — deutlich besser als Gasheizung (1,1×Brennwert).' },
-  { nr: '§', titel: 'KfW-Effizienzhaus-Bonus', text: 'Im Neubau ist KfW-Effizienzhaus 40 + WP die beste Kombination: maximale Dämmung + minimale WP-Leistung = JAZ 4.5+ und geringstem Eigenanteil.' },
-  { nr: 'i', titel: 'Programm 297/298 statt 458', text: 'Im Neubau gilt KfW-297/298 (Kredit) statt KfW-458 (Zuschuss Bestand). Zinsgünstige Kredite bis €150.000 für Effizienzhäuser.' },
-];
+/* GEG_ANFORDERUNGEN moved inside component */
 
-const NEUBAU_PLANUNG = [
-  { phase: 'Planungsphase', items: ['Heizlast nach DIN EN 12831 planen (Wärmeschutz + WP-Leistung)', 'Fußbodenheizung als Standard (Vorlauf 30–35°C, JAZ 4,5+)', 'Pufferspeicher-Größe: 20–30 l/kW WP-Leistung', 'WP-Tarif-Zähler einplanen (spart 20–30% Strom)'] },
-  { phase: 'Förderplanung', items: ['KfW-297/298 für Effizienzhaus 40 beantragen', 'BAFA-Förderung für Einzelmaßnahmen prüfen', 'Bundeslandförderprogramm kombinieren', 'Wärmepumpe als Einzelmaßnahme KfW-458 bei Bestand'] },
-  { phase: 'Geräteauswahl', items: ['Luft-WP: geringste Installationskosten, JAZ 3,5–4,5', 'Sole-WP: höchste Effizienz JAZ 4,0–5,5, +5% KfW-Bonus', 'Propan-Kältemittel (R290): +5% KfW-Bonus', 'Monoblock vs. Split: Monoblock einfacher, kein Kältemittelleitungswerk'] },
-];
+/* NEUBAU_PLANUNG moved inside component */
 
-const VERGLEICH_HEIZUNG = [
-  { typ: 'Wärmepumpe ⭐', kosten: '€18.000–€28.000', kfw: '✅ 297/298', betrieb: 'Niedrig · steigt mit Strom', langfrist: 'Beste Wahl 2024+' },
-  { typ: 'Gas-Hybrid', kosten: '€12.000–€20.000', kfw: '⚠️ Nur mit EE-Anteil', betrieb: 'CO₂-Preis steigt', langfrist: 'Risiko 2030+' },
-  { typ: 'Sole-WP (Erd)', kosten: '€22.000–€35.000', kfw: '✅ +5% Bonus', betrieb: 'Niedrigst', langfrist: 'Optimal für Neubau' },
-  { typ: 'Pellets', kosten: '€15.000–€25.000', kfw: '✅ Ja', betrieb: 'Wartungsintensiv', langfrist: 'Nischenlösung' },
-];
+/* VERGLEICH_HEIZUNG moved inside component */
 
 export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const GEG_ANFORDERUNGEN = [
+    { req: 'EE-Anteil mind. 65%', note: `WP erfüllt das in ${city.name} immer — JAZ ${jaz} → weit über 65% EE-Anteil` },
+    { req: 'GEG §71 Neubau', note: 'Seit 2024 gilt 65%-EE-Pflicht für alle neuen Heizungen' },
+    { req: 'QP-Grenzwert', note: `Wärmepumpe senkt Primärenergiebedarf in ${city.name} deutlich unter GEG-Grenzwert` },
+    { req: 'Lüftungsanlage bei guter Dämmung', note: 'Ab Luftdichtigkeit n50 < 0,6 empfohlen' },
+    { req: 'Anlagenbuch & Protokolle', note: 'F-Gas, Hydraulik, Inbetriebnahme für Bauabnahme' },
+  ];
+  const NEUBAU_PLANUNG = [
+    { phase: 'Bauplanung (vor Baugenehmigung)', was: `WP-Typ und Leistung in Haustechnikplanung — in ${city.name} empfehlen wir Luft-WP mit FBH` },
+    { phase: 'KfW-Antrag (vor Baubeginn!)', was: `BEG WG Programm 297 für Neubau — in ${city.name} bis ${foerd.gesamtSatz}% gefördert` },
+    { phase: 'Einbau (Rohbauphase)', was: 'Fußbodenheizung + Verteilsystem — parallel zur Betondecke' },
+    { phase: 'WP-Montage (Ausbau)', was: `Außeneinheit aufstellen in ${city.name} — Schallabstand prüfen` },
+  ];
+  const VERGLEICH_HEIZUNG = [
+    { typ: 'Wärmepumpe (Luft/Sole)', geg: '✅ Ja', kfw: `${foerd.gesamtSatz}%`, betrieb: fmtEuro(calc.wpKosten)+'/J.', future: 'Zukunftssicher' },
+    { typ: 'Gas-WP-Hybrid', geg: '✅ Bedingt', kfw: '30%', betrieb: fmtEuro(Math.round(calc.wpKosten * 1.3))+'/J.', future: 'CO₂-Risiko' },
+    { typ: 'Pellets', geg: '✅ Ja', kfw: '45%', betrieb: `ca. ${fmtEuro(Math.round(calc.wpKosten * 1.35))}/J.`, future: 'Lagerung nötig' },
+    { typ: 'Reine Gasheizung', geg: '❌ Nein', kfw: '0%', betrieb: fmtEuro(calc.wpKosten + calc.ersparnis)+'/J.', future: `Nicht empfohlen in ${city.name}` },
+    { typ: 'Fernwärme', geg: '✅ Bedingt', kfw: '30%', betrieb: `Variabel — ${city.fernwaermeQuote}% in ${city.name}`, future: `Nur wenn Netz in ${city.name}` },
+  ];
   const jazNeubau = Math.min(jaz + 0.5, 4.8).toFixed(1);
 
   const intros = [

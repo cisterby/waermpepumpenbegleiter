@@ -26,32 +26,37 @@ function getMarketData(einwohner: number) {
   return                          { wartezeit: '4–8 Wochen',  kosten: '€17.000–€26.000', note: 'Gute lokale Auswahl', urgent: false };
 }
 
-const CRITERIA = [
-  { icon: '🏛️', title: 'HWK-Eintragung aktiv', text: 'Gültige Eintragung in der Handwerksrolle — jährlich geprüft.' },
-  { icon: '👨‍🔧', title: 'Meisterbetrieb', text: 'Persönliche technische Leitung durch einen SHK-Meister.' },
-  { icon: '📊', title: '5+ WP-Installationen', text: 'Min. 5 dokumentierte Installationen in den letzten 24 Monaten.' },
-  { icon: '🏦', title: 'KfW-LuL-Registrierung', text: 'Aktive Registrierung als Lieferant und Leistungserbringer. Ohne das kein KfW-Antrag.' },
-  { icon: '🛡️', title: 'Haftpflichtversicherung', text: 'Gültige Betriebshaftpflicht für Heizungsbau nachgewiesen.' },
-  { icon: '⭐', title: 'Kundenbewertung', text: 'Unter Ø 3,5/5 nach 10+ Bewertungen → automatisch aus unserem Netzwerk entfernt.' },
-];
+/* CRITERIA moved inside component */
 
-const CHECKLIST = [
-  { item: 'Heizlastberechnung nach DIN EN 12831', crit: true,  note: 'Grundlage für korrekte WP-Dimensionierung — Pflicht' },
-  { item: 'Gerät: Fabrikat, Modell, kW-Leistung', crit: true,  note: 'Einzeln ausgewiesen — keine Pauschale' },
-  { item: 'Montage & Installation (Stunden)', crit: true,  note: 'Transparente Kalkulation' },
-  { item: 'Hydraulischer Abgleich (Verfahren B)', crit: true,  note: 'KfW-Pflicht — fehlt in >60% aller Angebote!' },
-  { item: 'Wärmemengenzähler (neu 2026)', crit: true,  note: 'KfW-Pflicht ab 2026 — im Angebot abfragen' },
-  { item: 'Elektroinstallation & Zählerinfrastruktur', crit: false, note: 'Oft separat: €500–1.500' },
-  { item: 'Fundament & Aufstellung Außeneinheit', crit: false, note: 'Ca. €300–800, oft separate Position' },
-  { item: 'KfW-Antragsbegleitung als LuL', crit: true,  note: 'Betrieb muss LuL-registriert sein — ohne das kein Antrag' },
-  { item: 'Schallschutznachweis (neu ab 2026)', crit: false, note: '10 dB unter EU-Grenzwert für Förderfähigkeit' },
-  { item: 'Gewährleistung & Wartungsvertrag', crit: false, note: 'Gesetzl. 2 Jahre — gute Betriebe bieten 5+ Jahre' },
-];
+/* CHECKLIST moved inside component */
 
 export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const CRITERIA = [
+    { icon: '🏛️', title: 'HWK-Eintragung aktiv', text: `Gültige Eintragung in der Handwerksrolle ${city.bundesland} — Pflicht für jeden Betrieb in ${city.name}.` },
+    { icon: '🔑', title: 'KfW-LuL-Registrierung', text: `Im KfW-Portal registrierter Lieferanten- und Leistungserbringer — ohne diese: keine BEG-Förderung für ${city.name}.` },
+    { icon: '📊', title: 'Min. 5 WP-Referenzen', text: `Dokumentierte WP-Installationen — davon ${['mindestens 2 im Altbau', 'mit JAZ-Protokollen', 'in ' + city.bundesland + ' und Umgebung'][cityHash(city, 3, 270)]}.` },
+    { icon: '❄️', title: 'F-Gas-Zertifikat', text: `EU 517/2014 Sachkundenachweis — Pflicht für Kältemittelbefüllung in ${city.name}.` },
+    { icon: '📐', title: 'Heizlastberechnung', text: `DIN EN 12831 für ${city.normAussentemp}°C Normaußentemperatur ${city.name} — Pflicht und Grundlage für Dimensionierung.` },
+    { icon: '🛡️', title: 'Betriebshaftpflicht ≥ €1,5 Mio.', text: `Aktive Haftpflicht — Pflicht für alle unsere Partnerbetriebe in ${city.name}.` },
+    { icon: '⏱️', title: 'Reaktionszeit ≤ 48h', text: `Lokaler Betrieb in ${city.name} — kein bundesweites Callcenter, schnell vor Ort.` },
+  ];
+  const CHECKLIST = [
+    { item: 'Heizlastberechnung DIN EN 12831', crit: true, note: `Für ${city.normAussentemp}°C Normaußentemperatur ${city.name} — Pflicht` },
+    { item: 'Hydraulischer Abgleich', crit: true, note: `KfW-Pflicht — ohne diesen: Förderung weg` },
+    { item: 'WP-Modell + kW-Angabe', crit: true, note: 'Vollständige Spezifikation mit COP' },
+    { item: 'Kältemittelangabe', crit: true, note: '+5% KfW-Bonus für R290 — muss explizit stehen' },
+    { item: 'Pufferspeicher-Volumen', crit: true, note: `Mind. 30 l/kW — für ${city.name} relevant` },
+    { item: 'Elektroinstallation separat', crit: true, note: `Starkstromkreis + Netzbetreiber ${city.name}` },
+    { item: 'Wärmemengenzähler', crit: true, note: 'KfW-Pflicht 2026' },
+    { item: 'Inbetriebnahme F-Gas-Betrieb', crit: true, note: 'EU 517/2014' },
+    { item: 'Garantiezeiten', crit: false, note: `Herstellergarantie in ${city.bundesland}` },
+    { item: 'KfW-Begleitung inklusive', crit: false, note: `Seriöse Betriebe in ${city.name} bieten das an` },
+    { item: 'Wartungsvertrag-Angebot', crit: false, note: '€200–400/Jahr — optional' },
+  ];
+
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const market = getMarketData(city.einwohner);
   const isUrgent = city.einwohner >= 100000;

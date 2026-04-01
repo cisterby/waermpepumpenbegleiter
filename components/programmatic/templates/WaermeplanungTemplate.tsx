@@ -12,32 +12,37 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=1920&q=80';
 
-const FRISTEN_PLAN = [
-  { gruppe: 'Großstädte > 100.000 EW', frist: '30.06.2026', status: 'Läuft — Wärmepläne müssen vorliegen' },
-  { gruppe: 'Mittelstädte 10.000–100.000 EW', frist: '30.06.2028', status: 'Planung läuft' },
-  { gruppe: 'Kleinstädte < 10.000 EW', frist: '30.06.2028', status: 'Bundesland-abhängig' },
-  { gruppe: 'Für Hausbesitzer: GEG-Pflicht', frist: 'Nach kommunalem Wärmeplan', status: '65% EE-Pflicht greift nach Vorliegen des Plans' },
-];
+/* FRISTEN_PLAN moved inside component */
 
-const WAS_BEDEUTET = [
-  { frage: 'Was ist ein kommunaler Wärmeplan?', antwort: 'Eine Pflichtanalyse der Wärmeversorgung der Gemeinde: Wo liegt Fernwärme-Netz, wo dezentrale WP, wo Biomethan? Basis für die GEG-Anwendung im Bestand.' },
-  { frage: 'Was ändert sich für Hausbesitzer?', antwort: 'Sobald der Wärmeplan vorliegt, greift die 65%-EE-Pflicht auch für den Bestand. Eine neue Heizung muss dann zu 65% aus erneuerbaren Energien betrieben werden — Gas-Brennwert allein nicht mehr GEG-konform.' },
-  { frage: 'Lohnt es sich jetzt zu warten?', antwort: 'Nein — wer jetzt freiwillig auf WP umstellt erhält volle KfW-Förderung und sichert sich niedrige Betriebskosten. Wer wartet riskiert höhere CO₂-Preise und mögliche Warteschlangen.' },
-  { frage: 'Was wenn Fernwärme kommt?', antwort: 'Liegt Ihr Haus im geplanten Fernwärme-Ausbaugebiet: abwarten kann sinnvoll sein. Liegt keine Fernwärme-Planung vor: WP ist die sichere Wahl.' },
-];
+/* WAS_BEDEUTET moved inside component */
 
-const GEG_STADTTYPEN = [
-  { typ: 'Fernwärme-Vorranggebiet', action: 'Anschluss an Fernwärme wenn verfügbar', wann: 'Nach Ausbau (oft 2028–2035)' },
-  { typ: 'WP-Eignungsgebiet (dezentral)', action: 'Wärmepumpe — beste Wahl jetzt', wann: 'Sofort möglich und gefördert' },
-  { typ: 'Biomethan/H₂-Vorbehaltsnetz', action: 'Gas-Hybrid als Übergang ggf. möglich', wann: 'Risiko: H₂-Versorgung unsicher bis 2035' },
-  { typ: 'Ländliche Gebiete ohne Plan', action: 'WP oder Pellets — GEG-konform', wann: 'Sofort — kein Fernwärme-Risiko' },
-];
+/* GEG_STADTTYPEN moved inside component */
 
 export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const FRISTEN_PLAN = [
+    { datum: city.gegFrist.split('-').reverse().join('.'), event: `GEG-Pflicht in ${city.name}`, detail: `Ab diesem Datum keine fossile Heizung mehr ohne 65% EE-Anteil in ${city.name}` },
+    { datum: 'Jetzt', event: 'Optimal: WP planen', detail: `8–12 Wochen Vorlauf für KfW-Antrag + Installateur in ${city.name}` },
+    { datum: '4 Wochen vor Auftrag', event: 'KfW-Antrag stellen', detail: 'Zwingend vor Auftragserteilung — kein Nachantrag' },
+    { datum: '2026–2030', event: 'CO₂-Preis steigt', detail: 'ETS2: von €55/t (2026) auf voraussichtlich €100+/t (2030)' },
+    { datum: '2030', event: 'KfW-Konditionen unklar', detail: 'Förderansätze können sich ändern — jetzt sichern' },
+  ];
+  const WAS_BEDEUTET = [
+    { frage: `Was bedeutet Wärmeplanung für ${city.name}?`, antwort: `Die kommunale Wärmeplanung zeigt, welche Gebiete in ${city.name} zukünftig Fernwärme bekommen. In ${100 - city.fernwaermeQuote}% der Gebäude ist die WP dauerhaft die richtige Lösung.` },
+    { frage: 'Muss ich auf den Plan warten?', antwort: `Nein — die KfW-Förderung gilt unabhängig vom kommunalen Wärmeplan. In ${city.name} können Sie jetzt fördergerecht installieren.` },
+    { frage: 'Was wenn mein Haus im Fernwärmegebiet liegt?', antwort: `Fernwärmequote ${city.name}: ${city.fernwaermeQuote}%. Für die restlichen ${100 - city.fernwaermeQuote}% gilt: WP ist die klare Empfehlung.` },
+  ];
+  const GEG_STADTTYPEN = [
+    { typ: 'Großstadt > 100.000 EW', frist: '30.06.2026', gilt: city.einwohner >= 100000 ? `Gilt für ${city.name}` : 'Nicht ' + city.name },
+    { typ: 'Mittelstadt', frist: '30.06.2028', gilt: city.einwohner >= 10000 && city.einwohner < 100000 ? `Gilt für ${city.name}` : '' },
+    { typ: 'Kleinstadt / Gemeinde', frist: '30.06.2028', gilt: city.einwohner < 10000 ? `Gilt für ${city.name}` : '' },
+    { typ: 'Neubau bundesweit', frist: 'Seit 01.01.2024', gilt: 'Gilt überall' },
+    { typ: 'Defekte Heizung', frist: '3 Jahre Übergangsfrist', gilt: 'Gilt überall' },
+  ];
   const fristText = city.einwohner >= 100000 ? '30.06.2026' : '30.06.2028';
   const hatGrosstadtFrist = city.einwohner >= 100000;
 

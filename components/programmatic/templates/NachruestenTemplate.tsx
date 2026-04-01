@@ -13,38 +13,41 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1920&q=80';
 
-const EIGNUNG_NACHRUESTEN = [
-  { punkt: 'Vorlauftemperatur ≤ 55°C', geeignet: true, detail: 'Standard Luft-WP ausreichend. Heizlast prüfen.' },
-  { punkt: 'Vorlauftemperatur 55–70°C', geeignet: true, detail: 'Hochtemperatur-WP (€2.000–3.000 Aufpreis) oder zuerst Hydraulischer Abgleich.' },
-  { punkt: 'Vorhandener Kellerraum > 1 m²', geeignet: true, detail: 'Für Pufferspeicher 200–500 l nötig.' },
-  { punkt: 'Starkstromanschluss 3×16A vorhanden', geeignet: true, detail: 'Falls nicht: €500–1.500 Elektriker-Aufwand.' },
-  { punkt: 'Dachgeschoss mit Heizkörpern', geeignet: true, detail: 'Hydraulischer Abgleich nötig — DG hat oft niedrigsten Druckverlust.' },
-  { punkt: 'Alte undichte Rohrleitungen', geeignet: false, detail: 'Erst sanieren, dann WP nachrüsten. Druckprobe empfohlen.' },
-  { punkt: 'Elektrische Fußbodenheizung', geeignet: false, detail: 'Kein Hydrauliksystem — WP nicht nachrüstbar ohne Umbau.' },
-];
-
-const ANPASSUNGEN_KOSTEN = [
-  { pos: 'Hydraulischer Abgleich (Pflicht)', von: 500, bis: 1500, wann: 'Immer' },
-  { pos: 'Pufferspeicher 200–500 l', von: 600, bis: 2000, wann: 'Fast immer' },
-  { pos: 'Heizkörpertausch (falls nötig)', von: 200, bis: 500, wann: 'Pro Heizkörper bei VL > 55°C' },
-  { pos: 'Elektroanschluss Starkstrom', von: 500, bis: 1500, wann: 'Wenn nicht vorhanden' },
-  { pos: 'WW-Speicher (falls kein Kombi)', von: 800, bis: 2500, wann: 'Je nach System' },
-  { pos: 'Alte Heizung demontieren', von: 200, bis: 500, wann: 'Immer' },
-];
-
-const ABLAUF_NACHRUESTEN = [
-  { step: 'Vor-Ort-Begehung & Heizlast', what: 'Vorlauftemperatur messen, Heizkreis prüfen, Kellermaße, Elektro-Check. Kostenlos bei unseren Partnerbetrieben.' },
-  { step: 'KfW-Antrag stellen (vor Auftrag!)', what: 'Antrag muss VOR Auftragserteilung bei KfW gestellt werden. Wir begleiten das kostenlos.' },
-  { step: 'Anpassungen vornehmen', what: 'Hydraulischer Abgleich, ggf. Heizkörpertausch, Elektro. Diese Kosten sind KfW-förderfähig.' },
-  { step: 'WP-Montage & Inbetriebnahme', what: '2–3 Tage. Pufferspeicher, Kältemittelkreis, Hydraulik, Elektro, Inbetriebnahme durch F-Gas-Betrieb.' },
-  { step: 'KfW-Abrechnung', what: 'Rechnungen + Protokoll einreichen. KfW zahlt innerhalb 4–6 Wochen.' },
-];
+/* arrays moved inside component */
 
 export default function NachruestenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const EIGNUNG_NACHRUESTEN = [
+    { punkt: 'Vorlauftemperatur ≤ 55°C', geeignet: true, detail: `Standard Luft-WP ausreichend für ${city.name}. Heizlast nach DIN EN 12831 prüfen.` },
+    { punkt: 'Vorlauftemperatur 55–70°C', geeignet: true, detail: `Hochtemperatur-WP (+€2.000–3.000) oder Hydraulischer Abgleich (€500–1.500) senkt VL oft auf unter 55°C — in ${city.bundesland} beides KfW-förderfähig.` },
+    { punkt: 'Kellerraum > 1 m² vorhanden', geeignet: true, detail: `Für Pufferspeicher 200–500 l nötig — Standard in ${city.name}: ${['300 l Pufferspeicher bei 120 m² EFH', '400 l empfohlen für beste Taktschutzwirkung', '200–300 l für kleine Heizlasten ausreichend'][cityHash(city, 3, 210)]}.` },
+    { punkt: 'Starkstromanschluss 3×16A', geeignet: true, detail: `Falls nicht vorhanden: €500–1.500 Elektriker-Aufwand in ${city.name}. Netzbetreiber-Anmeldung ca. 4 Wochen Vorlauf einplanen.` },
+    { punkt: 'Dachgeschoss mit Heizkörpern', geeignet: true, detail: `Hydraulischer Abgleich nötig — DG hat oft den niedrigsten Druckverlust. Besonders in Altbauten in ${city.bundesland} häufig anzutreffen.` },
+    { punkt: 'Alte undichte Rohrleitungen', geeignet: false, detail: `Erst Druckprobe und Sanierung, dann WP nachrüsten. In ${city.name} übernehmen lokale Betriebe beides aus einer Hand.` },
+    { punkt: 'Elektrische Fußbodenheizung', geeignet: false, detail: `Kein Hydrauliksystem vorhanden — WP ohne Umbau nicht nachrüstbar. Alternativ: Infrarotheizung oder Umrüstung auf Wassersystem.` },
+  ];
+
+  const ANPASSUNGEN_KOSTEN = [
+    { pos: 'Hydraulischer Abgleich (Pflicht)', von: 500, bis: 1500, wann: `Immer — KfW-Pflicht in ${city.name}` },
+    { pos: 'Pufferspeicher 200–500 l', von: 600, bis: 2000, wann: 'Fast immer — Taktschutz' },
+    { pos: 'Heizkörpertausch (falls nötig)', von: 200, bis: 500, wann: 'Pro HK bei VL > 55°C' },
+    { pos: 'Elektroanschluss Starkstrom', von: 500, bis: 1500, wann: 'Wenn nicht vorhanden' },
+    { pos: 'WW-Speicher (falls kein Kombi)', von: 800, bis: 2500, wann: 'Je nach System' },
+    { pos: 'Alte Heizung demontieren', von: 200, bis: 500, wann: `Immer — Entsorgung ${city.bundesland}` },
+  ];
+
+  const ABLAUF_NACHRUESTEN = [
+    { step: 'Vor-Ort-Begehung & Heizlast', what: `Vorlauftemperatur messen, Heizkreis prüfen, Kellermaße, Elektro-Check. ${['Kostenlos bei unseren Partnerbetrieben in ' + city.name, 'Dauer ca. 60–90 Minuten — kostenlos und unverbindlich', 'Unsere geprüften Betriebe in ' + city.name + ' kommen zu Ihnen'][cityHash(city, 3, 211)]}.` },
+    { step: 'KfW-Antrag stellen (vor Auftrag!)', what: `Antrag MUSS vor Auftragserteilung bei KfW gestellt werden — gilt auch in ${city.name}. Wir begleiten kostenlos: Formular, LuL-Auswahl, Einreichung.` },
+    { step: 'Anpassungen vornehmen', what: `Hydraulischer Abgleich, ggf. Heizkörpertausch, Elektro in ${city.name}. Diese Anpassungskosten sind vollständig KfW-förderfähig.` },
+    { step: 'WP-Montage & Inbetriebnahme', what: `2–3 Tage in ${city.name}: Pufferspeicher, Kältemittelkreis, Hydraulik, Elektro. Inbetriebnahme durch F-Gas-zertifizierten Betrieb — Pflicht für KfW.` },
+    { step: 'KfW-Abrechnung', what: `Rechnungen + Inbetriebnahmeprotokoll einreichen. KfW zahlt ${fmtEuro(foerd.zuschuss)} innerhalb von 4–8 Wochen direkt auf Ihr Konto.` },
+  ];
+
   const anpassungMin = ANPASSUNGEN_KOSTEN.slice(0,3).reduce((s,p)=>s+p.von,0);
   const anpassungMax = ANPASSUNGEN_KOSTEN.slice(0,4).reduce((s,p)=>s+p.bis,0);
 

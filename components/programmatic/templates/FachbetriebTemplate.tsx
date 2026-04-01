@@ -12,39 +12,48 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 
-const KRITERIEN = [
-  { icon: '🏛️', title: 'HWK-Eintragung aktiv', text: 'Gültige Eintragung in der Handwerksrolle. Ohne diese darf kein Heizungsbau durchgeführt werden.' },
-  { icon: '👨‍🔧', title: 'Meisterbetrieb SHK', text: 'Persönliche technische Leitung durch einen eingetragenen SHK-Meister. Garantiert Fachkenntnis und Haftung.' },
-  { icon: '📊', title: 'Min. 5 WP-Installationen (24 Monate)', text: 'Nachweisbare WP-Erfahrung. Betriebe ohne WP-Spezialisierung machen häufig Fehler bei Dimensionierung und Hydraulik.' },
-  { icon: '🏦', title: 'KfW-LuL-Registrierung', text: 'Pflicht für KfW-Antragsbegleitung. Ohne aktive LuL-Registrierung kein Förderantrag möglich — volle Förderung entfällt.' },
-  { icon: '🛡️', title: 'Betriebshaftpflicht', text: 'Gültige Haftpflicht für Heizungsbau. Schützt bei Schäden durch fehlerhafte Installation.' },
-  { icon: '⭐', title: 'Kundenbewertung ≥ 3,5/5', text: 'Mindestens 10 Bewertungen auf Google oder Trusted Shops. Unter 3,5 automatisch aus unserem Netzwerk entfernt.' },
-];
+/* KRITERIEN moved inside component */
+const KRITERIEN_PLACEHOLDER = [];
 
-const ANGEBOT_CHECKLISTE = [
-  { item: 'Heizlastberechnung DIN EN 12831', muss: true, note: 'Grundlage für korrekte Dimensionierung — KfW-Pflicht' },
-  { item: 'Gerät: Fabrikat, Modell, kW-Leistung', muss: true, note: 'Einzeln ausgewiesen, keine Pauschalposition' },
-  { item: 'Hydraulischer Abgleich Verfahren B', muss: true, note: 'KfW-Pflicht — fehlt in >60% der Angebote!' },
-  { item: 'Wärmemengenzähler (neu 2026)', muss: true, note: 'KfW-Pflicht ab 2026 — im Angebot abfragen' },
-  { item: 'KfW-Antragsbegleitung als LuL', muss: true, note: 'Betrieb muss LuL-registriert sein' },
-  { item: 'Elektroinstallation & Zählerinfrastruktur', muss: false, note: 'Oft separat: €500–1.500' },
-  { item: 'Schallschutznachweis (neu ab 2026)', muss: false, note: '10 dB unter EU-Grenzwert für Förderfähigkeit' },
-  { item: 'Gewährleistung & Wartungsvertrag', muss: false, note: 'Gesetzl. 2 Jahre — gute Betriebe: 5+ Jahre' },
-];
+/* ANGEBOT_CHECKLISTE moved inside component */
 
-const FEHLER = [
-  { fehler: 'Keine Heizlastberechnung', folge: 'WP falsch dimensioniert, JAZ 10–20% unter Zielwert' },
-  { fehler: 'KfW-Antrag nach Baubeginn', folge: 'Förderung komplett verloren — bis zu €21.000' },
-  { fehler: 'Kein hydraulischer Abgleich', folge: 'KfW-Antrag abgelehnt, ineffizienter Betrieb' },
-  { fehler: 'Betrieb ohne LuL-Registrierung', folge: 'Kein KfW-Antrag möglich, trotz fertiger Anlage' },
-  { fehler: 'Falsche WP für Vorlauftemperatur', folge: 'Hochtemperatur-WP nötig, JAZ sinkt auf 2,5–3,0' },
-];
+/* FEHLER moved inside component */
 
 export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
+
+  const ANGEBOT_CHECKLISTE = [
+    { item: 'Heizlastberechnung DIN EN 12831', muss: true, note: `Für ${city.normAussentemp}°C Normaußentemperatur ${city.name} — KfW-Pflicht` },
+    { item: 'Hydraulischer Abgleich', muss: true, note: `KfW-Pflicht — ohne diesen: Förderantrag für ${city.name} abgelehnt` },
+    { item: 'WP-Modell + kW-Leistung', muss: true, note: 'Vollständige Gerätespez. mit COP-Angabe' },
+    { item: 'Pufferspeicher-Volumen', muss: true, note: `Mind. 30 l/kW — für ${city.name} berechnet` },
+    { item: 'Elektroinstallation separat', muss: true, note: `Starkstrom + Netzbetreiber-Anmeldung ${city.name}` },
+    { item: 'Wärmemengenzähler', muss: true, note: 'KfW-Pflicht 2026' },
+    { item: 'Kältemittelangabe', muss: true, note: '+5% KfW-Bonus für R290' },
+    { item: 'Inbetriebnahme-Protokoll', muss: true, note: `F-Gas-zertifiziert — Pflicht in ${city.bundesland}` },
+    { item: 'Garantiezeiten', muss: false, note: `Herstellergarantie in ${city.bundesland}: 5–7 Jahre` },
+  ];
+  const FEHLER = [
+    { fehler: 'WP ohne Heizlastberechnung dimensioniert', folge: `In ${city.name}: WP zu groß oder zu klein → JAZ 15–20% schlechter, KfW-Ablehnung` },
+    { fehler: 'Kein hydraulischer Abgleich', folge: `Häufigster KfW-Ablehnungsgrund — gilt auch in ${city.name}` },
+    { fehler: 'Kein F-Gas-Zertifikat', folge: 'Kältemittelbefüllung illegal — Anlage darf nicht in Betrieb genommen werden' },
+    { fehler: 'Pufferspeicher fehlt oder zu klein', folge: `Zu viele Taktungen: Bei ${city.heizgradtage} Heizgradtagen in ${city.name} sinkt Lebensdauer stark` },
+    { fehler: 'Keine KfW-LuL-Registrierung', folge: `${fmtEuro(foerd.zuschuss)} KfW-Förderung für ${city.name} entfällt komplett` },
+    { fehler: 'Außeneinheit falsch positioniert', folge: `Schallproblem in ${city.name} / Wärmefalle — COP sinkt 15–25%` },
+  ];
+
+  const KRITERIEN = [
+    { icon: '🏛️', title: 'HWK-Eintragung aktiv', text: `Gültige Eintragung in der Handwerksrolle ${city.bundesland} — Pflichtvoraussetzung für KfW-LuL-Status.` },
+    { icon: '🔑', title: 'KfW-LuL-Registrierung', text: `Nur im KfW-Portal registrierte Betriebe berechtigen zur BEG-Förderung — nicht jeder SHK-Betrieb in ${city.name} hat diese Zulassung.` },
+    { icon: '📋', title: 'WP-Referenzen nachweisbar', text: `Mind. 5 dokumentierte WP-Installationen — ${['in ' + city.bundesland + ' und Umgebung', 'davon mindestens 3 im Altbau', 'mit JAZ-Protokollen belegt'][cityHash(city, 3, 250)]}.` },
+    { icon: '🛡️', title: 'Haftpflichtversicherung', text: `Aktuelle Haftpflicht ≥ €1,5 Mio. — Pflicht für alle unsere Partnerbetriebe in ${city.name}.` },
+    { icon: '❄️', title: 'F-Gas-Zertifikat', text: 'F-Gas-Sachkundenachweis (EU 517/2014) — Pflicht für Kältemittelbefüllung. Ohne diesen: Inbetriebnahme illegal.' },
+    { icon: '📐', title: 'Heizlastberechnung inklusive', text: `DIN EN 12831 Heizlastberechnung für ${city.name} (${city.normAussentemp}°C Normaußentemperatur) — Pflicht für KfW und korrekte Dimensionierung.` },
+    { icon: '⏱️', title: 'Reaktionszeit ≤ 48h', text: `Lokaler Betrieb in ${city.name} — schnell vor Ort bei Störungen. Kein bundesweites Callcenter.` },
+  ];
 
   const intros = [
     `WP-Fachbetrieb ${city.name}: Die KfW-LuL-Registrierung ist Pflicht — ohne sie kein Förderantrag. Bei ${city.strompreis} ct/kWh und JAZ ${jaz} in ${city.name} macht die Wahl des richtigen Fachbetriebs bis zu ${fmtEuro(Math.round(calc.ersparnis * 0.3))}/Jahr Unterschied in der tatsächlichen Effizienz.`,
