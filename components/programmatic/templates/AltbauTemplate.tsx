@@ -30,8 +30,6 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
     { typ: 'Teilsaniert mit Hydr. Abgleich (50°C)', jaz: `${jaz.toFixed(1)}–${Math.min(jaz + 0.3, 4.2).toFixed(1)}`, betrieb: `Empfohlen für ${city.name} — gute JAZ` },
     { typ: 'Vollsaniert mit FBH (35°C VL)', jaz: `${Math.min(jaz + 0.4, 4.0).toFixed(1)}–${Math.min(jaz + 0.9, 4.8).toFixed(1)}`, betrieb: `Maximale Effizienz bei ${city.avgTemp}°C Jahresmittel` },
   ];
-  const jazAltbau = Math.max(jaz - 0.3, 2.8).toFixed(1);
-  const jazOptimiert = Math.min(jaz + 0.3, 4.5).toFixed(1);
 
   const intros = [
     `Wärmepumpe im Altbau ${city.name}: 70–80% aller Bestandsgebäude in ${city.bundesland} sind geeignet. Entscheidend ist nicht das Baujahr sondern die Vorlauftemperatur. Moderne Hochtemperatur-WP arbeiten bis 70°C — kompatibel mit fast allen Altbau-Heizkörpern. JAZ ${jazAltbau}–${jaz} in ${city.name} bei ${city.avgTemp}°C Jahresmittel.`,
