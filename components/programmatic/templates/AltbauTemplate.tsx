@@ -35,21 +35,11 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
     { schritt: '3. WP-Installation', kosten: `${fmtEuro(18000)} – ${fmtEuro(28000)}`, effekt: `Hauptinvestition — ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}`, kfw: true },
     { schritt: '4. Fußbodenheizung (optional)', kosten: '€5.000–€15.000', effekt: `VL-Temp auf 35°C, JAZ von ${(jaz-0.3).toFixed(1)} auf ${(jaz+0.3).toFixed(1)}`, kfw: false },
   ];
-  const SANIERUNGS_REPLACED = true; `VL-Temp um 5–10°C senken — KfW-Pflicht in ${city.name}`, kfw: true },
-    { schritt: '2. Heizkörpertausch (falls nötig)', kosten: '€200–€500 pro Heizkörper', effekt: 'VL-Temp von 70°C auf 55°C senken', kfw: false },
-    { schritt: '3. WP-Installation', kosten: `${fmtEuro(18000)} – ${fmtEuro(28000)}`, effekt: `Hauptinvestition — ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}`, kfw: true },
-    { schritt: '4. Fußbodenheizung (optional)', kosten: '€5.000–€15.000', effekt: `VL-Temp auf 35°C senken, JAZ von ${(jaz - 0.3).toFixed(1)} auf ${(jaz + 0.3).toFixed(1)}`, kfw: false },
-  ];
 
   const jazAltbau = Math.max(jaz - 0.3, 2.8).toFixed(1);
   const jazOptimiert = Math.min(jaz + 0.3, 4.5).toFixed(1);
   const JAZ_ALTBAU = [
     { typ: 'Unsaniert, alte Heizkörper (70°C VL)', jaz: `${Math.max(jaz - 1.0, 2.5).toFixed(1)}–${Math.max(jaz - 0.6, 3.0).toFixed(1)}`, betrieb: `Hochtemperatur-WP nötig in ${city.name}` },
-    { typ: 'Standard-Altbau (55°C VL)', jaz: `${Math.max(jaz - 0.4, 2.9).toFixed(1)}–${jaz.toFixed(1)}`, betrieb: 'Standard Luft-WP, gute Wirtschaftlichkeit' },
-    { typ: 'Teilsaniert mit Hydr. Abgleich (50°C)', jaz: `${jaz.toFixed(1)}–${Math.min(jaz + 0.3, 4.2).toFixed(1)}`, betrieb: `Empfohlen für ${city.name} — gute JAZ` },
-    { typ: 'Vollsaniert mit FBH (35°C VL)', jaz: `${Math.min(jaz + 0.4, 4.0).toFixed(1)}–${Math.min(jaz + 0.9, 4.8).toFixed(1)}`, betrieb: `Maximale Effizienz bei ${city.avgTemp}°C Jahresmittel` },
-  ];
-  const JAZ_ALTBAU_REPLACED = true;, alte Heizkörper (70°C VL)', jaz: `${Math.max(jaz - 1.0, 2.5).toFixed(1)}–${Math.max(jaz - 0.6, 3.0).toFixed(1)}`, betrieb: `Hochtemperatur-WP nötig in ${city.name}` },
     { typ: 'Standard-Altbau (55°C VL)', jaz: `${Math.max(jaz - 0.4, 2.9).toFixed(1)}–${jaz.toFixed(1)}`, betrieb: 'Standard Luft-WP, gute Wirtschaftlichkeit' },
     { typ: 'Teilsaniert mit Hydr. Abgleich (50°C)', jaz: `${jaz.toFixed(1)}–${Math.min(jaz + 0.3, 4.2).toFixed(1)}`, betrieb: `Empfohlen für ${city.name} — gute JAZ` },
     { typ: 'Vollsaniert mit FBH (35°C VL)', jaz: `${Math.min(jaz + 0.4, 4.0).toFixed(1)}–${Math.min(jaz + 0.9, 4.8).toFixed(1)}`, betrieb: `Maximale Effizienz bei ${city.avgTemp}°C Jahresmittel` },
