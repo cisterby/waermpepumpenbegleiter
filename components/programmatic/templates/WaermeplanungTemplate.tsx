@@ -114,8 +114,8 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Fristen der kommunalen Wärmeplanung in {city.bundesland}
-            </h2>
+              Welche Fristen gelten für die Wärmeplanung in {city.bundesland}
+            ?</h2>
             <div className="space-y-3">
               {FRISTEN_PLAN.map((f,i)=>(
                 <div key={i} className={`flex gap-3 p-4 rounded-xl border ${i===0&&hatGrosstadtFrist?'bg-wp-amberlt border-amber-200':i===1&&!hatGrosstadtFrist?'bg-wp-amberlt border-amber-200':'bg-white border-wp-border'}`}>
@@ -131,8 +131,8 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              4 wichtige Fragen zur Wärmeplanung in {city.name}
-            </h2>
+              Was müssen Eigentümer zur Wärmeplanung in {city.name}
+            ?</h2>
             <div className="space-y-4">
               {WAS_BEDEUTET.map((w,i)=>(
                 <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
@@ -247,7 +247,7 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

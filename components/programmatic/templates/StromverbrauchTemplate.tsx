@@ -119,8 +119,8 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {/* Berechnung transparent */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Berechnung des Stromverbrauchs für {city.name}
-            </h2>
+              Wie berechne ich den WP-Stromverbrauch für {city.name}
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl p-5 shadow-wp-sm font-mono text-sm">
               <div className="grid grid-cols-2 gap-2 text-wp-text2">
                 <span>Heizwärmebedarf (Annahme):</span><span className="text-wp-text font-bold">15.000 kWh/Jahr</span>
@@ -136,8 +136,8 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {/* JAZ-Tabelle */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Stromverbrauch nach Heizsystem in {city.name}
-            </h2>
+              Wie unterscheidet sich der Stromverbrauch nach Heizsystem in {city.name}
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
                 <thead>
@@ -276,7 +276,7 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

@@ -120,7 +120,7 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Tiefenbohrung oder Flächenkollektor — was passt in {city.name}
+              Tiefenbohrung oder Flächenkollektor — was ist besser in {city.name}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -146,7 +146,7 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
               Welche Genehmigungen brauche ich für Erdwärme in {city.bundesland}
-            </h2>
+            ?</h2>
             <div className="space-y-3">
               {GENEHMIGUNG.map((g,i)=>(
                 <div key={i} className="flex gap-3 p-4 bg-white border border-wp-border rounded-xl">
@@ -245,7 +245,7 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

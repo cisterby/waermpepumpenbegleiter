@@ -179,7 +179,7 @@ export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, n
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
               Welche 5 Fehler kosten Eigentümer in {city.name}
-            </h2>
+            ?</h2>
             <div className="space-y-3">
               {FEHLER.map((f, i) => (
                 <div key={i} className="flex gap-3 p-4 bg-white border border-wp-border rounded-xl">
@@ -289,7 +289,7 @@ export default function FachbetriebTemplate({ city, keyword, calc, foerd, jaz, n
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

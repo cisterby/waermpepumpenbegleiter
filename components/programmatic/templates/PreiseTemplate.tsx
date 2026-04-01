@@ -281,7 +281,7 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

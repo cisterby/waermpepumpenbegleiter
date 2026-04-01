@@ -189,7 +189,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           {/* Landesförderung */}
           {city.bundeslandFoerderung && (
             <div>
-              <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">{city.bundesland}-Landesförderung</h2>
+              <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">{city.bundesland}-Landesförderung: Was gibt es zusätzlich zur KfW?</h2>
               <div className={`rounded-xl border p-5 ${hasLandFoerderung ? 'bg-wp-greenlt border-wp-green3/30' : 'bg-amber-50 border-amber-200'}`}>
                 <p className={`font-heading font-bold text-lg mb-2 ${hasLandFoerderung ? 'text-wp-green' : 'text-amber-800'}`}>
                   {city.bundeslandFoerderung}
@@ -214,7 +214,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <div className="space-y-3">
               {[
                 { n: '01', title: 'KfW-Antrag VOR Baubeginn', text: `Zwingend: Der Antrag muss vor dem Vertragsabschluss mit dem Installateur im KfW-Portal gestellt werden. Kein nachträglicher Antrag möglich. Gilt ohne Ausnahme in ${city.name}.`, urgent: true },
-                { n: '02', title: `${city.bundesland}-Landesförderung prüfen`, text: hasLandFoerderung ? `"${city.bundeslandFoerderung}": ${city.bundeslandFoerderungBetrag}. Ggf. separaten Antrag vor Baubeginn stellen.` : `${city.bundesland} hat kein aktives Landesprogramm. KfW gilt vollständig — ohne Wartezeit.`, urgent: false },
+                { n: '02', title: `${city.bundesland}-Landesförderung: Was gibt es zusätzlich zur KfW? prüfen`, text: hasLandFoerderung ? `"${city.bundeslandFoerderung}": ${city.bundeslandFoerderungBetrag}. Ggf. separaten Antrag vor Baubeginn stellen.` : `${city.bundesland} hat kein aktives Landesprogramm. KfW gilt vollständig — ohne Wartezeit.`, urgent: false },
                 { n: '03', title: 'iSFP-Bonus: +5% extra', text: `Mit Individuellem Sanierungsfahrplan (BAFA-gefördert, Eigenanteil ~€60–140) erhalten Sie +5% Bonus = +${fmtEuro(Math.round(25000 * 0.05))} bei €25.000. Fast immer lohnenswert.`, urgent: false },
                 { n: '04', title: 'Installation & Nachweis', text: `Nach Installation: Rechnung + Fachunternehmer-Bestätigung einreichen. Frist: 6 Monate. Auszahlung: ${fmtEuro(foerd.zuschuss)} in 4–8 Wochen.`, urgent: false },
               ].map((s, i) => (

@@ -139,8 +139,8 @@ export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, ja
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Ablauf: Heizung tauschen in {city.name} — 6 Schritte
-            </h2>
+              Wie läuft der Heizungstausch in {city.name} — 6 Schritte
+            ?</h2>
             <div className="space-y-3">
               {TAUSCH_ABLAUF.map((s,i)=>(
                 <div key={i} className="flex gap-4 p-4 bg-white border border-wp-border rounded-xl">
@@ -159,8 +159,8 @@ export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, ja
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Heizungsvergleich beim Tausch in {city.name}
-            </h2>
+              Welche Heizung lohnt sich beim Tausch in {city.name}
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
               <table className="w-full text-sm min-w-[500px]">
                 <thead><tr className="bg-wp-bg border-b border-wp-border">
@@ -238,7 +238,7 @@ export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, ja
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

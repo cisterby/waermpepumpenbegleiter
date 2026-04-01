@@ -288,7 +288,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <p className="text-white/60 text-center text-sm mb-8">Kostenlos · Herstellerunabhängig · KfW-Begleitung inklusive</p>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>

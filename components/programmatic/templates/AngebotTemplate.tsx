@@ -165,7 +165,7 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
               Wie vergleiche ich WP-Angebote in {city.name} — häufige Fragen
-            </h2>
+            ?</h2>
             <div className="space-y-3">
               {ANGEBOTSVERGLEICH.map((a,i)=>(
                 <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
@@ -247,7 +247,7 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

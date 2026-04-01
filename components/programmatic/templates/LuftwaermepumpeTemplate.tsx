@@ -130,8 +130,8 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
           {/* JAZ-Szenarien */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Welche JAZ ist realistisch in {city.name} nach Heizsystem
-            </h2>
+              Welche JAZ erreiche ich mit der Luftwärmepumpe in {city.name} nach Heizsystem
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
                 <thead>
@@ -163,8 +163,8 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
           {/* Hersteller */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Welcher Hersteller passt für {city.name} — Vergleich 2026
-            </h2>
+              Welcher Luftwärmepumpen-Hersteller passt für {city.name} — Vergleich 2026
+            ?</h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
               <table className="w-full text-sm min-w-[600px]">
                 <thead>
@@ -293,7 +293,7 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
