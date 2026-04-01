@@ -62,6 +62,8 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
+  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 7);
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <div className="relative min-h-[55vh] flex items-center overflow-hidden">
@@ -289,6 +291,23 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
   
+
+      {/* ── VERWANDTE THEMEN ─────────────────────────── */}
+      {crossKeywords.length > 0 && (
+        <div className="max-w-3xl mx-auto px-6 pb-8">
+          <h3 className="font-heading font-semibold text-wp-text text-base mb-3">
+            Verwandte Themen für {city.name}
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {crossKeywords.map(kw2 => kw2 && (
+              <a key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
+                className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:border-wp-green hover:text-wp-green transition-all">
+                {kw2.keyword.replace('[Stadt]', city.name)}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-heading font-bold text-wp-text text-xl mb-6">

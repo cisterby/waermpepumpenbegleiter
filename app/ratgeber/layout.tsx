@@ -2,16 +2,14 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Wärmepumpen-Ratgeber 2026 — Technik, Kosten, Förderung',
-  description: 'Fundierte Ratgeber-Artikel zu Wärmepumpen: GEG 2026, KfW 458 Schritt für Schritt, Luft-Wasser-WP ehrlich erklärt, Altbau-Eignung, CO₂-Preis-Entwicklung. Von Energieberatern und SHK-Meistern.',
-  alternates: { canonical: 'https://waermepumpenbegleiter.de/ratgeber' },
-  openGraph: {
-    title: 'Wärmepumpen-Ratgeber 2026 | Wärmepumpenbegleiter.de',
-    description: 'GEG 2026, KfW 458, Luft-WP, Altbau, CO₂-Preis — fundierte Artikel von Experten.',
-    type: 'website',
+  title: 'Wärmepumpen-Ratgeber 2026 — Kosten, Förderung, Installation',
+  description: 'Ausführlicher WP-Ratgeber 2026: Kosten (ab €9.000 nach KfW), Förderung bis 70%, Altbau-Eignung, GEG-Reform und mehr. Kostenlos & herstellerunabhängig.',
+  alternates: {
+    canonical: 'https://waermepumpenbegleiter.de/ratgeber',
   },
+  robots: { index: true, follow: true },
 };
 
-export default function RatgeberLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children;
 }

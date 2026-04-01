@@ -68,8 +68,32 @@ export default function BundeslandPage({ params }: Props) {
 
   const topCities = [...cities].sort((a, b) => b.einwohner - a.einwohner);
 
+  const blBreadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://waermepumpenbegleiter.de' },
+      { '@type': 'ListItem', position: 2, name: keyword.keyword.replace('[Stadt]','').trim(), item: `https://waermepumpenbegleiter.de/${keyword.slug}` },
+      { '@type': 'ListItem', position: 3, name: `${keyword.keyword.replace('[Stadt]','').trim()} ${bl.name}`, item: `https://waermepumpenbegleiter.de/${keyword.slug}/bundesland/${params.bundeslandSlug}` },
+    ],
+  };
+  const blItemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${keyword.keyword.replace('[Stadt]','').trim()} — alle Städte in ${bl.name}`,
+    numberOfItems: blCities.length,
+    itemListElement: blCities.slice(0, 20).map((city, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `${keyword.keyword.replace('[Stadt]', city.name)}`,
+      url: `https://waermepumpenbegleiter.de/${keyword.slug}/${city.slug}`,
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blBreadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blItemList) }} />
       {/* HERO */}
       <div className="bg-wp-dark py-14 px-6">
         <div className="max-w-4xl mx-auto">

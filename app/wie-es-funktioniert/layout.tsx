@@ -2,16 +2,14 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Wie es funktioniert — Kostenloser Wärmepumpen-Vermittlungsservice',
-  description: 'So funktioniert Wärmepumpenbegleiter: 4 Schritte von der Anfrage bis zur fertigen Wärmepumpe. Wie wir Installateure prüfen, wie der KfW-Antrag läuft und was Sie erwartet.',
-  alternates: { canonical: 'https://waermepumpenbegleiter.de/wie-es-funktioniert' },
-  openGraph: {
-    title: 'Wie es funktioniert | Wärmepumpenbegleiter.de',
-    description: '4 Schritte zur fertigen Wärmepumpe — kostenlos, geprüfte Betriebe, KfW inklusive.',
-    type: 'website',
+  title: 'Wie funktioniert Wärmepumpenbegleiter.de?',
+  description: 'In 3 Schritten zur kostenlosen WP-Vermittlung: Anfrage stellen, 3 Angebote erhalten, Fachbetrieb wählen. Kostenlos für Hausbesitzer, DSGVO-konform.',
+  alternates: {
+    canonical: 'https://waermepumpenbegleiter.de/wie-es-funktioniert',
   },
+  robots: { index: true, follow: true },
 };
 
-export default function WEFLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children;
 }

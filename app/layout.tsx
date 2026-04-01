@@ -26,6 +26,12 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['500', '600', '700'],
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#1B5E37',
+};
+
 export const metadata: Metadata = {
   title: {
     default: 'Wärmepumpenbegleiter.de – Kostenlose WP-Vermittlung in Deutschland',
@@ -33,6 +39,7 @@ export const metadata: Metadata = {
   },
   description:
     'Wir finden den besten Wärmepumpen-Installateur in Ihrer Region – kostenlos, herstellerunabhängig, ohne Verkaufsdruck. Bis zu 3 Angebote vergleichen.',
+  keywords: ['Wärmepumpe', 'Wärmepumpe installieren', 'Wärmepumpe Kosten', 'Wärmepumpe Förderung', 'KfW Wärmepumpe', 'Wärmepumpe Installateur', 'Heizung tauschen'],
   metadataBase: new URL('https://waermepumpenbegleiter.de'),
   alternates: { canonical: 'https://waermepumpenbegleiter.de' },
   openGraph: {
