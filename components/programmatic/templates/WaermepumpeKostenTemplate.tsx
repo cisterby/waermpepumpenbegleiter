@@ -1,5 +1,5 @@
 // components/programmatic/templates/WaermepumpeKostenTemplate.tsx
-// VOLLSTÄNDIG GEFIXT: Kein doppelter H2, FAQs native <details>, Ersparnis differenziert, FAQPage Schema, voller Fließtext
+// VOLLSTÄNDIG GEFIXT: Kein doppelter H2, FAQs native details-Tag, Ersparnis differenziert, FAQPage Schema, voller Fliesstext
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';

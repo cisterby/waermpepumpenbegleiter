@@ -9,6 +9,7 @@ import {
   TrendingDown, Home, Wrench, AlertTriangle, BarChart2
 } from "lucide-react";
 import type { CityPageRouterProps } from "@/components/programmatic/CityPageRouter";
+import type { Keyword } from "@/lib/keywords";
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity } from "@/lib/cities";
 import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
@@ -48,12 +49,16 @@ function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
 }
 
+// ── Type-Aliases ────────────────────────────────────────────────────────────
+type HeizungTyp = "erdgas" | "heizoel" | "nachtspeicher";
+type WpTyp      = "luft" | "sole" | "wasser";
+
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
-  const [heizung,  setHeizung]  = useState<"erdgas"|"heizoel"|"nachtspeicher">("erdgas");
-  const [wpTyp,    setWpTyp]    = useState<"luft"|"sole"|"wasser">("luft");
+  const [heizung,  setHeizung]  = useState<HeizungTyp>("erdgas");
+  const [wpTyp,    setWpTyp]    = useState<WpTyp>("luft");
   const [vorlauf,  setVorlauf]  = useState(35);
   const [selfOcc,  setSelfOcc]  = useState(true);
   const [fossil,   setFossil]   = useState(true);
@@ -347,7 +352,7 @@ export default function WaermepumpeTemplate({
   // Cross-Links
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))
-    .filter((k): k is NonNullable<ReturnType<typeof getKeywordBySlug>> => k != null);
+    .filter((k) => k != null) as Keyword[];
 
   return (
     <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
