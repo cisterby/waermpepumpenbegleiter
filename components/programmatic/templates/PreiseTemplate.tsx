@@ -24,6 +24,15 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
 
+  const PREIS_FAKTOREN = [
+    { faktor: 'Heizlast / Gebäudegröße', einfluss: 'Hoch', detail: `Jedes kW mehr Heizleistung = ca. €800–1.200 Mehrkosten. Heizlastberechnung nach DIN EN 12831 Pflicht in ${city.name}.` },
+    { faktor: 'Vorlauftemperatur (VL)', einfluss: 'Mittel', detail: `Hochtemperatur-WP (bis 70°C) kostet €1.500–3.000 mehr. ${city.avgTemp < 9 ? `In ${city.name} mit ${city.avgTemp}°C relevant für Altbau.` : `In ${city.name} reicht oft Standard-WP.`}` },
+    { faktor: 'Kältemittel R290 (Propan)', einfluss: 'Niedrig', detail: `R290 kostet €200–500 mehr, bringt +5% KfW-Bonus — bei €25.000 Invest = €${Math.round(25000*0.05)} extra Förderung. Lohnt sich fast immer in ${city.name}.` },
+    { faktor: 'Pufferspeicher', einfluss: 'Mittel', detail: `200–500 l Pufferspeicher: €600–2.000. In ${city.name} Standard für Taktschutz — mind. 30 l/kW.` },
+    { faktor: 'Elektroanschluss', einfluss: 'Variabel', detail: `Neuer Starkstromkreis 3×16A + Zweitarif-Zähler: €500–1.500. Netzbetreiber ${city.name} meldet ca. 4 Wochen Vorlauf.` },
+    { faktor: 'Region & Wettbewerb', einfluss: 'Mittel', detail: `In ${city.bundesland} liegen Installateurpreise ${city.strompreis > 30 ? 'etwas über dem Bundesschnitt' : 'im Bundesschnitt'}. Mind. 3 Angebote in ${city.name} einholen.` },
+  ];
+
   const WP_TYPEN_PREISE = [
     { typ: 'Luft-Wasser-WP (Standard)', gerät: '€9.000–€18.000', montage: '€3.000–€6.000', gesamt: '€12.000–€28.000', kfw: true, note: `92% aller WP in ${city.name} — JAZ ${jaz}` },
     { typ: 'Luft-Wasser-WP (Hochtemperatur)', gerät: '€11.000–€20.000', montage: '€3.500–€6.500', gesamt: '€14.500–€30.000', kfw: true, note: `Altbau in ${city.name} mit VL 55–70°C` },

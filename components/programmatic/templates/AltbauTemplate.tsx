@@ -22,6 +22,20 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
 
+  const EIGNUNG_TEST = [
+    { frage: 'Vorlauftemperatur des Heizkreises', ja: '≤ 55°C → Standard-WP', nein: '55–70°C → Hochtemperatur-WP (+€2.000)', detail: `Messung am Heizkessel bei ${city.normAussentemp}°C Außentemperatur (Normaußentemperatur ${city.name}). Lokaler Fachbetrieb prüft vor Ort.` },
+    { frage: 'Heizkörpergröße', ja: 'Alte, große Heizkörper → oft 55°C ausreichend', nein: 'Kleine Heizkörper → höhere VL-Temp nötig', detail: `Größere Heizkörper = mehr Heizfläche = niedrigere VL-Temp möglich. In ${city.name}: Hydraulischen Abgleich zuerst prüfen — spart oft teuren Heizkörpertausch.` },
+    { frage: 'Dämmzustand Außenwände', ja: 'WDVS oder Kerndämmung vorhanden', nein: 'Ungedämmtes Mauerwerk → WP noch möglich', detail: `WP funktioniert auch ungedämmt in ${city.name} — JAZ sinkt leicht auf ca. ${(jaz - 0.3).toFixed(1)}, Betriebskosten ca. €${Math.round(calc.wpKosten * 0.12)}/Jahr mehr.` },
+    { frage: 'Baujahr Gebäude', ja: 'Kein Ausschlusskriterium', nein: 'Kein Ausschlusskriterium', detail: `Auch Häuser von 1900 können in ${city.name} mit WP beheizt werden — entscheidend ist die Vorlauftemperatur, nicht das Baujahr.` },
+  ];
+
+  const SANIERUNGS_REIHENFOLGE = [
+    { schritt: '1. Hydraulischer Abgleich', kosten: '€500–€1.500', effekt: `VL-Temp um 5–10°C senken — KfW-Pflicht in ${city.name}`, kfw: true },
+    { schritt: '2. Heizkörpertausch (falls nötig)', kosten: '€200–€500 pro Heizkörper', effekt: 'VL-Temp von 70°C auf 55°C senken', kfw: false },
+    { schritt: '3. WP-Installation', kosten: `${fmtEuro(18000)} – ${fmtEuro(28000)}`, effekt: `Hauptinvestition — ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.zuschuss)}`, kfw: true },
+    { schritt: '4. Fußbodenheizung (optional)', kosten: '€5.000–€15.000', effekt: `VL-Temp auf 35°C senken, JAZ von ${(jaz - 0.3).toFixed(1)} auf ${(jaz + 0.3).toFixed(1)}`, kfw: false },
+  ];
+
   const jazAltbau = Math.max(jaz - 0.3, 2.8).toFixed(1);
   const jazOptimiert = Math.min(jaz + 0.3, 4.5).toFixed(1);
   const JAZ_ALTBAU = [
