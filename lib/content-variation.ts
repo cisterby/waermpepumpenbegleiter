@@ -336,3 +336,230 @@ export function getCityVariationData(
     ctaVariation:    getCTAVariation(city, keyword, ersparnis),
   };
 }
+
+// ── 5. DYNAMIC H2s (pro Stadt / Keyword deterministisch variiert) ─────────────
+//    Ziel: Gleiche semantische Sektion bekommt je Stadt eine andere H2-Formulierung
+//    → Google-Signal: kein seitenübergreifendes Duplicate-H2-Muster
+
+export interface DynamicH2s {
+  faq:                 string;
+  foerderung:          string;
+  foerderungBausteine: string;
+  foerderungProzess:   string;
+  klimadaten:          string;
+  kosten:              string;
+  vergleich:           string;
+  typen:               string;
+  installateur:        string;
+  eignung:             string;
+  prozess:             string;
+  wirtschaftlichkeit:  string;
+}
+
+export function getDynamicH2s(city: City, keyword: Keyword, jaz: number): DynamicH2s {
+  const cat = getKwCategory(keyword);
+  const p = <T>(arr: T[], salt: number): T => arr[cityHash(city, arr.length, salt)];
+
+  const faqByCat: Record<KwCategory, string[]> = {
+    kosten: [
+      `Häufige Fragen zu WP-Kosten in ${city.name}`,
+      `Das fragen Eigentümer aus ${city.name} zu Wärmepumpen-Preisen`,
+      `WP-Kosten ${city.name}: Wichtige Antworten im Überblick`,
+      `FAQ: Wärmepumpe kaufen in ${city.name} — Preise und Kosten`,
+    ],
+    foerderung: [
+      `Häufige Fragen zur WP-Förderung in ${city.name}`,
+      `Das fragen Hausbesitzer aus ${city.name} zur KfW-Förderung`,
+      `Förder-FAQ für ${city.name} — alle Antworten`,
+      `FAQ: KfW + ${city.bundesland}-Förderung für ${city.name}`,
+    ],
+    installateur: [
+      `Häufige Fragen zum WP-Installateur in ${city.name}`,
+      `Das fragen Eigentümer aus ${city.name} zum Fachbetrieb`,
+      `FAQ: WP-Installation und Betriebe in ${city.name}`,
+      `Installateur ${city.name}: Die wichtigsten Fragen beantwortet`,
+    ],
+    technik: [
+      `Häufige Fragen zur WP-Technik in ${city.name}`,
+      `FAQ: Wärmepumpen-Technik für ${city.name}`,
+      `Das fragen Eigentümer aus ${city.name} zur WP-Funktion`,
+      `Technische FAQ zur Wärmepumpe in ${city.name}`,
+    ],
+    vergleich: [
+      `Häufige Fragen — Wärmepumpe oder Gas in ${city.name}`,
+      `FAQ: Heizung tauschen in ${city.name} — Optionen im Vergleich`,
+      `Das fragen Hausbesitzer aus ${city.name} zum Heizungsvergleich`,
+      `Vergleichs-FAQ für ${city.name}: WP vs. Gas und mehr`,
+    ],
+    allgemein: [
+      `Häufige Fragen zur Wärmepumpe in ${city.name}`,
+      `Das fragen Hausbesitzer aus ${city.name}`,
+      `Ihre Fragen zur WP in ${city.name} — beantwortet`,
+      `FAQ: Wärmepumpe ${city.name} — alle wichtigen Themen`,
+    ],
+  };
+
+  return {
+    faq: p(faqByCat[cat], 30),
+
+    foerderung: p([
+      `KfW-Förderung für Ihre WP in ${city.name} — bis zu 70%`,
+      `Wie viel Förderung bekommen Sie in ${city.name}?`,
+      `Maximale Förderung für Wärmepumpen in ${city.name}`,
+      `Wärmepumpe ${city.name}: KfW-Zuschuss und ${city.bundesland}-Programme`,
+    ], 31),
+
+    foerderungBausteine: p([
+      `Alle Förder-Bausteine für ${city.name} im Überblick`,
+      `Welche KfW-Boni gelten in ${city.name}?`,
+      `Förderquoten für Hausbesitzer in ${city.name}`,
+      `KfW BEG in ${city.name}: Grundförderung, Boni und Kombinationen`,
+    ], 32),
+
+    foerderungProzess: p([
+      `Schritt für Schritt zur Förderung in ${city.name}`,
+      `So beantragen Sie die KfW-Förderung in ${city.name} richtig`,
+      `Der richtige Ablauf — Förderung in ${city.name} nicht verpassen`,
+      `KfW-Antrag in ${city.name}: Was Sie beachten müssen`,
+    ], 33),
+
+    klimadaten: p([
+      `Klimadaten ${city.name}: JAZ ${jaz} und Effizienzwerte`,
+      `Wärmepumpe ${city.name} — stadtspezifische Jahresarbeitszahl`,
+      `Wie effizient läuft eine WP in ${city.name}? Die Zahlen`,
+      `Standortanalyse ${city.name}: Was die Klimadaten für Ihre WP bedeuten`,
+    ], 34),
+
+    kosten: p([
+      `Was kostet eine Wärmepumpe in ${city.name} wirklich?`,
+      `Vollständige Kostenaufstellung: WP in ${city.name}`,
+      `Investition und Betrieb — Ihre Wärmepumpe in ${city.name}`,
+      `Wärmepumpen-Kosten ${city.name}: Gesamtrechnung 2026`,
+    ], 35),
+
+    vergleich: p([
+      `WP vs. Gasheizung in ${city.name}: Was rechnet sich?`,
+      `Heizung tauschen in ${city.name}: Welche Option ist besser?`,
+      `Wärmepumpe oder weiter Gas in ${city.name}?`,
+      `Kostenvergleich: WP vs. Gas in ${city.name} bis 2035`,
+    ], 36),
+
+    typen: p([
+      `Welche Wärmepumpe passt zu ${city.name}?`,
+      `Die drei WP-Typen für ${city.name} im Vergleich`,
+      `Luft-, Sole- oder Wasser-WP — was ist richtig für ${city.name}?`,
+      `WP-Typen ${city.name}: Vor- und Nachteile im Überblick`,
+    ], 37),
+
+    installateur: p([
+      `Geprüfte WP-Betriebe in ${city.name} finden`,
+      `Worauf kommt es beim Installateur in ${city.name} an?`,
+      `Der richtige Fachbetrieb für Ihre WP in ${city.name}`,
+      `WP-Installateur ${city.name}: Qualität erkennen und vergleichen`,
+    ], 38),
+
+    eignung: p([
+      `Ist Ihr Haus in ${city.name} für eine Wärmepumpe geeignet?`,
+      `WP-Eignung in ${city.name}: Die entscheidenden Faktoren`,
+      `Eignungscheck für Ihre Immobilie in ${city.name}`,
+      `Für welche Gebäude in ${city.name} eignet sich eine WP?`,
+    ], 39),
+
+    prozess: p([
+      `So läuft die WP-Installation in ${city.name} ab`,
+      `Von der Anfrage zur fertigen WP in ${city.name}: Der Ablauf`,
+      `Schritt für Schritt zur Wärmepumpe in ${city.name}`,
+      `WP-Einbau in ${city.name}: Prozess und Zeitplan`,
+    ], 40),
+
+    wirtschaftlichkeit: p([
+      `Lohnt sich eine Wärmepumpe in ${city.name} finanziell?`,
+      `Wirtschaftlichkeit der WP in ${city.name} über 20 Jahre`,
+      `Amortisation und Ersparnis: WP in ${city.name} rechnet sich`,
+      `So viel sparen Sie mit einer Wärmepumpe in ${city.name}`,
+    ], 41),
+  };
+}
+
+// ── 6. SECTION INTROS (variierende Einstiegssätze nach H2s) ──────────────────
+//    Erhöht inhaltliche Uniqueness der Fließtext-Abschnitte deutlich.
+
+export interface SectionIntros {
+  klimadaten:         string;
+  foerderung:         string;
+  kosten:             string;
+  vergleich:          string;
+  installateur:       string;
+  typen:              string;
+  eignung:            string;
+  wirtschaftlichkeit: string;
+}
+
+export function getSectionIntros(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): SectionIntros {
+  const e = (n: number) => n.toLocaleString('de-DE') + '\u00a0€';
+  const p = <T>(arr: T[], salt: number): T => arr[cityHash(city, arr.length, salt + 50)];
+
+  return {
+    klimadaten: p([
+      `In ${city.name} bestimmen ${city.heizgradtage} Heizgradtage und ${city.avgTemp}°C Jahresmitteltemperatur die Effizienz Ihrer Wärmepumpe. Bei diesen Bedingungen erreicht eine Luft-WP eine JAZ von ${jaz} — das bedeutet: ${jaz} kWh Wärme aus jeder eingesetzten kWh Strom.`,
+      `Die Klimadaten für ${city.name} im Detail: ${city.avgTemp}°C Jahrestemperatur, ${city.normAussentemp}°C Norm-Außentemperatur (DIN EN 12831) und ${city.strompreis} ct/kWh Strompreis. Damit ist ${city.name} ein ${city.avgTemp >= 10 ? 'mild-temperierter' : city.avgTemp >= 8 ? 'typisch mitteleuropäischer' : 'etwas kälterer'} Standort — JAZ ${jaz} ist das Ergebnis für diese konkreten Bedingungen.`,
+      `Was macht ${city.name} als WP-Standort aus? ${city.heizgradtage} Heizgradtage definieren den Jahres-Wärmebedarf, ${city.avgTemp}°C Jahresmittel bestimmt die erreichbare Effizienz. JAZ ${jaz} bedeutet: Aus 1 kWh Strom werden ${jaz} kWh Wärme — günstiger als jede Verbrennung.`,
+      `Stadtspezifische Klimadaten für ${city.name} (${city.bundesland}): Jahresmittel ${city.avgTemp}°C, ${city.heizgradtage} Heizgradtage, Normaußentemperatur ${city.normAussentemp}°C. Die JAZ von ${jaz} ergibt sich direkt aus diesen lokalen Werten — kein pauschaler Bundesschnitt, sondern die reale Effizienz an Ihrem Standort.`,
+    ], 0),
+
+    foerderung: p([
+      `Die KfW-Bundesförderung (Programm 458) gilt ohne Ausnahme in ganz Deutschland — also auch in ${city.name}. Entscheidend: Der Antrag muss zwingend vor Beauftragung des Betriebs und vor Baubeginn gestellt werden, sonst entfällt der Zuschuss vollständig.`,
+      `In ${city.name} stehen Ihnen als selbstnutzender Eigenheimbesitzer bis zu 70% KfW-Zuschuss zu. Bei typischen Vollkosten von 25.000\u00a0€ bedeutet das bis zu 17.500\u00a0€ vom Staat — aber nur, wenn der KfW-Antrag vor dem ersten Spatenstich gestellt wurde.${city.bundeslandFoerderung ? ` Zusätzlich gibt es in ${city.bundesland}: ${city.bundeslandFoerderung}.` : ''}`,
+      `KfW-Förderung in ${city.name}: Grundförderung 30% plus Klima-Speed-Bonus 20% (für Eigennutzer, die eine fossile Heizung ersetzen) ergibt 50% Basisförderung für die meisten Hausbesitzer. Mit Einkommensbonus (unter 40.000\u00a0€ netto/Jahr) steigt die Quote auf bis zu 70%.`,
+      `${city.bundesland} und KfW: In ${city.name} gilt die Bundesförderung für effiziente Gebäude (BEG) uneingeschränkt. Für Eigennutzer, die eine Gas- oder Ölheizung durch eine WP ersetzen, sind 50–70% Zuschuss realistisch — der Eigenanteil startet bei rund ${e(Math.round(25000 * 0.30))}.`,
+    ], 1),
+
+    kosten: p([
+      `Was kostet eine Wärmepumpe in ${city.name} wirklich? Die Vollkosten setzen sich aus Gerät, Montage, Hydraulik und Elektrik zusammen. Stadtspezifisch: ${city.strompreis} ct/kWh Strom und JAZ ${jaz} ergeben ${e(wpKosten)} Jahresbetriebskosten — deutlich weniger als die ${e(wpKosten + ersparnis)} mit Erdgas.`,
+      `Für ${city.name}: Betriebskosten der WP sind direkt vom lokalen Strompreis (${city.strompreis} ct/kWh) und der erreichbaren JAZ (${jaz}) abhängig. Das ergibt ${e(wpKosten)} pro Jahr — gegenüber ${e(wpKosten + ersparnis)} mit Erdgas. Die Jahresersparnis: ${e(ersparnis)}.`,
+      `Alle WP-Kosten für ${city.name} im Überblick: Die Investition amortisiert sich durch die jährliche Ersparnis von ${e(ersparnis)} gegenüber Gas. Nach der KfW-Förderung (bis 70%) ist der Eigenanteil bei den meisten Hausbesitzern in ${city.name} in 7–12 Jahren wieder eingespielt.`,
+      `Stadtspezifische Kalkulation für ${city.name}: Strompreis ${city.strompreis} ct/kWh, JAZ ${jaz}, Gaspreis ${city.gaspreis} ct/kWh. Ergibt ${e(ersparnis)} Jahresersparnis — die Grundlage für alle unsere Kostenberechnungen, speziell für ${city.name} ermittelt.`,
+    ], 2),
+
+    vergleich: p([
+      `Der direkte Vergleich für ${city.name}: WP vs. Gasheizung. Bei ${city.strompreis} ct/kWh Strom, JAZ ${jaz} und ${city.gaspreis} ct/kWh Gas liegt die WP mit ${e(ersparnis)} Jahresersparnis vorne — und der Vorsprung wächst jährlich durch den steigenden CO₂-Preis auf Gas.`,
+      `In ${city.name} kostet Heizen mit WP ${e(wpKosten)}/Jahr, mit Gas ${e(wpKosten + ersparnis)}/Jahr. Die Differenz von ${e(ersparnis)} wird durch jährlich steigende CO₂-Kosten auf Gas weiter zunehmen — das Umweltbundesamt rechnet bis 2030 mit über 100\u00a0€/t CO₂.`,
+      `Für Hausbesitzer in ${city.name}: Eine Gasheizung ist kurzfristig günstiger installiert, aber langfristig teurer im Betrieb. Die WP kehrt dieses Verhältnis um — stabile Betriebskosten von ${e(wpKosten)}/Jahr, kein CO₂-Risiko, GEG-konform ohne Einschränkungen.`,
+      `Die Zahlen für ${city.name}: Gaspreis ${city.gaspreis} ct/kWh plus steigender CO₂-Aufschlag, WP-Betriebskosten stabil bei ${e(wpKosten)}/Jahr. Der Wechsel zur Wärmepumpe rechnet sich — zumal das GEG ohnehin eine Entscheidung erzwingt.`,
+    ], 3),
+
+    installateur: p([
+      `In ${city.name} und Umgebung gibt es geprüfte Fachbetriebe, die alle KfW-Voraussetzungen erfüllen. Wichtig: Nur im KfW-Portal registrierte Lieferanten- und Leistungserbringer (LuL) berechtigen zur BEG-Förderung — nicht jeder SHK-Betrieb hat diese Zulassung.`,
+      `Für ${city.name}: Wir vermitteln ausschließlich HWK-eingetragene Meisterbetriebe mit nachweisbarer WP-Erfahrung. Jeder Betrieb ist als KfW-LuL registriert — die Pflichtvoraussetzung dafür, dass Sie Ihre Förderung auch erhalten.`,
+      `Installateure in ${city.name}: Preisunterschiede von 20–40% zwischen Betrieben bei gleicher Leistung sind die Regel. Deshalb holen wir Ihnen bis zu 3 vollständige, direkt vergleichbare Angebote — kostenlos, von lokalen Betrieben in ${city.name}, innerhalb von 48 Stunden.`,
+      `Lokale Fachbetriebe in ${city.name} kennen die Besonderheiten Ihrer Region: Anforderungen des Netzbetreibers, Lärmschutz-Auflagen in ${city.bundesland} und typische Gebäudesituationen. Das spart Zeit und vermeidet teure Überraschungen bei der Installation.`,
+    ], 4),
+
+    typen: p([
+      `Drei Wärmepumpentypen stehen in ${city.name} zur Wahl: Luft-Wasser (92% Marktanteil, kein Erdreich nötig), Sole-Wasser (Erdwärme, höhere Effizienz, +5% KfW-Bonus) und Wasser-Wasser (höchste JAZ, Grundwasserrecht nötig). Für die meisten Häuser in ${city.name} ist die Luft-WP die beste Kosten-Nutzen-Entscheidung.`,
+      `Welcher WP-Typ ist der richtige für ${city.name}? Bei ${city.avgTemp}°C Jahresmittel erreicht eine Luft-WP eine JAZ von ${jaz}. Die Sole-WP käme auf JAZ ${(jaz + 0.8).toFixed(1)} — höhere Effizienz, aber auch höhere Investitionskosten durch die Tiefenbohrung.`,
+      `In ${city.name} (${city.bundesland}) ist die Luft-Wasser-Wärmepumpe für die meisten Einfamilienhäuser die wirtschaftlichste Wahl: keine Erdarbeiten, schnelle Montage (1–2 Tage), JAZ ${jaz} bei Ihrem Klima, und Förderung genauso attraktiv wie bei Erdwärmepumpen.`,
+      `Die Wahl des WP-Typs in ${city.name} hängt von Grundstück, Budget und gewünschter Effizienz ab. Luft-WP startet nach 50% KfW unter ${e(Math.round(15000 * 0.50))}, Sole-WP unter ${e(Math.round(32000 * 0.50))} — dafür mit JAZ ${(jaz + 0.8).toFixed(1)} statt ${jaz}. Wir helfen Ihnen, die richtige Entscheidung zu treffen.`,
+    ], 5),
+
+    eignung: p([
+      `Die meisten Häuser in ${city.name} sind für eine Wärmepumpe geeignet. Entscheidend ist die benötigte Vorlauftemperatur: Unter 55°C → Standard-WP, bis 70°C → Hochtemperatur-WP. Ein hydraulischer Abgleich (KfW-Pflicht, €500–1.500) senkt die nötige Vorlauftemperatur häufig um 5–10°C.`,
+      `WP-Eignung in ${city.name}: BWP-Daten zeigen, dass 70–80% aller Bestandsgebäude ohne große Umbaumaßnahmen für eine Wärmepumpe geeignet sind. Die häufigste Voraussetzung: ausreichend Platz für die Außeneinheit (ca. 1 m²) und ein Aufstellort mit ${city.bundesland}-konformem Lärmabstand.`,
+      `Für Ihren Haustyp in ${city.name}: Einfamilienhäuser mit Garten haben im Regelfall optimale Bedingungen — viel Platz, weniger Lärmkonflikte mit Nachbarn. In dichter Bebauung prüfen wir die Aufstellsituation vorab, damit es keine Überraschungen gibt.`,
+      `Ist Ihr Haus in ${city.name} geeignet? Die zwei häufigsten Hindernisse sind eine zu hohe Vorlauftemperatur (lösbar mit Hochtemperatur-WP) und zu wenig Platz für die Außeneinheit (selten ein Problem). Wir klären beides im kostenlosen Erstgespräch.`,
+    ], 6),
+
+    wirtschaftlichkeit: p([
+      `Die Zahlen für ${city.name} sprechen eine eindeutige Sprache: ${e(ersparnis)} Jahresersparnis gegenüber Erdgas, KfW-Förderung bis 70% und eine Lebensdauer von 20–25 Jahren. Nach der Amortisation läuft die WP auf Ihren Gewinn — jedes Jahr ${e(ersparnis)} mehr in der Tasche.`,
+      `Wirtschaftlichkeit in ${city.name}: Bei ${city.strompreis} ct/kWh Strom, JAZ ${jaz} und ${city.gaspreis} ct/kWh Gas ergibt sich eine jährliche Ersparnis von ${e(ersparnis)}. Nach Förderung amortisiert sich die Investition in typischerweise 7–12 Jahren. Gesamtgewinn über 20 Jahre: ca. ${e(ersparnis * 20)}.`,
+      `Für ${city.name} gilt: Die WP ist eine sichere Investition — keine CO₂-Preis-Abhängigkeit wie bei Gas, stabile Betriebskosten von ${e(wpKosten)}/Jahr und eine Wertsteigerung der Immobilie durch GEG-Konformität. Gesamtgewinn nach 20 Jahren Nutzung: ${e(Math.round(ersparnis * 20 - 25000 * 0.45))}.`,
+      `Die Wirtschaftlichkeit der WP in ${city.name} auf 20 Jahre: Ersparnis ${e(ersparnis * 20)} minus Eigenanteil nach 55% KfW (${e(Math.round(25000 * 0.45))}) ergibt ${e(Math.round(ersparnis * 20 - 25000 * 0.45))} Nettogewinn. Steigende Gaspreise durch den CO₂-Preis sind dabei noch nicht eingerechnet.`,
+    ], 7),
+  };
+}
