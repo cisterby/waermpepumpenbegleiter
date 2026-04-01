@@ -348,7 +348,7 @@ export default function WaermepumpeTemplate({
   // Cross-Links
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))
-    .filter((k): k is Keyword => k != null);
+    .filter((k) => k != null) as Keyword[];
 
   return (
     <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
