@@ -327,7 +327,7 @@ export default function PillarPage({ params }: Props) {
   // Cross-Links zu anderen Keyword-Seiten
   const crossKeywords = keyword.crossLinks
     .map(s => getKeywordBySlug(s))
-    .filter(Boolean)
+    .filter((k): k is NonNullable<ReturnType<typeof getKeywordBySlug>> => k != null)
     .slice(0, 6);
 
   const kw = keyword.keyword.replace('[Stadt]', '').trim();
