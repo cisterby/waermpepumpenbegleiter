@@ -40,6 +40,8 @@ export type Keyword = {
   sitemapPriority: number
   // Interne Cross-Links (Keyword-Slugs der verwandten Seiten)
   crossLinks: string[]
+  // Langer Einleitungstext für Keyword-Index-Seite (optional)
+  pillarContent?: string
 }
 
 export const KEYWORDS: Keyword[] = [
