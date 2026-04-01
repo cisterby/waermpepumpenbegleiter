@@ -42,6 +42,19 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             <h1 className="font-heading font-extrabold text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px,4.5vw,56px)' }}>
               {h1}
             </h1>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-5">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
+              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
             <p className="text-white/70 text-lg leading-relaxed max-w-2xl mb-8">
               {[
                 `Wärmepumpe kaufen in {stadt} — welches Modell passt zu Ihrem Haus? Kaufberater für {baujahr}-Gebäude mit {avgTemp}°C Klimadaten.`.replace('{avgTemp}', String(city.avgTemp)).replace('{jaz}', String(jaz)).replace('{stadttyp}', city.stadttyp).replace('{bundesland}', city.bundesland).replace('{bundeslandSlug}', city.bundeslandSlug).replace('{strompreis}', String(city.strompreis)).replace('{baujahr}', '1980–1994').replace('{gegFrist}', city.gegFrist).replace('{heizgradtage}', city.heizgradtage.toLocaleString('de-DE')).replace('{stadt}', city.name).replace('{year}', '2026'),

@@ -9,6 +9,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getKwCategory, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
+import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
 // ── Keyword-Kategorien → spezifischer Hauptinhalt ────────────────────────────
@@ -221,6 +222,19 @@ export default function GenericTemplate({
           <h1 className="font-heading font-extrabold text-white mb-4 leading-tight" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>
             {h1}
           </h1>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-5">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
+              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
 
           {/* Intro — variiert per cityHash × Keyword-Kategorie */}
           <p className="text-white/65 text-base leading-relaxed max-w-2xl mb-8">
@@ -390,6 +404,9 @@ export default function GenericTemplate({
             <p className="text-white/25 text-xs text-center">Kostenlos · Unverbindlich · Kein Spam</p>
           </div>
 
+          <div className="px-6 pb-8">
+            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+          </div>
           <AuthorBox keywordSlug={keyword.slug} />
 
           <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">

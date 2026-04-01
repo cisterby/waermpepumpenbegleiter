@@ -76,7 +76,20 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
             </div>
           )}
           <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
           <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-6">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
           <div className="flex flex-wrap gap-8 mb-8">
             {[
               { val: 'Bis zu 3', label: 'Vergleichsangebote', sub: city.name },
@@ -113,7 +126,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {/* Anbieter-Typen */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Die 4 Anbieter-Typen in {city.name} im Vergleich
+              Welche 4 Anbieter-Typen gibt es in {city.name} im Vergleich
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {ANBIETER_TYPEN.map((a, i) => (
@@ -131,7 +144,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {/* 7 Kriterien */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              7 Kriterien für die Anbieterauswahl in {city.name}
+              Woran erkenne ich einen guten Anbieter in {city.name}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -272,7 +285,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>

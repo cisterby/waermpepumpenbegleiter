@@ -374,6 +374,19 @@ export default function WaermepumpeTemplate({
                 text-4xl sm:text-5xl lg:text-[3.8rem] tracking-tight">
                 {h1}
               </h1>
+              {/* Preis-Badge */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-5">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
 
               <p className="text-lg text-white/72 max-w-xl mb-8 leading-relaxed">
                 {introText}

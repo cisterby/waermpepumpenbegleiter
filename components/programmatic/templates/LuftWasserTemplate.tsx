@@ -69,7 +69,20 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
             <span className="text-white/80">{city.name}</span>
           </nav>
           <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
           <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-6">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
           <div className="flex flex-wrap gap-8 mb-8">
             {[
               { val: `JAZ ${jaz}`, label: 'Jahresarbeitszahl', sub: city.avgTemp+'°C Jahresmittel' },
@@ -101,7 +114,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              COP-Kurve bei verschiedenen Außentemperaturen — {city.name}
+              Wie effizient arbeitet die Luft-WP bei verschiedenen Temperaturen in — {city.name}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -126,7 +139,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Monoblock vs. Split — welche Bauart für {city.name}?
+              Monoblock oder Split — was ist besser für {city.name}?
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -151,7 +164,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Warmwasser-Integration — 4 Optionen in {city.name}
+              Wie integriere ich Warmwasser in die Luft-WP in {city.name}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {WW_INTEGRATION.map((w,i)=>(
@@ -220,7 +233,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
