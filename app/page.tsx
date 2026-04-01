@@ -51,14 +51,26 @@ function Check({color=G}:{color?:string}){
 }
 
 const IMGS={
-  hero:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80',
-  wp1:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80',
-  house:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80',
-  tech:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80',
-  family:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-  money:'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=800&q=80',
-  altbau:'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80',
-  outdoor:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',
+  // Hero: dramatisches Haus bei Abenddämmerung — warm beleuchtet, hoher Kontrast
+  hero:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=85',
+  // Side card im Hero: Fachmann bei Installation
+  wp1:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=800&q=85',
+  // Modernes Haus für "Wie es funktioniert" Section
+  house:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85',
+  // Techniker/Handwerker
+  tech:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=85',
+  // Gemütliches Wohnzimmer / Wärme
+  family:'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=85',
+  // Geld / Förderung / Ersparnis
+  money:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=85',
+  // Altbau / historisches Haus
+  altbau:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=85',
+  // Außengerät / Gebäude exterior
+  outdoor:'https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=900&q=85',
+  // Team / Beratung
+  team:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=85',
+  // Natur / grüne Energie
+  nature:'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=900&q=85',
 }
 
 export default function Home(){
@@ -253,10 +265,12 @@ export default function Home(){
               {/* Experten-Box mit Namen (E-E-A-T: Experience) */}
               <div style={{background:BG,border:`1px solid ${BDR}`,borderRadius:12,padding:'20px 22px',marginBottom:20}}>
                 <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:12}}>
-                  <div style={{width:52,height:52,borderRadius:'50%',background:GLT,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Outfit,sans-serif',fontSize:20,fontWeight:700,color:G,flexShrink:0}}>MS</div>
+                  <div style={{width:52,height:52,borderRadius:'50%',overflow:'hidden',flexShrink:0,border:'2px solid '+GLT}}>
+                    <img src={IMGS.team} alt="Bastian Saupe" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'top'}} />
+                  </div>
                   <div>
-                    <div style={{fontWeight:600,color:TX,fontSize:16}}>Dr. Markus Sommer</div>
-                    <div style={{fontSize:13,color:TX3}}>Energieberater (IHK) · 14 Jahre Erfahrung</div>
+                    <div style={{fontWeight:600,color:TX,fontSize:16}}>Bastian Saupe</div>
+                    <div style={{fontSize:13,color:TX3}}>Gründer · Wärmepumpenbegleiter.de</div>
                   </div>
                 </div>
                 <p style={{fontSize:14,color:TX2,lineHeight:1.65,fontStyle:'italic'}}>

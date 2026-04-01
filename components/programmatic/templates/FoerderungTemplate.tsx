@@ -128,8 +128,6 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <span key={s} className="font-semibold">{s}</span>
           ))}
         </div>
-        </div>
-      </div>
       </div>
 
       {/* ── CONTENT ─────────────────────────────────── */}

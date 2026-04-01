@@ -223,7 +223,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               </div>
             </div>
           </div>
-        </div>
+        
 
         {/* STICKY SIDEBAR */}
         <div id="angebot" className="sticky top-24 space-y-4">
@@ -327,8 +327,6 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               </div>
             ))}
           </div>
-        </div>
-      </div>
     </div>
   );
 }

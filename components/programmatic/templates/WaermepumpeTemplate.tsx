@@ -95,7 +95,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
             <p className="text-white font-extrabold text-2xl leading-tight">
               Was kostet die Wärmepumpe wirklich in {city.name}?
             </p>
-            <p className="text-white/50 text-sm">
+            <p className="text-white/80 text-sm">
               {city.strompreis} ct/kWh Strompreis · {city.heizgradtage} Heizgradtage · JAZ {jaz} · Stand März 2026
             </p>
           </div>
@@ -361,8 +361,10 @@ export default function WaermepumpeTemplate({
           decoding="async"
           width={1200}
           height={800} />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(110deg, rgba(5,18,10,0.97) 0%, rgba(8,22,13,0.93) 40%, rgba(8,22,13,0.75) 65%, rgba(8,22,13,0.15) 100%)" }} />
-
+        <div className="absolute inset-0"
+          style={{ background: "linear-gradient(110deg, rgba(4,14,8,0.98) 0%, rgba(4,14,8,0.95) 30%, rgba(4,14,8,0.88) 52%, rgba(4,14,8,0.50) 70%, rgba(4,14,8,0.08) 100%)" }} />
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(to right, rgba(4,14,8,0.60) 0%, rgba(4,14,8,0.30) 45%, transparent 68%)" }} />
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
           <div className="grid lg:grid-cols-[54%_46%] gap-14 items-center">
             <motion.div
@@ -371,14 +373,14 @@ export default function WaermepumpeTemplate({
               transition={{ duration: 0.65 }}>
 
               {/* Breadcrumb */}
-              <nav className="flex items-center gap-2 text-white/80 text-sm mb-5 flex-wrap">
-                <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
+              <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap" style={{ color: "rgba(255,255,255,0.90)" }}>
+                <Link href="/" className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.90)" }}>Startseite</Link>
                 <span>›</span>
-                <Link href={`/${keyword.slug}`} className="hover:text-white/70 transition-colors">
+                <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.90)" }}>
                   {keyword.keyword.replace(" [Stadt]", "")}
                 </Link>
                 <span>›</span>
-                <span className="text-white/75">{city.name}</span>
+                <span style={{ color: "rgba(255,255,255,0.95)" }}>{city.name}</span>
               </nav>
 
               <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-5 text-white"
@@ -401,11 +403,11 @@ export default function WaermepumpeTemplate({
                 </span>
               </div>
               {/* Ultra-lokale Fakten */}
-              <p className="text-sm leading-relaxed max-w-xl mb-5" style={{ color: "rgba(255,255,255,0.82)" }}>
+              <p className="text-sm leading-relaxed max-w-xl mb-5" style={{ color: "rgba(255,255,255,0.95)" }}>
                 {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
               </p>
 
-              <p className="text-lg max-w-xl mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.93)", textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>
+              <p className="text-lg max-w-xl mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,1.0)", textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1.0)", lineHeight: "1.7" //textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>
                 {introText}
               </p>
 
