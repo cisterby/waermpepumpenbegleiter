@@ -81,8 +81,8 @@ export default function BundeslandPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `${keyword.keyword.replace('[Stadt]','').trim()} — alle Städte in ${bl.name}`,
-    numberOfItems: blCities.length,
-    itemListElement: blCities.slice(0, 20).map((city, i) => ({
+    numberOfItems: cities.length,
+    itemListElement: cities.slice(0, 20).map((city, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: `${keyword.keyword.replace('[Stadt]', city.name)}`,
