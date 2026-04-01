@@ -25,6 +25,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${keyword.keyword.replace('[Stadt]', '').trim()} 2026 — Alle Städte im Überblick | Wärmepumpenbegleiter`;
   const desc  = `${keyword.keyword.replace('[Stadt]', '').trim()} in Ihrer Stadt — ${(citiesData as City[]).length} Städte, aktuelle Preise 2026, bis zu 70% KfW-Förderung. Geprüfte Fachbetriebe kostenlos vergleichen.`;
 
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description: desc,
+    url: `https://waermepumpenbegleiter.de/${keyword.slug}`,
+    about: {
+      '@type': 'Service',
+      name: keyword.keyword.replace('[Stadt]', '').trim(),
+      areaServed: { '@type': 'Country', name: 'Deutschland' },
+    },
+  };
+
   return {
     title,
     description: desc,
@@ -319,8 +332,17 @@ export default function PillarPage({ params }: Props) {
 
   const kw = keyword.keyword.replace('[Stadt]', '').trim();
 
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${kw} 2026 — Alle Städte`,
+    url: `https://waermepumpenbegleiter.de/${keyword.slug}`,
+    about: { '@type': 'Service', name: kw, areaServed: { '@type': 'Country', name: 'Deutschland' } },
+  };
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
       {/* HERO */}
       <div className="bg-wp-dark py-16 px-6">
         <div className="max-w-5xl mx-auto">
@@ -391,6 +413,39 @@ export default function PillarPage({ params }: Props) {
                   {kw2.keyword.replace('[Stadt]', '').trim()}
                   <ArrowRight size={13} />
                 </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Pillar Content + FAQ */}
+        {keyword.pillarContent && (
+          <div className="mb-12 bg-white rounded-2xl border border-wp-border p-7 shadow-wp-sm">
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">
+              {kw} in Deutschland — Was Sie wissen müssen
+            </h2>
+            <div className="prose prose-sm max-w-none text-wp-text2 leading-relaxed">
+              <p>{keyword.pillarContent}</p>
+            </div>
+          </div>
+        )}
+
+        {keyword.faqPool && keyword.faqPool.length > 0 && (
+          <div className="mb-12">
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+              Häufige Fragen zu {kw}
+            </h2>
+            <div className="space-y-3">
+              {keyword.faqPool.slice(0, 5).map((faq, i) => (
+                <details key={i} className="bg-white border border-wp-border rounded-xl overflow-hidden group">
+                  <summary className="w-full flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-semibold text-wp-text text-sm">
+                    <span>{faq.q.replace('{stadt}', 'Ihrer Stadt').replace('{bundesland}', 'Ihrem Bundesland')}</span>
+                    <span className="shrink-0 text-wp-text3 group-open:rotate-180 transition-transform">▾</span>
+                  </summary>
+                  <div className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed border-t border-wp-border">
+                    {faq.a.replace('{stadt}', 'Ihrer Stadt').replace('{bundesland}', 'Ihrem Bundesland').replace(/\{[^}]+\}/g, '—')}
+                  </div>
+                </details>
               ))}
             </div>
           </div>
