@@ -6,7 +6,7 @@ import { ChevronDown, CheckCircle, XCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -34,6 +34,8 @@ const JAZ_ALTBAU = [
 ];
 
 export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
   const jazAltbau = Math.max(jaz - 0.3, 2.8).toFixed(1);
@@ -101,7 +103,12 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {/* Eignungscheck */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Altbau-Schnelltest: Ist Ihr Haus in {city.name} geeignet?
+              {[
+                `Altbau-Schnelltest: Ist Ihr Haus in ${city.name} geeignet?`,
+                `WP-Eignung im Altbau: Was zählt wirklich in ${city.name}?`,
+                `Checkliste: Wärmepumpe im Altbau ${city.name} — geeignet oder nicht?`,
+                `Welche Altbauten in ${city.name} sind für eine WP geeignet?`,
+              ][cityHash(city, 4, 101)]}
             </h2>
             <div className="space-y-3">
               {EIGNUNG_TEST.map((t, i) => (
@@ -120,7 +127,12 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {/* JAZ im Altbau */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              JAZ-Vergleich nach Sanierungsstand in {city.name}
+              {[
+                `JAZ-Vergleich nach Sanierungsstand in ${city.name}`,
+                `Jahresarbeitszahl in ${city.name}: Was bringt jede Sanierungsstufe?`,
+                `Effizienz im Altbau ${city.name}: JAZ je nach Vorlauftemperatur`,
+                `So verbessert sich die JAZ in ${city.name} nach der Sanierung`,
+              ][cityHash(city, 4, 102)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -148,7 +160,12 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {/* Sanierungsreihenfolge */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Optimale Sanierungsreihenfolge für Altbauten in {city.name}
+              {[
+                `Optimale Sanierungsreihenfolge für Altbauten in ${city.name}`,
+                `Schritt für Schritt: Heizungsmodernisierung in ${city.name}`,
+                `In welcher Reihenfolge sanieren? Altbau ${city.name}`,
+                `Sanierungsfahrplan für Ihr Haus in ${city.name}`,
+              ][cityHash(city, 4, 103)]}
             </h2>
             <div className="space-y-3">
               {SANIERUNGS_REIHENFOLGE.map((s, i) => (
@@ -169,7 +186,8 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           {/* Stadtdaten */}
           <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{city.name} — Standortdaten für Altbau-WP</h2>
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{h2s.klimadaten}</h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.klimadaten}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
               {[
                 [`${city.avgTemp}°C`, 'Jahresmitteltemperatur'],
@@ -193,7 +211,7 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Wärmepumpe Altbau {city.name}</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
               {faqs.map((faq, i) => (
                 <details key={i} className="group border-b border-wp-border last:border-0">

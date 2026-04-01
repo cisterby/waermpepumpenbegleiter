@@ -6,7 +6,7 @@ import { ChevronDown, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -33,6 +33,8 @@ const VERGLEICH_HEIZUNG = [
 ];
 
 export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
   const jazNeubau = Math.min(jaz + 0.5, 4.8).toFixed(1);
@@ -164,7 +166,8 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           {/* Stadtdaten */}
           <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{city.name} — Klimadaten & Neubau-Effizienz</h2>
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{h2s.klimadaten}</h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.klimadaten}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
               {[
                 [`${city.avgTemp}°C`, 'Jahresmittel'],
@@ -189,7 +192,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           {/* FAQ */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Wärmepumpe Neubau {city.name}</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
               {faqs.map((faq, i) => (
                 <details key={i} className="group border-b border-wp-border last:border-0">

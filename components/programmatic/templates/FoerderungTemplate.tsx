@@ -12,6 +12,8 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 
 export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
   const isUrgent = city.einwohner >= 100000;
@@ -128,7 +130,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="inline-block bg-wp-dark text-wp-green3 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">KfW Programm 458</span>
-              <h2 className="font-heading font-bold text-wp-text text-2xl">Alle Förder-Bausteine in {city.name}</h2>
+              <h2 className="font-heading font-bold text-wp-text text-2xl">{h2s.foerderungBausteine}</h2>
             </div>
             <div className="space-y-3">
               {boni.map((b, i) => (
@@ -195,7 +197,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
           {/* Schritt für Schritt */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Schritt für Schritt zur Förderung</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.foerderungProzess}</h2>
             <div className="space-y-3">
               {[
                 { n: '01', title: 'KfW-Antrag VOR Baubeginn', text: `Zwingend: Der Antrag muss vor dem Vertragsabschluss mit dem Installateur im KfW-Portal gestellt werden. Kein nachträglicher Antrag möglich. Gilt ohne Ausnahme in ${city.name}.`, urgent: true },
@@ -238,7 +240,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
                 <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
               </div>
             )}
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen zur Förderung in {city.name}</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
               {faqs.map((faq, i) => (
                 <details key={i} className="group border-b border-wp-border last:border-0">

@@ -179,6 +179,8 @@ export default function GenericTemplate({
   city, keyword, calc, foerd, jaz, nearby, h1,
 }: CityPageRouterProps) {
 
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const introParagraphs = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const kwMainContent = getKwMainContent(city, keyword, jaz, calc, foerd);
@@ -304,7 +306,7 @@ export default function GenericTemplate({
           )}
           {/* FAQ */}
           <h2 className="font-heading font-bold text-wp-text mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
-            Häufige Fragen — {keyword.keyword.replace('[Stadt]', city.name)}
+            {h2s.faq}
           </h2>
           <div className="border border-wp-border rounded-xl overflow-hidden bg-white shadow-sm mb-8">
             {faqs.map((faq, i) => (

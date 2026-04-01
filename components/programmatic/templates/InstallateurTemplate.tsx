@@ -7,7 +7,7 @@ import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Sta
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -50,6 +50,8 @@ const CHECKLIST = [
 
 export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const market = getMarketData(city.einwohner);
   const isUrgent = city.einwohner >= 100000;
@@ -176,7 +178,12 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div>
             <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Unsere Partnerbetriebe</p>
             <h2 className="font-heading font-bold text-wp-text mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
-              6 Kriterien — wie wir Betriebe in {city.name} prüfen
+              {[
+                `6 Kriterien — wie wir Betriebe in ${city.name} prüfen`,
+                `So wählen wir die richtigen Fachbetriebe für ${city.name} aus`,
+                `Warum sind unsere Partner in ${city.name} besser als Zufallsangebote?`,
+                `Unser Prüfprozess für WP-Installateure in ${city.name}`,
+              ][cityHash(city, 4, 140)]}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
               <div className="relative rounded-2xl overflow-hidden h-56">
@@ -212,7 +219,12 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div>
             <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Worauf achten</p>
             <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
-              Die häufigsten Fehler bei der Installateur-Wahl in {city.name}
+              {[
+                `Die häufigsten Fehler bei der Installateur-Wahl in ${city.name}`,
+                `Was geht schief, wenn man den falschen Betrieb in ${city.name} wählt?`,
+                `Diese Fehler bei der Betriebswahl kosten Eigentümer in ${city.name} teuer`,
+                `Warnsignale: So erkennen Sie schlechte Angebote in ${city.name}`,
+              ][cityHash(city, 4, 141)]}
             </h2>
             <div className="space-y-4">
               <div className="bg-red-50 border border-red-200 rounded-xl p-5">
@@ -287,7 +299,12 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div>
             <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Vergleich</p>
             <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
-              Lokaler Betrieb vs. bundesweiter Anbieter in {city.name}
+              {[
+                `Lokaler Betrieb vs. bundesweiter Anbieter in ${city.name}`,
+                `Warum lohnt sich ein regionaler Installateur in ${city.name}?`,
+                `National oder lokal? WP-Installateur in ${city.name} richtig wählen`,
+                `Vor-Ort-Betrieb oder bundesweiter Anbieter: Was ist besser für ${city.name}?`,
+              ][cityHash(city, 4, 142)]}
             </h2>
             <div className="overflow-x-auto rounded-2xl border border-wp-border shadow-wp-sm">
               <table className="w-full bg-white min-w-[500px]">
@@ -323,7 +340,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div>
             <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Der Prozess</p>
             <h2 className="font-heading font-bold text-wp-text mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
-              Von der Anfrage zur fertigen Wärmepumpe in {city.name}
+              {h2s.prozess}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
               <div className="space-y-3">
@@ -432,7 +449,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div>
             <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Häufige Fragen</p>
             <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
-              Wärmepumpe Installateur {city.name} — FAQ
+              {h2s.faq}
             </h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
               {faqs.map((faq, i) => (

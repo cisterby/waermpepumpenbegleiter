@@ -6,7 +6,7 @@ import { ChevronDown, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -38,6 +38,8 @@ const KOSTEN_ERDWAERME = [
 ];
 
 export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
   const jazSole = Math.min(jaz + 1.0, 5.5).toFixed(1);
@@ -179,7 +181,7 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Erdwärmepumpe {city.name}</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
               {faqs.map((faq,i)=>(
                 <details key={i} className="group border-b border-wp-border last:border-0">

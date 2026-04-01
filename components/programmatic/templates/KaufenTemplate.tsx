@@ -17,6 +17,8 @@ const IMG_HERO = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?a
 export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
 
@@ -160,9 +162,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
-          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>
-            Häufige Fragen — {city.name}
-          </h2>
+          <h2 className="font-heading font-bold text-wp-text mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>{h2s.faq}</h2>
           <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
             {faqs.map((faq, i) => (
               <details key={i} className="group border-b border-wp-border last:border-0">

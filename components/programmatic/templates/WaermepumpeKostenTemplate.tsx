@@ -21,6 +21,8 @@ export default function WaermepumpeKostenTemplate({
   city, keyword, calc, foerd, jaz, nearby, h1, allCities,
 }: CityPageRouterProps) {
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
   const v = cityHash(city, 4, 17);
   const isUrgent = city.einwohner >= 100000;
@@ -195,7 +197,12 @@ export default function WaermepumpeKostenTemplate({
               <span className="bg-wp-dark text-wp-green3 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">Preisübersicht 2026</span>
             </div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-2">
-              Alle 3 Wärmepumpen-Typen im Kostenvergleich — {city.name}
+              {[
+                `Alle 3 Wärmepumpen-Typen im Kostenvergleich — ${city.name}`,
+                `Welcher WP-Typ kostet was in ${city.name}? Vollständiger Vergleich`,
+                `Luft, Sole, Wasser: WP-Kosten in ${city.name} gegenübergestellt`,
+                `WP-Typen ${city.name}: Invest, Betrieb und Förderung im Vergleich`,
+              ][cityHash(city, 4, 130)]}
             </h2>
             <p className="text-wp-text2 text-sm mb-5">
               Sole-Wasser- und Wasser-Wasser-Wärmepumpen haben höhere Anschaffungskosten, aber auch höhere JAZ und damit niedrigere Betriebskosten. Bei {city.strompreis} ct/kWh Strompreis in {city.name} lohnt sich die Kalkulation.
@@ -316,7 +323,12 @@ export default function WaermepumpeKostenTemplate({
           {/* ── FLIESSTEXT ── */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Gesamtkosten und Wirtschaftlichkeit — {city.name} über 20 Jahre
+              {[
+                `Gesamtkosten und Wirtschaftlichkeit — ${city.name} über 20 Jahre`,
+                `Lohnt sich die WP in ${city.name} langfristig? 20-Jahres-Rechnung`,
+                `Was kostet und spart die WP in ${city.name} auf 20 Jahre?`,
+                `Vollkostenrechnung ${city.name}: WP-Investition und Ersparnis bis 2045`,
+              ][cityHash(city, 4, 131)]}
             </h2>
             <div className="space-y-4 text-wp-text2 text-base leading-relaxed">
               <p>
@@ -344,8 +356,9 @@ export default function WaermepumpeKostenTemplate({
           {/* ── KFW-SECTION mit Bild ── */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              KfW-Förderung in {city.name} — so senken Sie den Eigenanteil
+              {h2s.foerderung}
             </h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.foerderung}</p>
             <div className="grid sm:grid-cols-2 gap-6 mb-5">
               <div className="space-y-3">
                 {[
@@ -431,7 +444,7 @@ export default function WaermepumpeKostenTemplate({
               </div>
             )}
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Häufige Fragen zu Wärmepumpen-Kosten in {city.name}
+              {h2s.faq}
             </h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
               {faqs.map((faq, i) => (

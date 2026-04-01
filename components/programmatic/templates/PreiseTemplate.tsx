@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
@@ -38,6 +38,8 @@ const VERSTECKTE_KOSTEN = [
 ];
 
 export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
   const eigenanteilMin = Math.round(12000 * (1 - foerd.gesamtSatz / 100));
@@ -95,7 +97,12 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Preisvergleich nach WP-Typ in {city.name} — inkl. Montage 2026
+              {[
+                `Preisvergleich nach WP-Typ in ${city.name} — inkl. Montage 2026`,
+                `Was kosten die drei WP-Typen in ${city.name}? Vollständiger Vergleich`,
+                `WP-Kosten ${city.name}: Gerätepreis + Montage + Nebenkosten`,
+                `Luft-, Sole- und Wasser-WP in ${city.name}: Preisübersicht 2026`,
+              ][cityHash(city, 4, 110)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
               <table className="w-full text-sm min-w-[500px]">
@@ -123,7 +130,12 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              5 Faktoren die den WP-Preis in {city.name} beeinflussen
+              {[
+                `5 Faktoren, die den WP-Preis in ${city.name} beeinflussen`,
+                `Was bestimmt den Endpreis Ihrer Wärmepumpe in ${city.name}?`,
+                `Warum unterscheiden sich WP-Angebote in ${city.name} so stark?`,
+                `Diese 5 Punkte treiben die WP-Kosten in ${city.name}`,
+              ][cityHash(city, 4, 111)]}
             </h2>
             <div className="space-y-3">
               {PREIS_FAKTOREN.map((f,i)=>(
@@ -138,7 +150,12 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Versteckte Kosten — was viele Angebote weglassen
+              {[
+                `Versteckte Kosten — was viele Angebote weglassen`,
+                `Was fehlt oft im WP-Angebot? Unterschätzte Posten im Überblick`,
+                `Nebenkosten bei der WP-Installation: Diese Positionen fehlen häufig`,
+                `Worauf beim WP-Angebot achten? Versteckte Positionen`,
+              ][cityHash(city, 4, 112)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -166,7 +183,8 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
           </div>
 
           <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{city.name} — Ihre Kostenrechnung</h2>
+            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{h2s.kosten}</h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.kosten}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
               {[
                 ['€12.000–€28.000','Luft-WP gesamt'],
@@ -189,7 +207,7 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — WP Preise {city.name}</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
               {faqs.map((faq,i)=>(
                 <details key={i} className="group border-b border-wp-border last:border-0">

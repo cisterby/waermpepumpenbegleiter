@@ -6,13 +6,15 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
 const IMG = 'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1920&q=80';
 
 export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const v = cityHash(city, 4);
 
@@ -110,7 +112,12 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           {/* Kostenvergleich Tabelle */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Kostenvergleich Wärmepumpe vs. Gas in {city.name} — 2026 bis 2035
+              {[
+                `Kostenvergleich Wärmepumpe vs. Gas in ${city.name} — 2026 bis 2035`,
+                `WP vs. Gas in ${city.name}: Wie entwickeln sich die Kosten bis 2035?`,
+                `10-Jahres-Rechnung: WP oder Gasheizung in ${city.name}?`,
+                `Langfristvergleich ${city.name}: Wärmepumpe schlägt Gas bis 2035`,
+              ][cityHash(city, 4, 120)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
               <table className="w-full text-sm min-w-[500px]">
@@ -139,7 +146,12 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           {/* GEG-Fakten */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              GEG 2024 — Was für {city.name} gilt
+              {[
+                `GEG 2024 — Was für ${city.name} gilt`,
+                `Gebäudeenergiegesetz: Was Eigentümer in ${city.name} beachten müssen`,
+                `GEG-Pflichten in ${city.name}: Wann und was gilt?`,
+                `Heizungspflicht ${city.name}: GEG 2024 im Überblick`,
+              ][cityHash(city, 4, 121)]}
             </h2>
             <div className="space-y-2">
               {GEG_FAKTEN.map((f, i) => (
@@ -154,7 +166,12 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           {/* Wann ist WP besser */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Wann lohnt sich WP oder Gas in {city.name}?
+              {[
+                `Wann lohnt sich WP oder Gas in ${city.name}?`,
+                `Für wen lohnt sich die Wärmepumpe in ${city.name}?`,
+                `WP vs. Gas in ${city.name}: Wer profitiert mehr?`,
+                `Fazit für ${city.name}: WP oder Gasheizung — wer gewinnt?`,
+              ][cityHash(city, 4, 122)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -187,7 +204,7 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">Häufige Fragen — Wärmepumpe oder Gas {city.name}</h2>
+            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
             <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
               {faqs.map((faq, i) => (
                 <details key={i} className="group border-b border-wp-border last:border-0">

@@ -322,6 +322,8 @@ export default function WaermepumpeTemplate({
   const [introText] = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   // FAQs rotierend aus Pool (20+ Fragen je Keyword-Kategorie, 6 pro Stadt-Hash)
+  const h2s = getDynamicH2s(city, keyword, jaz);
+  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
   // Cross-Links
@@ -494,8 +496,9 @@ export default function WaermepumpeTemplate({
                 Klimadaten {city.name}
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Wärmepumpe in {city.name} — stadtspezifische Effizienz
+                {h2s.klimadaten}
               </h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.klimadaten}</p>
               <div className="grid sm:grid-cols-2 gap-5 mb-6">
                 {[
                   { icon: <Thermometer size={20} className="text-[#1B5E37]" />, title: "Jahresarbeitszahl (JAZ)", val: jaz.toString(), sub: `Bei ${city.avgTemp}°C Ø-Temperatur in ${city.name}`, note: "Aus 1 kWh Strom werden " + jaz + " kWh Wärme" },
@@ -561,7 +564,12 @@ export default function WaermepumpeTemplate({
                 Kostenrechner
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Kosten berechnen — für Ihr Haus in {city.name}
+                {[
+                `Kosten berechnen — für Ihr Haus in ${city.name}`,
+                `Was kostet die WP konkret für Ihr Haus in ${city.name}?`,
+                `WP-Kostenrechner: Ihre individuelle Kalkulation für ${city.name}`,
+                `Stadtspezifischer Rechner: WP-Kosten und Ersparnis in ${city.name}`,
+              ][cityHash(city, 4, 150)]}
               </h2>
               <WPKostenRechner city={city} />
             </motion.section>
@@ -577,8 +585,9 @@ export default function WaermepumpeTemplate({
                 KfW-Programm 458
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Bis zu €21.000 Förderung — auch in {city.name}
+                {h2s.foerderung}
               </h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.foerderung}</p>
               <p className="text-gray-600 leading-relaxed mb-6">
                 Die KfW-Bundesförderung ist nicht an einen Standort gebunden — Sie gilt überall in Deutschland,
                 also auch in {city.name}. Der Antrag muss{" "}
@@ -640,7 +649,12 @@ export default function WaermepumpeTemplate({
                 Häufige Bedenken
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Ehrliche Antworten auf Ihre Fragen zu {city.name}
+                {[
+                `Ehrliche Antworten auf Ihre Fragen zu ${city.name}`,
+                `Was Eigentümer in ${city.name} wirklich wissen wollen`,
+                `Häufige Bedenken — was Hausbesitzer in ${city.name} beschäftigt`,
+                `Offene Fragen zur WP in ${city.name}: Wir antworten ehrlich`,
+              ][cityHash(city, 4, 151)]}
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
@@ -701,8 +715,9 @@ export default function WaermepumpeTemplate({
                 Welche WP passt zu mir?
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Die drei Typen — was passt zu {city.name}?
+                {h2s.typen}
               </h2>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.typen}</p>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   {
@@ -803,7 +818,7 @@ export default function WaermepumpeTemplate({
                 </div>
               )}
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Häufige Fragen zur Wärmepumpe in {city.name}
+                {h2s.faq}
               </h2>
               <FAQAccordion faqs={faqs} />
             </motion.section>
