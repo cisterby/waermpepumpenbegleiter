@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import type { CityPageRouterProps } from "@/components/programmatic/CityPageRouter";
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
-import { getNearbyCity, getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/cities";
+import { getNearbyCity } from "@/lib/cities";
+import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from "@/lib/content-variation";
 
