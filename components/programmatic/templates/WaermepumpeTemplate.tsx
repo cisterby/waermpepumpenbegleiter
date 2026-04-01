@@ -49,12 +49,16 @@ function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
 }
 
+// ── Type-Aliases (außerhalb JSX, um TSX-Parser-Konflikte zu vermeiden) ────────
+type HeizungTyp = "erdgas" | "heizoel" | "nachtspeicher";
+type WpTyp      = "luft" | "sole" | "wasser";
+
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
-  const [heizung,  setHeizung]  = useState<"erdgas"|"heizoel"|"nachtspeicher">("erdgas");
-  const [wpTyp,    setWpTyp]    = useState<"luft"|"sole"|"wasser">("luft");
+  const [heizung,  setHeizung]  = useState<HeizungTyp>("erdgas");
+  const [wpTyp,    setWpTyp]    = useState<WpTyp>("luft");
   const [vorlauf,  setVorlauf]  = useState(35);
   const [selfOcc,  setSelfOcc]  = useState(true);
   const [fossil,   setFossil]   = useState(true);
@@ -306,7 +310,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
 
 // ── FAQ Accordion ────────────────────────────────────────────────────────────
 function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState(null as number | null);
   return (
     <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
       {faqs.map((faq, i) => (
