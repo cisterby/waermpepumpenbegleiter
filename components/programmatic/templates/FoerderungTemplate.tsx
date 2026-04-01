@@ -1,13 +1,4 @@
-      {/* ── HERO ─────────────────────────────────────── */}
-      <div className="relative min-h-[55vh] flex items-end overflow-hidden">
-        <img
-          src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
-          alt={`Wärmepumpe Förderung ${city.name}`}
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="eager" fetchPriority="high" decoding="async"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.30) 100%)' }} />
-        <div className="relative z-10 w-full pt-28 pb-14 px-6">// components/programmatic/templates/FoerderungTemplate.tsx
+// components/programmatic/templates/FoerderungTemplate.tsx
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -58,8 +49,16 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
-      {/* ── HERO ─────────────────────────────────────── */}
-      <div className="bg-[#1A4731] pt-24 pb-16 px-6" style={{ background: 'linear-gradient(135deg, #0A1910 0%, #1A4731 100%)' }}>
+            {/* ── HERO ─────────────────────────────────────── */}
+      <div className="relative min-h-[55vh] flex items-end overflow-hidden">
+        <img
+          src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
+          alt={`Wärmepumpe Förderung ${city.name}`}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager" fetchPriority="high" decoding="async"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.30) 100%)' }} />
+        <div className="relative z-10 w-full pt-28 pb-14 px-6">
         <div className="max-w-5xl mx-auto">
           <nav className="flex items-center gap-2 text-sm mb-6 text-[rgba(255,255,255,0.40)] flex-wrap">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
@@ -129,6 +128,8 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <span key={s} className="font-semibold">{s}</span>
           ))}
         </div>
+        </div>
+      </div>
       </div>
 
       {/* ── CONTENT ─────────────────────────────────── */}
