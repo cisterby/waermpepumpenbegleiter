@@ -52,6 +52,19 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           <h1 className="font-heading font-extrabold text-white mb-5 leading-tight" style={{ fontSize: 'clamp(30px,4.5vw,58px)' }}>
             {h1}
           </h1>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-5">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
+              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
           <p className="text-[rgba(255,255,255,0.65)] text-lg leading-relaxed max-w-2xl mb-10">
             In {city.name} ({city.bundesland}) beträgt die KfW-Förderung typisch {foerd.gesamtSatz}% — das sind{' '}
             <strong className="text-white">{fmtEuro(foerd.zuschuss)}</strong> nicht rückzahlbarer Zuschuss.

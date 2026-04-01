@@ -68,6 +68,13 @@ export default function Navigation() {
             </div>
 
             <div className="hidden lg:flex items-center gap-3">
+              <a
+                href="tel:+4915563566199"
+                className={`font-body text-[14px] font-medium transition-colors hover:text-wp-primary flex items-center gap-1.5 px-3 py-2 ${scrolled ? 'text-wp-text-secondary' : 'text-white/80 hover:text-white'}`}
+              >
+                <span className="text-[13px]">📞</span>
+                <span>+49 15563 566199</span>
+              </a>
               <Link
                 href="/kontakt"
                 className={`font-body text-[14px] font-medium transition-colors hover:text-wp-primary px-4 py-2 ${scrolled ? 'text-wp-text-secondary' : 'text-white'}`}

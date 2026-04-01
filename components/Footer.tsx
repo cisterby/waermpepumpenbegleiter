@@ -99,9 +99,32 @@ export default function Footer() {
 
           <div>
             <h4 className="font-body font-semibold text-sm text-wp-text-on-dark mb-4">
+              Kontakt
+            </h4>
+            <ul className="space-y-3 mb-6">
+              <li>
+                <a href="tel:+4915563566199"
+                  className="font-body text-sm text-wp-primary-mid hover:text-wp-primary-light transition-colors flex items-center gap-2">
+                  📞 +49 15563 566199
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@waermepumpenbegleiter.de"
+                  className="font-body text-sm text-wp-text-on-dark/60 hover:text-wp-text-on-dark transition-colors">
+                  info@waermepumpenbegleiter.de
+                </a>
+              </li>
+              <li>
+                <Link href="/kontakt"
+                  className="font-body text-sm text-wp-text-on-dark/60 hover:text-wp-text-on-dark transition-colors">
+                  Kontaktformular →
+                </Link>
+              </li>
+            </ul>
+            <h4 className="font-body font-semibold text-sm text-wp-text-on-dark mb-3">
               Rechtliches
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {rechtliches.map((item) => (
                 <li key={item.label}>
                   <Link

@@ -70,7 +70,20 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
             </div>
           )}
           <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
+              <div className="flex flex-wrap gap-2 mt-3 mb-1">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
+                </span>
+              </div>
           <p className="text-white/80 text-base max-w-xl mb-8">{intros[v]}</p>
+              {/* Ultra-lokale Fakten */}
+              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-6">
+                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
+              </p>
           <div className="flex flex-wrap gap-8 mb-8">
             {[
               { val: '70–80%', label: 'Altbauten geeignet', sub: 'Quelle: BWP 2024' },
@@ -133,7 +146,7 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
               {[
                 `JAZ-Vergleich nach Sanierungsstand in ${city.name}`,
-                `Jahresarbeitszahl in ${city.name}: Was bringt jede Sanierungsstufe?`,
+                `Welche JAZ ist realistisch in ${city.name}: Was bringt jede Sanierungsstufe?`,
                 `Effizienz im Altbau ${city.name}: JAZ je nach Vorlauftemperatur`,
                 `So verbessert sich die JAZ in ${city.name} nach der Sanierung`,
               ][cityHash(city, 4, 102)]}
@@ -166,7 +179,7 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
               {[
                 `Optimale Sanierungsreihenfolge für Altbauten in ${city.name}`,
-                `Schritt für Schritt: Heizungsmodernisierung in ${city.name}`,
+                `Wie läuft die Heizungsmodernisierung in ${city.name}`,
                 `In welcher Reihenfolge sanieren? Altbau ${city.name}`,
                 `Sanierungsfahrplan für Ihr Haus in ${city.name}`,
               ][cityHash(city, 4, 103)]}
@@ -279,7 +292,7 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
       <div id="angebot" className="bg-wp-dark py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Bis zu 3 Angebote für {city.name} — in 2 Minuten</h2>
+          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
