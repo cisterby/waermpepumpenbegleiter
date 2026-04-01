@@ -353,7 +353,7 @@ export default function WaermepumpeTemplate({
 
 
       {/* ── HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[82vh] flex items-center overflow-hidden">
+      <section className="relative flex items-center overflow-hidden" style={{ minHeight: "90vh" }}>
         <img src={heroImg} alt={`Wärmepumpe ${city.name}`}
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
@@ -361,7 +361,7 @@ export default function WaermepumpeTemplate({
           decoding="async"
           width={1200}
           height={800} />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(105deg, rgba(10,25,16,0.96) 0%, rgba(10,25,16,0.82) 55%, rgba(10,25,16,0.25) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(110deg, rgba(5,18,10,0.97) 0%, rgba(8,22,13,0.93) 40%, rgba(8,22,13,0.75) 65%, rgba(8,22,13,0.15) 100%)" }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
           <div className="grid lg:grid-cols-[54%_46%] gap-14 items-center">
@@ -381,14 +381,14 @@ export default function WaermepumpeTemplate({
                 <span className="text-white/75">{city.name}</span>
               </nav>
 
-              <span className="inline-flex items-center gap-2 bg-white/10 border border-white/15
-                rounded-full px-4 py-1.5 text-sm font-medium text-white/88 mb-5">
+              <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-5 text-white"
+              style={{ background: "rgba(76,175,125,0.22)", border: "1px solid rgba(76,175,125,0.50)" }}>
                 <span className="w-2 h-2 rounded-full bg-[#4CAF7D] animate-pulse" />
                 {city.bundesland} · GEG 2026
               </span>
 
-              <h1 className="font-extrabold text-white leading-[1.1] mb-5
-                text-4xl sm:text-5xl lg:text-[3.8rem] tracking-tight">
+              <h1 className="font-extrabold text-white leading-[1.1] mb-5 text-4xl sm:text-5xl lg:text-[3.8rem] tracking-tight"
+              style={{ textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8)" }}>
                 {h1}
               </h1>
               {/* Preis-Badge */}
@@ -401,11 +401,11 @@ export default function WaermepumpeTemplate({
                 </span>
               </div>
               {/* Ultra-lokale Fakten */}
-              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-5">
+              <p className="text-sm leading-relaxed max-w-xl mb-5" style={{ color: "rgba(255,255,255,0.82)" }}>
                 {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
               </p>
 
-              <p className="text-lg text-white/72 max-w-xl mb-8 leading-relaxed">
+              <p className="text-lg max-w-xl mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.93)", textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>
                 {introText}
               </p>
 
@@ -417,9 +417,10 @@ export default function WaermepumpeTemplate({
                   Kosten berechnen <ArrowRight size={18} />
                 </a>
                 <a href="#foerderung"
-                  className="inline-flex items-center gap-2 px-8 py-4
-                    bg-white/10 border border-white/25 text-white font-bold rounded-xl
-                    hover:bg-white/18 transition-all text-base">
+                  className="inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl text-white transition-all text-base"
+                  style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.45)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.25)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.15)")}>
                   Förderung prüfen
                 </a>
               </div>
@@ -432,9 +433,9 @@ export default function WaermepumpeTemplate({
                   { icon: <Zap size={16} />,          val: `${city.strompreis} ct`, lbl: "Strompreis lokal" },
                   { icon: <Leaf size={16} />,         val: `${calc.co2Ersparnis} t`, lbl: "CO₂ gespart/J." },
                 ].map((s, i) => (
-                  <div key={i} className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-3 border border-white/10">
-                    <div className="flex items-center gap-1.5 text-[#4CAF7D] mb-1">{s.icon}
-                      <span className="font-mono font-bold text-white text-lg">{s.val}</span>
+                  <div key={i} className="rounded-xl px-3 py-3 border" style={{ background: "rgba(5,18,10,0.72)", backdropFilter: "blur(8px)", borderColor: "rgba(255,255,255,0.18)" }}>
+                    <div className="flex items-center gap-1.5 mb-1" style={{ color: "#4CAF7D" }}>{s.icon}
+                      <span className="font-mono font-bold text-lg" style={{ color: "white" }}>{s.val}</span>
                     </div>
                     <p className="text-white/80 text-xs">{s.lbl}</p>
                   </div>
@@ -449,7 +450,7 @@ export default function WaermepumpeTemplate({
               transition={{ duration: 0.65, delay: 0.2 }}
               className="hidden lg:flex justify-end">
               <div className="w-full max-w-[420px] bg-white rounded-2xl overflow-hidden
-                shadow-2xl border border-white/20">
+                shadow-2xl border border-gray-100">
                 <div className="relative h-52">
                   <img src={sideImg} alt={`Wärmepumpe ${city.name}`}
                     className="w-full h-full object-cover"

@@ -33,8 +33,8 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* HERO */}
       <section className="relative min-h-[60vh] flex items-center overflow-hidden">
-        pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
-          src={ className="absolute inset-0 w-full h-full object-cover" />
+        src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
+          className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
