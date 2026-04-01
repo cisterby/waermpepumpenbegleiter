@@ -60,6 +60,8 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
+  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 7);
+
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <div className="relative min-h-[55vh] flex items-center overflow-hidden">
@@ -128,7 +130,7 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
               {[
-                `Kostenvergleich Wärmepumpe vs. Gas in ${city.name} — 2026 bis 2035`,
+                `Kostenvergleich Wärmepumpe oder Gas — was rechnet sich in ${city.name} — 2026 bis 2035`,
                 `WP vs. Gas in ${city.name}: Wie entwickeln sich die Kosten bis 2035?`,
                 `10-Jahres-Rechnung: WP oder Gasheizung in ${city.name}?`,
                 `Langfristvergleich ${city.name}: Wärmepumpe schlägt Gas bis 2035`,
@@ -293,7 +295,7 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
       {/* ── VERGLEICH CONTENT ──────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 pb-10">
         <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
-          Wärmepumpe vs. Gas in {city.name} — alle Zahlen im Vergleich
+          Wärmepumpe oder Gas — was rechnet sich in {city.name} — alle Zahlen im Vergleich
         </h2>
         <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
           <p>
@@ -310,6 +312,23 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
           </p>
         </div>
       </div>
+
+      {/* ── VERWANDTE THEMEN ─────────────────────────── */}
+      {crossKeywords.length > 0 && (
+        <div className="max-w-3xl mx-auto px-6 pb-8">
+          <h3 className="font-heading font-semibold text-wp-text text-base mb-3">
+            Verwandte Themen für {city.name}
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {crossKeywords.map(kw2 => kw2 && (
+              <a key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
+                className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:border-wp-green hover:text-wp-green transition-all">
+                {kw2.keyword.replace('[Stadt]', city.name)}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
