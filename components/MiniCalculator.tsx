@@ -4,7 +4,8 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { calcBetriebskosten, type HeizungsTyp, type BaujahrTyp } from '@/lib/calculations';
+import { calcBetriebskosten } from '@/lib/calculations';
+import type { HeizungsTyp, BaujahrTyp } from '@/lib/calculations';
 
 export default function MiniCalculator() {
   const [flaeche, setFlaeche] = useState(120);
