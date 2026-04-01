@@ -119,6 +119,17 @@ export function buildLocalBusinessSchema(keywordSlug: string, city: City) {
     geo: { '@type': 'GeoCoordinates', latitude: city.lat, longitude: city.lng },
     openingHours: 'Mo-Fr 08:00-18:00',
     priceRange: 'Kostenlos',
+    telephone: '+49-176-32987455',
+    email: 'info@waermepumpenbegleiter.de',
+    hasMap: `https://www.google.com/maps/search/Wärmepumpe+${encodeURIComponent(city.name)}`,
+    sameAs: [
+      `https://waermepumpenbegleiter.de/${keywordSlug}/${city.slug}`,
+    ],
+    serviceArea: {
+      '@type': 'GeoCircle',
+      geoMidpoint: { '@type': 'GeoCoordinates', latitude: city.lat, longitude: city.lng },
+      geoRadius: '50000',
+    },
   }
 }
 
