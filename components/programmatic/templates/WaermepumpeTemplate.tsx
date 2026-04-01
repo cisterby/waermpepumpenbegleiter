@@ -9,6 +9,7 @@ import {
   TrendingDown, Home, Wrench, AlertTriangle, BarChart2
 } from "lucide-react";
 import type { CityPageRouterProps } from "@/components/programmatic/CityPageRouter";
+import type { Keyword } from "@/lib/keywords";
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity } from "@/lib/cities";
 import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
@@ -347,7 +348,7 @@ export default function WaermepumpeTemplate({
   // Cross-Links
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))
-    .filter((k): k is NonNullable<ReturnType<typeof getKeywordBySlug>> => k != null);
+    .filter((k): k is Keyword => k != null);
 
   return (
     <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
