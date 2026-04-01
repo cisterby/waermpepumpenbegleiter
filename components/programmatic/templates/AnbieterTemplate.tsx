@@ -10,7 +10,7 @@ import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros } from '@/li
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 
-const IMG = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1920&q=80';
+const IMG = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=75';
 
 /* ANBIETER_TYPEN moved inside component */
 
@@ -62,7 +62,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
