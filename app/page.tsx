@@ -756,6 +756,54 @@ export default function Home(){
           </div>
         </div>
       </section>
+      {/* ── Keyword-Hub: Links zu allen 22 Themen-Seiten ── */}
+      <section className="sec" style={{background:'#F8FFFE',borderTop:'1px solid #E5EFE9'}}>
+        <div className="c" style={{maxWidth:1100,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:36}}>
+            <div style={{display:'inline-block',background:'#E8F5EE',color:'#1B5E37',fontSize:11,fontWeight:700,letterSpacing:'0.12em',textTransform:'uppercase',padding:'4px 14px',borderRadius:20,marginBottom:12}}>
+              Alle Themen
+            </div>
+            <h2 style={{fontSize:'clamp(22px,2.5vw,32px)',fontWeight:800,color:'#0F2419',margin:0}}>
+              Ihr Ratgeber für jedes Wärmepumpen-Thema
+            </h2>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:10}}>
+            {[
+              ['Wärmepumpe',                 'waermepumpe',               'Kosten, Förderung & Installateure'],
+              ['WP Kosten 2026',             'waermepumpe-kosten',         'Alle Typen im Vergleich'],
+              ['WP Förderung',               'waermepumpe-foerderung',     'KfW bis 70% — wie beantragen?'],
+              ['WP Installateur',            'waermepumpe-installateur',   'Geprüfte lokale Fachbetriebe'],
+              ['Luft-Wasser-Wärmepumpe',     'luft-wasser-waermepumpe',   '92% Marktanteil — JAZ & Kosten'],
+              ['Wärmepumpe kaufen',          'waermepumpe-kaufen',         'Kaufberater 2026'],
+              ['WP Altbau',                  'waermepumpe-altbau',         '70–80% aller Altbauten geeignet'],
+              ['WP nachrüsten',              'waermepumpe-nachruesten',    'Bestandsgebäude umrüsten'],
+              ['Heizung tauschen',           'heizung-tauschen',           'GEG-Fristen & Optionen'],
+              ['WP Installation',            'waermepumpe-installation',   'Ablauf & Voraussetzungen'],
+              ['Kommunale Wärmeplanung',     'kommunale-waermeplanung',    'Was Eigentümer wissen müssen'],
+              ['Erdwärmepumpe',              'erdwaermepumpe',             'Sole-WP: JAZ 4,3+ & Kosten'],
+              ['WP Angebot',                 'waermepumpe-angebot',        'Was muss drinstehen?'],
+              ['WP Preise',                  'waermepumpe-preise',         'Vollständige Kostenübersicht'],
+              ['WP Anbieter',                'waermepumpe-anbieter',       'Lokale Betriebe finden'],
+              ['Luftwärmepumpe',             'luftwaermepumpe',            'Technik, Typen & Vergleich'],
+              ['WP Neubau',                  'waermepumpe-neubau',         'GEG-konform planen'],
+              ['WP Beratung',                'waermepumpe-beratung',       'Kostenlos & unabhängig'],
+              ['WP Fachbetrieb',             'waermepumpe-fachbetrieb',    'Zertifizierte Meisterbetriebe'],
+              ['WP Montage',                 'waermepumpe-montage',        '2–3 Tage Ablauf erklärt'],
+              ['Wärmepumpe oder Gas',        'waermepumpe-oder-gas',       'Kostenvergleich 2026'],
+              ['WP Stromverbrauch',          'waermepumpe-stromverbrauch', 'Berechnung & Optimierung'],
+            ].map(([label, slug, sub]) => (
+              <a key={slug} href={`/${slug}`}
+                style={{display:'block',padding:'12px 16px',background:'white',border:'1px solid #E5EFE9',borderRadius:10,textDecoration:'none',transition:'all .15s'}}
+                onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='#1B5E37';el.style.boxShadow='0 2px 8px rgba(27,94,55,.08)'}}
+                onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='#E5EFE9';el.style.boxShadow='none'}}>
+                <div style={{fontSize:13,fontWeight:700,color:'#0F2419',marginBottom:2}}>{label}</div>
+                <div style={{fontSize:11,color:'#6B7280'}}>{sub}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ── */}
       <section className="sec" style={{background:BG}}>
         <div className="c" style={{maxWidth:800,margin:'0 auto'}}>

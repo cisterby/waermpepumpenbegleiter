@@ -26,9 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/ueber-uns`,               lastModified: MOD, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/ratgeber`,                lastModified: MOD, changeFrequency: 'weekly',  priority: 0.8 },
     { url: `${BASE}/kontakt`,                 lastModified: MOD, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/impressum`,               lastModified: MOD, changeFrequency: 'yearly',  priority: 0.2 },
-    { url: `${BASE}/datenschutz`,             lastModified: MOD, changeFrequency: 'yearly',  priority: 0.2 },
-    { url: `${BASE}/agb`,                     lastModified: MOD, changeFrequency: 'yearly',  priority: 0.2 },
   ];
 
   // 22 Pillar Pages
