@@ -39,10 +39,10 @@ const STEPS = [
 ];
 
 const VORTEILE = [
-  { icon: [CheckCircle size={20} className="text-[#1A4731]" |], title: '100% kostenlos', text: 'Für Hausbesitzer vollständig kostenlos. Keine versteckten Kosten.' },
-  { icon: [Shield size={20} className="text-[#1A4731]" |], title: 'Herstellerunabhängig', text: 'Wir empfehlen was zu Ihnen passt, nicht was uns die höchste Provision bringt.' },
-  { icon: [Clock size={20} className="text-[#1A4731]" |], title: '48-Stunden-Garantie', text: 'Erste Angebote innerhalb von 48 Stunden nach Ihrer Anfrage.' },
-  { icon: [Zap size={20} className="text-[#1A4731]" |], title: 'KfW-Begleitung', text: 'Wir helfen beim KfW-Antrag — bis zu 70% Förderung, max. €21.000.' },
+  { icon: <CheckCircle size={20} className="text-[#1A4731]" />, title: '100% kostenlos', text: 'Für Hausbesitzer vollständig kostenlos. Keine versteckten Kosten.' },
+  { icon: <Shield size={20} className="text-[#1A4731]" />, title: 'Herstellerunabhängig', text: 'Wir empfehlen was zu Ihnen passt, nicht was uns die höchste Provision bringt.' },
+  { icon: <Clock size={20} className="text-[#1A4731]" />, title: '48-Stunden-Garantie', text: 'Erste Angebote innerhalb von 48 Stunden nach Ihrer Anfrage.' },
+  { icon: <Zap size={20} className="text-[#1A4731]" />, title: 'KfW-Begleitung', text: 'Wir helfen beim KfW-Antrag — bis zu 70% Förderung, max. €21.000.' },
 ];
 
 export default function WieEsFunktioniertPage() {
@@ -81,7 +81,7 @@ export default function WieEsFunktioniertPage() {
               <ul className="space-y-2.5">
                 {step.bullets.map(b => (
                   <li key={b} className="flex items-center gap-2.5 text-sm text-[#1C2B2B] font-medium">
-                    [CheckCircle size={15} style={{ color: step.color }} className="shrink-0" |]
+                    <CheckCircle size={15} style={{ color: step.color }} className="shrink-0" />
                     {b}
                   </li>
                 ))}
@@ -105,7 +105,7 @@ export default function WieEsFunktioniertPage() {
             {VORTEILE.map(v => (
               <div key={v.title} className="bg-white/10 border border-white/15 rounded-2xl p-5">
                 <div className="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center mb-4">
-                  [CheckCircle size={18} className="text-[#4CAF7D]" |]
+                  <CheckCircle size={18} className="text-[#4CAF7D]" />
                 </div>
                 <h3 className="text-white font-bold text-base mb-2">{v.title}</h3>
                 <p className="text-white/65 text-sm leading-relaxed">{v.text}</p>
@@ -125,15 +125,15 @@ export default function WieEsFunktioniertPage() {
             In 2 Minuten ausgefüllt. Bis zu 3 Angebote geprüfter Fachbetriebe in 48 Stunden.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            [Link href="|kontakt"
+            <Link href="/kontakt"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold transition-all"
-              style={{ background: '#1A4731' }}]
+              style={{ background: '#1A4731' }}>
               Kostenlos anfragen
-              [ArrowRight size={16} |]
+              <ArrowRight size={16} />
             </Link>
             <a href="tel:+4915563566199"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold border-2 border-[#1A4731] text-[#1A4731] transition-all hover:bg-[#1A4731]/8">
-              [Phone size={16} |]
+              <Phone size={16} />
               +49 15563 566199
             </a>
           </div>

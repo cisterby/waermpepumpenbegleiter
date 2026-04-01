@@ -12,7 +12,7 @@ function calc(fl:number,hz:string,bj:string){
 function fmt(n:number){return'\u20AC\u202F'+Math.round(n).toLocaleString('de-DE')}
 
 function useInView(threshold=0.15){
-  const ref=useRef[HTMLDivElement](null)
+  const ref=useRef<HTMLDivElement>(null)
   const [v,setV]=useState(false)
   useEffect(()=>{
     if(typeof window==='undefined')return
@@ -82,7 +82,7 @@ export default function Home(){
   },[])
   const[fl,setFl]=useState(130),[hz,setHz]=useState('erdgas'),[bj,setBj]=useState('1979_1994')
   const r=calc(fl,hz,bj)
-  const[openFaq,setOpenFaq]=useState(null as number | null)
+  const[openFaq,setOpenFaq]=useState<number|null>(null)
 
   const statsRef=useInView(0.1),stepsRef=useInView(),calcRef=useInView()
   const foerdRef=useInView(0.1),testiRef=useInView(),whyRef=useInView()
@@ -170,7 +170,7 @@ export default function Home(){
               <div style={{display:'flex',gap:22,flexWrap:'wrap',borderTop:'1px solid rgba(255,255,255,.12)',paddingTop:24}}>
                 {['733 Städte','Lokale Fachbetriebe','Bis 70% Förderung','Herstellerunabhängig'].map(t=>(
                   <div key={t} style={{display:'flex',alignItems:'center',gap:7,fontSize:13,color:'rgba(255,255,255,.62)'}}>
-                    [Check color={G3}|]
+                    <Check color={G3}/>
                     {t}
                   </div>
                 ))}
@@ -257,7 +257,7 @@ export default function Home(){
         <div className="c">
           <div className="exp-g" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
             <div className={'fu '+(expertRef.v?'fv':'')}>
-              [Tag bg={GLT} color={G} text="Unsere Expertise"|]
+              <Tag bg={GLT} color={G} text="Unsere Expertise"/>
               <h2 style={{marginBottom:16}}>Geprüftes Fachwissen,<br/>keine Verkaufsinteressen</h2>
               <p style={{fontSize:16,color:TX2,lineHeight:1.75,marginBottom:24}}>
                 Im Gegensatz zu Thermondo, Enpal und Co. verkaufen wir keine eigenen Wärmepumpen. Wir sind ein unabhängiger Informations- und Vermittlungsservice — unser einziges Interesse ist Ihre beste Entscheidung.
@@ -350,7 +350,7 @@ export default function Home(){
               </div>
             </div>
             <div className={'fu '+(whyRef.v?'fv':'')} style={{transitionDelay:'.12s'}}>
-              [Tag bg={AMBL} color="#92400E" text="Warum jetzt?"|]
+              <Tag bg={AMBL} color="#92400E" text="Warum jetzt?"/>
               <h2 style={{marginBottom:18}}>Das GEG macht den Wechsel unausweichlich</h2>
               <p style={{fontSize:16,color:TX2,lineHeight:1.75,marginBottom:28}}>
                 Ab dem 30. Juni 2026 gilt die 65%-EE-Pflicht für Bestandsgebäude in allen Kommunen über 100.000 Einwohner. Wer jetzt handelt, sichert sich volle KfW-Förderung und die besten lokalen Installateure.
@@ -381,7 +381,7 @@ export default function Home(){
       <section ref={stepsRef.ref} id="steps" className="sec" style={{background:'white'}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 52px'}}>
-            [Tag bg={GLT} color={G} text="So funktioniert es"|]
+            <Tag bg={GLT} color={G} text="So funktioniert es"/>
             <h2>In 3 Schritten zur Wärmepumpe — kostenlos & herstellerunabhängig</h2>
           </div>
           <div className="g3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
@@ -417,7 +417,7 @@ export default function Home(){
       <section ref={processRef.ref} className="sec" style={{background:BG}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 48px'}}>
-            [Tag bg={GLT} color={G} text="Zeitplan"|]
+            <Tag bg={GLT} color={G} text="Zeitplan"/>
             <h2>Von der Anfrage zur fertigen Wärmepumpe</h2>
             <p style={{fontSize:16,color:TX2,marginTop:12}}>Typischer Ablauf — von Ihrer Anfrage bis zur ersten Rechnung mit Wärmepumpe.</p>
           </div>
@@ -457,7 +457,7 @@ export default function Home(){
       <section ref={calcRef.ref} id="calculator" className="sec" style={{background:'white'}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:540,margin:'0 auto 48px'}}>
-            [Tag bg={GLT} color={G} text="Kostenrechner"|]
+            <Tag bg={GLT} color={G} text="Kostenrechner"/>
             <h2>Was kostet Ihre alte Heizung wirklich?</h2>
             <p style={{fontSize:15,color:TX3,marginTop:8}}>Berechnung basiert auf aktuellen BDEW-Energiepreisen und BWP-Durchschnittswerten · Stand März 2026</p>
           </div>
@@ -534,7 +534,7 @@ export default function Home(){
         <div className="c">
           <div className="foerd-g" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
             <div className={'fu '+(foerdRef.v?'fv':'')}>
-              [Tag bg={GLT} color={G} text="KfW-Programm 458"|]
+              <Tag bg={GLT} color={G} text="KfW-Programm 458"/>
               <h2 style={{marginBottom:16}}>Bis zu €21.000<br/>Zuschuss vom Staat</h2>
               <p style={{fontSize:16,color:TX2,lineHeight:1.72,marginBottom:24}}>
                 Der Zuschuss ist nicht rückzahlbar. Maximal €30.000 werden bezuschusst — kumulierbar bis 70%. <strong>Antrag muss vor Baubeginn gestellt werden.</strong>
@@ -597,7 +597,7 @@ export default function Home(){
       <section ref={objRef.ref} className="sec" style={{background:'white'}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:560,margin:'0 auto 48px'}}>
-            [Tag bg={AMBL} color="#92400E" text="Häufige Bedenken"|]
+            <Tag bg={AMBL} color="#92400E" text="Häufige Bedenken"/>
             <h2>Die ehrlichen Antworten auf Ihre Fragen</h2>
             <p style={{fontSize:16,color:TX2,marginTop:12}}>Wir verstecken keine Nachteile. Hier sind die am häufigsten gestellten kritischen Fragen.</p>
           </div>
@@ -654,7 +654,7 @@ export default function Home(){
       <section className="sec" style={{background:BG}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:480,margin:'0 auto 48px'}}>
-            [Tag bg={GLT} color={G} text="Welche WP passt zu mir?"|]
+            <Tag bg={GLT} color={G} text="Welche WP passt zu mir?"/>
             <h2>Die drei Typen im Vergleich</h2>
           </div>
           <div className="g3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20}}>
@@ -689,7 +689,7 @@ export default function Home(){
                   </div>
                   {t.pros.map(p=>(
                     <div key={p} style={{display:'flex',gap:8,fontSize:13,color:TX2,marginBottom:6,alignItems:'center'}}>
-                      [Check|]{p}
+                      <Check/>{p}
                     </div>
                   ))}
                 </div>
@@ -703,7 +703,7 @@ export default function Home(){
       <section ref={testiRef.ref} className="sec" style={{background:'white'}}>
         <div className="c">
           <div style={{textAlign:'center',maxWidth:560,margin:'0 auto 48px'}}>
-            [Tag bg={GLT} color={G} text="Erfahrungen"|]
+            <Tag bg={GLT} color={G} text="Erfahrungen"/>
             <h2>Was Hausbesitzer berichten</h2>
             <p style={{fontSize:15,color:TX3,marginTop:8}}>Alle Erfahrungsberichte stammen von vermittelten Kunden — unbearbeitet.</p>
           </div>
@@ -822,7 +822,7 @@ export default function Home(){
       <section className="sec" style={{background:BG}}>
         <div className="c" style={{maxWidth:800,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:48}}>
-            [Tag bg={GLT} color={G} text="FAQ"|]
+            <Tag bg={GLT} color={G} text="FAQ"/>
             <h2>Häufig gestellte Fragen</h2>
           </div>
           {[
@@ -857,7 +857,7 @@ export default function Home(){
         <img src={IMGS.outdoor} alt="Wärmepumpe Installation Fachbetrieb" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
         <div style={{position:'absolute',inset:0,background:'rgba(10,25,16,.82)'}}/>
         <div className="c" style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
-          [Tag bg="rgba(255,255,255,.1)" color="rgba(255,255,255,.8)" text="Jetzt starten"|]
+          <Tag bg="rgba(255,255,255,.1)" color="rgba(255,255,255,.8)" text="Jetzt starten"/>
           <h2 style={{color:'white',fontSize:'clamp(32px,4vw,52px)',marginBottom:14}}>Bereit für die Heizungswende?</h2>
           <p style={{fontSize:18,color:'rgba(255,255,255,.65)',marginBottom:36,maxWidth:480}}>Kostenloses Angebot in 2 Minuten — ohne Vertragsbindung.</p>
           <a href="/rechner" style={{display:'inline-flex',alignItems:'center',gap:8,padding:'16px 36px',background:'white',color:G,borderRadius:'10px',fontFamily:'Outfit,sans-serif',fontSize:16,fontWeight:700,textDecoration:'none',boxShadow:'0 4px 20px rgba(0,0,0,.2)',transition:'all .18s'}}

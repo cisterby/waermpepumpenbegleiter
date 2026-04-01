@@ -81,7 +81,7 @@ export default function Kontakt() {
   const [dir, setDir] = useState(1);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [data, setData] = useState[FormData]({ heizung: '', intent: '', baujahr: '', flaeche: '', zeitplan: '', eigentuemer: '', plz: '', name: '', email: '', tel: '', nachricht: '', dsgvo: false });
+  const [data, setData] = useState<FormData>({ heizung: '', intent: '', baujahr: '', flaeche: '', zeitplan: '', eigentuemer: '', plz: '', name: '', email: '', tel: '', nachricht: '', dsgvo: false });
 
   const set = (key: keyof FormData, val: string | boolean) => setData(p => ({ ...p, [key]: val }));
 
@@ -112,7 +112,7 @@ export default function Kontakt() {
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }}
         className="bg-white rounded-2xl shadow-wp-lg p-10 max-w-md w-full text-center border border-wp-border">
         <div className="w-20 h-20 bg-wp-greenlt rounded-full flex items-center justify-center mx-auto mb-5">
-          [CheckCircle size={40} className="text-wp-green" |]
+          <CheckCircle size={40} className="text-wp-green" />
         </div>
         <h2 className="font-heading font-bold text-wp-text text-2xl mb-2">Anfrage eingegangen! 🎉</h2>
         <p className="text-wp-text2 text-sm leading-relaxed mb-6">
@@ -122,13 +122,13 @@ export default function Kontakt() {
         <div className="bg-wp-greenlt rounded-xl p-4 mb-6 text-left space-y-1">
           {[['Heizung', data.heizung], ['Ziel', data.intent], ['PLZ', data.plz], ['Zeitplan', data.zeitplan]].map(([k, v]) => (
             <div key={k} className="flex items-center gap-2 text-xs text-wp-text2">
-              [CheckCircle size={10} className="text-wp-green shrink-0" |]
+              <CheckCircle size={10} className="text-wp-green shrink-0" />
               <span className="font-semibold">{k}:</span> {v}
             </div>
           ))}
         </div>
-        [Link href="|ratgeber" className="inline-flex items-center gap-2 px-5 py-3 bg-wp-green text-white font-semibold text-sm rounded-xl hover:bg-wp-green2 transition-all"]
-          Ratgeber lesen [ArrowRight size={14} |]
+        <Link href="/ratgeber" className="inline-flex items-center gap-2 px-5 py-3 bg-wp-green text-white font-semibold text-sm rounded-xl hover:bg-wp-green2 transition-all">
+          Ratgeber lesen <ArrowRight size={14} />
         </Link>
       </motion.div>
     </div>
@@ -168,7 +168,7 @@ export default function Kontakt() {
                     i === step ? 'bg-white text-wp-green' :
                     'bg-[rgba(255,255,255,0.10)] text-[rgba(255,255,255,0.30)]'
                   }`}>
-                    {i < step ? [CheckCircle size={16} |] : [Icon size={15} |]}
+                    {i < step ? <CheckCircle size={16} /> : <Icon size={15} />}
                   </div>
                   {i < STEPS_META.length - 1 && (
                     <div className={`w-8 h-0.5 transition-all ${i < step ? 'bg-wp-green' : 'bg-[rgba(255,255,255,0.15)]'}`} />
@@ -186,14 +186,14 @@ export default function Kontakt() {
             </div>
 
             <div className="p-8" style={{ minHeight: 360 }}>
-              [AnimatePresence mode="wait" custom={dir}]
+              <AnimatePresence mode="wait" custom={dir}>
                 <motion.div key={step} custom={dir} variants={slideVariants} initial="enter" animate="center" exit="exit">
 
                   {/* Step 0 */}
                   {step === 0 && (
                     <div>
                       <div className="flex items-center gap-3 mb-5">
-                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center">[Flame size={18} className="text-wp-green" |]</div>
+                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center"><Flame size={18} className="text-wp-green" /></div>
                         <div>
                           <h2 className="font-heading font-bold text-wp-text text-xl">Welche Heizung haben Sie aktuell?</h2>
                           <p className="text-wp-text3 text-xs">Schritt 1 von 5</p>
@@ -201,7 +201,7 @@ export default function Kontakt() {
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {HEIZUNG_OPTIONS.map(opt => (
-                          [OptionCard key={opt.id} selected={data.heizung === opt.id} onClick={() =] set('heizung', opt.id)}>
+                          <OptionCard key={opt.id} selected={data.heizung === opt.id} onClick={() => set('heizung', opt.id)}>
                             <span className="text-2xl block mb-2">{opt.icon}</span>
                             <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
                             <p className="text-wp-text3 text-xs mt-0.5">{opt.sub}</p>
@@ -215,7 +215,7 @@ export default function Kontakt() {
                   {step === 1 && (
                     <div>
                       <div className="flex items-center gap-3 mb-5">
-                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center">[HelpCircle size={18} className="text-wp-green" |]</div>
+                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center"><HelpCircle size={18} className="text-wp-green" /></div>
                         <div>
                           <h2 className="font-heading font-bold text-wp-text text-xl">Was suchen Sie?</h2>
                           <p className="text-wp-text3 text-xs">Schritt 2 von 5</p>
@@ -223,7 +223,7 @@ export default function Kontakt() {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {INTENT_OPTIONS.map(opt => (
-                          [OptionCard key={opt.id} selected={data.intent === opt.id} onClick={() =] set('intent', opt.id)}>
+                          <OptionCard key={opt.id} selected={data.intent === opt.id} onClick={() => set('intent', opt.id)}>
                             {opt.badge && <span className="absolute top-3 right-3 bg-wp-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">{opt.badge}</span>}
                             <span className="text-2xl block mb-2">{opt.icon}</span>
                             <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
@@ -238,7 +238,7 @@ export default function Kontakt() {
                   {step === 2 && (
                     <div>
                       <div className="flex items-center gap-3 mb-5">
-                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center">[Home size={18} className="text-wp-green" |]</div>
+                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center"><Home size={18} className="text-wp-green" /></div>
                         <div>
                           <h2 className="font-heading font-bold text-wp-text text-xl">Ihr Gebäude</h2>
                           <p className="text-wp-text3 text-xs">Schritt 3 von 5</p>
@@ -247,7 +247,7 @@ export default function Kontakt() {
                       <p className="font-semibold text-wp-text text-sm mb-3">Baujahr</p>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
                         {BAUJAHR_OPTIONS.map(opt => (
-                          [OptionCard key={opt.id} selected={data.baujahr === opt.id} onClick={() =] set('baujahr', opt.id)}>
+                          <OptionCard key={opt.id} selected={data.baujahr === opt.id} onClick={() => set('baujahr', opt.id)}>
                             <p className="font-semibold text-wp-text text-xs text-center">{opt.label}</p>
                             <p className="text-wp-text3 text-xs text-center mt-0.5">{opt.sub}</p>
                           </OptionCard>
@@ -256,7 +256,7 @@ export default function Kontakt() {
                       <p className="font-semibold text-wp-text text-sm mb-3">Wohnfläche</p>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
                         {FLAECHE_OPTIONS.map(opt => (
-                          [OptionCard key={opt.id} selected={data.flaeche === opt.id} onClick={() =] set('flaeche', opt.id)}>
+                          <OptionCard key={opt.id} selected={data.flaeche === opt.id} onClick={() => set('flaeche', opt.id)}>
                             <p className="font-semibold text-wp-text text-xs text-center">{opt.label}</p>
                             <p className="text-wp-text3 text-xs text-center mt-0.5">{opt.sub}</p>
                           </OptionCard>
@@ -264,7 +264,7 @@ export default function Kontakt() {
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         {[{ id: 'eigennutzer', e: '🏠', l: 'Eigennutzer', s: 'KfW: mind. 50%' }, { id: 'vermieter', e: '🏢', l: 'Vermieter', s: 'KfW: 30%' }].map(opt => (
-                          [OptionCard key={opt.id} selected={data.eigentuemer === opt.id} onClick={() =] set('eigentuemer', opt.id)}>
+                          <OptionCard key={opt.id} selected={data.eigentuemer === opt.id} onClick={() => set('eigentuemer', opt.id)}>
                             <span className="text-xl block mb-1">{opt.e}</span>
                             <p className="font-semibold text-wp-text text-sm">{opt.l}</p>
                             <p className="text-wp-green text-xs font-semibold">{opt.s}</p>
@@ -278,7 +278,7 @@ export default function Kontakt() {
                   {step === 3 && (
                     <div>
                       <div className="flex items-center gap-3 mb-5">
-                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center">[Calendar size={18} className="text-wp-green" |]</div>
+                        <div className="w-10 h-10 bg-wp-greenlt rounded-xl flex items-center justify-center"><Calendar size={18} className="text-wp-green" /></div>
                         <div>
                           <h2 className="font-heading font-bold text-wp-text text-xl">Wann möchten Sie handeln?</h2>
                           <p className="text-wp-text3 text-xs">Schritt 4 von 5</p>
@@ -286,7 +286,7 @@ export default function Kontakt() {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {ZEITPLAN_OPTIONS.map(opt => (
-                          [OptionCard key={opt.id} selected={data.zeitplan === opt.id} onClick={() =] set('zeitplan', opt.id)}>
+                          <OptionCard key={opt.id} selected={data.zeitplan === opt.id} onClick={() => set('zeitplan', opt.id)}>
                             {opt.urgent && <span className="absolute top-3 right-3 bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">Dringend</span>}
                             <span className="text-2xl block mb-2">{opt.icon}</span>
                             <p className="font-semibold text-wp-text text-sm">{opt.label}</p>
@@ -301,7 +301,7 @@ export default function Kontakt() {
                   {step === 4 && (
                     <div>
                       <div className="flex items-center gap-3 mb-5">
-                        <div className="w-10 h-10 bg-wp-amber/15 rounded-xl flex items-center justify-center">[Zap size={18} className="text-wp-amber" |]</div>
+                        <div className="w-10 h-10 bg-wp-amber/15 rounded-xl flex items-center justify-center"><Zap size={18} className="text-wp-amber" /></div>
                         <div>
                           <h2 className="font-heading font-bold text-wp-text text-xl">Fast geschafft!</h2>
                           <p className="text-wp-text3 text-xs">Schritt 5 von 5</p>
@@ -346,7 +346,7 @@ export default function Kontakt() {
                           <input type="checkbox" checked={data.dsgvo} onChange={e => set('dsgvo', e.target.checked)} className="mt-0.5 w-4 h-4 accent-wp-green" />
                           <span className="text-xs text-wp-text2 leading-relaxed">
                             Ich stimme der Weitergabe meiner Daten an lokale Fachbetriebe zur Angebotserstellung zu.{' '}
-                            [Link href="|datenschutz" className="text-wp-green underline"]Datenschutz</Link>
+                            <Link href="/datenschutz" className="text-wp-green underline">Datenschutz</Link>
                           </span>
                         </label>
                       </div>
@@ -359,17 +359,17 @@ export default function Kontakt() {
             {/* Navigation */}
             <div className="flex items-center justify-between px-8 py-5 border-t border-wp-border bg-wp-bg/50">
               <button onClick={prev} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${step === 0 ? 'invisible' : 'text-wp-text2 hover:bg-white border border-wp-border'}`}>
-                [ArrowLeft size={14} |] Zurück
+                <ArrowLeft size={14} /> Zurück
               </button>
               {step < 4 ? (
                 <button onClick={next} disabled={!canNext()}
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-bold text-sm transition-all ${canNext() ? 'bg-wp-green text-white hover:bg-wp-green2 hover:-translate-y-0.5 shadow-wp-sm' : 'bg-wp-border text-wp-text3 cursor-not-allowed'}`}>
-                  Weiter [ArrowRight size={14} |]
+                  Weiter <ArrowRight size={14} />
                 </button>
               ) : (
                 <button onClick={submit} disabled={!canNext() || sending}
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-bold text-sm transition-all ${canNext() && !sending ? 'bg-wp-amber text-white hover:bg-amber-700 hover:-translate-y-0.5 shadow-wp-sm' : 'bg-wp-border text-wp-text3 cursor-not-allowed'}`}>
-                  {sending ? '⏳ Wird gesendet...' : <>[ArrowRight size={14} |] Kostenlos anfragen</>}
+                  {sending ? '⏳ Wird gesendet...' : <><ArrowRight size={14} /> Kostenlos anfragen</>}
                 </button>
               )}
             </div>

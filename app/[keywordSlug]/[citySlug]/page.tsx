@@ -44,7 +44,7 @@ export async function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params }: Props): Promise[Metadata] {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const keyword = getKeywordBySlug(params.keywordSlug);
   const city    = (citiesData as City[]).find(c => c.slug === params.citySlug);
   if (!keyword || !city) return {};
@@ -242,7 +242,7 @@ export default function CityKeywordPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
       {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
-      [CityPageRouter
+      <CityPageRouter
         city={city}
         keyword={keyword}
         calc={calc}
@@ -251,7 +251,7 @@ export default function CityKeywordPage({ params }: Props) {
         nearby={nearby}
         h1={h1}
         allCities={citiesData as City[]}
-      |]
+      />
     </>
   );
 }

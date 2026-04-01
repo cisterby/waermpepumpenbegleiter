@@ -206,9 +206,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${dmSans.className} antialiased bg-[#F8F9FA] text-[#1C2B2B]`}>
-        [Navigation |]
+        <Navigation />
         {children}
-        [Footer |]
+        <Footer />
       </body>
     </html>
   );

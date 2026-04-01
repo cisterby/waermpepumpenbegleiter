@@ -78,7 +78,7 @@ export default function UeberUnsPage() {
             <div className="mt-7 space-y-3">
               {['Kostenloser Service für Hausbesitzer', 'Herstellerunabhängige Empfehlungen', 'KfW-Antragsbegleitung inklusive', 'Nur geprüfte HWK-Meisterbetriebe'].map(t => (
                 <div key={t} className="flex items-center gap-2.5 text-[#1C2B2B] text-sm font-medium">
-                  [CheckCircle size={16} className="text-[#1A4731] shrink-0" |]
+                  <CheckCircle size={16} className="text-[#1A4731] shrink-0" />
                   {t}
                 </div>
               ))}
@@ -119,7 +119,7 @@ export default function UeberUnsPage() {
             <div className="space-y-4 mb-7">
               <div className="flex items-start gap-3">
                 <div className="w-9 h-9 bg-[#1A4731]/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                  [MapPin size={16} className="text-[#1A4731]" |]
+                  <MapPin size={16} className="text-[#1A4731]" />
                 </div>
                 <div>
                   <p className="text-[#1C2B2B] font-semibold text-sm">Adresse</p>
@@ -128,7 +128,7 @@ export default function UeberUnsPage() {
               </div>
               <a href="tel:+4915563566199" className="flex items-start gap-3 group">
                 <div className="w-9 h-9 bg-[#1A4731]/10 group-hover:bg-[#1A4731]/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors">
-                  [Phone size={16} className="text-[#1A4731]" |]
+                  <Phone size={16} className="text-[#1A4731]" />
                 </div>
                 <div>
                   <p className="text-[#1C2B2B] font-semibold text-sm">Telefon</p>
@@ -137,7 +137,7 @@ export default function UeberUnsPage() {
               </a>
               <a href="mailto:info@waermepumpenbegleiter.de" className="flex items-start gap-3 group">
                 <div className="w-9 h-9 bg-[#1A4731]/10 group-hover:bg-[#1A4731]/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors">
-                  [Users size={16} className="text-[#1A4731]" |]
+                  <Users size={16} className="text-[#1A4731]" />
                 </div>
                 <div>
                   <p className="text-[#1C2B2B] font-semibold text-sm">E-Mail</p>
@@ -145,11 +145,11 @@ export default function UeberUnsPage() {
                 </div>
               </a>
             </div>
-            [Link href="|kontakt"
+            <Link href="/kontakt"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all"
-              style={{ background: '#1A4731' }}]
+              style={{ background: '#1A4731' }}>
               Kostenlos anfragen
-              [ArrowRight size={15} |]
+              <ArrowRight size={15} />
             </Link>
           </div>
         </section>

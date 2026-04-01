@@ -18,7 +18,7 @@ export async function generateStaticParams() {
   return KEYWORDS.map(kw => ({ keywordSlug: kw.slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise[Metadata] {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const keyword = getKeywordBySlug(params.keywordSlug);
   if (!keyword) return {};
 
@@ -393,7 +393,7 @@ export default function PillarPage({ params }: Props) {
               <a key={city.slug} href={`/${keyword.slug}/${city.slug}`}
                 className="group bg-white rounded-xl p-3 border border-gray-200 hover:border-[#1A4731] hover:shadow-wp-sm transition-all">
                 <div className="flex items-center gap-2 mb-1">
-                  [MapPin size={12} className="text-[#1A4731] shrink-0" |]
+                  <MapPin size={12} className="text-[#1A4731] shrink-0" />
                   <span className="font-semibold text-[#1C2B2B] text-xs group-hover:text-[#1A4731] transition-colors truncate">{city.name}</span>
                 </div>
                 <p className="text-[#7A9E8E] text-xs">{(city.einwohner / 1000).toFixed(0)}k EW</p>
@@ -411,7 +411,7 @@ export default function PillarPage({ params }: Props) {
                 <a key={kw2.slug} href={`/${kw2.slug}`}
                   className="flex items-center gap-2 px-4 py-2.5 bg-[#F8F9FA] border border-gray-200 rounded-xl text-sm font-semibold text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                   {kw2.keyword.replace('[Stadt]', '').trim()}
-                  [ArrowRight size={13} |]
+                  <ArrowRight size={13} />
                 </a>
               ))}
             </div>
@@ -493,7 +493,7 @@ export default function PillarPage({ params }: Props) {
           </p>
           <a href="/kontakt"
             className="inline-flex items-center gap-2 px-7 py-4 bg-[#D97706] text-white rounded-xl font-bold text-sm hover:bg-amber-700 transition-all hover:-translate-y-0.5">
-            Kostenlos anfragen [ArrowRight size={16} |]
+            Kostenlos anfragen <ArrowRight size={16} />
           </a>
         </div>
       </div>
