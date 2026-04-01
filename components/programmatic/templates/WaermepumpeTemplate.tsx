@@ -68,7 +68,6 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const gewinnNach25 = Math.round(calc.ersparnis * 25 - foerd.eigenanteil);
 
   return (
-    <>
     <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
 
       {/* Header */}
