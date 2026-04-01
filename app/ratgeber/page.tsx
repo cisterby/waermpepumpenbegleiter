@@ -413,6 +413,48 @@ export default function Ratgeber() {
           ))}
         </div>
 
+        {/* Keyword-Hub — Links zu allen Themen-Seiten */}
+        <div className="mt-14 mb-10">
+          <h2 className="font-heading font-bold text-wp-text text-xl mb-2">
+            Alle Wärmepumpen-Themen — Stadtspezifische Seiten
+          </h2>
+          <p className="text-wp-text3 text-sm mb-6">
+            Wählen Sie ein Thema und Ihre Stadt — alle Seiten mit lokalen Preisen, JAZ und Förderinfo.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+            {[
+              ['Wärmepumpe',             'waermepumpe',               '🏠'],
+              ['Kosten 2026',            'waermepumpe-kosten',         '💰'],
+              ['Förderung',              'waermepumpe-foerderung',     '🎁'],
+              ['Installateur',           'waermepumpe-installateur',   '🔧'],
+              ['Luft-Wasser-WP',         'luft-wasser-waermepumpe',   '💨'],
+              ['WP kaufen',              'waermepumpe-kaufen',         '🛒'],
+              ['WP Altbau',              'waermepumpe-altbau',         '🏚️'],
+              ['WP nachrüsten',          'waermepumpe-nachruesten',    '⬆️'],
+              ['Heizung tauschen',       'heizung-tauschen',           '🔄'],
+              ['Installation',           'waermepumpe-installation',   '📋'],
+              ['Kommunale Wärmeplanung', 'kommunale-waermeplanung',    '🗺️'],
+              ['Erdwärmepumpe',          'erdwaermepumpe',             '🌍'],
+              ['WP Angebot',             'waermepumpe-angebot',        '📄'],
+              ['WP Preise',              'waermepumpe-preise',         '💵'],
+              ['WP Anbieter',            'waermepumpe-anbieter',       '🏢'],
+              ['Luftwärmepumpe',         'luftwaermepumpe',            '🌬️'],
+              ['WP Neubau',              'waermepumpe-neubau',         '🏗️'],
+              ['WP Beratung',            'waermepumpe-beratung',       '💬'],
+              ['WP Fachbetrieb',         'waermepumpe-fachbetrieb',    '⭐'],
+              ['WP Montage',             'waermepumpe-montage',        '🔩'],
+              ['WP oder Gas',            'waermepumpe-oder-gas',       '⚖️'],
+              ['Stromverbrauch',         'waermepumpe-stromverbrauch', '⚡'],
+            ].map(([label, slug, icon]) => (
+              <Link key={slug} href={`/${slug}`}
+                className="flex items-center gap-2 p-3 bg-wp-bg border border-wp-border rounded-xl text-sm text-wp-text hover:text-wp-green hover:border-wp-green transition-all">
+                <span>{icon}</span>
+                <span className="font-medium">{label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Newsletter / CTA */}
         <div className="mt-12 bg-wp-dark rounded-2xl p-8 text-center">
           <h3 className="font-heading font-bold text-white text-xl mb-2">Bereit — Ihr WP-Projekt starten?</h3>
