@@ -62,7 +62,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 7);
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
@@ -72,10 +72,10 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
             <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
             <span className="text-white/80">{city.name}</span>
           </nav>
-          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <h1 className="font-bold font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
               {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -98,7 +98,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
               <div className="text-white/50 text-xs">{s.label}</div><div className="text-white/30 text-xs">{s.sub}</div></div>
             ))}
           </div>
-          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-[#1A4731] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#2D7A52] transition-colors">
             Kostenloses Angebot →
           </a>
         </div>
@@ -108,57 +108,57 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
         <div className="lg:col-span-2 space-y-14">
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-3">
               {fillTemplate('Wie effizient ist eine Luft-Wasser-WP in {stadt} wirklich?', city, jaz)}
             </h2>
-            <p className="text-wp-text2 text-base leading-relaxed">
+            <p className="text-[#4A6358] text-base leading-relaxed">
               In <strong>{city.name}</strong> ({city.avgTemp}°C Jahresmittel, {city.normAussentemp}°C Normaußentemperatur) erreicht eine Luft-Wasser-WP JAZ {jaz}. Das bedeutet: pro 1 kWh Strom erzeugt die WP {jaz} kWh Wärme — im Jahresdurchschnitt. Im Sommer COP 6–8 (Warmwasser), im tiefsten Winter COP 2–3. Selbst bei {city.normAussentemp}°C heizt die WP effizient.
             </p>
           </div>
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Wie effizient ist die Luft-WP bei Kälte in {city.name}
             ?</h2>
-            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md">
               <table className="w-full text-sm">
-                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                <thead><tr className="bg-[#F8F9FA] border-b border-gray-200">
                   {['Außentemperatur','COP (Leistungszahl)','Situation in '+city.name].map(h=>(
-                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">{h}</th>
                   ))}
                 </tr></thead>
                 <tbody>
                   {COP_BEI_TEMP.map((r,i)=>(
-                    <tr key={i} className={`border-b border-wp-border last:border-0 ${r.aussentemp==='+7°C'?'bg-wp-greenxlt':r.aussentemp.includes('-15')||r.aussentemp.includes('-20')?'opacity-80':''}`}>
-                      <td className="px-4 py-3 font-mono font-bold text-wp-text">{r.aussentemp}</td>
-                      <td className="px-4 py-3 font-mono text-wp-green font-bold">{r.cop}</td>
-                      <td className="px-4 py-3 text-xs text-wp-text2">{r.note}</td>
+                    <tr key={i} className={`border-b border-gray-200 last:border-0 ${r.aussentemp==='+7°C'?'bg-[#F2FAF5]':r.aussentemp.includes('-15')||r.aussentemp.includes('-20')?'opacity-80':''}`}>
+                      <td className="px-4 py-3 font-mono font-bold text-[#1C2B2B]">{r.aussentemp}</td>
+                      <td className="px-4 py-3 font-mono text-[#1A4731] font-bold">{r.cop}</td>
+                      <td className="px-4 py-3 text-xs text-[#4A6358]">{r.note}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-wp-text3 mt-2">Vorlauftemperatur 35°C · {city.name}: {coldDays} Tage/Jahr unter -7°C</p>
+            <p className="text-xs text-[#7A9E8E] mt-2">Vorlauftemperatur 35°C · {city.name}: {coldDays} Tage/Jahr unter -7°C</p>
           </div>
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Monoblock oder Split — was ist besser für {city.name}?
             </h2>
-            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md">
               <table className="w-full text-sm">
-                <thead><tr className="bg-wp-bg border-b border-wp-border">
+                <thead><tr className="bg-[#F8F9FA] border-b border-gray-200">
                   {['Kriterium','Monoblock','Split','Empfehlung'].map(h=>(
-                    <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                    <th key={h} className="px-3 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">{h}</th>
                   ))}
                 </tr></thead>
                 <tbody>
                   {MONOBLOCK_SPLIT.map((r,i)=>(
-                    <tr key={i} className="border-b border-wp-border last:border-0">
-                      <td className="px-3 py-3 font-semibold text-wp-text text-sm">{r.kriterium}</td>
-                      <td className={`px-3 py-3 text-sm ${r.besser==='Monoblock'?'text-wp-green font-bold':'text-wp-text2'}`}>{r.monoblock}</td>
-                      <td className={`px-3 py-3 text-sm ${r.besser==='Split'?'text-wp-green font-bold':'text-wp-text2'}`}>{r.split}</td>
-                      <td className="px-3 py-3 text-xs text-wp-text3">{r.besser}</td>
+                    <tr key={i} className="border-b border-gray-200 last:border-0">
+                      <td className="px-3 py-3 font-semibold text-[#1C2B2B] text-sm">{r.kriterium}</td>
+                      <td className={`px-3 py-3 text-sm ${r.besser==='Monoblock'?'text-[#1A4731] font-bold':'text-[#4A6358]'}`}>{r.monoblock}</td>
+                      <td className={`px-3 py-3 text-sm ${r.besser==='Split'?'text-[#1A4731] font-bold':'text-[#4A6358]'}`}>{r.split}</td>
+                      <td className="px-3 py-3 text-xs text-[#7A9E8E]">{r.besser}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -167,52 +167,52 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
           </div>
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">
               Wie funktioniert Warmwasser mit der Luft-WP in {city.name}
             ?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {WW_INTEGRATION.map((w,i)=>(
-                <div key={i} className={`p-4 rounded-xl border ${i===0?'bg-wp-greenxlt border-wp-borderl':'bg-white border-wp-border'}`}>
-                  <div className="font-heading font-bold text-wp-text text-sm mb-1">{w.system}</div>
-                  <div className="font-mono text-wp-green text-xs mb-2">{w.kosten}</div>
-                  <div className="text-xs text-wp-green mb-1">✅ {w.vorteil}</div>
-                  <div className="text-xs text-wp-text3">⚠️ {w.nachteil}</div>
+                <div key={i} className={`p-4 rounded-xl border ${i===0?'bg-[#F2FAF5] border-gray-200l':'bg-white border-gray-200'}`}>
+                  <div className="font-bold font-bold text-[#1C2B2B] text-sm mb-1">{w.system}</div>
+                  <div className="font-mono text-[#1A4731] text-xs mb-2">{w.kosten}</div>
+                  <div className="text-xs text-[#1A4731] mb-1">✅ {w.vorteil}</div>
+                  <div className="text-xs text-[#7A9E8E]">⚠️ {w.nachteil}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {faqs.length > 0 && (
-            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            <div className="p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+              <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
-            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">{h2s.faq}</h2>
+            <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-md mb-10">
               {faqs.map((faq,i)=>(
-                <details key={i} className="group border-b border-wp-border last:border-0">
-                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                <details key={i} className="group border-b border-gray-200 last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                    <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="border-t border-wp-border"><p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p></div>
+                  <div className="border-t border-gray-200"><p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p></div>
                 </details>
               ))}
             </div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-8">
-            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+            <div><h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">{nearby.map(n=>(
-                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`} className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">{n.name}</Link>
               ))}</div>
             </div>
-            <div><h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+            <div><h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">{(keyword.crossLinks??[]).map((slug:string)=>(
-                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                <Link key={slug} href={`/${slug}/${city.slug}`} className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                   {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
                 </Link>
               ))}</div>
@@ -220,24 +220,24 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
           </div>
         </div>
 
-        <div><div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
-          <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — LW-WP Kennzahlen</div>
+        <div><div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-md sticky top-6">
+          <div className="text-xs font-bold text-[#1A4731] uppercase tracking-wide mb-3">{city.name} — LW-WP Kennzahlen</div>
           {[['JAZ',String(jaz)],['Normaußentemp.',city.normAussentemp+'°C'],
             ['Jahresmittel',city.avgTemp+'°C'],['Tage unter -7°C',coldDays+'/Jahr'],
             ['KfW-Zuschuss',fmtEuro(foerd.zuschuss)],['Eigenanteil',fmtEuro(foerd.eigenanteil)],
             ['Betriebskosten',fmtEuro(calc.wpKosten)+'/J.'],
           ].map(([l,v],i)=>(
-            <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
-              <span className="text-wp-text2">{l}</span><span className="font-bold text-wp-text">{v}</span>
+            <div key={i} className="flex justify-between py-2 border-b border-gray-200 last:border-0 text-sm">
+              <span className="text-[#4A6358]">{l}</span><span className="font-bold text-[#1C2B2B]">{v}</span>
             </div>
           ))}
-          <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+          <a href="#angebot" className="block mt-4 text-center bg-[#1A4731] text-white font-bold py-3 rounded-xl hover:bg-[#2D7A52] transition-colors text-sm">Kostenloses Angebot →</a>
         </div></div>
       </div>
 
-      <div id="angebot" className="bg-wp-dark py-16">
+      <div id="angebot" className="bg-[#1A4731] py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
+          <h2 className="font-bold font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
@@ -246,10 +246,10 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
 
       {/* ── TECHNIK-TIEFE: Luft-Wasser-WP ──────────────── */}
       <div className="max-w-3xl mx-auto px-6 pb-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-5">
           Wie funktioniert die Luft-Wasser-WP in {city.name} im Detail?
         </h2>
-        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+        <div className="prose prose-sm max-w-none text-[#4A6358] space-y-4 leading-relaxed">
           <p>
             Die Luft-Wasser-Wärmepumpe entzieht der Außenluft Wärme und überträgt diese über einen Kältemittelkreislauf auf das Heizwasser. Bei {city.normAussentemp}°C Normaußentemperatur in {city.name} und einer Vorlauftemperatur von 45–55°C erreicht ein modernes Gerät eine JAZ von {jaz}. Das bedeutet: Aus 1 kWh Strom (aktuell {city.strompreis} ct/kWh in {city.name}) entstehen {jaz} kWh Wärme.
           </p>
@@ -268,13 +268,13 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
       {/* ── VERWANDTE THEMEN ─────────────────────────── */}
       {crossKeywords.length > 0 && (
         <div className="max-w-3xl mx-auto px-6 pb-8">
-          <h3 className="font-heading font-semibold text-wp-text text-base mb-3">
+          <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">
             Verwandte Themen für {city.name}
           </h3>
           <div className="flex flex-wrap gap-2">
             {crossKeywords.map(kw2 => kw2 && (
               <a key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:border-wp-green hover:text-wp-green transition-all">
+                className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:border-[#1A4731] hover:text-[#1A4731] transition-all">
                 {kw2.keyword.replace('[Stadt]', city.name)}
               </a>
             ))}
@@ -283,7 +283,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
       )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
@@ -291,14 +291,14 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
           {/* GEG-Reform */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
 
           {/* Neue Lärmvorschrift */}
           {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
             </div>
           )}
 
@@ -306,7 +306,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
             </div>
           )}
 
@@ -314,7 +314,7 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
               <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
             </div>
           )}
 
@@ -322,20 +322,20 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
           {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
             </div>
           )}
 
           {/* Finanzierung */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
 
         </div>
       </div>
       <AuthorBox keywordSlug={keyword.slug} />
-        <div className="mt-6 text-xs text-wp-text3">DIN EN 14511 (COP-Norm) · BWP Marktdaten 2024 · DWD Klimadaten {city.name} · Stand März 2026</div>
+        <div className="mt-6 text-xs text-[#7A9E8E]">DIN EN 14511 (COP-Norm) · BWP Marktdaten 2024 · DWD Klimadaten {city.name} · Stand März 2026</div>
       </div>
     </div>
   );

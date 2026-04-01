@@ -62,7 +62,7 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 7);
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[55vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
@@ -72,10 +72,10 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
             <Link href={`/${keyword.slug}`} className="hover:text-white">{keyword.keyword.replace(' [Stadt]','')}</Link><span>›</span>
             <span className="text-white/80">{city.name}</span>
           </nav>
-          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <h1 className="font-bold font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
               {/* Preis-Badge */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 {fmtEuro(calc.wpKosten)}/J. Betriebskosten
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -101,7 +101,7 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
               </div>
             ))}
           </div>
-          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-[#1A4731] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#2D7A52] transition-colors">
             Kostenloses Angebot →
           </a>
         </div>
@@ -112,76 +112,76 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
 
           {/* Featured Snippet */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-3">
               {fillTemplate('Wie viel Strom verbraucht eine Wärmepumpe in {stadt}?', city, jaz)}
             </h2>
-            <p className="text-wp-text2 text-base leading-relaxed">
+            <p className="text-[#4A6358] text-base leading-relaxed">
               Eine Luft-Wasser-Wärmepumpe in <strong>{city.name}</strong> (JAZ {jaz} bei {city.avgTemp}°C Jahresmittel) verbraucht für ein 120 m² EFH ca. <strong>{gesamtStrom.toLocaleString('de-DE')} kWh/Jahr</strong>: {heizStrom.toLocaleString('de-DE')} kWh Heizung + {wwStrom.toLocaleString('de-DE')} kWh Warmwasser. Bei {city.strompreis} ct/kWh Strompreis ergibt das {fmtEuro(kostenNormal)}/Jahr — mit WP-Tarif ({wpTarif} ct/kWh) nur noch {fmtEuro(kostenWpTarif)}/Jahr.
             </p>
           </div>
 
           {/* Berechnung transparent */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Wie berechne ich den WP-Stromverbrauch für {city.name}
             ?</h2>
-            <div className="bg-white border border-wp-border rounded-xl p-5 shadow-wp-sm font-mono text-sm">
-              <div className="grid grid-cols-2 gap-2 text-wp-text2">
-                <span>Heizwärmebedarf (Annahme):</span><span className="text-wp-text font-bold">15.000 kWh/Jahr</span>
-                <span>JAZ in {city.name}:</span><span className="text-wp-text font-bold">{jaz}</span>
-                <span>Heizstrom:</span><span className="text-wp-text font-bold">15.000 ÷ {jaz} = {heizStrom.toLocaleString('de-DE')} kWh</span>
-                <span>Warmwasserstrom:</span><span className="text-wp-text font-bold">~{wwStrom.toLocaleString('de-DE')} kWh/Jahr</span>
-                <span className="border-t border-wp-border pt-2">Gesamt:</span><span className="border-t border-wp-border pt-2 text-wp-green font-bold">{gesamtStrom.toLocaleString('de-DE')} kWh/Jahr</span>
-                <span>× {city.strompreis} ct/kWh:</span><span className="text-wp-text font-bold">{fmtEuro(kostenNormal)}/Jahr</span>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-md font-mono text-sm">
+              <div className="grid grid-cols-2 gap-2 text-[#4A6358]">
+                <span>Heizwärmebedarf (Annahme):</span><span className="text-[#1C2B2B] font-bold">15.000 kWh/Jahr</span>
+                <span>JAZ in {city.name}:</span><span className="text-[#1C2B2B] font-bold">{jaz}</span>
+                <span>Heizstrom:</span><span className="text-[#1C2B2B] font-bold">15.000 ÷ {jaz} = {heizStrom.toLocaleString('de-DE')} kWh</span>
+                <span>Warmwasserstrom:</span><span className="text-[#1C2B2B] font-bold">~{wwStrom.toLocaleString('de-DE')} kWh/Jahr</span>
+                <span className="border-t border-gray-200 pt-2">Gesamt:</span><span className="border-t border-gray-200 pt-2 text-[#1A4731] font-bold">{gesamtStrom.toLocaleString('de-DE')} kWh/Jahr</span>
+                <span>× {city.strompreis} ct/kWh:</span><span className="text-[#1C2B2B] font-bold">{fmtEuro(kostenNormal)}/Jahr</span>
               </div>
             </div>
           </div>
 
           {/* JAZ-Tabelle */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Wie unterscheidet sich der Stromverbrauch nach Heizsystem in {city.name}
             ?</h2>
-            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-wp-bg border-b border-wp-border">
+                  <tr className="bg-[#F8F9FA] border-b border-gray-200">
                     {['Heizsystem', 'JAZ', 'Jahresstrom', 'Kosten/Jahr'].map(h => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                      <th key={h} className="px-4 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {JAZ_TABELLE.map((r, i) => (
-                    <tr key={i} className={`border-b border-wp-border last:border-0 ${i === 0 ? 'bg-wp-greenxlt' : ''}`}>
-                      <td className="px-4 py-3 font-semibold text-wp-text">{r.system}</td>
-                      <td className="px-4 py-3 font-mono text-wp-text">{r.jaz}</td>
-                      <td className="px-4 py-3 font-mono text-wp-text2">{r.strom}</td>
-                      <td className={`px-4 py-3 font-mono font-bold ${i === 0 ? 'text-wp-green' : 'text-wp-text'}`}>{r.kosten}</td>
+                    <tr key={i} className={`border-b border-gray-200 last:border-0 ${i === 0 ? 'bg-[#F2FAF5]' : ''}`}>
+                      <td className="px-4 py-3 font-semibold text-[#1C2B2B]">{r.system}</td>
+                      <td className="px-4 py-3 font-mono text-[#1C2B2B]">{r.jaz}</td>
+                      <td className="px-4 py-3 font-mono text-[#4A6358]">{r.strom}</td>
+                      <td className={`px-4 py-3 font-mono font-bold ${i === 0 ? 'text-[#1A4731]' : 'text-[#1C2B2B]'}`}>{r.kosten}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-wp-text3 mt-2">Basis: 120 m² EFH, 15.000 kWh Jahresheizwärmebedarf, {city.strompreis} ct/kWh Strompreis {city.name}</p>
+            <p className="text-xs text-[#7A9E8E] mt-2">Basis: 120 m² EFH, 15.000 kWh Jahresheizwärmebedarf, {city.strompreis} ct/kWh Strompreis {city.name}</p>
           </div>
 
           {/* Tarifvergleich */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Welcher Tarif ist optimal für die WP in {city.name}
             ?</h2>
             <div className="space-y-3">
               {TARIF_VERGLEICH.map((t, i) => (
-                <div key={i} className={`p-4 rounded-xl border ${i === 2 ? 'bg-wp-greenxlt border-wp-borderl' : 'bg-white border-wp-border'}`}>
+                <div key={i} className={`p-4 rounded-xl border ${i === 2 ? 'bg-[#F2FAF5] border-gray-200l' : 'bg-white border-gray-200'}`}>
                   <div className="flex justify-between items-start gap-3">
                     <div>
-                      <div className="font-heading font-bold text-wp-text text-sm">{t.tarif}</div>
-                      <div className="text-wp-text2 text-xs mt-0.5">{t.note}</div>
+                      <div className="font-bold font-bold text-[#1C2B2B] text-sm">{t.tarif}</div>
+                      <div className="text-[#4A6358] text-xs mt-0.5">{t.note}</div>
                     </div>
                     <div className="text-right shrink-0">
-                      <div className="font-mono font-bold text-wp-green">{t.kosten}</div>
-                      <div className="text-xs text-wp-text3">{t.preis}</div>
+                      <div className="font-mono font-bold text-[#1A4731]">{t.kosten}</div>
+                      <div className="text-xs text-[#7A9E8E]">{t.preis}</div>
                     </div>
                   </div>
                 </div>
@@ -191,18 +191,18 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
 
           {/* Optimierungen */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">
               Wie reduziere ich den WP-Stromverbrauch in {city.name} zu optimieren
             ?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {OPTIMIERUNG.map((o, i) => (
-                <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
+                <div key={i} className="p-4 bg-white border border-gray-200 rounded-xl">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xl">{o.icon}</span>
-                    <span className="text-xs font-bold text-wp-green bg-wp-greenxlt px-2 py-0.5 rounded-full">{o.einsparung} sparen</span>
+                    <span className="text-xs font-bold text-[#1A4731] bg-[#F2FAF5] px-2 py-0.5 rounded-full">{o.einsparung} sparen</span>
                   </div>
-                  <div className="font-heading font-semibold text-wp-text text-sm mb-1">{o.titel}</div>
-                  <p className="text-wp-text2 text-xs leading-relaxed">{o.text}</p>
+                  <div className="font-bold font-semibold text-[#1C2B2B] text-sm mb-1">{o.titel}</div>
+                  <p className="text-[#4A6358] text-xs leading-relaxed">{o.text}</p>
                 </div>
               ))}
             </div>
@@ -210,23 +210,23 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
 
           {/* H3 + FAQ */}
           {faqs.length > 0 && (
-            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            <div className="p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+              <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
-            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">{h2s.faq}</h2>
+            <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-md mb-10">
               {faqs.map((faq, i) => (
-                <details key={i} className="group border-b border-wp-border last:border-0">
-                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                <details key={i} className="group border-b border-gray-200 last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                    <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="border-t border-wp-border">
-                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  <div className="border-t border-gray-200">
+                    <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
                   </div>
                 </details>
               ))}
@@ -235,20 +235,20 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
 
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">{n.name}</Link>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {(keyword.crossLinks ?? []).map((slug: string) => (
                   <Link key={slug} href={`/${slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
                   </Link>
                 ))}
@@ -258,8 +258,8 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
         </div>
 
         <div>
-          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
-            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Strom-Kennzahlen</div>
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-md sticky top-6">
+            <div className="text-xs font-bold text-[#1A4731] uppercase tracking-wide mb-3">{city.name} — Strom-Kennzahlen</div>
             {[
               ['Jahresstromverbrauch', gesamtStrom.toLocaleString('de-DE') + ' kWh'],
               ['Strompreis lokal', city.strompreis + ' ct/kWh'],
@@ -268,19 +268,19 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
               ['JAZ in ' + city.name, String(jaz)],
               ['Sonnenstunden', city.avgSunHours + ' h/J.'],
             ].map(([l, v], i) => (
-              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
-                <span className="text-wp-text2">{l}</span>
-                <span className="font-bold text-wp-text">{v}</span>
+              <div key={i} className="flex justify-between py-2 border-b border-gray-200 last:border-0 text-sm">
+                <span className="text-[#4A6358]">{l}</span>
+                <span className="font-bold text-[#1C2B2B]">{v}</span>
               </div>
             ))}
-            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+            <a href="#angebot" className="block mt-4 text-center bg-[#1A4731] text-white font-bold py-3 rounded-xl hover:bg-[#2D7A52] transition-colors text-sm">Kostenloses Angebot →</a>
           </div>
         </div>
       </div>
 
-      <div id="angebot" className="bg-wp-dark py-16">
+      <div id="angebot" className="bg-[#1A4731] py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
+          <h2 className="font-bold font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
@@ -290,13 +290,13 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
       {/* ── VERWANDTE THEMEN ─────────────────────────── */}
       {crossKeywords.length > 0 && (
         <div className="max-w-3xl mx-auto px-6 pb-8">
-          <h3 className="font-heading font-semibold text-wp-text text-base mb-3">
+          <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">
             Verwandte Themen für {city.name}
           </h3>
           <div className="flex flex-wrap gap-2">
             {crossKeywords.map(kw2 => kw2 && (
               <a key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:border-wp-green hover:text-wp-green transition-all">
+                className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:border-[#1A4731] hover:text-[#1A4731] transition-all">
                 {kw2.keyword.replace('[Stadt]', city.name)}
               </a>
             ))}
@@ -305,7 +305,7 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
       )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
@@ -313,14 +313,14 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {/* GEG-Reform */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
 
           {/* Neue Lärmvorschrift */}
           {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
             </div>
           )}
 
@@ -328,7 +328,7 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
             </div>
           )}
 
@@ -336,7 +336,7 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
               <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
             </div>
           )}
 
@@ -344,20 +344,20 @@ export default function StromverbrauchTemplate({ city, keyword, calc, foerd, jaz
           {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
             </div>
           )}
 
           {/* Finanzierung */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
 
         </div>
       </div>
       <AuthorBox keywordSlug={keyword.slug} />
-        <div className="mt-6 text-xs text-wp-text3">JAZ-Daten: Fraunhofer ISE · Strompreise: BDEW 2026 · DWD Klimadaten · Stand März 2026</div>
+        <div className="mt-6 text-xs text-[#7A9E8E]">JAZ-Daten: Fraunhofer ISE · Strompreise: BDEW 2026 · DWD Klimadaten · Stand März 2026</div>
       </div>
     </div>
   );

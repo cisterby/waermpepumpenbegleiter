@@ -205,7 +205,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className={`${dmSans.className} antialiased bg-wp-bg text-wp-text`}>
+      <body className={`${dmSans.className} antialiased bg-[#F8F9FA] text-[#1C2B2B]`}>
         <Navigation />
         {children}
         <Footer />

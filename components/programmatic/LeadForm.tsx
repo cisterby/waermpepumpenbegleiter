@@ -87,17 +87,17 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
   if (submitted) {
     return (
-      <div className="bg-wp-greenlt border border-wp-green3/40 rounded-2xl p-8 text-center">
-        <div className="w-16 h-16 bg-wp-green rounded-full flex items-center justify-center mx-auto mb-4">
+      <div className="bg-[#E8F5EE] border border-[#3DA16A]/40 rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 bg-[#1A4731] rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle size={32} className="text-white" />
         </div>
-        <h3 className="font-heading font-bold text-wp-text text-xl mb-2">
+        <h3 className="font-bold font-bold text-[#1C2B2B] text-xl mb-2">
           Anfrage erhalten!
         </h3>
-        <p className="text-wp-text2 text-base leading-relaxed max-w-md mx-auto">
+        <p className="text-[#4A6358] text-base leading-relaxed max-w-md mx-auto">
           Vielen Dank, <strong>{vorname}</strong>. Wir melden uns innerhalb von <strong>48 Stunden</strong> mit bis zu 3 Angeboten geprüfter Fachbetriebe aus {city.name}.
         </p>
-        <p className="text-wp-text3 text-sm mt-4">
+        <p className="text-[#7A9E8E] text-sm mt-4">
           Eine Bestätigung wurde an <strong>{email}</strong> gesendet.
         </p>
       </div>
@@ -105,13 +105,13 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-wp-lg border border-wp-border overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-wp-dark px-6 py-5">
-        <p className="text-wp-amber text-xs font-bold uppercase tracking-wider mb-1">
+      <div className="bg-[#1A4731] px-6 py-5">
+        <p className="text-[#D97706] text-xs font-bold uppercase tracking-wider mb-1">
           KOSTENLOSES ANGEBOT
         </p>
-        <h3 className="font-heading font-bold text-white text-lg leading-snug">
+        <h3 className="font-bold font-bold text-white text-lg leading-snug">
           Bis zu 3 Angebote für {city.name} — in 2 Minuten
         </h3>
         {/* Fortschritt */}
@@ -119,14 +119,14 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
           {([1, 2, 3] as Step[]).map((s) => (
             <div key={s} className="flex-1 flex items-center gap-2">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
-                step > s ? 'bg-wp-green text-white' :
-                step === s ? 'bg-wp-amber text-white' :
+                step > s ? 'bg-[#1A4731] text-white' :
+                step === s ? 'bg-[#D97706] text-white' :
                 'bg-white/20 text-white/50'
               }`}>
                 {step > s ? '✓' : s}
               </div>
               <div className={`h-0.5 flex-1 rounded-full transition-colors ${
-                s < 3 ? (step > s ? 'bg-wp-green' : 'bg-white/15') : 'hidden'
+                s < 3 ? (step > s ? 'bg-[#1A4731]' : 'bg-white/15') : 'hidden'
               }`} />
             </div>
           ))}
@@ -147,28 +147,28 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
               {/* Wohnfläche */}
               <div className="mb-5">
-                <label className="block font-semibold text-wp-text text-sm mb-2">
-                  Wohnfläche: <span className="text-wp-green font-mono">{flaeche} m²</span>
+                <label className="block font-semibold text-[#1C2B2B] text-sm mb-2">
+                  Wohnfläche: <span className="text-[#1A4731] font-mono">{flaeche} m²</span>
                 </label>
                 <input type="range" min={60} max={350} step={10} value={flaeche}
                   onChange={e => setFlaeche(+e.target.value)}
                   className="w-full accent-wp-green" />
-                <div className="flex justify-between text-xs text-wp-text3 mt-1">
-                  <span>60 m²</span><span className="text-wp-green">Ø 120 m²</span><span>350 m²</span>
+                <div className="flex justify-between text-xs text-[#7A9E8E] mt-1">
+                  <span>60 m²</span><span className="text-[#1A4731]">Ø 120 m²</span><span>350 m²</span>
                 </div>
               </div>
 
               {/* Baujahr */}
               <div className="mb-5">
-                <label className="block font-semibold text-wp-text text-sm mb-2">Baujahr Gebäude</label>
+                <label className="block font-semibold text-[#1C2B2B] text-sm mb-2">Baujahr Gebäude</label>
                 <div className="grid grid-cols-2 gap-2">
                   {BAUJAHR.map(o => (
                     <button key={o.v} type="button" onClick={() => setBaujahr(o.v)}
                       className={`p-3 rounded-xl border-2 text-left transition-all ${
-                        baujahr === o.v ? 'border-wp-green bg-wp-greenlt' : 'border-wp-border hover:border-wp-green/40'
+                        baujahr === o.v ? 'border-[#1A4731] bg-[#E8F5EE]' : 'border-gray-200 hover:border-[#1A4731]/40'
                       }`}>
-                      <p className={`font-semibold text-sm ${baujahr === o.v ? 'text-wp-green' : 'text-wp-text'}`}>{o.l}</p>
-                      <p className="text-wp-text3 text-xs mt-0.5">{o.sub}</p>
+                      <p className={`font-semibold text-sm ${baujahr === o.v ? 'text-[#1A4731]' : 'text-[#1C2B2B]'}`}>{o.l}</p>
+                      <p className="text-[#7A9E8E] text-xs mt-0.5">{o.sub}</p>
                     </button>
                   ))}
                 </div>
@@ -176,23 +176,23 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
               {/* Aktuelle Heizung */}
               <div className="mb-6">
-                <label className="block font-semibold text-wp-text text-sm mb-2">Aktuelle Heizung</label>
+                <label className="block font-semibold text-[#1C2B2B] text-sm mb-2">Aktuelle Heizung</label>
                 <div className="grid grid-cols-3 gap-2">
                   {HEIZUNG.map(o => (
                     <button key={o.v} type="button" onClick={() => setHeizung(o.v)}
                       className={`p-3 rounded-xl border-2 text-center transition-all ${
-                        heizung === o.v ? 'border-wp-green bg-wp-greenlt' : 'border-wp-border hover:border-wp-green/40'
+                        heizung === o.v ? 'border-[#1A4731] bg-[#E8F5EE]' : 'border-gray-200 hover:border-[#1A4731]/40'
                       }`}>
                       <div className="text-lg mb-0.5">{o.icon}</div>
-                      <p className={`font-semibold text-xs ${heizung === o.v ? 'text-wp-green' : 'text-wp-text'}`}>{o.l}</p>
+                      <p className={`font-semibold text-xs ${heizung === o.v ? 'text-[#1A4731]' : 'text-[#1C2B2B]'}`}>{o.l}</p>
                     </button>
                   ))}
                 </div>
               </div>
 
               <button onClick={() => canStep1 && setStep(2)} disabled={!canStep1}
-                className={`w-full py-3.5 rounded-xl font-heading font-bold text-sm flex items-center justify-center gap-2 transition-all ${
-                  canStep1 ? 'bg-wp-green text-white hover:bg-green-800' : 'bg-wp-border text-wp-text3 cursor-not-allowed'
+                className={`w-full py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                  canStep1 ? 'bg-[#1A4731] text-white hover:bg-green-800' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                 }`}>
                 Weiter <ArrowRight size={16} />
               </button>
@@ -208,36 +208,36 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
               <div className="space-y-4 mb-6">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-semibold text-wp-text mb-1.5">Vorname *</label>
+                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Vorname *</label>
                     <input type="text" value={vorname} onChange={e => setVorname(e.target.value)}
                       placeholder="Max" autoComplete="given-name"
-                      className="w-full px-3 py-2.5 border-2 border-wp-border rounded-xl text-sm text-wp-text focus:border-wp-green focus:outline-none transition-colors" />
+                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-wp-text mb-1.5">Nachname *</label>
+                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Nachname *</label>
                     <input type="text" value={nachname} onChange={e => setNachname(e.target.value)}
                       placeholder="Mustermann" autoComplete="family-name"
-                      className="w-full px-3 py-2.5 border-2 border-wp-border rounded-xl text-sm text-wp-text focus:border-wp-green focus:outline-none transition-colors" />
+                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-wp-text mb-1.5">E-Mail-Adresse *</label>
+                  <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">E-Mail-Adresse *</label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="max@beispiel.de" autoComplete="email"
-                    className="w-full px-3 py-2.5 border-2 border-wp-border rounded-xl text-sm text-wp-text focus:border-wp-green focus:outline-none transition-colors" />
+                    className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-semibold text-wp-text mb-1.5">Telefon <span className="font-normal text-wp-text3">(optional)</span></label>
+                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Telefon <span className="font-normal text-[#7A9E8E]">(optional)</span></label>
                     <input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)}
                       placeholder="0176 12345678" autoComplete="tel"
-                      className="w-full px-3 py-2.5 border-2 border-wp-border rounded-xl text-sm text-wp-text focus:border-wp-green focus:outline-none transition-colors" />
+                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-wp-text mb-1.5">PLZ *</label>
+                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">PLZ *</label>
                     <input type="text" value={plz} onChange={e => setPlz(e.target.value.slice(0, 5))}
                       placeholder="10115" maxLength={5} inputMode="numeric"
-                      className="w-full px-3 py-2.5 border-2 border-wp-border rounded-xl text-sm text-wp-text focus:border-wp-green focus:outline-none transition-colors" />
+                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
                   </div>
                 </div>
               </div>
@@ -248,12 +248,12 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
               <div className="flex gap-3">
                 <button onClick={() => setStep(1)} type="button"
-                  className="px-5 py-3.5 rounded-xl border-2 border-wp-border text-wp-text2 font-semibold text-sm hover:border-wp-green transition-colors">
+                  className="px-5 py-3.5 rounded-xl border-2 border-gray-200 text-[#4A6358] font-semibold text-sm hover:border-[#1A4731] transition-colors">
                   Zurück
                 </button>
                 <button onClick={() => canStep2 && submit()} disabled={!canStep2 || submitting}
-                  className={`flex-1 py-3.5 rounded-xl font-heading font-bold text-sm flex items-center justify-center gap-2 transition-all ${
-                    canStep2 && !submitting ? 'bg-wp-amber text-white hover:bg-amber-700' : 'bg-wp-border text-wp-text3 cursor-not-allowed'
+                  className={`flex-1 py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                    canStep2 && !submitting ? 'bg-[#D97706] text-white hover:bg-amber-700' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                   }`}>
                   {submitting
                     ? <><Loader2 size={16} className="animate-spin" /> Wird gesendet...</>
@@ -262,12 +262,12 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
                 </button>
               </div>
 
-              <p className="text-wp-text3 text-xs text-center mt-3">
+              <p className="text-[#7A9E8E] text-xs text-center mt-3">
                 🔒 Ihre Daten werden nicht ohne Zustimmung weitergegeben · DSGVO-konform
               </p>
-              <div className="mt-3 pt-3 border-t border-wp-border text-center">
-                <p className="text-wp-text3 text-xs mb-1.5">Oder direkt anrufen:</p>
-                <a href="tel:+4915563566199" className="inline-flex items-center gap-2 text-sm font-semibold text-wp-green hover:text-green-800 transition-colors">📞 +49 15563 566199</a>
+              <div className="mt-3 pt-3 border-t border-gray-200 text-center">
+                <p className="text-[#7A9E8E] text-xs mb-1.5">Oder direkt anrufen:</p>
+                <a href="tel:+4915563566199" className="inline-flex items-center gap-2 text-sm font-semibold text-[#1A4731] hover:text-green-800 transition-colors">📞 +49 15563 566199</a>
               </div>
             </motion.div>
           )}

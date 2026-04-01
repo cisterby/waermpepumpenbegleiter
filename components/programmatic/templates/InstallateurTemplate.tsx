@@ -74,7 +74,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* ══ HERO ══════════════════════════════════════════════ */}
       <div className="relative min-h-[70vh] flex items-center overflow-hidden">
         <img src={IMGS.hero} alt={`Wärmepumpe Installateur ${city.name}`}
@@ -100,7 +100,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </div>
           )}
 
-          <h1 className="font-heading font-extrabold text-white leading-tight mb-5"
+          <h1 className="font-bold font-extrabold text-white leading-tight mb-5"
             style={{ fontSize: 'clamp(32px,4.5vw,62px)' }}>
             {h1}
           </h1>
@@ -110,7 +110,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               </p>
               {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -120,16 +120,16 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <p className="text-[rgba(255,255,255,0.65)] text-lg leading-relaxed max-w-2xl mb-10">
             Kostenlos bis zu 3 Angebote von <strong className="text-white">HWK-geprüften lokalen Meisterbetrieben</strong> in {city.name} vergleichen.
             Alle Partner sind KfW-LuL-registriert — das ist Voraussetzung für Ihre{' '}
-            <strong className="text-wp-green3">{fmtEuro(foerd.zuschuss)}</strong> KfW-Förderung.
+            <strong className="text-[#3DA16A]">{fmtEuro(foerd.zuschuss)}</strong> KfW-Förderung.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-10">
             <a href="#angebot"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-wp-green text-white font-heading font-bold rounded-xl hover:bg-wp-green2 transition-all hover:-translate-y-0.5 shadow-lg shadow-green-900/30">
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1A4731] text-white font-bold font-bold rounded-xl hover:bg-[#2D7A52] transition-all hover:-translate-y-0.5 shadow-lg shadow-green-900/30">
               3 Angebote anfordern <ArrowRight size={16} />
             </a>
             <a href="#checkliste"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[rgba(255,255,255,0.10)] border border-[rgba(255,255,255,0.20)] text-white font-heading font-semibold rounded-xl hover:bg-[rgba(255,255,255,0.15)] transition-all">
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[rgba(255,255,255,0.10)] border border-[rgba(255,255,255,0.20)] text-white font-bold font-semibold rounded-xl hover:bg-[rgba(255,255,255,0.15)] transition-all">
               Checkliste ansehen
             </a>
           </div>
@@ -143,7 +143,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             ].map((s, i) => (
               <div key={i} className="bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.12)] rounded-xl p-4">
                 <p className="font-mono font-extrabold text-white leading-none mb-1" style={{ fontSize: 'clamp(16px,2vw,22px)' }}>{s.val}</p>
-                <p className="text-wp-green3 text-xs font-bold mb-0.5">{s.label}</p>
+                <p className="text-[#3DA16A] text-xs font-bold mb-0.5">{s.label}</p>
                 <p className="text-[rgba(255,255,255,0.35)] text-xs">{s.sub}</p>
               </div>
             ))}
@@ -152,14 +152,14 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
       </div>
 
       {/* Qualitäts-Bar */}
-      <div className="bg-wp-dark border-b border-[rgba(255,255,255,0.08)] py-3 px-6">
+      <div className="bg-[#1A4731] border-b border-[rgba(255,255,255,0.08)] py-3 px-6">
         <div className="max-w-6xl mx-auto flex items-center gap-5 flex-wrap">
-          <span className="text-wp-green3 text-xs font-bold uppercase tracking-widest shrink-0 flex items-center gap-1.5">
+          <span className="text-[#3DA16A] text-xs font-bold uppercase tracking-widest shrink-0 flex items-center gap-1.5">
             <Shield size={12} />6 Qualitätskriterien
           </span>
           {['HWK-Eintragung', 'Meisterbetrieb', 'KfW-LuL', '5+ WP-Inst.', 'Haftpflicht', 'Ø 4,6/5 Bewertung'].map(s => (
             <span key={s} className="text-[rgba(255,255,255,0.50)] text-xs font-semibold flex items-center gap-1">
-              <CheckCircle size={10} className="text-wp-green3 shrink-0" />{s}
+              <CheckCircle size={10} className="text-[#3DA16A] shrink-0" />{s}
             </span>
           ))}
         </div>
@@ -172,32 +172,32 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {/* Marktdaten */}
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { icon: <Clock size={20} className="text-wp-amber" />, label: 'Wartezeit in ' + city.name, val: market.wartezeit, sub: market.note, bg: 'bg-white border-wp-border' },
-              { icon: '💶', label: 'Ø Investitionskosten', val: market.kosten, sub: 'Brutto inkl. Installation & Zubehör', bg: 'bg-white border-wp-border' },
-              { icon: '📋', label: 'KfW-Zuschuss', val: fmtEuro(foerd.zuschuss), sub: `${foerd.gesamtSatz}% Eigennutzer + Klima-Speed`, bg: 'bg-wp-greenlt border-wp-green3/30' },
+              { icon: <Clock size={20} className="text-[#D97706]" />, label: 'Wartezeit in ' + city.name, val: market.wartezeit, sub: market.note, bg: 'bg-white border-gray-200' },
+              { icon: '💶', label: 'Ø Investitionskosten', val: market.kosten, sub: 'Brutto inkl. Installation & Zubehör', bg: 'bg-white border-gray-200' },
+              { icon: '📋', label: 'KfW-Zuschuss', val: fmtEuro(foerd.zuschuss), sub: `${foerd.gesamtSatz}% Eigennutzer + Klima-Speed`, bg: 'bg-[#E8F5EE] border-[#3DA16A]/30' },
             ].map((d, i) => (
-              <div key={i} className={`bg-white border ${d.bg} rounded-xl p-5 shadow-wp-sm`}>
+              <div key={i} className={`bg-white border ${d.bg} rounded-xl p-5 shadow-md`}>
                 <div className="mb-3">{typeof d.icon === 'string' ? <span className="text-2xl">{d.icon}</span> : d.icon}</div>
-                <p className="font-heading font-bold text-wp-text text-lg leading-tight mb-0.5">{d.val}</p>
-                <p className="text-wp-text3 text-xs font-semibold mb-0.5">{d.label}</p>
-                <p className="text-wp-text3 text-xs">{d.sub}</p>
+                <p className="font-bold font-bold text-[#1C2B2B] text-lg leading-tight mb-0.5">{d.val}</p>
+                <p className="text-[#7A9E8E] text-xs font-semibold mb-0.5">{d.label}</p>
+                <p className="text-[#7A9E8E] text-xs">{d.sub}</p>
               </div>
             ))}
           </div>
 
           {/* Featured Snippet */}
-          <div className="bg-white rounded-2xl border border-wp-border border-l-4 border-l-wp-green p-6 shadow-wp-sm">
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Direkte Antwort</p>
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
+          <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-wp-green p-6 shadow-md">
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Direkte Antwort</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-3">
               {fillTemplate(keyword.featuredSnippetQuestions[0] ?? 'Wie finde ich einen guten WP-Installateur in {stadt}?', city, jaz)}
             </h2>
-            <p className="text-wp-text2 text-base leading-relaxed">{intros[v]}</p>
+            <p className="text-[#4A6358] text-base leading-relaxed">{intros[v]}</p>
           </div>
 
           {/* Qualitätskriterien Grid mit Bild */}
           <div>
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Unsere Partnerbetriebe</p>
-            <h2 className="font-heading font-bold text-wp-text mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Unsere Partnerbetriebe</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
               {[
                 `6 Kriterien — wie wir Betriebe in ${city.name} prüfen`,
                 `So wählen wir die richtigen Fachbetriebe für ${city.name} aus`,
@@ -212,33 +212,33 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-bold text-sm mb-1">Geprüfter Fachbetrieb</p>
                   <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => <Star key={i} size={12} className="text-wp-amber fill-wp-amber" />)}
+                    {[...Array(5)].map((_, i) => <Star key={i} size={12} className="text-[#D97706] fill-wp-amber" />)}
                     <span className="text-white text-xs ml-1">Ø 4,6 / 5,0</span>
                   </div>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {CRITERIA.map((c, i) => (
-                  <div key={i} className="bg-white border border-wp-border rounded-xl p-3 shadow-wp-sm">
+                  <div key={i} className="bg-white border border-gray-200 rounded-xl p-3 shadow-md">
                     <span className="text-xl block mb-1.5">{c.icon}</span>
-                    <p className="font-semibold text-wp-text text-xs mb-1 leading-tight">{c.title}</p>
-                    <p className="text-wp-text3 text-xs leading-relaxed">{c.text}</p>
+                    <p className="font-semibold text-[#1C2B2B] text-xs mb-1 leading-tight">{c.title}</p>
+                    <p className="text-[#7A9E8E] text-xs leading-relaxed">{c.text}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-4 flex items-start gap-3">
-              <CheckCircle size={16} className="text-wp-green shrink-0 mt-0.5" />
-              <p className="text-wp-text2 text-sm leading-relaxed">
-                <strong className="text-wp-text">Laufendes Monitoring:</strong> Nach jeder Vermittlung → Kundenfeedback. Unter Ø 3,5/5 nach 10+ Bewertungen → automatisch entfernt. Kein Betrieb kann sich eine bessere Bewertung erkaufen.
+            <div className="bg-[#E8F5EE] border border-[#3DA16A]/30 rounded-xl p-4 flex items-start gap-3">
+              <CheckCircle size={16} className="text-[#1A4731] shrink-0 mt-0.5" />
+              <p className="text-[#4A6358] text-sm leading-relaxed">
+                <strong className="text-[#1C2B2B]">Laufendes Monitoring:</strong> Nach jeder Vermittlung → Kundenfeedback. Unter Ø 3,5/5 nach 10+ Bewertungen → automatisch entfernt. Kein Betrieb kann sich eine bessere Bewertung erkaufen.
               </p>
             </div>
           </div>
 
           {/* Haupttext: Worauf achten */}
           <div>
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Worauf achten</p>
-            <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Worauf achten</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
               {[
                 `Die häufigsten Fehler bei der Installateur-Wahl in ${city.name}`,
                 `Was geht schief, wenn man den falschen Betrieb in ${city.name} wählt?`,
@@ -248,7 +248,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="space-y-4">
               <div className="bg-red-50 border border-red-200 rounded-xl p-5">
-                <p className="font-heading font-bold text-red-800 mb-2">⚠️ Fehler 1: Betrieb ohne KfW-LuL-Registrierung</p>
+                <p className="font-bold font-bold text-red-800 mb-2">⚠️ Fehler 1: Betrieb ohne KfW-LuL-Registrierung</p>
                 <p className="text-red-700 text-sm leading-relaxed">
                   Nur Betriebe die als Lieferant und Leistungserbringer (LuL) im KfW-Energieeffizienz-Portal registriert sind
                   können den Förderantrag stellen. Kein LuL = kein Antrag = keine {fmtEuro(foerd.zuschuss)} Förderung.
@@ -257,8 +257,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 </p>
               </div>
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                <p className="font-heading font-bold text-amber-800 mb-2">⚠️ Fehler 2: Unvollständige Angebote</p>
-                <p className="text-wp-text2 text-sm leading-relaxed mb-3">
+                <p className="font-bold font-bold text-amber-800 mb-2">⚠️ Fehler 2: Unvollständige Angebote</p>
+                <p className="text-[#4A6358] text-sm leading-relaxed mb-3">
                 {[
                   `Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Wärmemengenzähler (ab 2026 KfW-Pflicht), Elektroinstallation (€500–1.500) — diese Positionen fehlen in vielen Angeboten in ${city.name} und werden nachträglich extra berechnet.`,
                   `In ${city.name} oft vergessen: Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Starkstrom-Kreis (€500–1.500) und Wärmemengenzähler (€300–600, ab 2026 KfW-Pflicht). Auf vollständige Ausweisungen im Angebot bestehen.`,
@@ -268,7 +268,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               </p>
               </div>
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                <p className="font-heading font-bold text-amber-800 mb-2">⚠️ Fehler 3: Keine Heizlastberechnung</p>
+                <p className="font-bold font-bold text-amber-800 mb-2">⚠️ Fehler 3: Keine Heizlastberechnung</p>
                 <p className="text-amber-700 text-sm leading-relaxed">
                   Ohne Heizlastberechnung nach DIN EN 12831 ist eine korrekte Auslegung nicht möglich.
                   Zu große WP taktet häufig — das senkt die JAZ auf {(jaz - 0.5).toFixed(1)} oder schlechter
@@ -276,9 +276,9 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                   Jedes seriöse Angebot in {city.name} enthält diese Berechnung.
                 </p>
               </div>
-              <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-5">
-                <p className="font-heading font-bold text-wp-green mb-2">✓ Richtig: Lokaler Fachbetrieb + 3 Angebote vergleichen</p>
-                <p className="text-wp-text2 text-sm leading-relaxed">
+              <div className="bg-[#E8F5EE] border border-[#3DA16A]/30 rounded-xl p-5">
+                <p className="font-bold font-bold text-[#1A4731] mb-2">✓ Richtig: Lokaler Fachbetrieb + 3 Angebote vergleichen</p>
+                <p className="text-[#4A6358] text-sm leading-relaxed">
                   Lokale Betriebe in {city.name} kennen die Netzbetreiber für den WP-Sondertarif,
                   die lokalen Auflagen in {city.bundesland} und sind im Störungsfall schnell vor Ort.
                   Mit 3 vollständigen Vergleichsangeboten sparen Sie im Schnitt {fmtEuro(Math.round(foerd.zuschuss * 0.25))} gegenüber dem ersten Angebot.
@@ -290,8 +290,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           {/* Checkliste mit Bild */}
           <div id="checkliste">
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Vollständiges Angebot</p>
-            <h2 className="font-heading font-bold text-wp-text mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Vollständiges Angebot</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
               {[`Checkliste: Was ein WP-Angebot in ${city.name} enthalten muss`,`Vollständiges Angebot in ${city.name} — diese Punkte prüfen`,`WP-Angebotscheck für ${city.name} — darauf achten`,`Was muss drinstehen? Prüfliste für Angebote in ${city.name}`][cityHash(city,4,330)]}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
@@ -303,15 +303,15 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                   <p className="text-[rgba(255,255,255,0.65)] text-xs">&gt;60% der Angebote sind unvollständig (VZ)</p>
                 </div>
               </div>
-              <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md">
                 {CHECKLIST.map((item, i) => (
-                  <div key={i} className={`flex items-start gap-3 px-4 py-3 ${i < CHECKLIST.length - 1 ? 'border-b border-wp-border' : ''}`}>
-                    <CheckCircle size={13} className={`mt-0.5 shrink-0 ${item.crit ? 'text-wp-green' : 'text-wp-text3'}`} />
+                  <div key={i} className={`flex items-start gap-3 px-4 py-3 ${i < CHECKLIST.length - 1 ? 'border-b border-gray-200' : ''}`}>
+                    <CheckCircle size={13} className={`mt-0.5 shrink-0 ${item.crit ? 'text-[#1A4731]' : 'text-[#7A9E8E]'}`} />
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-wp-text text-xs leading-tight">{item.item}</p>
-                      <p className="text-wp-text3 text-xs mt-0.5">{item.note}</p>
+                      <p className="font-semibold text-[#1C2B2B] text-xs leading-tight">{item.item}</p>
+                      <p className="text-[#7A9E8E] text-xs mt-0.5">{item.note}</p>
                     </div>
-                    {item.crit && <span className="bg-wp-greenlt text-wp-green text-xs font-bold px-2 py-0.5 rounded-full shrink-0">Pflicht</span>}
+                    {item.crit && <span className="bg-[#E8F5EE] text-[#1A4731] text-xs font-bold px-2 py-0.5 rounded-full shrink-0">Pflicht</span>}
                   </div>
                 ))}
               </div>
@@ -320,8 +320,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           {/* Lokal vs. Bundesweit */}
           <div>
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Vergleich</p>
-            <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Vergleich</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
               {[
                 `Lokaler Betrieb vs. bundesweiter Anbieter in ${city.name}`,
                 `Warum lohnt sich ein regionaler Installateur in ${city.name}?`,
@@ -329,13 +329,13 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 `Vor-Ort-Betrieb oder bundesweiter Anbieter: Was ist besser für ${city.name}?`,
               ][cityHash(city, 4, 142)]}
             </h2>
-            <div className="overflow-x-auto rounded-2xl border border-wp-border shadow-wp-sm">
+            <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-md">
               <table className="w-full bg-white min-w-[500px]">
                 <thead>
                   <tr style={{ background: 'linear-gradient(135deg, #0A1910 0%, #1B3D28 100%)' }}>
                     <th className="px-5 py-4 text-left text-[rgba(255,255,255,0.40)] text-xs font-bold uppercase tracking-wider">Kriterium</th>
                     <th className="px-5 py-4 text-left text-[rgba(255,255,255,0.40)] text-xs font-bold uppercase tracking-wider">Bundesweite Anbieter</th>
-                    <th className="px-5 py-4 text-left text-wp-green3 text-xs font-bold uppercase tracking-wider">Lokal in {city.name} ✓</th>
+                    <th className="px-5 py-4 text-left text-[#3DA16A] text-xs font-bold uppercase tracking-wider">Lokal in {city.name} ✓</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -348,10 +348,10 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                     ['Preistransparenz', 'Oft Festpreismodell', '✓ Einzelne Positionen ausgewiesen'],
                     ['Wartung & Service', 'Zentral koordiniert', '✓ Direktkontakt lokaler Betrieb'],
                   ].map(([label, them, us], i) => (
-                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-wp-bg/40'}>
-                      <td className="px-5 py-3.5 font-semibold text-wp-text text-sm border-b border-wp-border">{label}</td>
-                      <td className="px-5 py-3.5 text-wp-text3 text-sm border-b border-wp-border">{them}</td>
-                      <td className="px-5 py-3.5 text-wp-green font-medium text-sm border-b border-wp-border">{us}</td>
+                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F8F9FA]/40'}>
+                      <td className="px-5 py-3.5 font-semibold text-[#1C2B2B] text-sm border-b border-gray-200">{label}</td>
+                      <td className="px-5 py-3.5 text-[#7A9E8E] text-sm border-b border-gray-200">{them}</td>
+                      <td className="px-5 py-3.5 text-[#1A4731] font-medium text-sm border-b border-gray-200">{us}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -361,8 +361,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           {/* So läuft es ab — Prozess mit Bild */}
           <div>
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Der Prozess</p>
-            <h2 className="font-heading font-bold text-wp-text mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Der Prozess</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
               {h2s.prozess}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
@@ -380,9 +380,9 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                       {i < 4 && <div className="w-0.5 flex-1 mt-1" style={{ background: s.color + '40' }} />}
                     </div>
                     <div className="pb-4 flex-1">
-                      <span className="text-wp-text3 text-xs font-bold">{s.t}</span>
-                      <p className="font-heading font-bold text-wp-text text-sm mt-0.5 mb-1">{s.title}</p>
-                      <p className="text-wp-text2 text-xs leading-relaxed">{s.text}</p>
+                      <span className="text-[#7A9E8E] text-xs font-bold">{s.t}</span>
+                      <p className="font-bold font-bold text-[#1C2B2B] text-sm mt-0.5 mb-1">{s.title}</p>
+                      <p className="text-[#4A6358] text-xs leading-relaxed">{s.text}</p>
                     </div>
                   </div>
                 ))}
@@ -403,14 +403,14 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             <div className="bg-amber-50 border border-amber-300 rounded-2xl p-6 flex items-start gap-4">
               <AlertTriangle size={22} className="text-amber-600 shrink-0 mt-0.5" />
               <div>
-                <p className="font-heading font-bold text-amber-900 text-xl mb-2">GEG-Frist {city.name}: {gegFristFormatted}</p>
+                <p className="font-bold font-bold text-amber-900 text-xl mb-2">GEG-Frist {city.name}: {gegFristFormatted}</p>
                 <p className="text-amber-800 text-sm leading-relaxed mb-3">
                   Als Großstadt über 100.000 Einwohner gilt in {city.name} die 65%-EE-Pflicht für Bestandsgebäude
                   ab {gegFristFormatted}. Bei aktuellen Wartezeiten von {market.wartezeit} müssen Sie jetzt handeln
                   um rechtzeitig fertig zu werden — und sichern sich die volle KfW-Förderung.
                 </p>
                 <a href="#angebot"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 text-white font-heading font-bold text-sm rounded-xl hover:bg-amber-700 transition-colors">
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 text-white font-bold font-bold text-sm rounded-xl hover:bg-amber-700 transition-colors">
                   Jetzt Angebot anfordern <ArrowRight size={14} />
                 </a>
               </div>
@@ -419,8 +419,8 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           {/* Stadtspezifische Standortdaten — macht jede Seite unique */}
           <div className="grid sm:grid-cols-2 gap-4 mt-4">
-            <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
-              <div className="px-4 py-3 border-b border-wp-border" style={{ background: 'linear-gradient(135deg, #1A4731 0%, #0A1910 100%)' }}>
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-md">
+              <div className="px-4 py-3 border-b border-gray-200" style={{ background: 'linear-gradient(135deg, #1A4731 0%, #0A1910 100%)' }}>
                 <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">{city.name} — Markt & Standort</p>
               </div>
               <div className="p-4 space-y-2">
@@ -432,15 +432,15 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                   ['Bundesland', city.bundesland],
                   ['GEG-Frist', gegFristFormatted],
                 ].map(([l, v], i) => (
-                  <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
-                    <span className="text-wp-text2 text-xs">{l}</span>
-                    <span className="font-mono font-bold text-wp-text text-xs">{v}</span>
+                  <div key={i} className="flex justify-between py-1 border-b border-gray-200 last:border-0">
+                    <span className="text-[#4A6358] text-xs">{l}</span>
+                    <span className="font-mono font-bold text-[#1C2B2B] text-xs">{v}</span>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-white rounded-xl border border-wp-border overflow-hidden shadow-wp-sm">
-              <div className="px-4 py-3 border-b border-wp-border bg-wp-dark">
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-md">
+              <div className="px-4 py-3 border-b border-gray-200 bg-[#1A4731]">
                 <p className="text-[rgba(255,255,255,0.60)] text-xs font-bold uppercase tracking-wider">Energie & Wirtschaftlichkeit</p>
               </div>
               <div className="p-4 space-y-2">
@@ -452,9 +452,9 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                   ['Ersparnis vs. Gas', fmtEuro(calc.ersparnis) + '/Jahr'],
                   ['KfW-Eigenanteil', fmtEuro(foerd.eigenanteil)],
                 ].map(([l, v], i) => (
-                  <div key={i} className="flex justify-between py-1 border-b border-wp-border last:border-0">
-                    <span className="text-wp-text2 text-xs">{l}</span>
-                    <span className={`font-mono font-bold text-xs ${i === 4 ? 'text-wp-amber' : i === 3 ? 'text-wp-green' : 'text-wp-text'}`}>{v}</span>
+                  <div key={i} className="flex justify-between py-1 border-b border-gray-200 last:border-0">
+                    <span className="text-[#4A6358] text-xs">{l}</span>
+                    <span className={`font-mono font-bold text-xs ${i === 4 ? 'text-[#D97706]' : i === 3 ? 'text-[#1A4731]' : 'text-[#1C2B2B]'}`}>{v}</span>
                   </div>
                 ))}
               </div>
@@ -463,26 +463,26 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            <div className="mb-6 p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+              <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
           {/* FAQ */}
           <div>
-            <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Häufige Fragen</p>
-            <h2 className="font-heading font-bold text-wp-text mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
+            <p className="text-[#1A4731] text-xs font-bold uppercase tracking-widest mb-2">Häufige Fragen</p>
+            <h2 className="font-bold font-bold text-[#1C2B2B] mb-5" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
               {h2s.faq}
             </h2>
-            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm">
+            <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-md">
               {faqs.map((faq, i) => (
-                <details key={i} className="group border-b border-wp-border last:border-0">
-                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                <details key={i} className="group border-b border-gray-200 last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                    <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="border-t border-wp-border">
-                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  <div className="border-t border-gray-200">
+                    <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
                   </div>
                 </details>
               ))}
@@ -491,22 +491,22 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Installateure in der Region</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Installateure in der Region</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {n.name}
                   </Link>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen für {city.name}</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen für {city.name}</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
                   <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {kw.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -517,17 +517,17 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
         {/* ══ SIDEBAR ══════════════════════════════════════════ */}
         <div className="sticky top-24 space-y-4">
-          <div className="rounded-2xl shadow-wp-xl overflow-hidden" style={{ background: 'linear-gradient(160deg, #1B3D28 0%, #0A1910 100%)' }}>
+          <div className="rounded-2xl shadow-2xl overflow-hidden" style={{ background: 'linear-gradient(160deg, #1B3D28 0%, #0A1910 100%)' }}>
             <div className="p-6">
               <p className="text-[rgba(255,255,255,0.50)] text-xs font-bold uppercase tracking-widest mb-1">Markt {city.name}</p>
               <p className="font-mono font-extrabold text-white leading-none mb-0.5" style={{ fontSize: 34 }}>{market.wartezeit}</p>
               <p className="text-[rgba(255,255,255,0.40)] text-xs mb-5">Ø Wartezeit gute Betriebe</p>
               <div className="space-y-2 mb-5">
                 {[
-                  { l: 'Ø Investitionskosten', v: market.kosten, c: 'text-wp-amber' },
-                  { l: `KfW-Zuschuss (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c: 'text-wp-green3' },
+                  { l: 'Ø Investitionskosten', v: market.kosten, c: 'text-[#D97706]' },
+                  { l: `KfW-Zuschuss (${foerd.gesamtSatz}%)`, v: fmtEuro(foerd.zuschuss), c: 'text-[#3DA16A]' },
                   { l: 'Ihr Eigenanteil', v: fmtEuro(foerd.eigenanteil), c: 'text-white' },
-                  { l: 'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c: 'text-wp-green3' },
+                  { l: 'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c: 'text-[#3DA16A]' },
                   { l: 'JAZ in ' + city.name, v: String(jaz), c: 'text-white' },
                   { l: 'GEG-Frist', v: gegFristFormatted, c: isUrgent ? 'text-amber-400' : 'text-white' },
                 ].map(r => (
@@ -538,7 +538,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 ))}
               </div>
               <a href="#angebot"
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-wp-green text-white rounded-xl font-heading font-bold text-sm hover:bg-wp-green2 transition-colors">
+                className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#1A4731] text-white rounded-xl font-bold font-bold text-sm hover:bg-[#2D7A52] transition-colors">
                 3 Angebote anfordern <ArrowRight size={14} />
               </a>
               <p className="text-[rgba(255,255,255,0.25)] text-xs text-center mt-2">Kostenlos · Unverbindlich · 48h</p>
@@ -550,7 +550,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
@@ -558,14 +558,14 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {/* GEG-Reform */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
 
           {/* Neue Lärmvorschrift */}
           {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
             </div>
           )}
 
@@ -573,7 +573,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
             </div>
           )}
 
@@ -581,7 +581,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
               <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
             </div>
           )}
 
@@ -589,23 +589,23 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
             </div>
           )}
 
           {/* Finanzierung */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
 
         </div>
       </div>
           <AuthorBox keywordSlug={keyword.slug} />
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {['HWK-geprüfte Meisterbetriebe', 'KfW-LuL-Registrierung', 'Heizlastberechnung inklusive', `Lokal in ${city.name}`, '100% kostenlos für Sie'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
+              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
+                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>
             ))}
           </div>

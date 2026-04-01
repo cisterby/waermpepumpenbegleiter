@@ -64,7 +64,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 7);
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/90 via-wp-dark/70 to-transparent" />
@@ -75,14 +75,14 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
             <span className="text-white/80">{city.name}</span>
           </nav>
           {city.einwohner >= 100000 && (
-            <div className="inline-block bg-wp-amber text-wp-dark text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+            <div className="inline-block bg-[#D97706] text-[#1A4731] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
               GEG-Frist {city.name}: {city.gegFrist.split('-').reverse().join('.')}
             </div>
           )}
-          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <h1 className="font-bold font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
               {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -108,7 +108,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
               </div>
             ))}
           </div>
-          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-[#1A4731] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#2D7A52] transition-colors">
             Geprüfte Anbieter finden →
           </a>
         </div>
@@ -119,27 +119,27 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
           {/* Featured Snippet */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-3">
               {fillTemplate('Welche WP-Anbieter gibt es in {stadt} und worauf achten?', city, jaz)}
             </h2>
-            <p className="text-wp-text2 text-base leading-relaxed">
+            <p className="text-[#4A6358] text-base leading-relaxed">
               In <strong>{city.name}</strong> gibt es lokale SHK-Fachbetriebe, Systemanbieter und Online-Portale — aber nicht alle sind für die KfW-Förderbeantragung qualifiziert. Das wichtigste Kriterium: der Betrieb muss <strong>KfW-LuL-registriert</strong> sein. Ohne diese Registrierung entfällt der {foerd.gesamtSatz}% KfW-Zuschuss ({fmtEuro(foerd.zuschuss)}) vollständig. Wir prüfen das für Sie vorab.
             </p>
           </div>
 
           {/* Anbieter-Typen */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">
               Welche WP-Anbieter-Typen gibt es in {city.name} im Vergleich
             ?</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {ANBIETER_TYPEN.map((a, i) => (
-                <div key={i} className="p-4 bg-white border border-wp-border rounded-xl">
+                <div key={i} className="p-4 bg-white border border-gray-200 rounded-xl">
                   <div className="text-2xl mb-2">{a.icon}</div>
-                  <div className="font-heading font-bold text-wp-text text-sm mb-2">{a.typ}</div>
-                  <div className="text-xs text-wp-green mb-1">✅ {a.vorteile}</div>
-                  <div className="text-xs text-wp-text3">⚠️ {a.nachteile}</div>
-                  {a.kfw && <div className="mt-2 text-xs bg-wp-greenxlt text-wp-green px-2 py-0.5 rounded-full inline-block">KfW-LuL möglich</div>}
+                  <div className="font-bold font-bold text-[#1C2B2B] text-sm mb-2">{a.typ}</div>
+                  <div className="text-xs text-[#1A4731] mb-1">✅ {a.vorteile}</div>
+                  <div className="text-xs text-[#7A9E8E]">⚠️ {a.nachteile}</div>
+                  {a.kfw && <div className="mt-2 text-xs bg-[#F2FAF5] text-[#1A4731] px-2 py-0.5 rounded-full inline-block">KfW-LuL möglich</div>}
                 </div>
               ))}
             </div>
@@ -147,24 +147,24 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
           {/* 7 Kriterien */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Wie erkenne ich einen seriösen WP-Anbieter in {city.name}
             ?</h2>
-            <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-wp-bg border-b border-wp-border">
-                    <th className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">Kriterium</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">Pflicht?</th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-wp-text3 uppercase">Warum entscheidend</th>
+                  <tr className="bg-[#F8F9FA] border-b border-gray-200">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">Kriterium</th>
+                    <th className="px-4 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">Pflicht?</th>
+                    <th className="px-4 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">Warum entscheidend</th>
                   </tr>
                 </thead>
                 <tbody>
                   {ANBIETER_KRITERIEN.map((k, i) => (
-                    <tr key={i} className="border-b border-wp-border last:border-0">
-                      <td className="px-4 py-3 font-semibold text-wp-text text-sm">{k.kriterium}</td>
-                      <td className="px-4 py-3 text-sm">{k.pflicht ? <span className="text-wp-green font-bold">✅ Ja</span> : <span className="text-wp-text3">Empfohlen</span>}</td>
-                      <td className="px-4 py-3 text-wp-text2 text-xs">{k.warum}</td>
+                    <tr key={i} className="border-b border-gray-200 last:border-0">
+                      <td className="px-4 py-3 font-semibold text-[#1C2B2B] text-sm">{k.kriterium}</td>
+                      <td className="px-4 py-3 text-sm">{k.pflicht ? <span className="text-[#1A4731] font-bold">✅ Ja</span> : <span className="text-[#7A9E8E]">Empfohlen</span>}</td>
+                      <td className="px-4 py-3 text-[#4A6358] text-xs">{k.warum}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -174,19 +174,19 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
           {/* Angebotsvergleich */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               {[`Angebotsvergleich: Was muss in ${city.name} drinstehen?`,`Welche Positionen gehören in jedes seriöse Angebot in ${city.name}?`,`WP-Angebot ${city.name} — Pflichtpositionen im Überblick`,`Angebotscheck ${city.name}: Das muss enthalten sein`][cityHash(city,4,302)]}
             </h2>
             <div className="space-y-2">
               {ANGEBOTSVERGLEICH.map((a, i) => (
-                <div key={i} className={`flex gap-3 p-3 rounded-lg border ${a.typ.includes('Pflicht') ? 'bg-white border-wp-border' : 'bg-wp-bg border-wp-border opacity-80'}`}>
-                  <CheckCircle size={16} className={a.typ.includes('Pflicht') ? 'text-wp-green shrink-0 mt-0.5' : 'text-wp-text3 shrink-0 mt-0.5'} />
+                <div key={i} className={`flex gap-3 p-3 rounded-lg border ${a.typ.includes('Pflicht') ? 'bg-white border-gray-200' : 'bg-[#F8F9FA] border-gray-200 opacity-80'}`}>
+                  <CheckCircle size={16} className={a.typ.includes('Pflicht') ? 'text-[#1A4731] shrink-0 mt-0.5' : 'text-[#7A9E8E] shrink-0 mt-0.5'} />
                   <div className="flex-1">
                     <div className="flex justify-between items-center gap-2">
-                      <span className="font-semibold text-wp-text text-sm">{a.pos}</span>
-                      <span className={`text-xs shrink-0 ${a.typ.includes('Pflicht') ? 'text-wp-green font-bold' : 'text-wp-text3'}`}>{a.typ}</span>
+                      <span className="font-semibold text-[#1C2B2B] text-sm">{a.pos}</span>
+                      <span className={`text-xs shrink-0 ${a.typ.includes('Pflicht') ? 'text-[#1A4731] font-bold' : 'text-[#7A9E8E]'}`}>{a.typ}</span>
                     </div>
-                    <div className="text-xs text-wp-text2 mt-0.5">{a.note}</div>
+                    <div className="text-xs text-[#4A6358] mt-0.5">{a.note}</div>
                   </div>
                 </div>
               ))}
@@ -194,9 +194,9 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           </div>
 
           {/* Stadtspezifisch */}
-          <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{h2s.foerderung}</h2>
-            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.foerderung}</p>
+          <div className="p-6 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-4">{h2s.foerderung}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.foerderung}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm mb-4">
               {[
                 [fmtEuro(foerd.zuschuss), 'KfW-Zuschuss'],
@@ -206,11 +206,11 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
                 [fmtEuro(calc.ersparnis) + '/J.', 'Ersparnis vs. Gas'],
                 [calc.amortisationJahre + ' J.', 'Amortisation'],
               ].map(([v, l], i) => (
-                <div key={i}><div className="text-wp-text3 text-xs">{l}</div><div className="font-bold text-wp-text">{v}</div></div>
+                <div key={i}><div className="text-[#7A9E8E] text-xs">{l}</div><div className="font-bold text-[#1C2B2B]">{v}</div></div>
               ))}
             </div>
             {city.bundeslandFoerderung && (
-              <p className="text-sm text-wp-text2 pt-3 border-t border-wp-borderl">
+              <p className="text-sm text-[#4A6358] pt-3 border-t border-gray-200l">
                 <strong>{city.bundesland}:</strong> {city.bundeslandFoerderung}
               </p>
             )}
@@ -218,23 +218,23 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
           {/* H3 + FAQ */}
           {faqs.length > 0 && (
-            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            <div className="p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+              <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
 
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
-            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">{h2s.faq}</h2>
+            <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-md mb-10">
               {faqs.map((faq, i) => (
-                <details key={i} className="group border-b border-wp-border last:border-0">
-                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                <details key={i} className="group border-b border-gray-200 last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                    <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="border-t border-wp-border">
-                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  <div className="border-t border-gray-200">
+                    <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
                   </div>
                 </details>
               ))}
@@ -243,20 +243,20 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">{n.name}</Link>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {(keyword.crossLinks ?? []).map((slug: string) => (
                   <Link key={slug} href={`/${slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ')} {city.name}
                   </Link>
                 ))}
@@ -266,8 +266,8 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
         </div>
 
         <div>
-          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
-            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Angebots-Basis</div>
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-md sticky top-6">
+            <div className="text-xs font-bold text-[#1A4731] uppercase tracking-wide mb-3">{city.name} — Angebots-Basis</div>
             {[
               ['Vergleichsangebote', 'Bis zu 3'],
               ['KfW-Zuschuss', fmtEuro(foerd.zuschuss)],
@@ -277,19 +277,19 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
               ['Amortisation', calc.amortisationJahre + ' J.'],
               ['GEG-Frist', city.gegFrist.split('-').reverse().join('.')],
             ].map(([l, v], i) => (
-              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
-                <span className="text-wp-text2">{l}</span>
-                <span className="font-bold text-wp-text">{v}</span>
+              <div key={i} className="flex justify-between py-2 border-b border-gray-200 last:border-0 text-sm">
+                <span className="text-[#4A6358]">{l}</span>
+                <span className="font-bold text-[#1C2B2B]">{v}</span>
               </div>
             ))}
-            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+            <a href="#angebot" className="block mt-4 text-center bg-[#1A4731] text-white font-bold py-3 rounded-xl hover:bg-[#2D7A52] transition-colors text-sm">Kostenloses Angebot →</a>
           </div>
         </div>
       </div>
 
-      <div id="angebot" className="bg-wp-dark py-16">
+      <div id="angebot" className="bg-[#1A4731] py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
+          <h2 className="font-bold font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
@@ -298,10 +298,10 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
 
       {/* ── ANBIETER CONTENT ──────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 pb-8">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-5">
           Welche WP-Anbieter-Typen gibt es in {city.name} — und welcher passt?
         </h2>
-        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+        <div className="prose prose-sm max-w-none text-[#4A6358] space-y-4 leading-relaxed">
           <p>
             In {city.name} (und {city.bundesland} allgemein) gibt es drei Anbieter-Typen: <strong>Lokale SHK-Meisterbetriebe</strong> (kennen lokale Auflagen, schnell vor Ort, meist 3–10 WP/Jahr Erfahrung), <strong>Systemanbieter / Direktmonteure</strong> (Enpal, Vamo, Thermondo — bundesweite Abdeckung, standardisierte Prozesse, oft günstiger), und <strong>Hersteller-Werkspartner</strong> (Vaillant, Stiebel Eltron — zertifizierte Montage, oft höhere Preise, dafür verlängerte Herstellergarantie).
           </p>
@@ -317,13 +317,13 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
       {/* ── VERWANDTE THEMEN ─────────────────────────── */}
       {crossKeywords.length > 0 && (
         <div className="max-w-3xl mx-auto px-6 pb-8">
-          <h3 className="font-heading font-semibold text-wp-text text-base mb-3">
+          <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">
             Verwandte Themen für {city.name}
           </h3>
           <div className="flex flex-wrap gap-2">
             {crossKeywords.map(kw2 => kw2 && (
               <a key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:border-wp-green hover:text-wp-green transition-all">
+                className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:border-[#1A4731] hover:text-[#1A4731] transition-all">
                 {kw2.keyword.replace('[Stadt]', city.name)}
               </a>
             ))}
@@ -332,7 +332,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
       )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
@@ -340,14 +340,14 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {/* GEG-Reform */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
 
           {/* Neue Lärmvorschrift */}
           {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
             </div>
           )}
 
@@ -355,7 +355,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
             </div>
           )}
 
@@ -363,7 +363,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
               <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
             </div>
           )}
 
@@ -371,20 +371,20 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
             </div>
           )}
 
           {/* Finanzierung */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
 
         </div>
       </div>
       <AuthorBox keywordSlug={keyword.slug} />
-        <div className="mt-6 text-xs text-wp-text3">KfW BEG 458 · HWK · BWP Marktdaten 2024 · Stand März 2026</div>
+        <div className="mt-6 text-xs text-[#7A9E8E]">KfW BEG 458 · HWK · BWP Marktdaten 2024 · Stand März 2026</div>
       </div>
     </div>
   );

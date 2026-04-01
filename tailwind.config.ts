@@ -31,7 +31,28 @@ const config: Config = {
           // Borders
           border:     '#E5E7EB',
           borderl:    'rgba(27,94,55,0.12)', // subtle green border
+          // ── Aliases (used in Nav/Footer/templates) ──────────────
+          primary:       '#1B5E37',   // alias for green
+          'primary-mid': '#2A7D4F',   // alias for green2
+          'primary-light':'#3DA16A',  // alias for green3
+          accent:        '#D97706',   // alias for amber
+          'accent-light':'#F59E0B',   // amber lighter
+          base:          '#F8F9FA',   // alias for bg
+          'text-on-dark':'#F0FAF4',   // alias for textinv
+          'text-secondary':'#4B5563', // alias for text2
+          'text-light':  '#9CA3AF',   // alias for text3
         },
+        // ── Additional tokens used in components ──────────────
+        'wp-primary':       '#1A4731',
+        'wp-dark':          '#1A4731',
+        'wp-border':        '#E5E7EB',
+        'wp-primary-mid':   '#2D7A52',
+        'wp-primary-light': '#4CAF7D',
+        'wp-accent':        '#B45309',
+        'wp-text-on-dark':  '#F0FAF4',
+        'wp-text-secondary':'#4A6358',
+        'wp-text-muted':    '#7A9E8E',
+
         // shadcn/ui tokens
         background:  'hsl(var(--background))',
         foreground:  'hsl(var(--foreground))',

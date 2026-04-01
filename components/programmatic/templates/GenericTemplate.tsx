@@ -85,11 +85,11 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
     {
       title: `GEG-Status ${city.name}: Frist ${gegFristFormatted}`,
       icon: '📋',
-      color: isUrgent ? 'border-amber-300 bg-amber-50' : 'border-wp-border bg-white',
+      color: isUrgent ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-white',
       content: (
-        <div className="space-y-2 text-sm text-wp-text2">
+        <div className="space-y-2 text-sm text-[#4A6358]">
           <p>{isUrgent ? `⚠️ Als Großstadt über 100.000 Einwohner gilt in ${city.name} die 65%-EE-Pflicht ab ${gegFristFormatted}.` : `In ${city.name} gilt die 65%-EE-Pflicht ab ${gegFristFormatted}. Frühzeitiges Handeln sichert volle Förderung.`}</p>
-          <p className="text-wp-text2 text-base leading-relaxed">
+          <p className="text-[#4A6358] text-base leading-relaxed">
                 {[
                   `In ${city.name} ist die Wärmepumpe die einzige Heiztechnologie, die GEG-konform ist, bis 70% KfW-gefördert wird, CO₂-Kosten eliminiert und die Immobilie langfristig wertstabil hält.`,
                   `Für Hausbesitzer in ${city.name}: Die WP ist GEG-konform ohne Einschränkungen, bis 70% KfW-gefördert, unabhängig von steigenden CO₂-Preisen und wertsteigernd für Ihre Immobilie.`,
@@ -104,11 +104,11 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
     {
       title: `WP + PV in ${city.name}: ${pvErtrag.toLocaleString('de-DE')} kWh/Jahr`,
       icon: '☀️',
-      color: 'border-wp-border bg-white',
+      color: 'border-gray-200 bg-white',
       content: (
-        <div className="space-y-2 text-sm text-wp-text2">
+        <div className="space-y-2 text-sm text-[#4A6358]">
           <p>Mit {city.avgSunHours} Sonnenstunden/Jahr und 8 kWp PV produzieren Sie in {city.name} ca. {pvErtrag.toLocaleString('de-DE')} kWh Strom/Jahr — genug um die WP tagsüber direkt zu betreiben.</p>
-          <p>Zusatzersparnis durch PV+WP-Kombination: <strong className="text-wp-green">{pvErsparnis.toLocaleString('de-DE')} €/Jahr</strong> — weil PV-Strom die Wärme auf unter 10 ct/kWh senkt.</p>
+          <p>Zusatzersparnis durch PV+WP-Kombination: <strong className="text-[#1A4731]">{pvErsparnis.toLocaleString('de-DE')} €/Jahr</strong> — weil PV-Strom die Wärme auf unter 10 ct/kWh senkt.</p>
         </div>
       ),
     },
@@ -116,11 +116,11 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
     {
       title: `iSFP: +5% KfW-Bonus für ${city.name}`,
       icon: '📑',
-      color: 'border-wp-border bg-white',
+      color: 'border-gray-200 bg-white',
       content: (
-        <div className="space-y-2 text-sm text-wp-text2">
+        <div className="space-y-2 text-sm text-[#4A6358]">
           <p>Mit einem Individuellen Sanierungsfahrplan (iSFP) erhalten Sie +5% zusätzliche KfW-Förderung. Bei €25.000 WP-Investition = +{Math.round(25000 * 0.05).toLocaleString('de-DE')} € mehr Zuschuss.</p>
-          <p className="text-wp-text2 text-base leading-relaxed">
+          <p className="text-[#4A6358] text-base leading-relaxed">
                 {[
                   `Der iSFP kostet in ${city.name} €300–700 — und wird zu 80% von BAFA gefördert (Eigenanteil ca. €60–140). Mit iSFP gibt es +5% KfW-Bonus: bei €25.000 Invest = +€1.250 extra Förderung. Lohnt sich fast immer.`,
                   `iSFP in ${city.name}: Eigenanteil nur ca. €60–140 (80% BAFA-gefördert). Der +5% iSFP-Bonus bringt bei typischen Vollkosten von €20.000–25.000 eine Zusatzförderung von €1.000–1.250 — der iSFP finanziert sich selbst.`,
@@ -135,7 +135,7 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
     {
       title: 'Bewährte WP-Hersteller',
       icon: '🏆',
-      color: 'border-wp-border bg-white',
+      color: 'border-gray-200 bg-white',
       content: (
         <div className="space-y-1.5 text-sm">
           {[
@@ -144,12 +144,12 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
             { n: 'Bosch / Buderus', v: 'Gutes Preis-Leistungs-Verhältnis' },
             { n: 'Stiebel Eltron', v: 'Deutsche Qualität, lange Garantie' },
           ].map((h, i) => (
-            <div key={i} className="flex justify-between text-xs border-b border-wp-border pb-1.5">
-              <span className="font-semibold text-wp-text">{h.n}</span>
-              <span className="text-wp-text3">{h.v}</span>
+            <div key={i} className="flex justify-between text-xs border-b border-gray-200 pb-1.5">
+              <span className="font-semibold text-[#1C2B2B]">{h.n}</span>
+              <span className="text-[#7A9E8E]">{h.v}</span>
             </div>
           ))}
-          <p className="text-wp-text3 text-xs pt-1">Herstellerunabhängig — wir empfehlen das für Ihr Haus passende Gerät.</p>
+          <p className="text-[#7A9E8E] text-xs pt-1">Herstellerunabhängig — wir empfehlen das für Ihr Haus passende Gerät.</p>
         </div>
       ),
     },
@@ -157,26 +157,26 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
     {
       title: `${city.bundesland}-Förderung`,
       icon: '🏛️',
-      color: city.bundeslandFoerderung ? 'border-wp-green3/30 bg-wp-greenlt' : 'border-wp-border bg-white',
+      color: city.bundeslandFoerderung ? 'border-[#3DA16A]/30 bg-[#E8F5EE]' : 'border-gray-200 bg-white',
       content: city.bundeslandFoerderung ? (
-        <div className="space-y-2 text-sm text-wp-text2">
+        <div className="space-y-2 text-sm text-[#4A6358]">
           <p><strong>{city.bundeslandFoerderung}</strong>: {city.bundeslandFoerderungBetrag}</p>
           {city.bundeslandFoerderungUrl && (
-            <a href={city.bundeslandFoerderungUrl} target="_blank" rel="noopener noreferrer" className="text-wp-green text-xs font-semibold hover:underline">Mehr Infos ↗</a>
+            <a href={city.bundeslandFoerderungUrl} target="_blank" rel="noopener noreferrer" className="text-[#1A4731] text-xs font-semibold hover:underline">Mehr Infos ↗</a>
           )}
         </div>
       ) : (
-        <p className="text-sm text-wp-text2">{city.bundesland} setzt auf KfW-Bundesprogramme. Die volle Bundesförderung (bis 70%) gilt in {city.name} uneingeschränkt.</p>
+        <p className="text-sm text-[#4A6358]">{city.bundesland} setzt auf KfW-Bundesprogramme. Die volle Bundesförderung (bis 70%) gilt in {city.name} uneingeschränkt.</p>
       ),
     },
     // Block 5: CO₂
     {
       title: `CO₂-Einsparung in ${city.name}`,
       icon: '🌿',
-      color: 'border-wp-border bg-white',
+      color: 'border-gray-200 bg-white',
       content: (
-        <div className="space-y-2 text-sm text-wp-text2">
-          <p>Ein 120 m² EFH in {city.name} spart mit einer WP ca. <strong className="text-wp-green">{Math.round(120 * 160 * 0.0002 * 10) / 10} Tonnen CO₂/Jahr</strong> gegenüber einer Gasheizung.</p>
+        <div className="space-y-2 text-sm text-[#4A6358]">
+          <p>Ein 120 m² EFH in {city.name} spart mit einer WP ca. <strong className="text-[#1A4731]">{Math.round(120 * 160 * 0.0002 * 10) / 10} Tonnen CO₂/Jahr</strong> gegenüber einer Gasheizung.</p>
           <p>Entspricht {Math.round(120 * 160 * 0.0002 * 10000)} km weniger mit einem Diesel-PKW. Über 20 Jahre: {Math.round(120 * 160 * 0.0002 * 20 * 10) / 10} Tonnen CO₂ gespart.</p>
         </div>
       ),
@@ -209,9 +209,9 @@ export default function GenericTemplate({
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* HERO */}
-      <div className="bg-wp-dark pt-20 pb-14 px-6">
+      <div className="bg-[#1A4731] pt-20 pb-14 px-6">
         <div className="max-w-5xl mx-auto">
           <nav className="flex items-center gap-2 text-sm mb-5 text-white/40 flex-wrap">
             <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
@@ -221,7 +221,7 @@ export default function GenericTemplate({
             <span className="text-white/80">{city.name}</span>
           </nav>
 
-          <h1 className="font-heading font-extrabold text-white mb-4 leading-tight" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>
+          <h1 className="font-bold font-extrabold text-white mb-4 leading-tight" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>
             {h1}
           </h1>
               {/* Ultra-lokale Fakten */}
@@ -230,7 +230,7 @@ export default function GenericTemplate({
               </p>
               {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -253,7 +253,7 @@ export default function GenericTemplate({
             ].map((s, i) => (
               <div key={i} className="bg-white/10 rounded-xl p-3 border border-white/10">
                 <div className="font-mono font-bold text-white text-lg leading-none mb-0.5">{s.val}</div>
-                <div className="text-wp-green3 text-xs font-semibold">{s.label}</div>
+                <div className="text-[#3DA16A] text-xs font-semibold">{s.label}</div>
                 <div className="text-white/35 text-xs">{s.sub}</div>
               </div>
             ))}
@@ -268,23 +268,23 @@ export default function GenericTemplate({
         <div>
           {/* Featured Snippet Antwort */}
           {keyword.featuredSnippetQuestions[0] && (
-            <div className="bg-white border border-wp-border border-l-4 border-l-wp-green rounded-xl p-6 mb-8 shadow-wp-sm">
-              <h2 className="font-heading font-bold text-wp-text text-xl mb-3">
+            <div className="bg-white border border-gray-200 border-l-4 border-l-wp-green rounded-xl p-6 mb-8 shadow-md">
+              <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-3">
                 {fillTemplate(keyword.featuredSnippetQuestions[0], city, jaz)}
               </h2>
-              <p className="text-wp-text2 text-base leading-relaxed">
+              <p className="text-[#4A6358] text-base leading-relaxed">
                 {kwMainContent}
               </p>
             </div>
           )}
 
           {/* Keyword-spezifischer Hauptinhalt (2. Paragraph aus content-variation) */}
-          <h2 className="font-heading font-bold text-wp-text mb-4" style={{ fontSize: 'clamp(22px,2.5vw,34px)' }}>
+          <h2 className="font-bold font-bold text-[#1C2B2B] mb-4" style={{ fontSize: 'clamp(22px,2.5vw,34px)' }}>
             {fillTemplate(keyword.featuredSnippetQuestions[1] ?? `${kw} in ${city.name} — was Sie wissen müssen`, city, jaz)}
           </h2>
           <div className="space-y-4 mb-8">
-            <p className="text-wp-text2 text-base leading-relaxed">{introParagraphs[1]}</p>
-            <p className="text-wp-text2 text-base leading-relaxed">{introParagraphs[2]}</p>
+            <p className="text-[#4A6358] text-base leading-relaxed">{introParagraphs[1]}</p>
+            <p className="text-[#4A6358] text-base leading-relaxed">{introParagraphs[2]}</p>
           </div>
 
           {/* Stadtspezifische Klimafakten */}
@@ -294,11 +294,11 @@ export default function GenericTemplate({
               { icon: '📊', label: 'Heizgradtage', val: city.heizgradtage.toLocaleString('de-DE') + ' Kd/a', sub: 'IWU GTZ20/15' },
               { icon: '⚡', label: 'Lokaler Strompreis', val: city.strompreis + ' ct/kWh', sub: 'BDEW Regional' },
             ].map((d, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 border border-wp-border shadow-wp-sm">
+              <div key={i} className="bg-white rounded-xl p-4 border border-gray-200 shadow-md">
                 <div className="text-2xl mb-2">{d.icon}</div>
-                <div className="font-mono font-bold text-wp-green text-lg leading-none mb-0.5">{d.val}</div>
-                <div className="font-semibold text-wp-text text-xs mb-0.5">{d.label}</div>
-                <div className="text-wp-text3 text-xs">{d.sub}</div>
+                <div className="font-mono font-bold text-[#1A4731] text-lg leading-none mb-0.5">{d.val}</div>
+                <div className="font-semibold text-[#1C2B2B] text-xs mb-0.5">{d.label}</div>
+                <div className="text-[#7A9E8E] text-xs">{d.sub}</div>
               </div>
             ))}
           </div>
@@ -307,7 +307,7 @@ export default function GenericTemplate({
           <div className="space-y-4 mb-8">
             {rotatingBlocks.map((block, i) => (
               <div key={i} className={`rounded-xl border p-5 ${block.color}`}>
-                <h3 className="font-heading font-semibold text-wp-text text-base mb-3 flex items-center gap-2">
+                <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3 flex items-center gap-2">
                   <span>{block.icon}</span> {block.title}
                 </h3>
                 {block.content}
@@ -318,10 +318,10 @@ export default function GenericTemplate({
           {/* Weitere Featured Snippet Fragen */}
           {keyword.featuredSnippetQuestions.slice(2).map((q, i) => (
             <div key={i} className="mb-6">
-              <h3 className="font-heading font-semibold text-wp-text text-lg mb-2">
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-lg mb-2">
                 {fillTemplate(q, city, jaz)}
               </h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">
+              <p className="text-[#4A6358] text-sm leading-relaxed">
                 {faqs[i + 2]?.a ?? `Erfahren Sie mehr von unseren geprüften Fachbetrieben in ${city.name}.`}
               </p>
             </div>
@@ -329,24 +329,24 @@ export default function GenericTemplate({
 
           {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
-            <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            <div className="mb-6 p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+              <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
           {/* FAQ */}
-          <h2 className="font-heading font-bold text-wp-text mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
+          <h2 className="font-bold font-bold text-[#1C2B2B] mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
             {h2s.faq}
           </h2>
-          <div className="border border-wp-border rounded-xl overflow-hidden bg-white shadow-sm mb-8">
+          <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm mb-8">
             {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-wp-border last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                  <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                  <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+              <details key={i} className="group border-b border-gray-200 last:border-0">
+                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                  <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
+                  <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="border-t border-wp-border">
-                  <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                <div className="border-t border-gray-200">
+                  <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
                 </div>
               </details>
             ))}
@@ -355,22 +355,22 @@ export default function GenericTemplate({
           {/* Nachbarstädte + Cross-Links */}
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {n.name}
                   </Link>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw2 => kw2 && (
                   <Link key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {kw2.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -381,17 +381,17 @@ export default function GenericTemplate({
 
         {/* RIGHT — Sticky */}
         <div className="sticky top-24 space-y-4">
-          <div className="bg-wp-dark rounded-2xl p-6 shadow-wp-xl">
+          <div className="bg-[#1A4731] rounded-2xl p-6 shadow-2xl">
             <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-1">{ctaVariation.headline}</p>
             <p className="font-mono font-bold text-white text-4xl leading-none mb-0.5">{fmtEuro(calc.ersparnis)}</p>
             <p className="text-white/35 text-xs mb-5">jährliche Ersparnis in {city.name} vs. Erdgas</p>
             <div className="space-y-2 mb-5">
               {[
-                { l: 'Heizkosten heute', v: fmtEuro(calc.altKosten) + '/J', c: 'text-wp-amber' },
-                { l: 'Mit Wärmepumpe', v: fmtEuro(calc.wpKosten) + '/J', c: 'text-wp-green3' },
+                { l: 'Heizkosten heute', v: fmtEuro(calc.altKosten) + '/J', c: 'text-[#D97706]' },
+                { l: 'Mit Wärmepumpe', v: fmtEuro(calc.wpKosten) + '/J', c: 'text-[#3DA16A]' },
                 { l: 'KfW-Zuschuss', v: fmtEuro(foerd.zuschuss), c: 'text-white' },
                 { l: 'Eigenanteil', v: fmtEuro(foerd.eigenanteil), c: 'text-white' },
-                { l: 'Amortisation', v: calc.amortisationJahre + ' Jahre', c: 'text-wp-amber' },
+                { l: 'Amortisation', v: calc.amortisationJahre + ' Jahre', c: 'text-[#D97706]' },
               ].map(r => (
                 <div key={r.l} className="flex justify-between py-1.5 border-b border-white/8">
                   <span className="text-white/45 text-xs">{r.l}</span>
@@ -400,7 +400,7 @@ export default function GenericTemplate({
               ))}
             </div>
             <a href="/rechner"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-wp-amber text-white rounded-xl font-heading font-bold text-sm hover:bg-amber-700 transition-colors mb-2">
+              className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#D97706] text-white rounded-xl font-bold font-bold text-sm hover:bg-amber-700 transition-colors mb-2">
               Kostenloses Angebot <ArrowRight size={15} />
             </a>
             <p className="text-white/25 text-xs text-center">Kostenlos · Unverbindlich · Kein Spam</p>
@@ -412,7 +412,7 @@ export default function GenericTemplate({
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
@@ -420,14 +420,14 @@ export default function GenericTemplate({
           {/* GEG-Reform */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
 
           {/* Neue Lärmvorschrift */}
           {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
             </div>
           )}
 
@@ -435,7 +435,7 @@ export default function GenericTemplate({
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
             </div>
           )}
 
@@ -443,7 +443,7 @@ export default function GenericTemplate({
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
               <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
             </div>
           )}
 
@@ -451,25 +451,25 @@ export default function GenericTemplate({
           {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
             </div>
           )}
 
           {/* Finanzierung */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
 
         </div>
       </div>
           <AuthorBox keywordSlug={keyword.slug} />
 
-          <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
-            <p className="text-xs font-bold text-wp-text3 uppercase tracking-wider mb-3">Warum Wärmepumpenbegleiter?</p>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
+            <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-3">Warum Wärmepumpenbegleiter?</p>
             {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
-              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
+              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
+                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>
             ))}
           </div>

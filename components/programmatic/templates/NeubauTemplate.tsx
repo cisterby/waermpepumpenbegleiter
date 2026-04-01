@@ -59,7 +59,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 7);
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* Hero */}
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={IMG} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
@@ -72,13 +72,13 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
             <span>›</span>
             <span className="text-white/80">{city.name}</span>
           </nav>
-          <div className="inline-block bg-wp-green text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+          <div className="inline-block bg-[#1A4731] text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
             GEG-Pflicht: 65% EE seit 01.01.2024
           </div>
-          <h1 className="font-heading font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
+          <h1 className="font-bold font-extrabold text-white leading-tight mb-5" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>{h1}</h1>
               {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -103,7 +103,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
               </div>
             ))}
           </div>
-          <a href="#angebot" className="inline-flex items-center gap-2 bg-wp-green text-white font-bold px-6 py-3 rounded-xl hover:bg-wp-green2 transition-colors">
+          <a href="#angebot" className="inline-flex items-center gap-2 bg-[#1A4731] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#2D7A52] transition-colors">
             Kostenloses Angebot →
           </a>
         </div>
@@ -114,24 +114,24 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           {/* Featured Snippet */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-3">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-3">
               {fillTemplate('Welche Wärmepumpe für den Neubau in {stadt}?', city, jaz)}
             </h2>
-            <p className="text-wp-text2 text-base leading-relaxed">
+            <p className="text-[#4A6358] text-base leading-relaxed">
               Im Neubau in <strong>{city.name}</strong> ist die Luft-Wasser-Wärmepumpe mit Fußbodenheizung die Standardlösung: JAZ {jazNeubau} bei {city.avgTemp}°C Jahresmittel, Betriebskosten {fmtEuro(Math.round(calc.wpKosten * 0.75))}/Jahr. Seit 01.01.2024 ist 65% erneuerbare Energie gesetzlich Pflicht — eine WP erfüllt das automatisch. Mit KfW-297/298 (Effizienzhaus 40) sind zinsgünstige Kredite bis €150.000 möglich.
             </p>
           </div>
 
           {/* GEG-Anforderungen */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">
               Welche GEG-Anforderungen gelten für den Neubau in {city.name} — was gilt
             ?</h2>
             <div className="space-y-3">
               {GEG_ANFORDERUNGEN.map((a, i) => (
-                <div key={i} className={`p-4 rounded-xl border ${i === 0 ? 'bg-wp-amberlt border-amber-200' : 'bg-white border-wp-border'}`}>
-                  <div className="font-heading font-bold text-wp-text text-sm mb-1">{a.titel}</div>
-                  <p className="text-wp-text2 text-sm leading-relaxed">{a.text}</p>
+                <div key={i} className={`p-4 rounded-xl border ${i === 0 ? 'bg-[#D97706]lt border-amber-200' : 'bg-white border-gray-200'}`}>
+                  <div className="font-bold font-bold text-[#1C2B2B] text-sm mb-1">{a.titel}</div>
+                  <p className="text-[#4A6358] text-sm leading-relaxed">{a.text}</p>
                 </div>
               ))}
             </div>
@@ -139,26 +139,26 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           {/* Welche Heizung ist im Neubau in */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-4">
               Welche Heizung ist im Neubau in {city.name} 2026
             ?</h2>
-            <div className="bg-white border border-wp-border rounded-xl overflow-x-auto shadow-wp-sm">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-x-auto shadow-md">
               <table className="w-full text-sm min-w-[500px]">
                 <thead>
-                  <tr className="bg-wp-bg border-b border-wp-border">
+                  <tr className="bg-[#F8F9FA] border-b border-gray-200">
                     {['Heizung', 'Kosten', 'KfW-Förderung', 'Betrieb', 'Langfrist'].map(h => (
-                      <th key={h} className="px-3 py-3 text-left text-xs font-bold text-wp-text3 uppercase">{h}</th>
+                      <th key={h} className="px-3 py-3 text-left text-xs font-bold text-[#7A9E8E] uppercase">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {VERGLEICH_HEIZUNG.map((r, i) => (
-                    <tr key={i} className={`border-b border-wp-border last:border-0 ${i === 0 ? 'bg-wp-greenxlt' : ''}`}>
-                      <td className="px-3 py-3 font-semibold text-wp-text">{r.typ}</td>
-                      <td className="px-3 py-3 font-mono text-xs text-wp-text2">{r.kosten}</td>
+                    <tr key={i} className={`border-b border-gray-200 last:border-0 ${i === 0 ? 'bg-[#F2FAF5]' : ''}`}>
+                      <td className="px-3 py-3 font-semibold text-[#1C2B2B]">{r.typ}</td>
+                      <td className="px-3 py-3 font-mono text-xs text-[#4A6358]">{r.kosten}</td>
                       <td className="px-3 py-3 text-xs">{r.kfw}</td>
-                      <td className="px-3 py-3 text-xs text-wp-text2">{r.betrieb}</td>
-                      <td className={`px-3 py-3 text-xs font-semibold ${i === 0 ? 'text-wp-green' : 'text-wp-text3'}`}>{r.langfrist}</td>
+                      <td className="px-3 py-3 text-xs text-[#4A6358]">{r.betrieb}</td>
+                      <td className={`px-3 py-3 text-xs font-semibold ${i === 0 ? 'text-[#1A4731]' : 'text-[#7A9E8E]'}`}>{r.langfrist}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -168,17 +168,17 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           {/* Planungs-Checkliste */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">
               Was muss ich für die WP-Planung im Neubau in {city.name}
             ?</h2>
             <div className="space-y-4">
               {NEUBAU_PLANUNG.map((p, i) => (
-                <div key={i} className="bg-white border border-wp-border rounded-xl p-5">
-                  <div className="font-heading font-bold text-wp-text text-base mb-3">{p.phase}</div>
+                <div key={i} className="bg-white border border-gray-200 rounded-xl p-5">
+                  <div className="font-bold font-bold text-[#1C2B2B] text-base mb-3">{p.phase}</div>
                   <ul className="space-y-2">
                     {p.items.map((item, j) => (
-                      <li key={j} className="flex gap-2 text-sm text-wp-text2">
-                        <CheckCircle size={15} className="text-wp-green shrink-0 mt-0.5" />
+                      <li key={j} className="flex gap-2 text-sm text-[#4A6358]">
+                        <CheckCircle size={15} className="text-[#1A4731] shrink-0 mt-0.5" />
                         {item}
                       </li>
                     ))}
@@ -189,9 +189,9 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           </div>
 
           {/* Stadtdaten */}
-          <div className="p-6 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">{h2s.klimadaten}</h2>
-            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.klimadaten}</p>
+          <div className="p-6 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-4">{h2s.klimadaten}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.klimadaten}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
               {[
                 [`${city.avgTemp}°C`, 'Jahresmittel'],
@@ -201,31 +201,31 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
                 [city.avgSunHours + ' h/J.', 'Sonnenstunden PV'],
                 [fmtEuro(Math.round(calc.wpKosten * 0.75)) + '/J.', 'WP-Betriebskosten'],
               ].map(([v, l], i) => (
-                <div key={i}><div className="text-wp-text3 text-xs">{l}</div><div className="font-bold text-wp-text">{v}</div></div>
+                <div key={i}><div className="text-[#7A9E8E] text-xs">{l}</div><div className="font-bold text-[#1C2B2B]">{v}</div></div>
               ))}
             </div>
           </div>
 
           {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
-            <div className="p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
-              <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
-              <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
+            <div className="p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
+              <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
 
           {/* FAQ */}
           <div>
-            <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">{h2s.faq}</h2>
-            <div className="border border-wp-border rounded-2xl overflow-hidden bg-white shadow-wp-sm mb-10">
+            <h2 className="font-bold font-bold text-[#1C2B2B] text-2xl mb-5">{h2s.faq}</h2>
+            <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-md mb-10">
               {faqs.map((faq, i) => (
-                <details key={i} className="group border-b border-wp-border last:border-0">
-                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
-                    <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
+                <details key={i} className="group border-b border-gray-200 last:border-0">
+                  <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                    <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
+                    <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="border-t border-wp-border">
-                    <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
+                  <div className="border-t border-gray-200">
+                    <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
                   </div>
                 </details>
               ))}
@@ -234,20 +234,20 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
           <div className="grid sm:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">{n.name}</Link>
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">{n.name}</Link>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
+              <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {(keyword.crossLinks ?? []).map((slug: string) => (
                   <Link key={slug} href={`/${slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {slug.replace('waermepumpe','Wärmepumpe').replace(/-/g,' ').replace('foerderung','Förderung')} {city.name}
                   </Link>
                 ))}
@@ -257,8 +257,8 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
         </div>
 
         <div>
-          <div className="bg-white border border-wp-border rounded-2xl p-5 shadow-wp-sm sticky top-6">
-            <div className="text-xs font-bold text-wp-green uppercase tracking-wide mb-3">{city.name} — Neubau-Kennzahlen</div>
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-md sticky top-6">
+            <div className="text-xs font-bold text-[#1A4731] uppercase tracking-wide mb-3">{city.name} — Neubau-Kennzahlen</div>
             {[
               ['JAZ mit Fußbodenheizung', jazNeubau],
               ['Betriebskosten/Jahr', fmtEuro(Math.round(calc.wpKosten * 0.75))],
@@ -267,19 +267,19 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
               ['Jahresmittel', city.avgTemp + '°C'],
               ['Heizgradtage', city.heizgradtage.toLocaleString('de-DE')],
             ].map(([l, v], i) => (
-              <div key={i} className="flex justify-between py-2 border-b border-wp-border last:border-0 text-sm">
-                <span className="text-wp-text2">{l}</span>
-                <span className="font-bold text-wp-text">{v}</span>
+              <div key={i} className="flex justify-between py-2 border-b border-gray-200 last:border-0 text-sm">
+                <span className="text-[#4A6358]">{l}</span>
+                <span className="font-bold text-[#1C2B2B]">{v}</span>
               </div>
             ))}
-            <a href="#angebot" className="block mt-4 text-center bg-wp-green text-white font-bold py-3 rounded-xl hover:bg-wp-green2 transition-colors text-sm">Kostenloses Angebot →</a>
+            <a href="#angebot" className="block mt-4 text-center bg-[#1A4731] text-white font-bold py-3 rounded-xl hover:bg-[#2D7A52] transition-colors text-sm">Kostenloses Angebot →</a>
           </div>
         </div>
       </div>
 
-      <div id="angebot" className="bg-wp-dark py-16">
+      <div id="angebot" className="bg-[#1A4731] py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
+          <h2 className="font-bold font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
@@ -288,10 +288,10 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
 
       {/* ── NEUBAU CONTENT ───────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 pb-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-5">
           Wärmepumpe im Neubau in {city.name} — was zählt wirklich?
         </h2>
-        <div className="prose prose-sm max-w-none text-wp-text2 space-y-4 leading-relaxed">
+        <div className="prose prose-sm max-w-none text-[#4A6358] space-y-4 leading-relaxed">
           <p>
             Im Neubau in {city.name} ist die Wärmepumpe das effizienteste Heizsystem — weil die Randbedingungen ideal sind: Fußbodenheizung mit 30–35°C Vorlauftemperatur, gute Dämmung (KfW-55 oder besser), JAZ-Potenzial bis {(jaz + 0.7).toFixed(1)}. Der Eigenanteil nach KfW berechnet sich anders als beim Bestandsbau: Kein Klima-Speed-Bonus (kein fossiles System zum Ersetzen), dafür KFN-Kredit (Klimafreundlicher Neubau) möglich.
           </p>
@@ -310,13 +310,13 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
       {/* ── VERWANDTE THEMEN ─────────────────────────── */}
       {crossKeywords.length > 0 && (
         <div className="max-w-3xl mx-auto px-6 pb-8">
-          <h3 className="font-heading font-semibold text-wp-text text-base mb-3">
+          <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">
             Verwandte Themen für {city.name}
           </h3>
           <div className="flex flex-wrap gap-2">
             {crossKeywords.map(kw2 => kw2 && (
               <a key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:border-wp-green hover:text-wp-green transition-all">
+                className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:border-[#1A4731] hover:text-[#1A4731] transition-all">
                 {kw2.keyword.replace('[Stadt]', city.name)}
               </a>
             ))}
@@ -325,7 +325,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
       )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
+        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
@@ -333,14 +333,14 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {/* GEG-Reform */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
           </div>
 
           {/* Neue Lärmvorschrift */}
           {['luft-wasser-waermepumpe','luftwaermepumpe','waermepumpe','waermepumpe-kosten','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-kaufen','waermepumpe-nachruesten','heizung-tauschen','waermepumpe-altbau'].includes(keyword.slug) && (
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
             </div>
           )}
 
@@ -348,7 +348,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-installateur','waermepumpe-preise','waermepumpe-installation','heizung-tauschen'].includes(keyword.slug) && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
             </div>
           )}
 
@@ -356,7 +356,7 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {['waermepumpe-foerderung','waermepumpe-kosten','waermepumpe','waermepumpe-preise','erdwaermepumpe','waermepumpe-neubau'].includes(keyword.slug) && (
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
               <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
             </div>
           )}
 
@@ -364,20 +364,20 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
           {['waermepumpe-kosten','waermepumpe','waermepumpe-preise','waermepumpe-installateur','waermepumpe-installation','waermepumpe-montage','waermepumpe-fachbetrieb','waermepumpe-kaufen'].includes(keyword.slug) && (
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-              <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
+              <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
             </div>
           )}
 
           {/* Finanzierung */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
 
         </div>
       </div>
       <AuthorBox keywordSlug={keyword.slug} />
-        <div className="mt-6 text-xs text-wp-text3">GEG: BMWSB 2024 · KfW 297/298 · DWD Klimadaten · Stand März 2026</div>
+        <div className="mt-6 text-xs text-[#7A9E8E]">GEG: BMWSB 2024 · KfW 297/298 · DWD Klimadaten · Stand März 2026</div>
       </div>
     </div>
   );

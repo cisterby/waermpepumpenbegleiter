@@ -38,42 +38,42 @@ function getSources(slug: string) {
 export default function AuthorBox({ keywordSlug = '' }: { keywordSlug?: string }) {
   const sources = getSources(keywordSlug);
   return (
-    <div className="bg-wp-bg border border-wp-border rounded-2xl overflow-hidden">
+    <div className="bg-[#F8F9FA] border border-gray-200 rounded-2xl overflow-hidden">
       {/* Autor */}
-      <div className="flex items-start gap-4 p-5 border-b border-wp-border">
-        <div className="w-11 h-11 rounded-full bg-wp-dark flex items-center justify-center shrink-0 font-mono font-bold text-wp-green text-sm">
+      <div className="flex items-start gap-4 p-5 border-b border-gray-200">
+        <div className="w-11 h-11 rounded-full bg-[#1A4731] flex items-center justify-center shrink-0 font-mono font-bold text-[#1A4731] text-sm">
           MS
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="font-heading font-bold text-wp-text text-sm">Bastian Saupe</p>
-            <span className="bg-wp-greenlt text-wp-green text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+            <p className="font-bold font-bold text-[#1C2B2B] text-sm">Bastian Saupe</p>
+            <span className="bg-[#E8F5EE] text-[#1A4731] text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
               <Shield size={10} /> Energieberater IHK
             </span>
           </div>
-          <p className="text-wp-text3 text-xs mt-0.5">14 Jahre Erfahrung · Ehemals Verbraucherzentrale NRW · Geprüft März 2026</p>
-          <p className="text-wp-text2 text-xs mt-1.5 leading-relaxed">
+          <p className="text-[#7A9E8E] text-xs mt-0.5">14 Jahre Erfahrung · Ehemals Verbraucherzentrale NRW · Geprüft März 2026</p>
+          <p className="text-[#4A6358] text-xs mt-1.5 leading-relaxed">
             Spezialist für Heizsystemvergleiche und KfW-Förderanträge. Hat über 800 Haushalte bei der Wärmepumpen-Entscheidung begleitet.{' '}
-            <Link href="/ueber-uns" className="text-wp-green hover:underline font-medium">Über uns →</Link>
+            <Link href="/ueber-uns" className="text-[#1A4731] hover:underline font-medium">Über uns →</Link>
           </p>
         </div>
       </div>
       {/* Quellen */}
       <div className="p-5">
-        <p className="text-wp-text3 text-xs font-bold uppercase tracking-wider mb-3">Datenquellen dieser Seite</p>
+        <p className="text-[#7A9E8E] text-xs font-bold uppercase tracking-wider mb-3">Datenquellen dieser Seite</p>
         <div className="space-y-2">
           {sources.map(s => (
             <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-between gap-3 group">
               <div className="min-w-0">
-                <p className="text-wp-text2 text-xs font-semibold group-hover:text-wp-green transition-colors truncate">{s.label}</p>
-                <p className="text-wp-text3 text-xs">{s.desc}</p>
+                <p className="text-[#4A6358] text-xs font-semibold group-hover:text-[#1A4731] transition-colors truncate">{s.label}</p>
+                <p className="text-[#7A9E8E] text-xs">{s.desc}</p>
               </div>
-              <ExternalLink size={11} className="text-wp-text3 group-hover:text-wp-green transition-colors shrink-0" />
+              <ExternalLink size={11} className="text-[#7A9E8E] group-hover:text-[#1A4731] transition-colors shrink-0" />
             </a>
           ))}
         </div>
-        <p className="text-wp-text3 text-xs mt-3 pt-3 border-t border-wp-border">
+        <p className="text-[#7A9E8E] text-xs mt-3 pt-3 border-t border-gray-200">
           Klimadaten: DWD · Förderrecht: KfW/BAFA · Effizienz: Fraunhofer ISE · Stand März 2026
         </p>
       </div>

@@ -259,13 +259,13 @@ function ArticleContent({ content }: { content: string }) {
     <div className="prose prose-sm max-w-none">
       {content.trim().split('\n\n').map((block, i) => {
         if (block.startsWith('**') && block.endsWith('**') && !block.includes('\n')) {
-          return <h3 key={i} className="font-heading font-bold text-wp-text text-lg mt-6 mb-2">{block.replace(/\*\*/g, '')}</h3>;
+          return <h3 key={i} className="font-heading font-bold text-[#1C2B2B] text-lg mt-6 mb-2">{block.replace(/\*\*/g, '')}</h3>;
         }
         if (block.startsWith('- ')) {
           return (
             <ul key={i} className="space-y-1 mb-4 ml-4">
               {block.split('\n').map((item, j) => (
-                <li key={j} className="text-wp-text2 text-sm leading-relaxed list-disc">
+                <li key={j} className="text-[#4A6358] text-sm leading-relaxed list-disc">
                   {item.replace('- ', '').replace(/\*\*(.*?)\*\*/g, '$1')}
                 </li>
               ))}
@@ -275,9 +275,9 @@ function ArticleContent({ content }: { content: string }) {
         // Bold inline
         const parts = block.split(/(\*\*.*?\*\*)/g);
         return (
-          <p key={i} className="text-wp-text2 text-sm leading-relaxed mb-4">
+          <p key={i} className="text-[#4A6358] text-sm leading-relaxed mb-4">
             {parts.map((part, j) =>
-              part.startsWith('**') ? <strong key={j} className="text-wp-text font-semibold">{part.replace(/\*\*/g, '')}</strong> : part
+              part.startsWith('**') ? <strong key={j} className="text-[#1C2B2B] font-semibold">{part.replace(/\*\*/g, '')}</strong> : part
             )}
           </p>
         );
@@ -296,15 +296,15 @@ export default function Ratgeber() {
   if (openArticle) {
     const article = ARTICLES.find(a => a.slug === openArticle)!;
     return (
-      <div className="min-h-screen bg-wp-bg font-sans">
+      <div className="min-h-screen bg-[#F8F9FA]">
         <div className="relative h-80 overflow-hidden">
           <img src={article.img} alt={article.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-wp-dark/70" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.85) 0%, rgba(10,21,16,0.3) 100%)' }} />
           <div className="absolute inset-0 flex items-end px-6 pb-10">
             <div className="max-w-3xl">
-              <span className="inline-block bg-wp-amber text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{article.cat}</span>
-              <h1 className="font-heading font-bold text-white text-3xl leading-tight">{article.title}</h1>
-              <div className="flex items-center gap-4 mt-3 text-white/50 text-xs">
+              <span className="inline-block bg-[#D97706] text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{article.cat}</span>
+              <h1 className="font-bold text-white text-3xl leading-tight">{article.title}</h1>
+              <div className="flex items-center gap-4 mt-3 text-white/60 text-xs">
                 <span className="flex items-center gap-1"><User size={11} /> {article.author}</span>
                 <span className="flex items-center gap-1"><Calendar size={11} /> {article.date}</span>
                 <span className="flex items-center gap-1"><Clock size={11} /> {article.time} Lesezeit</span>
@@ -314,15 +314,15 @@ export default function Ratgeber() {
         </div>
         <div className="max-w-3xl mx-auto px-6 py-10">
           <button onClick={() => setOpenArticle(null)}
-            className="flex items-center gap-2 text-wp-green text-sm font-semibold hover:underline mb-8">
+            className="flex items-center gap-2 text-[#1A4731] text-sm font-semibold hover:underline mb-8">
             ← Zurück zum Ratgeber
           </button>
           <ArticleContent content={article.content} />
-          <div className="mt-10 bg-wp-greenlt border border-wp-green3/25 rounded-2xl p-6">
-            <h3 className="font-heading font-bold text-wp-text text-lg mb-2">Jetzt kostenlos anfragen</h3>
-            <p className="text-wp-text2 text-sm mb-4">Geprüfte lokale Fachbetriebe · KfW-Antrag inklusive · Kostenlos</p>
+          <div className="mt-10 bg-[#E8F5EE] border border-[#3DA16A]/25 rounded-2xl p-6">
+            <h3 className="font-heading font-bold text-[#1C2B2B] text-lg mb-2">Jetzt kostenlos anfragen</h3>
+            <p className="text-[#4A6358] text-sm mb-4">Geprüfte lokale Fachbetriebe · KfW-Antrag inklusive · Kostenlos</p>
             <Link href="/kontakt"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-wp-green text-white font-heading font-bold text-sm rounded-xl hover:bg-wp-green2 transition-all">
+              className="inline-flex items-center gap-2 px-5 py-3 bg-[#1A4731] text-white font-heading font-bold text-sm rounded-xl hover:bg-wp-green2 transition-all">
               Anfrage starten <ArrowRight size={14} />
             </Link>
           </div>
@@ -332,9 +332,9 @@ export default function Ratgeber() {
   }
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA]">
       {/* HERO */}
-      <div className="bg-wp-dark pt-28 pb-16 px-6">
+      <div className="bg-[#1A4731] pt-28 pb-16 px-6">
         <div className="max-w-4xl mx-auto">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-wp-green3 mb-4">Ratgeber</span>
           <h1 className="font-heading font-extrabold text-white mb-4" style={{ fontSize: 'clamp(30px,4.5vw,54px)' }}>
@@ -352,7 +352,7 @@ export default function Ratgeber() {
           {CATS.map(cat => (
             <button key={cat} onClick={() => setActiveCat(cat)}
               className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                activeCat === cat ? 'bg-wp-green text-white' : 'bg-white border border-wp-border text-wp-text2 hover:border-wp-green hover:text-wp-green'
+                activeCat === cat ? 'bg-[#1A4731] text-white' : 'bg-white border border-wp-border text-[#4A6358] hover:border-wp-green hover:text-[#1A4731]'
               }`}>
               {cat}
             </button>
@@ -367,20 +367,20 @@ export default function Ratgeber() {
               <div className="relative h-64 md:h-auto overflow-hidden">
                 <img src={hero.img} alt={hero.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-wp-amber text-white text-xs font-bold px-3 py-1.5 rounded-full">{hero.cat}</span>
+                  <span className="bg-[#D97706] text-white text-xs font-bold px-3 py-1.5 rounded-full">{hero.cat}</span>
                 </div>
               </div>
               <div className="p-7 flex flex-col justify-center">
-                <h2 className="font-heading font-bold text-wp-text text-2xl mb-3 leading-tight group-hover:text-wp-green transition-colors">
+                <h2 className="font-heading font-bold text-[#1C2B2B] text-2xl mb-3 leading-tight group-hover:text-[#1A4731] transition-colors">
                   {hero.title}
                 </h2>
-                <p className="text-wp-text2 text-sm leading-relaxed mb-5">{hero.excerpt}</p>
-                <div className="flex items-center gap-4 text-wp-text3 text-xs mb-5">
+                <p className="text-[#4A6358] text-sm leading-relaxed mb-5">{hero.excerpt}</p>
+                <div className="flex items-center gap-4 text-[#1C2B2B]3 text-xs mb-5">
                   <span className="flex items-center gap-1"><User size={11} /> {hero.author}</span>
                   <span className="flex items-center gap-1"><Clock size={11} /> {hero.time}</span>
                   <span className="flex items-center gap-1"><Calendar size={11} /> {hero.date}</span>
                 </div>
-                <span className="inline-flex items-center gap-2 text-wp-green font-semibold text-sm">
+                <span className="inline-flex items-center gap-2 text-[#1A4731] font-semibold text-sm">
                   Artikel lesen <ArrowRight size={14} />
                 </span>
               </div>
@@ -396,17 +396,17 @@ export default function Ratgeber() {
               <div className="relative h-44 overflow-hidden">
                 <img src={article.img} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute top-3 left-3">
-                  <span className="bg-white/90 text-wp-text text-xs font-bold px-2.5 py-1 rounded-full">{article.cat}</span>
+                  <span className="bg-white/90 text-[#1C2B2B] text-xs font-bold px-2.5 py-1 rounded-full">{article.cat}</span>
                 </div>
               </div>
               <div className="p-5">
-                <h3 className="font-heading font-bold text-wp-text text-base leading-tight mb-2 group-hover:text-wp-green transition-colors">
+                <h3 className="font-heading font-bold text-[#1C2B2B] text-base leading-tight mb-2 group-hover:text-[#1A4731] transition-colors">
                   {article.title}
                 </h3>
-                <p className="text-wp-text3 text-xs leading-relaxed mb-4 line-clamp-2">{article.excerpt}</p>
-                <div className="flex items-center justify-between text-wp-text3 text-xs">
+                <p className="text-[#1C2B2B]3 text-xs leading-relaxed mb-4 line-clamp-2">{article.excerpt}</p>
+                <div className="flex items-center justify-between text-[#1C2B2B]3 text-xs">
                   <span className="flex items-center gap-1"><Clock size={10} /> {article.time}</span>
-                  <span className="text-wp-green font-semibold flex items-center gap-1">Lesen <ArrowRight size={11} /></span>
+                  <span className="text-[#1A4731] font-semibold flex items-center gap-1">Lesen <ArrowRight size={11} /></span>
                 </div>
               </div>
             </button>
@@ -415,10 +415,10 @@ export default function Ratgeber() {
 
         {/* Keyword-Hub — Links zu allen Themen-Seiten */}
         <div className="mt-14 mb-10">
-          <h2 className="font-heading font-bold text-wp-text text-xl mb-2">
+          <h2 className="font-heading font-bold text-[#1C2B2B] text-xl mb-2">
             Alle Wärmepumpen-Themen — Stadtspezifische Seiten
           </h2>
-          <p className="text-wp-text3 text-sm mb-6">
+          <p className="text-[#1C2B2B]3 text-sm mb-6">
             Wählen Sie ein Thema und Ihre Stadt — alle Seiten mit lokalen Preisen, JAZ und Förderinfo.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -447,7 +447,7 @@ export default function Ratgeber() {
               ['Stromverbrauch',         'waermepumpe-stromverbrauch', '⚡'],
             ].map(([label, slug, icon]) => (
               <Link key={slug} href={`/${slug}`}
-                className="flex items-center gap-2 p-3 bg-wp-bg border border-wp-border rounded-xl text-sm text-wp-text hover:text-wp-green hover:border-wp-green transition-all">
+                className="flex items-center gap-2 p-3 bg-wp-bg border border-wp-border rounded-xl text-sm text-[#1C2B2B] hover:text-[#1A4731] hover:border-wp-green transition-all">
                 <span>{icon}</span>
                 <span className="font-medium">{label}</span>
               </Link>
@@ -456,11 +456,11 @@ export default function Ratgeber() {
         </div>
 
         {/* Newsletter / CTA */}
-        <div className="mt-12 bg-wp-dark rounded-2xl p-8 text-center">
-          <h3 className="font-heading font-bold text-white text-xl mb-2">Bereit — Ihr WP-Projekt starten?</h3>
-          <p className="text-white/50 text-sm mb-5">Kostenlose Anfrage · HWK-geprüfte Betriebe · KfW-Antrag inklusive</p>
+        <div className="mt-12 bg-[#1A4731] rounded-2xl p-8 text-center">
+          <h3 className="font-bold text-white text-xl mb-2">Bereit — Ihr WP-Projekt starten?</h3>
+          <p className="text-white/60 text-sm mb-5">Kostenlose Anfrage · HWK-geprüfte Betriebe · KfW-Antrag inklusive</p>
           <Link href="/kontakt"
-            className="inline-flex items-center gap-2 px-7 py-3.5 bg-wp-amber text-white font-heading font-bold rounded-xl hover:bg-amber-700 transition-all">
+            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#D97706] text-white font-heading font-bold rounded-xl hover:bg-amber-700 transition-all">
             Kostenlos anfragen <ArrowRight size={15} />
           </Link>
         </div>

@@ -341,12 +341,12 @@ export default function PillarPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
       {/* HERO */}
-      <div className="bg-wp-dark py-16 px-6">
+      <div className="bg-[#1A4731] py-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <nav className="flex items-center gap-2 text-sm mb-6 text-white/40">
+          <nav className="flex items-center gap-2 text-sm mb-6 text-white/60">
             <a href="/" className="hover:text-white/70 transition-colors">Startseite</a>
             <span>›</span>
             <span className="text-white/80">{kw}</span>
@@ -360,7 +360,7 @@ export default function PillarPage({ params }: Props) {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
             {content.stats.map((s, i) => (
               <div key={i} className="bg-white/10 border border-white/15 rounded-xl p-4 text-center">
-                <div className="font-mono font-extrabold text-wp-amber text-xl leading-none mb-1">{s.val}</div>
+                <div className="font-mono font-extrabold text-[#D97706] text-xl leading-none mb-1">{s.val}</div>
                 <div className="text-white/45 text-xs">{s.label}</div>
               </div>
             ))}
@@ -373,30 +373,30 @@ export default function PillarPage({ params }: Props) {
         {/* Inhalt-Sektionen */}
         <div className="grid md:grid-cols-3 gap-6 mb-14">
           {content.sections.map((s, i) => (
-            <div key={i} className="bg-white rounded-2xl p-6 border border-wp-border shadow-wp-sm">
-              <h2 className="font-heading font-bold text-wp-text text-base mb-3">{s.title}</h2>
-              <p className="text-wp-text2 text-sm leading-relaxed">{s.text}</p>
+            <div key={i} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-wp-sm">
+              <h2 className="font-bold text-[#1C2B2B] text-base mb-3">{s.title}</h2>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{s.text}</p>
             </div>
           ))}
         </div>
 
         {/* Top-Städte prominent */}
         <div className="mb-14">
-          <h2 className="font-heading font-bold text-wp-text text-2xl mb-2">
+          <h2 className="font-bold text-[#1C2B2B] text-2xl mb-2">
             {kw} — Großstädte
           </h2>
-          <p className="text-wp-text2 text-sm mb-6">
+          <p className="text-[#4A6358] text-sm mb-6">
             {topCities.length} größte Städte mit den meisten Suchanfragen — direkt zur stadtspezifischen Seite mit Preisen, JAZ und Förderung.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {topCities.map(city => (
               <a key={city.slug} href={`/${keyword.slug}/${city.slug}`}
-                className="group bg-white rounded-xl p-3 border border-wp-border hover:border-wp-green hover:shadow-wp-sm transition-all">
+                className="group bg-white rounded-xl p-3 border border-gray-200 hover:border-[#1A4731] hover:shadow-wp-sm transition-all">
                 <div className="flex items-center gap-2 mb-1">
-                  <MapPin size={12} className="text-wp-green shrink-0" />
-                  <span className="font-semibold text-wp-text text-xs group-hover:text-wp-green transition-colors truncate">{city.name}</span>
+                  <MapPin size={12} className="text-[#1A4731] shrink-0" />
+                  <span className="font-semibold text-[#1C2B2B] text-xs group-hover:text-[#1A4731] transition-colors truncate">{city.name}</span>
                 </div>
-                <p className="text-wp-text3 text-xs">{(city.einwohner / 1000).toFixed(0)}k EW</p>
+                <p className="text-[#7A9E8E] text-xs">{(city.einwohner / 1000).toFixed(0)}k EW</p>
               </a>
             ))}
           </div>
@@ -404,12 +404,12 @@ export default function PillarPage({ params }: Props) {
 
         {/* Cross-Keywords */}
         {crossKeywords.length > 0 && (
-          <div className="bg-white rounded-2xl p-6 border border-wp-border shadow-wp-sm mb-14">
-            <h2 className="font-heading font-bold text-wp-text text-lg mb-4">Verwandte Themen</h2>
+          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-wp-sm mb-14">
+            <h2 className="font-bold text-[#1C2B2B] text-lg mb-4">Verwandte Themen</h2>
             <div className="flex flex-wrap gap-3">
               {crossKeywords.map(kw2 => kw2 && (
                 <a key={kw2.slug} href={`/${kw2.slug}`}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-wp-bg border border-wp-border rounded-xl text-sm font-semibold text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  className="flex items-center gap-2 px-4 py-2.5 bg-[#F8F9FA] border border-gray-200 rounded-xl text-sm font-semibold text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                   {kw2.keyword.replace('[Stadt]', '').trim()}
                   <ArrowRight size={13} />
                 </a>
@@ -420,11 +420,11 @@ export default function PillarPage({ params }: Props) {
 
         {/* Pillar Content + FAQ */}
         {keyword.pillarContent && (
-          <div className="mb-12 bg-white rounded-2xl border border-wp-border p-7 shadow-wp-sm">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-4">
+          <div className="mb-12 bg-white rounded-2xl border border-gray-200 p-7 shadow-wp-sm">
+            <h2 className="font-bold text-[#1C2B2B] text-xl mb-4">
               {kw} in Deutschland — Was Sie wissen müssen
             </h2>
-            <div className="prose prose-sm max-w-none text-wp-text2 leading-relaxed">
+            <div className="prose prose-sm max-w-none text-[#4A6358] leading-relaxed">
               <p>{keyword.pillarContent}</p>
             </div>
           </div>
@@ -432,17 +432,17 @@ export default function PillarPage({ params }: Props) {
 
         {keyword.faqPool && keyword.faqPool.length > 0 && (
           <div className="mb-12">
-            <h2 className="font-heading font-bold text-wp-text text-xl mb-5">
+            <h2 className="font-bold text-[#1C2B2B] text-xl mb-5">
               Häufige Fragen zu {kw}
             </h2>
             <div className="space-y-3">
               {keyword.faqPool.slice(0, 5).map((faq, i) => (
-                <details key={i} className="bg-white border border-wp-border rounded-xl overflow-hidden group">
-                  <summary className="w-full flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-semibold text-wp-text text-sm">
+                <details key={i} className="bg-white border border-gray-200 rounded-xl overflow-hidden group">
+                  <summary className="w-full flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-semibold text-[#1C2B2B] text-sm">
                     <span>{faq.q.replace('{stadt}', 'Ihrer Stadt').replace('{bundesland}', 'Ihrem Bundesland')}</span>
-                    <span className="shrink-0 text-wp-text3 group-open:rotate-180 transition-transform">▾</span>
+                    <span className="shrink-0 text-[#7A9E8E] group-open:rotate-180 transition-transform">▾</span>
                   </summary>
-                  <div className="px-5 pb-4 text-wp-text2 text-sm leading-relaxed border-t border-wp-border">
+                  <div className="px-5 pb-4 text-[#4A6358] text-sm leading-relaxed border-t border-gray-200">
                     {faq.a.replace('{stadt}', 'Ihrer Stadt').replace('{bundesland}', 'Ihrem Bundesland').replace(/\{[^}]+\}/g, '—')}
                   </div>
                 </details>
@@ -452,10 +452,10 @@ export default function PillarPage({ params }: Props) {
         )}
 
         {/* Alle Städte nach Bundesland */}
-        <h2 className="font-heading font-bold text-wp-text text-2xl mb-2">
+        <h2 className="font-bold text-[#1C2B2B] text-2xl mb-2">
           {kw} — Alle 733 Städte
         </h2>
-        <p className="text-wp-text2 text-sm mb-8">
+        <p className="text-[#4A6358] text-sm mb-8">
           Wählen Sie Ihre Stadt für stadtspezifische Preise, erreichbare JAZ, regionale Förderung und kostenlose Angebote.
         </p>
 
@@ -464,17 +464,17 @@ export default function PillarPage({ params }: Props) {
             .sort(([a], [b]) => a.localeCompare(b, 'de'))
             .map(([state, stateCities]) => (
               <div key={state}>
-                <h3 className="font-heading font-semibold text-wp-text text-base mb-3 flex items-center gap-2">
-                  <span className="w-1 h-5 bg-wp-green rounded-full shrink-0" />
+                <h3 className="font-semibold text-[#1C2B2B] text-base mb-3 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-[#1A4731] rounded-full shrink-0" />
                   {state}
-                  <span className="text-wp-text3 font-normal text-sm">({stateCities.length} Städte)</span>
+                  <span className="text-[#7A9E8E] font-normal text-sm">({stateCities.length} Städte)</span>
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {stateCities
                     .sort((a, b) => b.einwohner - a.einwohner)
                     .map(city => (
                       <a key={city.slug} href={`/${keyword.slug}/${city.slug}`}
-                        className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                        className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                         {city.name}
                       </a>
                     ))}
@@ -484,15 +484,15 @@ export default function PillarPage({ params }: Props) {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-14 bg-wp-dark rounded-2xl p-8 text-center">
-          <h2 className="font-heading font-bold text-white text-2xl mb-2">
+        <div className="mt-14 bg-[#1A4731] rounded-2xl p-8 text-center">
+          <h2 className="font-bold text-white text-2xl mb-2">
             Ihre Stadt nicht gefunden?
           </h2>
-          <p className="text-white/50 text-sm mb-6 max-w-md mx-auto">
+          <p className="text-white/65 text-sm mb-6 max-w-md mx-auto">
             Wir sind in ganz Deutschland aktiv. Senden Sie uns eine Anfrage — wir finden geprüfte Fachbetriebe auch in Ihrer Nähe.
           </p>
           <a href="/kontakt"
-            className="inline-flex items-center gap-2 px-7 py-4 bg-wp-amber text-white rounded-xl font-heading font-bold text-sm hover:bg-amber-700 transition-all hover:-translate-y-0.5">
+            className="inline-flex items-center gap-2 px-7 py-4 bg-[#D97706] text-white rounded-xl font-bold text-sm hover:bg-amber-700 transition-all hover:-translate-y-0.5">
             Kostenlos anfragen <ArrowRight size={16} />
           </a>
         </div>

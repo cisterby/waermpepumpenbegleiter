@@ -91,11 +91,11 @@ export default function BundeslandPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-wp-bg font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blBreadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blItemList) }} />
       {/* HERO */}
-      <div className="bg-wp-dark py-14 px-6">
+      <div className="bg-[#1A4731] py-14 px-6">
         <div className="max-w-4xl mx-auto">
           <nav className="flex items-center gap-2 text-sm mb-5 text-white/40 flex-wrap">
             <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
@@ -123,11 +123,11 @@ export default function BundeslandPage({ params }: Props) {
               <div>
                 <p className="text-white/50 text-xs font-semibold uppercase tracking-wider">{bl.name}-Förderung</p>
                 <p className="text-white font-semibold text-sm">{bl.foerderung}</p>
-                <p className="text-wp-amber text-xs">{bl.foerderungBetrag}</p>
+                <p className="text-[#D97706] text-xs">{bl.foerderungBetrag}</p>
               </div>
               {bl.foerderungUrl && (
                 <a href={bl.foerderungUrl} target="_blank" rel="noopener noreferrer"
-                  className="text-wp-green text-xs hover:underline shrink-0">
+                  className="text-[#1A4731] text-xs hover:underline shrink-0">
                   Mehr Infos →
                 </a>
               )}
@@ -139,34 +139,34 @@ export default function BundeslandPage({ params }: Props) {
       <div className="max-w-4xl mx-auto px-6 py-10">
         {/* Alle Städte */}
         <div className="flex items-center justify-between mb-5">
-          <h2 className="font-heading font-bold text-wp-text text-xl">
+          <h2 className="font-bold text-[#1C2B2B] text-xl">
             {kw} — Alle {bl.name}-Städte
           </h2>
-          <span className="text-wp-text3 text-sm">{cities.length} Städte</span>
+          <span className="text-[#7A9E8E] text-sm">{cities.length} Städte</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-10">
           {topCities.map(city => (
             <Link key={city.slug} href={`/${keyword.slug}/${city.slug}`}
-              className="group flex items-center gap-2 bg-white rounded-xl p-3 border border-wp-border hover:border-wp-green hover:shadow-wp-sm transition-all">
-              <MapPin size={12} className="text-wp-green shrink-0" />
+              className="group flex items-center gap-2 bg-white rounded-xl p-3 border border-gray-200 hover:border-[#1A4731] hover:shadow-wp-sm transition-all">
+              <MapPin size={12} className="text-[#1A4731] shrink-0" />
               <div className="min-w-0">
-                <p className="font-semibold text-wp-text text-xs group-hover:text-wp-green transition-colors truncate">{city.name}</p>
-                <p className="text-wp-text3 text-xs">{(city.einwohner/1000).toFixed(0)}k EW</p>
+                <p className="font-semibold text-[#1C2B2B] text-xs group-hover:text-[#1A4731] transition-colors truncate">{city.name}</p>
+                <p className="text-[#7A9E8E] text-xs">{(city.einwohner/1000).toFixed(0)}k EW</p>
               </div>
             </Link>
           ))}
         </div>
 
         {/* Cross-Links andere Bundesländer */}
-        <div className="bg-white rounded-2xl p-5 border border-wp-border shadow-wp-sm mb-8">
-          <h3 className="font-heading font-semibold text-wp-text text-base mb-4">Andere Bundesländer</h3>
+        <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-wp-sm mb-8">
+          <h3 className="font-heading font-semibold text-[#1C2B2B] text-base mb-4">Andere Bundesländer</h3>
           <div className="flex flex-wrap gap-2">
             {Object.entries(BUNDESLAENDER)
               .filter(([slug]) => slug !== params.bundeslandSlug)
               .map(([slug, info]) => (
                 <Link key={slug} href={`/${keyword.slug}/bundesland/${slug}`}
-                  className="px-3 py-1.5 bg-wp-bg border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
+                  className="px-3 py-1.5 bg-[#F8F9FA] border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                   {info.name}
                 </Link>
               ))}
@@ -175,7 +175,7 @@ export default function BundeslandPage({ params }: Props) {
 
         {/* Back to pillar */}
         <Link href={`/${keyword.slug}`}
-          className="inline-flex items-center gap-2 text-wp-green font-semibold text-sm hover:underline">
+          className="inline-flex items-center gap-2 text-[#1A4731] font-semibold text-sm hover:underline">
           ← Alle Städte: {kw}
         </Link>
       </div>
