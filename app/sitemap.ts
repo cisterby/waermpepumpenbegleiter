@@ -12,7 +12,7 @@ const MOD  = new Date('2026-03-25');
 const BUNDESLAENDER = [
   'berlin','hamburg','bayern','nordrhein-westfalen','baden-wuerttemberg',
   'niedersachsen','hessen','rheinland-pfalz','sachsen','thueringen',
-  'sachsen-anhalt','mecklenburg-vorpommern','brandon','schleswig-holstein',
+  'sachsen-anhalt','mecklenburg-vorpommern','brandenburg','schleswig-holstein',
   'saarland','bremen',
 ];
 
