@@ -278,8 +278,8 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
             Kostenloses Angebot in {city.name} →
           </a>
           <div className="mt-3 flex flex-col gap-2">
-            <a href="/kontakt" className="block w-full text-center py-3 text-sm font-semibold text-[#1A4731] border border-[#1A4731] rounded-xl hover:bg-[#2D7A52]lt transition-all">Kostenlose Beratung →</a>
-            <a href="tel:+4915563566199" className="block w-full text-center py-2.5 text-sm text-[#4A6358] hover:text-[#1A4731] transition-colors">📞 +49 15563 566199</a>
+            <a href="/kontakt" className="block w-full text-center py-3 text-sm font-semibold text-wp-green border border-wp-green rounded-xl hover:bg-wp-greenlt transition-all">Kostenlose Beratung →</a>
+            <a href="tel:+4915563566199" className="block w-full text-center py-2.5 text-sm text-wp-text2 hover:text-wp-green transition-colors">📞 +49 15563 566199</a>
           </div>
           <p className="text-center text-xs text-gray-400">
             Kostenlos & unverbindlich · Keine Weitergabe · Bis 3 lokale Betriebe
@@ -381,7 +381,7 @@ export default function WaermepumpeTemplate({
               </h1>
               {/* Preis-Badge */}
               <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-wp-amber/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                   💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
@@ -524,7 +524,7 @@ export default function WaermepumpeTemplate({
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 {h2s.klimadaten}
               </h2>
-            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.klimadaten}</p>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.klimadaten}</p>
               <div className="grid sm:grid-cols-2 gap-5 mb-6">
                 {[
                   { icon: <Thermometer size={20} className="text-[#1B5E37]" />, title: "Jahresarbeitszahl (JAZ)", val: jaz.toString(), sub: `Bei ${city.avgTemp}°C Ø-Temperatur in ${city.name}`, note: "Aus 1 kWh Strom werden " + jaz + " kWh Wärme" },
@@ -613,7 +613,7 @@ export default function WaermepumpeTemplate({
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 {h2s.foerderung}
               </h2>
-            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.foerderung}</p>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.foerderung}</p>
               <p className="text-gray-600 leading-relaxed mb-6">
                 Die KfW-Bundesförderung ist nicht an einen Standort gebunden — Sie gilt überall in Deutschland,
                 also auch in {city.name}. Der Antrag muss{" "}
@@ -743,7 +743,7 @@ export default function WaermepumpeTemplate({
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
                 {h2s.typen}
               </h2>
-            <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.typen}</p>
+            <p className="text-wp-text2 text-base leading-relaxed mb-4">{si.typen}</p>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   {
@@ -838,9 +838,9 @@ export default function WaermepumpeTemplate({
               </span>
                             {/* H3 Featured Snippet */}
               {faqs.length > 0 && (
-                <div className="mb-6 p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
-                  <h3 className="font-bold font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
-                  <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
+                <div className="mb-6 p-5 bg-wp-greenxlt border border-wp-borderl rounded-2xl">
+                  <h3 className="font-heading font-bold text-wp-text text-lg mb-2">{faqs[0].q}</h3>
+                  <p className="text-wp-text2 text-sm leading-relaxed">{faqs[0].a}</p>
                 </div>
               )}
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -973,33 +973,33 @@ export default function WaermepumpeTemplate({
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
-        <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">
+        <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
         </h2>
         <div className="space-y-4">
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
-            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.gegReform}</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.gegReform}</p>
           </div>
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
             <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Neue Lärmvorschrift ab 01.01.2026</p>
-            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.laerm10db}</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.laerm10db}</p>
           </div>
           <div className="bg-green-50 border border-green-200 rounded-xl p-5">
             <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-2">Steuerliche Absetzbarkeit</p>
-            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.steuerAbsetz}</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.steuerAbsetz}</p>
           </div>
           <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
             <p className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-2">KfW-Ergänzungskredit</p>
-            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.kfwKredit}</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.kfwKredit}</p>
           </div>
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
             <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Wartungs- &amp; Langzeitkosten</p>
-            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.wartungskosten}</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.wartungskosten}</p>
           </div>
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">Finanzierungsoptionen</p>
-            <p className="text-[#1C2B2B] text-sm leading-relaxed">{act.finanzierung}</p>
+            <p className="text-wp-text text-sm leading-relaxed">{act.finanzierung}</p>
           </div>
         </div>
       </div>
