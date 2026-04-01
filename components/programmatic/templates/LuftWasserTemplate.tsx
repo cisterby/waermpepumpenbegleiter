@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
-import { fillTemplate } from '@/lib/keywords';
+import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from '@/lib/content-variation';
 import LeadForm from '@/components/programmatic/LeadForm';
