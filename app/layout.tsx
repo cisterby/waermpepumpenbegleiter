@@ -152,12 +152,13 @@ const organizationSchema = {
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  '@id': 'https://waermepumpenbegleiter.de/ueber-uns#markus-sommer',
-  name: 'Dr. Markus Sommer',
-  jobTitle: 'Energieberater (IHK)',
-  description: 'Spezialist für Heizsystemvergleiche und KfW-Förderanträge. Ehemals Sachverständiger bei der Verbraucherzentrale NRW.',
-  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'GEG', 'Heizungssanierung', 'JAZ'],
+  '@id': 'https://waermepumpenbegleiter.de/ueber-uns#bastian-saupe',
+  name: 'Bastian Saupe',
+  jobTitle: 'Gründer & Geschäftsführer',
+  description: 'Gründer von Wärmepumpenbegleiter.de und Webflott. Spezialist für programmatische SEO-Portale und digitale Lead-Generierung in der Energiebranche.',
+  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'GEG', 'Energiewende', 'Digitale Vermittlungsportale'],
   worksFor: { '@type': 'Organization', name: 'Wärmepumpenbegleiter.de', url: 'https://waermepumpenbegleiter.de' },
+  sameAs: ['https://www.webflott.de'],
   url: 'https://waermepumpenbegleiter.de/ueber-uns',
 };
 

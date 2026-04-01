@@ -795,9 +795,9 @@ export default function WaermepumpeTemplate({
                 font-bold text-[#1B5E37] text-xl flex-shrink-0 font-sans">MS</div>
               <div>
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
-                  <span className="font-bold text-gray-900">Dr. Markus Sommer</span>
+                  <span className="font-bold text-gray-900">Bastian Saupe</span>
                   <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                    Energieberater (IHK) · 14 Jahre Erfahrung
+                    Gründer & Geschäftsführer · Webflott.de
                   </span>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed italic">
