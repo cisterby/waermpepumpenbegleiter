@@ -1,5 +1,5 @@
 "use client";
-// @ts-nocheck
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -9,7 +9,6 @@ import {
   TrendingDown, Home, Wrench, AlertTriangle, BarChart2
 } from "lucide-react";
 import type { CityPageRouterProps } from "@/components/programmatic/CityPageRouter";
-import type { Keyword } from "@/lib/keywords";
 import { fillTemplate, KEYWORDS, getKeywordBySlug } from "@/lib/keywords";
 import { getNearbyCity } from "@/lib/cities";
 import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
@@ -49,16 +48,12 @@ function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
 }
 
-// ── Type-Aliases (außerhalb JSX, um TSX-Parser-Konflikte zu vermeiden) ────────
-type HeizungTyp = "erdgas" | "heizoel" | "nachtspeicher";
-type WpTyp      = "luft" | "sole" | "wasser";
-
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
-  const [heizung,  setHeizung]  = useState<HeizungTyp>("erdgas");
-  const [wpTyp,    setWpTyp]    = useState<WpTyp>("luft");
+  const [heizung,  setHeizung]  = useState<"erdgas"|"heizoel"|"nachtspeicher">("erdgas");
+  const [wpTyp,    setWpTyp]    = useState<"luft"|"sole"|"wasser">("luft");
   const [vorlauf,  setVorlauf]  = useState(35);
   const [selfOcc,  setSelfOcc]  = useState(true);
   const [fossil,   setFossil]   = useState(true);
@@ -310,7 +305,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
 
 // ── FAQ Accordion ────────────────────────────────────────────────────────────
 function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
-  const [open, setOpen] = useState(null as number | null);
+  const [open, setOpen] = useState<number | null>(null);
   return (
     <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
       {faqs.map((faq, i) => (
@@ -352,7 +347,7 @@ export default function WaermepumpeTemplate({
   // Cross-Links
   const crossKeywords = keyword.crossLinks
     .map(slug => getKeywordBySlug(slug))
-    .filter((k) => k != null) as Keyword[];
+    .filter((k): k is NonNullable<ReturnType<typeof getKeywordBySlug>> => k != null);
 
   return (
     <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
@@ -413,7 +408,7 @@ export default function WaermepumpeTemplate({
                 {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
               </p>
 
-              <p className="text-lg max-w-xl mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,1.0)", textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1.0)", lineHeight: "1.7" //textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>
+              <p className="text-lg max-w-xl mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,1.0)", textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1.0)", lineHeight: "1.7" }}>
                 {introText}
               </p>
 
