@@ -11,7 +11,7 @@ const bars = [
 ];
 
 export default function FoerderungBars() {
-  const ref = useRef[HTMLDivElement](null);
+  const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (

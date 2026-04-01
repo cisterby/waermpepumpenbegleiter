@@ -49,12 +49,12 @@ export default function Footer() {
             <a href="tel:+4915563566199"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-medium transition-all"
               style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)' }}>
-              [Phone size={15} |]
+              <Phone size={15} />
               +49 15563 566199
             </a>
-            [Link href="|kontakt"
+            <Link href="/kontakt"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
-              style={{ background: '#D97706' }}]
+              style={{ background: '#D97706' }}>
               Kostenloses Angebot →
             </Link>
           </div>
@@ -67,10 +67,10 @@ export default function Footer() {
 
           {/* Brand — 2 cols */}
           <div className="lg:col-span-2">
-            [Link href="|" className="flex items-center gap-3 mb-5"]
+            <Link href="/" className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center"
                 style={{ background: 'rgba(76,175,125,0.2)', border: '1px solid rgba(76,175,125,0.4)' }}>
-                [Leaf size={18} style={{ color: '#4CAF7D' }} strokeWidth={2.5} |]
+                <Leaf size={18} style={{ color: '#4CAF7D' }} strokeWidth={2.5} />
               </div>
               <div>
                 {/* white text on dark bg — always readable */}
@@ -93,18 +93,18 @@ export default function Footer() {
               <a href="tel:+4915563566199"
                 className="flex items-center gap-2.5 text-sm transition-colors"
                 style={{ color: 'rgba(255,255,255,0.85)' }}>
-                [Phone size={14} style={{ color: '#4CAF7D' }} className="shrink-0" |]
+                <Phone size={14} style={{ color: '#4CAF7D' }} className="shrink-0" />
                 +49 15563 566199
               </a>
               <a href="mailto:info@waermepumpenbegleiter.de"
                 className="flex items-center gap-2.5 text-sm"
                 style={{ color: 'rgba(255,255,255,0.85)' }}>
-                [Mail size={14} style={{ color: '#4CAF7D' }} className="shrink-0" |]
+                <Mail size={14} style={{ color: '#4CAF7D' }} className="shrink-0" />
                 info@waermepumpenbegleiter.de
               </a>
               <div className="flex items-center gap-2.5 text-sm"
                 style={{ color: 'rgba(255,255,255,0.70)' }}>
-                [MapPin size={14} style={{ color: '#4CAF7D' }} className="shrink-0" |]
+                <MapPin size={14} style={{ color: '#4CAF7D' }} className="shrink-0" />
                 Weißenfels, Sachsen-Anhalt
               </div>
             </div>
@@ -119,9 +119,9 @@ export default function Footer() {
               {navLinks.map(item => (
                 <li key={item.href}>
                   {/* white/85 — clearly readable on #0F1F16 */}
-                  [Link href={item.href}
+                  <Link href={item.href}
                     className="text-sm transition-colors hover:text-white"
-                    style={{ color: 'rgba(255,255,255,0.85)' }}]
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {item.label}
                   </Link>
                 </li>
@@ -137,9 +137,9 @@ export default function Footer() {
             <ul className="space-y-3">
               {topCities.map(city => (
                 <li key={city.slug}>
-                  [Link href={`|waermepumpe|${city.slug}`}
+                  <Link href={`/waermepumpe/${city.slug}`}
                     className="text-sm transition-colors"
-                    style={{ color: 'rgba(255,255,255,0.85)' }}]
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {city.name}
                   </Link>
                 </li>
@@ -155,9 +155,9 @@ export default function Footer() {
             <ul className="space-y-3 mb-7">
               {rechtliches.map(item => (
                 <li key={item.href}>
-                  [Link href={item.href}
+                  <Link href={item.href}
                     className="text-sm transition-colors hover:text-white"
-                    style={{ color: 'rgba(255,255,255,0.85)' }}]
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {item.label}
                   </Link>
                 </li>

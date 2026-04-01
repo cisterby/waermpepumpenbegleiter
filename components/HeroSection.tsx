@@ -36,16 +36,16 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
-              [Link href="|rechner" className="btn-primary text-base py-3.5 px-7"]
+              <Link href="/rechner" className="btn-primary text-base py-3.5 px-7">
                 Kosten jetzt berechnen
-                [ArrowRight className="w-4 h-4" |]
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              [Link
-                href="|rechner"
+              <Link
+                href="/rechner"
                 className="inline-flex items-center gap-2 font-body text-sm font-medium text-wp-primary hover:text-wp-primary-mid transition-colors px-2 py-3"
-              ]
+              >
                 Wie viel spare ich konkret?
-                [ArrowDown className="w-4 h-4" |]
+                <ArrowDown className="w-4 h-4" />
               </Link>
             </div>
 
@@ -61,7 +61,7 @@ export default function HeroSection() {
           </motion.div>
 
           <div className="hidden lg:block">
-            [HouseSVG |]
+            <HouseSVG />
           </div>
         </div>
       </div>

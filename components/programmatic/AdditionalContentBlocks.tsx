@@ -45,7 +45,7 @@ function ISFPBlock({ city, foerd }: { city: City; foerd: FoerderErgebnis }) {
             <p className="text-wp-text3 text-xs">= bis zu {fmtEuro(bonus)} zusätzlicher Zuschuss · 80% BAFA-gefördert</p>
           </div>
         </div>
-        [ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} |]
+        <ChevronDown size={16} className={`text-wp-text3 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="px-5 pb-5 border-t border-wp-border pt-5">
@@ -59,7 +59,7 @@ function ISFPBlock({ city, foerd }: { city: City; foerd: FoerderErgebnis }) {
                 'Gilt zusätzlich zu allen anderen Boni',
               ].map((p, i) => (
                 <div key={i} className="flex items-start gap-2 text-xs text-wp-text2">
-                  [CheckCircle size={12} className="text-wp-green shrink-0 mt-0.5" |]{p}
+                  <CheckCircle size={12} className="text-wp-green shrink-0 mt-0.5" />{p}
                 </div>
               ))}
             </div>
@@ -210,10 +210,10 @@ function HerstellerBlock({ city, jaz }: { city: City; jaz: number }) {
 export function AdditionalContentBlocks({ city, keyword, jaz, calc, foerd }: Props) {
   // Welche 2 von 4 Blöcken erscheinen — city-hash-basiert
   const allBlocks = [
-    [ISFPBlock key="isfp" city={city} foerd={foerd} |],
-    [PVKombiBlock key="pv" city={city} jaz={jaz} calc={calc} |],
-    [GEGChecklistBlock key="geg" city={city} |],
-    [HerstellerBlock key="hersteller" city={city} jaz={jaz} |],
+    <ISFPBlock key="isfp" city={city} foerd={foerd} />,
+    <PVKombiBlock key="pv" city={city} jaz={jaz} calc={calc} />,
+    <GEGChecklistBlock key="geg" city={city} />,
+    <HerstellerBlock key="hersteller" city={city} jaz={jaz} />,
   ];
 
   const idx1 = cityHash(city, 4, 50);

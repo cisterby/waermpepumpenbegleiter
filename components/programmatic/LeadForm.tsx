@@ -33,7 +33,7 @@ const HEIZUNG = [
 ];
 
 export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
-  const [step, setStep]         = useState[Step](1);
+  const [step, setStep]         = useState<Step>(1);
   const [submitting, setSub]    = useState(false);
   const [submitted, setDone]    = useState(false);
   const [error, setError]       = useState('');
@@ -89,7 +89,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
     return (
       <div className="bg-[#E8F5EE] border border-[#3DA16A]/40 rounded-2xl p-8 text-center">
         <div className="w-16 h-16 bg-[#1A4731] rounded-full flex items-center justify-center mx-auto mb-4">
-          [CheckCircle size={32} className="text-white" |]
+          <CheckCircle size={32} className="text-white" />
         </div>
         <h3 className="font-bold font-bold text-[#1C2B2B] text-xl mb-2">
           Anfrage erhalten!
@@ -137,7 +137,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
       </div>
 
       <div className="p-6">
-        [AnimatePresence mode="wait"]
+        <AnimatePresence mode="wait">
 
           {/* SCHRITT 1: Gebäude */}
           {step === 1 && (
@@ -194,7 +194,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
                 className={`w-full py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
                   canStep1 ? 'bg-[#1A4731] text-white hover:bg-green-800' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                 }`}>
-                Weiter [ArrowRight size={16} |]
+                Weiter <ArrowRight size={16} />
               </button>
             </motion.div>
           )}
@@ -256,8 +256,8 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
                     canStep2 && !submitting ? 'bg-[#D97706] text-white hover:bg-amber-700' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                   }`}>
                   {submitting
-                    ? <>[Loader2 size={16} className="animate-spin" |] Wird gesendet...</>
-                    : <>Kostenlos anfragen [ArrowRight size={16} |]</>
+                    ? <><Loader2 size={16} className="animate-spin" /> Wird gesendet...</>
+                    : <>Kostenlos anfragen <ArrowRight size={16} /></>
                   }
                 </button>
               </div>

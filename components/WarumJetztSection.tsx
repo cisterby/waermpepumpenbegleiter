@@ -101,20 +101,20 @@ export default function WarumJetztSection() {
               Wärmepumpen-Installationen Deutschland
             </p>
             <div className="h-[320px]">
-              [ResponsiveContainer width="100%" height="100%"]
-                [AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}]
-                  [CartesianGrid strokeDasharray="3 3" stroke="rgba(26,71,49,0.08)" |]
-                  [XAxis
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(26,71,49,0.08)" />
+                  <XAxis
                     dataKey="year"
                     tick={{ fontSize: 12, fontFamily: 'Plus Jakarta Sans', fill: '#4A6358' }}
                     axisLine={{ stroke: 'rgba(26,71,49,0.12)' }}
                     tickLine={false}
-                  |]
-                  [YAxis
+                  />
+                  <YAxis
                     tick={{ fontSize: 11, fontFamily: 'JetBrains Mono', fill: '#7A9E8E' }}
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(v) =] `${(v / 1000).toFixed(0)}k`}
+                    tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
                     label={{
                       value: 'Installierte WP',
                       angle: -90,
@@ -123,15 +123,15 @@ export default function WarumJetztSection() {
                       offset: 10,
                     }}
                   />
-                  [Tooltip content={[CustomTooltip |]} />
-                  [Area
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area
                     type="monotone"
                     dataKey="stueck"
                     stroke="#1A4731"
                     strokeWidth={2}
                     fill="#4CAF7D"
                     fillOpacity={0.15}
-                  |]
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

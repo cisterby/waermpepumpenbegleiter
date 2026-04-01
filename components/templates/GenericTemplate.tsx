@@ -16,7 +16,7 @@ import { getRotatingFAQs, getIntroParagraphs, getUSPBar } from '@/lib/content-va
 
 export default function GenericTemplate({ city, keyword, jaz, calc, foerd, h1, nearby, }: CityPageRouterProps) {
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
-  const [openFaq, setOpenFaq] = useState(null as number | null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [fl, setFl] = useState(120)
 
   // Breadcrumb
@@ -103,7 +103,7 @@ export default function GenericTemplate({ city, keyword, jaz, calc, foerd, h1, n
                 <li key={b.href} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   {i > 0 && <span style={{ color: 'rgba(255,255,255,.35)', fontSize: 13 }}>›</span>}
                   {i < breadcrumbs.length - 1
-                    ? [Link href={b.href} style={{ fontSize: 13, color: 'rgba(255,255,255,.55)', textDecoration: 'none' }}]{b.label}</Link>
+                    ? <Link href={b.href} style={{ fontSize: 13, color: 'rgba(255,255,255,.55)', textDecoration: 'none' }}>{b.label}</Link>
                     : <span style={{ fontSize: 13, color: 'rgba(255,255,255,.8)' }}>{b.label}</span>
                   }
                 </li>
@@ -243,9 +243,9 @@ export default function GenericTemplate({ city, keyword, jaz, calc, foerd, h1, n
             </h3>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               {nearby.map(n => (
-                [Link key={n.slug}
-                  href={`|${keyword.slug}|${n.slug}`}
-                  style={{ padding: '8px 14px', background: '#E8F5EE', color: '#1B5E37', borderRadius: 8, fontSize: 14, fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(27,94,55,.15)' }}]
+                <Link key={n.slug}
+                  href={`/${keyword.slug}/${n.slug}`}
+                  style={{ padding: '8px 14px', background: '#E8F5EE', color: '#1B5E37', borderRadius: 8, fontSize: 14, fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(27,94,55,.15)' }}>
                   {keyword.keyword.replace('[Stadt]', n.name)}
                 </Link>
               ))}
@@ -261,9 +261,9 @@ export default function GenericTemplate({ city, keyword, jaz, calc, foerd, h1, n
                   const kw = require('@/lib/keywords').getKeywordBySlug(slug)
                   if (!kw) return null
                   return (
-                    [Link key={slug}
-                      href={`|${slug}|${city.slug}`}
-                      style={{ padding: '8px 14px', background: 'white', color: '#4B5563', borderRadius: 8, fontSize: 14, fontWeight: 500, textDecoration: 'none', border: '1px solid #E5E7EB' }}]
+                    <Link key={slug}
+                      href={`/${slug}/${city.slug}`}
+                      style={{ padding: '8px 14px', background: 'white', color: '#4B5563', borderRadius: 8, fontSize: 14, fontWeight: 500, textDecoration: 'none', border: '1px solid #E5E7EB' }}>
                       {kw.keyword.replace('[Stadt]', city.name)}
                     </Link>
                   )

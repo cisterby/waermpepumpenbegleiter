@@ -37,9 +37,9 @@ export default function RichTemplateBase({
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
           <nav className="flex items-center gap-2 text-xs mb-6 text-[rgba(255,255,255,0.40)] flex-wrap">
-            [Link href="|" className="hover:text-white transition-colors"]Startseite</Link>
+            <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
             <span>›</span>
-            [Link href={`|${keyword.slug}`} className="hover:text-white transition-colors"]
+            <Link href={`/${keyword.slug}`} className="hover:text-white transition-colors">
               {keyword.keyword.replace('[Stadt]', '').trim()}
             </Link>
             <span>›</span>
@@ -48,7 +48,7 @@ export default function RichTemplateBase({
 
           {urgencyBadge && (
             <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/40 rounded-full px-4 py-2 mb-5">
-              [AlertTriangle size={12} className="text-amber-400" |]
+              <AlertTriangle size={12} className="text-amber-400" />
               <span className="text-amber-300 text-xs font-bold uppercase tracking-wider">{urgencyBadge}</span>
             </div>
           )}
@@ -83,7 +83,7 @@ export default function RichTemplateBase({
           <div className="flex gap-3 mt-8 flex-wrap">
             <a href="#angebot"
               className="inline-flex items-center gap-2 px-7 py-4 bg-wp-amber text-white rounded-xl font-heading font-bold text-sm hover:bg-amber-700 transition-all hover:-translate-y-0.5 shadow-wp-lg">
-              Kostenloses Angebot [ArrowRight size={16} |]
+              Kostenloses Angebot <ArrowRight size={16} />
             </a>
             <a href="#angebot"
               className="inline-flex items-center gap-2 px-7 py-4 bg-[rgba(255,255,255,0.10)] border border-[rgba(255,255,255,0.20)] text-white rounded-xl font-heading font-bold text-sm hover:bg-[rgba(255,255,255,0.15)] transition-all">
@@ -113,7 +113,7 @@ export default function RichTemplateBase({
           {/* GEG-Frist */}
           <div className={`rounded-xl border p-5 flex gap-4 ${isUrgent ? 'bg-amber-50 border-amber-300' : 'bg-wp-greenlt border-wp-green3/30'}`}>
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isUrgent ? 'bg-amber-100' : 'bg-wp-green/10'}`}>
-              {isUrgent ? [AlertTriangle size={18} className="text-amber-600" |] : [CheckCircle size={18} className="text-wp-green" |]}
+              {isUrgent ? <AlertTriangle size={18} className="text-amber-600" /> : <CheckCircle size={18} className="text-wp-green" />}
             </div>
             <div>
               <p className={`font-heading font-bold text-lg mb-1 ${isUrgent ? 'text-amber-900' : 'text-wp-green'}`}>
@@ -144,7 +144,7 @@ export default function RichTemplateBase({
                 <details key={i} className="group border-b border-wp-border last:border-0">
                   <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-wp-bg/50 transition-colors">
                     <span className="font-heading font-semibold text-wp-text text-sm leading-snug">{faq.q}</span>
-                    [ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" |]
+                    <ChevronDown size={16} className="text-wp-text3 shrink-0 group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="border-t border-wp-border">
                     <p className="px-5 py-4 text-wp-text2 text-sm leading-relaxed">{faq.a}</p>
@@ -160,8 +160,8 @@ export default function RichTemplateBase({
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors"]
+                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
                     {n.name}
                   </Link>
                 ))}
@@ -171,8 +171,8 @@ export default function RichTemplateBase({
               <h3 className="font-heading font-semibold text-wp-text text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
-                  [Link key={kw.slug} href={`|${kw.slug}|${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors"]
+                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-wp-border rounded-lg text-sm text-wp-text2 hover:text-wp-green hover:border-wp-green transition-colors">
                     {kw.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -204,20 +204,20 @@ export default function RichTemplateBase({
                 ))}
               </div>
               <a href="#angebot" className="flex items-center justify-center gap-2 w-full py-3.5 bg-wp-amber text-white rounded-xl font-heading font-bold text-sm hover:bg-amber-700 transition-colors">
-                Kostenloses Angebot [ArrowRight size={14} |]
+                Kostenloses Angebot <ArrowRight size={14} />
               </a>
             </div>
           </div>
 
           <div id="angebot">
-            [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
+            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
           </div>
-          [AuthorBox keywordSlug={keyword.slug} |]
+          <AuthorBox keywordSlug={keyword.slug} />
 
           <div className="bg-white border border-wp-border rounded-xl p-4 shadow-wp-sm">
             {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-wp-border last:border-0 text-xs text-wp-text2">
-                [CheckCircle size={12} className="text-wp-green shrink-0" |]{t}
+                <CheckCircle size={12} className="text-wp-green shrink-0" />{t}
               </div>
             ))}
           </div>

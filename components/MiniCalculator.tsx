@@ -9,8 +9,8 @@ import type { HeizungsTyp, BaujahrTyp } from '@/lib/calculations';
 
 export default function MiniCalculator() {
   const [flaeche, setFlaeche] = useState(120);
-  const [heizung, setHeizung] = useState[HeizungsTyp]('erdgas');
-  const [baujahr, setBaujahr] = useState[BaujahrTyp]('1979_1994');
+  const [heizung, setHeizung] = useState<HeizungsTyp>('erdgas');
+  const [baujahr, setBaujahr] = useState<BaujahrTyp>('1979_1994');
 
   const result = useMemo(
     () => calcBetriebskosten(flaeche, baujahr, heizung),
@@ -108,14 +108,14 @@ export default function MiniCalculator() {
           </div>
         </div>
 
-        [Link href="|rechner" className="btn-primary w-full text-center"]
+        <Link href="/rechner" className="btn-primary w-full text-center">
           Genaues Angebot für meine Stadt anfordern
-          [ArrowRight className="w-4 h-4" |]
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 
       <div className="flex items-center justify-center gap-2 mt-4">
-        [Lock className="w-3 h-3 text-wp-text-light" |]
+        <Lock className="w-3 h-3 text-wp-text-light" />
         <span className="font-body text-xs text-wp-text-light">Keine Datenweitergabe. Kein Spam.</span>
       </div>
     </motion.div>

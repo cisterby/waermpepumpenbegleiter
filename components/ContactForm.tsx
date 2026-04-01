@@ -21,7 +21,7 @@ export default function ContactForm() {
 
   return (
     <div className="bg-white rounded-2xl border border-[rgba(26,71,49,0.12)] shadow-wp-lg p-6 md:p-10">
-      [AnimatePresence mode="wait"]
+      <AnimatePresence mode="wait">
         {submitted ? (
           <motion.div
             key="success"
@@ -34,7 +34,7 @@ export default function ContactForm() {
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
             >
-              [CheckCircle className="w-16 h-16 text-wp-primary-mid mb-6" strokeWidth={1.5} |]
+              <CheckCircle className="w-16 h-16 text-wp-primary-mid mb-6" strokeWidth={1.5} />
             </motion.div>
             <h3 className="font-display text-2xl font-semibold text-wp-text mb-3">
               Vielen Dank!
@@ -138,11 +138,11 @@ export default function ContactForm() {
               className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                [Loader2 className="w-4 h-4 animate-spin" |]
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <>
                   Nachricht senden
-                  [ArrowRight className="w-4 h-4" |]
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>

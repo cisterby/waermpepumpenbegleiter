@@ -15,7 +15,7 @@ export default function TestimonialCard({ testimonial, index }: { testimonial: T
     >
       <div className="flex gap-1 mb-4">
         {Array.from({ length: testimonial.rating }).map((_, i) => (
-          [Star key={i} className="w-4 h-4 fill-wp-accent-light text-wp-accent-light" |]
+          <Star key={i} className="w-4 h-4 fill-wp-accent-light text-wp-accent-light" />
         ))}
       </div>
       <blockquote className="font-body text-base leading-[1.7] text-wp-text-secondary mb-6">

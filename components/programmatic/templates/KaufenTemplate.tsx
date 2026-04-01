@@ -39,9 +39,9 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
-              [Link href="|" className="text-white|80 hover:text-white|70 transition-colors"]Startseite</Link>
+              <Link href="/" className="text-white/80 hover:text-white/70 transition-colors">Startseite</Link>
               <span className="text-white/70">›</span>
-              [Link href={`|${keyword.slug}`} className="text-white|80 hover:text-white|70 transition-colors"]
+              <Link href={`/${keyword.slug}`} className="text-white/80 hover:text-white/70 transition-colors">
                 {keyword.keyword.replace('[Stadt]', '').trim()}
               </Link>
               <span className="text-white/70">›</span>
@@ -73,7 +73,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             </p>
             <div className="flex gap-3 flex-wrap">
               <a href="#angebot" className="inline-flex items-center gap-2 px-7 py-4 bg-[#1A4731] text-white rounded-xl font-bold font-bold text-sm hover:bg-green-800 transition-all hover:-translate-y-0.5 shadow-xl">
-                Kostenloses Angebot [ArrowRight size={16} |]
+                Kostenloses Angebot <ArrowRight size={16} />
               </a>
               <div className="flex items-center gap-4 px-5 py-4 bg-white/10 border border-white/20 rounded-xl">
                 <div className="text-center"><p className="font-mono font-bold text-white text-lg leading-none">{jaz}</p><p className="text-white/50 text-xs">JAZ</p></div>
@@ -189,7 +189,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               <details key={i} className="group border-b border-gray-200 last:border-0">
                 <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
                   <span className="font-bold font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
-                  [ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" |]
+                  <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                 </summary>
                 <div className="border-t border-gray-200">
                   <p className="px-5 py-4 text-[#4A6358] text-sm leading-relaxed">{faq.a}</p>
@@ -204,8 +204,8 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Region {city.bundesland}</h3>
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
-                  [Link key={n.slug} href={`|${keyword.slug}|${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
+                  <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {n.name}
                   </Link>
                 ))}
@@ -215,8 +215,8 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               <h3 className="font-bold font-semibold text-[#1C2B2B] text-base mb-3">Weitere Themen</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
-                  [Link key={kw.slug} href={`|${kw.slug}|${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors"]
+                  <Link key={kw.slug} href={`/${kw.slug}/${city.slug}`}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {kw.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -244,7 +244,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             ))}
           </div>
           {/* Formspree Form */}
-          [LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} |]
+          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
 
 
       {/* ── VISUELLER TRENNER ─────────────────────── */}
@@ -318,12 +318,12 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
 
         </div>
       </div>
-          [AuthorBox keywordSlug={keyword.slug} |]
+          <AuthorBox keywordSlug={keyword.slug} />
           {/* Trust */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
-                [CheckCircle size={12} className="text-[#1A4731] shrink-0" |]{t}
+                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>
             ))}
           </div>
