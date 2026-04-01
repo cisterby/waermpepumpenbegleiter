@@ -563,3 +563,76 @@ export function getSectionIntros(
     ], 7),
   };
 }
+
+// ── AKTUALITÄTSBLOCK 2026 ─────────────────────────────────────────────────
+// Injiziert 6 kritische 2026-Facts pro Stadtseite, vollständig city-variiert.
+// Verhindert Duplicate Content: cityHash(salt=99) → andere Variante pro Stadt.
+
+export function getActualityBlock(
+  city: City,
+  keyword: { slug: string },
+  jaz: number,
+  wpKosten: number,
+  eigenanteil: number,
+): {
+  gegReform: string;
+  laerm10db: string;
+  steuerAbsetz: string;
+  kfwKredit: string;
+  wartungskosten: string;
+  finanzierung: string;
+} {
+  const e = (n: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const h = (s: number) => cityHash(city, 4, s);
+
+  const gegReformPool = [
+    `GEG-Reform 2026 in ${city.name}: Die neue Bundesregierung plant, die 65%-EE-Pflicht ab Juli 2026 zu streichen. Für Sie ändert sich trotzdem nichts — die KfW-Förderung (bis 70%, bis 2029 gesichert) läuft unabhängig davon weiter. Wer jetzt handelt, sichert sich die aktuell historisch hohen Fördersätze.`,
+    `Was die GEG-Reform für ${city.name} bedeutet: Die 65%-Erneuerbare-Pflicht entfällt voraussichtlich Mitte 2026. Das ändert aber nichts an der Wirtschaftlichkeit der Wärmepumpe — Betriebskosten ${e(wpKosten)}/Jahr vs. Gas mit jährlich steigendem CO₂-Preis. Die KfW-Förderung bleibt mindestens bis 2029 stabil.`,
+    `GEG-Änderung 2026: Der neue Koalitionsvertrag sieht vor, die Einbaupflicht für 65% erneuerbare Energien zu lockern. Die KfW-Förderung für Wärmepumpen in ${city.name} bleibt davon unberührt und ist bis 2029 gesichert. Für Eigentümer, die jetzt wechseln, ist das eine Gelegenheit — der Klima-Speed-Bonus von 20% gilt nur beim Ersatz noch funktionierender fossiler Heizungen.`,
+    `Reform des Heizungsgesetzes 2026: Die 65%-EE-Regel für neue Heizungen wird voraussichtlich ab Juli 2026 gestrichen. Für ${city.name} ändert das die Förderlage nicht: KfW-Programm 458 läuft weiter, Eigenanteil ab ${e(Math.round(eigenanteil))} nach Förderung. Wer wartet, riskiert steigende CO₂-Aufschläge auf Gas von aktuell €55/t Richtung €100/t bis 2030.`,
+  ];
+
+  const laerm10dbPool = [
+    `Neue Lärmvorschrift ab 01.01.2026 in ${city.name}: Luft-Wasser-Wärmepumpen sind nur noch KfW-förderfähig, wenn das Außengerät mindestens 10 dB unter dem gesetzlichen Grenzwert liegt (vorher: 5 dB). Moderne Geräte wie Vaillant aroTHERM Plus, Stiebel Eltron WPL oder Viessmann Vitocal erfüllen das problemlos. Ältere Modelle nicht mehr — achten Sie auf den KEYMARK-Zertifizierungsnachweis.`,
+    `Lärmregel 2026 für Wärmepumpen in ${city.name}: Seit 1. Januar 2026 schreibt das KfW-Förderprogramm vor, dass Luft-WP-Außengeräte 10 dB (statt bisher 5 dB) unter dem gesetzlichen Grenzwert liegen müssen. Je nach Leistungsklasse gilt: max. 55–78 dB(A). In ${city.bundesland} gilt zusätzlich die TA-Lärm: 45 dB(A) tags / 35 dB(A) nachts an der Grundstücksgrenze.`,
+    `Schallschutz 2026 in ${city.name}: Neue KfW-Anforderung — nur Geräte mit ≥10 dB Unterschreitung des gesetzlichen Lärmgrenzwerts werden noch gefördert. Praktisch bedeutet das: Alle aktuellen Markengeräte (Vaillant, Stiebel, Bosch, Viessmann) erfüllen die Anforderung. Aufstellort trotzdem prüfen: Mindestabstand zur Nachbargrenze in ${city.bundesland} beachten.`,
+    `WP-Lärmschutz neu 2026: Das KfW-Programm 458 verlangt seit Jahresbeginn 10 dB Sicherheitsabstand zum Grenzwert — der Wert wurde gegenüber 2025 verdoppelt. In ${city.name} gilt: Aufstellung in Hausnähe bevorzugen, Außeneinheit mit Schallschutzelementen abschirmen, TA-Lärm-Nachweis für Grenzlage-Installationen bereithalten. Wir prüfen Ihren Aufstellort vorab kostenlos.`,
+  ];
+
+  const steuerAbsetzPool = [
+    `Steuerliche Absetzbarkeit in ${city.name}: Unabhängig von KfW können Sie 20% der Arbeitskosten der WP-Installation direkt von der Steuerschuld abziehen — maximal €1.200 pro Jahr (§35a EStG). Bei typischen Arbeitskosten von €4.000–6.000 bedeutet das €800–1.200 weniger Steuer im Jahr der Installation. Kumuliert mit KfW-Förderung der größten legale Spareffekt.`,
+    `§35a EStG für ${city.name}: Haushaltsnahe Handwerkerleistungen (inkl. WP-Montage) → 20% der Lohnkosten, max. €1.200/Jahr von der Steuerschuld abziehbar. Das Gebäude muss älter als 10 Jahre sein. Kombinierbar mit dem KfW-Zuschuss — die steuerliche Abschreibung und die KfW-Förderung können gleichzeitig genutzt werden.`,
+    `Heizung steuerlich absetzen in ${city.name}: Handwerkerarbeiten bei der WP-Installation sind zu 20% (max. €1.200/J.) direkt von der Steuerschuld absetzbar — nicht nur als Werbungskosten, sondern direkt von der Zahllast. Bei energetischer Sanierung (§35c) sogar 20% der Gesamtkosten über 3 Jahre, max. €40.000 Steuerersparnis bei Gebäuden ≥10 Jahre alt.`,
+    `Steuervorteil WP ${city.name}: Neben KfW gibt es §35a-Steuerbonus für Handwerkerleistungen: 20% der Montagekosten (max. €1.200/Jahr). Zusätzlich §35c für energetische Sanierung: 20% der Gesamtkosten über 3 Jahre, max. €40.000. Wichtig: §35a und §35c können nicht gleichzeitig für dieselbe Maßnahme genutzt werden — wir beraten kostenlos zur optimalen Kombination.`,
+  ];
+
+  const kfwKreditPool = [
+    `KfW-Ergänzungskredit für ${city.name}: Zusätzlich zum Zuschuss (bis €21.000) gibt es den KfW-Ergänzungskredit mit effektiv 2,8–4,5% p.a. (Stand 2026), bis zu €150.000 je Wohneinheit. Der Kredit deckt Kosten ab, die über das Förderlimit hinausgehen — ideal bei Erdwärme-Systemen oder umfangreichen Sanierungsbegleitmaßnahmen in ${city.name}.`,
+    `Günstige Finanzierung in ${city.name}: KfW-Programm 358/359 „Bundesförderung für effiziente Gebäude – Kredit" ergänzt den Zuschuss. Effektivzins aktuell 2,8–4,5%, bis €150.000 Kredithöhe, kombinierbar mit dem BEG-Zuschuss. Für die meisten Haushalte in ${city.bundesland} reicht der Zuschuss — bei größeren Projekten rechnen wir beides durch.`,
+    `WP-Finanzierung über KfW in ${city.name}: Wer den Eigenanteil (ab ${e(Math.round(eigenanteil))}) nicht sofort aufbringen kann, nutzt den KfW-Ergänzungskredit: Zinsbindung 5–10 Jahre, bis €150.000, tilgungsfreie Anlaufjahre möglich. In Kombination mit dem KfW-Zuschuss ist das die günstigste Finanzierungslösung für Wärmepumpen in ${city.bundesland}.`,
+    `Zinskredit KfW + Zuschuss für ${city.name}: Das KfW-System funktioniert zweigleisig — Zuschuss (bis 70% = max. €21.000) PLUS Kredit zu 2,8–4,5% für den Restkostenbetrag. Vorteil: Beide können kombiniert werden. Die Kreditzusage läuft parallel zum Zuschussantrag. Wir helfen beim KfW-Antrag in ${city.name} kostenlos.`,
+  ];
+
+  const wartungsPool = [
+    `Betriebskosten nach Einbau in ${city.name}: Wartung €150–300/Jahr (jährliche Inspektion empfohlen). Verdichtertausch nach 10–15 Jahren: €2.000–5.000. Seit 01.01.2026 gesetzliche Dichtheitsprüfung für Anlagen mit >3 kg Kältemittel. Gesamtbetriebskosten über 20 Jahre inkl. Strom (${e(wpKosten)}/J.) und Wartung: ca. ${e(Math.round((wpKosten + 250) * 20))}.`,
+    `Was eine WP in ${city.name} wirklich kostet (20 Jahre): Strom ${e(wpKosten)}/Jahr, Wartung ca. €200/Jahr, Verdichter nach 12–15 Jahren ca. €3.500 → Gesamtbetriebskosten ca. ${e(Math.round((wpKosten + 200) * 20 + 3500))} über 20 Jahre. Zum Vergleich: Gasheizung ca. ${e(Math.round((wpKosten + 800) * 20))} (ohne CO₂-Preissteigerung). Ersparnis: ca. ${e(Math.round(800 * 20))}.`,
+    `Langzeitkosten WP in ${city.name}: Wartungsvertrag €150–400/J., Verdichter-Reserve nach Jahr 12–15: €2.000–5.000. Wichtig: Seit 2026 jährliche Dichtheitsprüfung bei Anlagen mit mehr als 3 kg Kältemittel gesetzlich vorgeschrieben. Eine Betriebsversicherung (€100–200/Jahr) sichert gegen Ausfälle nach Herstellergarantie ab.`,
+    `Wartungskosten WP ${city.name}: €150–300/Jahr für Jahresinspektion (Kältemittelstand, Ventile, Steuerung, hydraulischer Abgleich-Check). Verdichter: 10–15 Jahre Laufzeit → Austausch €2.000–5.000. Nennleistung-Überprüfung alle 5 Jahre sinnvoll. Wer einen Wartungsvertrag ab Installation abschließt, erhält oft vergünstigte Konditionen und bevorzugte Termine in ${city.bundesland}.`,
+  ];
+
+  const finanzierungPool = [
+    `Wärmepumpe finanzieren in ${city.name}: Keine Sofort-Eigenkapital nötig. KfW-Ergänzungskredit zu 2,8–4,5%, ab ca. €89/Monat auf 10 Jahre bei ${e(Math.round(eigenanteil))} Eigenanteil. Alternative: Ratenkauf über Installateur. Faustregel: Wer aktuell €150+/Monat für Gas zahlt, heizt mit WP günstiger — auch ohne Eigenkapital.`,
+    `WP-Finanzierung für ${city.name}: Der KfW-Ergänzungskredit ermöglicht monatliche Raten ab ca. €100 auf ${e(Math.round(eigenanteil))} Eigenanteil (10 Jahre Laufzeit, 2,8–4,5% Effektivzins). Viele Installateure in ${city.bundesland} bieten eigene Finanzierungsmodelle. Wichtig: Die monatliche Finanzierungsrate liegt oft unter der aktuellen Gasrechnung.`,
+    `Heizung tauschen ohne Eigenkapital in ${city.name}: KfW-Kombination macht's möglich. Zuschuss: bis €21.000 sofort abziehen. Restbetrag: KfW-Kredit zu günstigen Konditionen. Bei ${e(Math.round(eigenanteil))} Eigenanteil und 10 Jahren Laufzeit: ca. €100–120/Monat. Aktuelle Gaskosten in ${city.name} bei ${city.gaspreis} ct/kWh oft höher — WP lohnt sich ab Tag 1.`,
+    `Finanzierungsoptionen in ${city.name}: (1) KfW-Ergänzungskredit: bis €150.000, 2,8–4,5%, bis 30 Jahre Laufzeit. (2) Installateurfinanzierung: oft 0%-Finanzierung im ersten Jahr. (3) Eigenkapital + maximaler Zuschuss: schnellste Amortisation. Unser kostenloser Finanzierungs-Check zeigt, welche Option für Ihr Budget in ${city.bundesland} am sinnvollsten ist.`,
+  ];
+
+  return {
+    gegReform:      gegReformPool[h(99)],
+    laerm10db:      laerm10dbPool[h(100)],
+    steuerAbsetz:   steuerAbsetzPool[h(101)],
+    kfwKredit:      kfwKreditPool[h(102)],
+    wartungskosten: wartungsPool[h(103)],
+    finanzierung:   finanzierungPool[h(104)],
+  };
+}
