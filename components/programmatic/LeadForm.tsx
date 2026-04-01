@@ -265,6 +265,10 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
               <p className="text-wp-text3 text-xs text-center mt-3">
                 🔒 Ihre Daten werden nicht ohne Zustimmung weitergegeben · DSGVO-konform
               </p>
+              <div className="mt-3 pt-3 border-t border-wp-border text-center">
+                <p className="text-wp-text3 text-xs mb-1.5">Oder direkt anrufen:</p>
+                <a href="tel:+4915563566199" className="inline-flex items-center gap-2 text-sm font-semibold text-wp-green hover:text-green-800 transition-colors">📞 +49 15563 566199</a>
+              </div>
             </motion.div>
           )}
 
