@@ -136,7 +136,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
           {/* Beratungsthemen */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Was deckt die Beratung ab? — Themenübersicht
+              {[`Was deckt unsere WP-Beratung für ${city.name} ab?`,`Themenübersicht: Was besprechen wir für Ihr Haus in ${city.name}?`,`Diese Themen klären wir für ${city.name} kostenlos`,`Beratungsumfang ${city.name} — alle Themen im Überblick`][cityHash(city,4,310)]}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {THEMEN.map((t, i) => (
@@ -152,7 +152,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
           {/* Checkliste */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Checkliste Erstgespräch — was Sie mitbringen sollten
+              {[`Erstgespräch in ${city.name} — gut vorbereitet`,`Was hilft uns beim Erstgespräch für Ihr Haus in ${city.name}?`,`Checkliste Erstgespräch ${city.name}: Diese Infos helfen`,`Vorbereitung Erstgespräch ${city.name} — so geht es schneller`][cityHash(city,4,311)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">

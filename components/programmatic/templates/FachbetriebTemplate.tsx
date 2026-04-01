@@ -13,7 +13,6 @@ import AuthorBox from '@/components/programmatic/AuthorBox';
 const IMG = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 
 /* KRITERIEN moved inside component */
-const KRITERIEN_PLACEHOLDER = [];
 
 /* ANGEBOT_CHECKLISTE moved inside component */
 

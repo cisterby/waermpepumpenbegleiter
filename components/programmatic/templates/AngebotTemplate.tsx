@@ -110,7 +110,7 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Checkliste: Was muss im WP-Angebot stehen?
+              {[`Checkliste: Was muss im WP-Angebot in ${city.name} stehen?`,`Was gehört in jedes seriöse Angebot in ${city.name}?`,`Pflichtpunkte im WP-Angebot — Checkliste für ${city.name}`,`WP-Angebot ${city.name}: Diese Punkte müssen drinstehen`][cityHash(city,4,300)]}
             </h2>
             <div className="bg-white border border-wp-border rounded-xl overflow-hidden shadow-wp-sm">
               <table className="w-full text-sm">
@@ -134,7 +134,7 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              5 rote Flaggen im WP-Angebot — sofort ablehnen
+              {[`5 rote Flaggen beim WP-Angebot in ${city.name}`,`Warnsignale: Diese Angebote in ${city.name} sofort ablehnen`,`Schlechte WP-Angebote erkennen — 5 Signale in ${city.name}`,`Diese 5 Mängel im Angebot kosten Eigentümer in ${city.name} teuer`][cityHash(city,4,301)]}
             </h2>
             <div className="space-y-3">
               {ROTE_FLAGGEN.map((f,i)=>(

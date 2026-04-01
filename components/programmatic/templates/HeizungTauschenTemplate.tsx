@@ -109,7 +109,7 @@ export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, ja
 
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-5">
-              Wann ist der Tausch Pflicht?
+              {[`Wann ist der Heizungstausch in ${city.name} Pflicht?`,`GEG-Pflicht ${city.name}: Wann müssen Sie handeln?`,`Ab wann gilt die Tauschpflicht für Heizungen in ${city.name}?`,`Heizungstausch ${city.name}: Diese Fristen gelten`][cityHash(city,4,320)]}
             </h2>
             <div className="space-y-3">
               {WANN_PFLICHT.map((w,i)=>(

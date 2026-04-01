@@ -158,7 +158,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
           {/* Angebotsvergleich */}
           <div>
             <h2 className="font-heading font-bold text-wp-text text-2xl mb-4">
-              Angebotsvergleich: Was muss drinstehen?
+              {[`Angebotsvergleich: Was muss in ${city.name} drinstehen?`,`Welche Positionen gehören in jedes seriöse Angebot in ${city.name}?`,`WP-Angebot ${city.name} — Pflichtpositionen im Überblick`,`Angebotscheck ${city.name}: Das muss enthalten sein`][cityHash(city,4,302)]}
             </h2>
             <div className="space-y-2">
               {ANGEBOTSVERGLEICH.map((a, i) => (

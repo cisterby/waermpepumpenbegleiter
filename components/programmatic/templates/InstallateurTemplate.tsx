@@ -243,11 +243,14 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               </div>
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
                 <p className="font-heading font-bold text-amber-800 mb-2">⚠️ Fehler 2: Unvollständige Angebote</p>
-                <p className="text-amber-700 text-sm leading-relaxed">
-                  Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Wärmemengenzähler (neu 2026, KfW-Pflicht),
-                  Elektroinstallation (€500–1.500) und Fundament/Aufstellung (€300–800) werden oft nicht ausgewiesen —
-                  sind aber reale Kosten. Nur mit vollständigen Positionen sind Angebote wirklich vergleichbar.
-                </p>
+                <p className="text-wp-text2 text-sm leading-relaxed mb-3">
+                {[
+                  `Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Wärmemengenzähler (ab 2026 KfW-Pflicht), Elektroinstallation (€500–1.500) — diese Positionen fehlen in vielen Angeboten in ${city.name} und werden nachträglich extra berechnet.`,
+                  `In ${city.name} oft vergessen: Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Starkstrom-Kreis (€500–1.500) und Wärmemengenzähler (€300–600, ab 2026 KfW-Pflicht). Auf vollständige Ausweisungen im Angebot bestehen.`,
+                  `KfW-Pflichtpositionen die viele Betriebe in ${city.name} weglassen: Hydraulischer Abgleich (€500–1.500) und Wärmemengenzähler (€300–600 neu 2026). Beide sind Voraussetzung für den BEG-Verwendungsnachweis.`,
+                  `Für ${city.name}: Ohne Hydraulischen Abgleich (€500–1.500) und Wärmemengenzähler (€300–600) wird der KfW-Verwendungsnachweis abgelehnt. Diese Positionen müssen im Angebot ausgewiesen sein.`,
+                ][cityHash(city, 4, 360)]}
+              </p>
               </div>
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
                 <p className="font-heading font-bold text-amber-800 mb-2">⚠️ Fehler 3: Keine Heizlastberechnung</p>
@@ -274,7 +277,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
           <div id="checkliste">
             <p className="text-wp-green text-xs font-bold uppercase tracking-widest mb-2">Vollständiges Angebot</p>
             <h2 className="font-heading font-bold text-wp-text mb-6" style={{ fontSize: 'clamp(22px,2.8vw,36px)' }}>
-              Checkliste: Was ein Angebot enthalten muss
+              {[`Checkliste: Was ein WP-Angebot in ${city.name} enthalten muss`,`Vollständiges Angebot in ${city.name} — diese Punkte prüfen`,`WP-Angebotscheck für ${city.name} — darauf achten`,`Was muss drinstehen? Prüfliste für Angebote in ${city.name}`][cityHash(city,4,330)]}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="relative rounded-2xl overflow-hidden h-48 sm:h-full min-h-48">

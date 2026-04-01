@@ -88,7 +88,14 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
       content: (
         <div className="space-y-2 text-sm text-wp-text2">
           <p>{isUrgent ? `⚠️ Als Großstadt über 100.000 Einwohner gilt in ${city.name} die 65%-EE-Pflicht ab ${gegFristFormatted}.` : `In ${city.name} gilt die 65%-EE-Pflicht ab ${gegFristFormatted}. Frühzeitiges Handeln sichert volle Förderung.`}</p>
-          <p>Eine Wärmepumpe ist die einzige Heiztechnologie, die GEG-konform ist, bis 70% KfW-gefördert wird und keine weiteren Auflagen erfordert.</p>
+          <p className="text-wp-text2 text-base leading-relaxed">
+                {[
+                  `In ${city.name} ist die Wärmepumpe die einzige Heiztechnologie, die GEG-konform ist, bis 70% KfW-gefördert wird, CO₂-Kosten eliminiert und die Immobilie langfristig wertstabil hält.`,
+                  `Für Hausbesitzer in ${city.name}: Die WP ist GEG-konform ohne Einschränkungen, bis 70% KfW-gefördert, unabhängig von steigenden CO₂-Preisen und wertsteigernd für Ihre Immobilie.`,
+                  `Die WP ist in ${city.name} die einzige Heiztechnologie ohne Wenn und Aber: GEG-konform, KfW-gefördert bis 70%, kein CO₂-Aufschlag, langfristig sichere Investition.`,
+                  `In ${city.name} kombiniert die Wärmepumpe alle Vorteile: volle GEG-Konformität, KfW-Förderung bis 70% (max. €21.000), keine CO₂-Preis-Abhängigkeit und ${fmtEuro(calc.ersparnis)}/Jahr Betriebsersparnis.`,
+                ][cityHash(city, 4, 350)]}
+              </p>
         </div>
       ),
     },
@@ -112,7 +119,14 @@ function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRou
       content: (
         <div className="space-y-2 text-sm text-wp-text2">
           <p>Mit einem Individuellen Sanierungsfahrplan (iSFP) erhalten Sie +5% zusätzliche KfW-Förderung. Bei €25.000 WP-Investition = +{Math.round(25000 * 0.05).toLocaleString('de-DE')} € mehr Zuschuss.</p>
-          <p>Der iSFP selbst kostet €300–700 — und wird zu 80% von BAFA gefördert. Eigenanteil: ca. €60–140. Damit finanziert er sich von selbst.</p>
+          <p className="text-wp-text2 text-base leading-relaxed">
+                {[
+                  `Der iSFP kostet in ${city.name} €300–700 — und wird zu 80% von BAFA gefördert (Eigenanteil ca. €60–140). Mit iSFP gibt es +5% KfW-Bonus: bei €25.000 Invest = +€1.250 extra Förderung. Lohnt sich fast immer.`,
+                  `iSFP in ${city.name}: Eigenanteil nur ca. €60–140 (80% BAFA-gefördert). Der +5% iSFP-Bonus bringt bei typischen Vollkosten von €20.000–25.000 eine Zusatzförderung von €1.000–1.250 — der iSFP finanziert sich selbst.`,
+                  `Mit iSFP erhalten Eigenheimbesitzer in ${city.name} +5% KfW-Bonus zusätzlich. Bei ${fmtEuro(Math.round(25000 * 0.05))} Mehrförderung auf €25.000 Invest ist der iSFP-Eigenanteil von ~€120 klar rentabel.`,
+                  `BAFA-Energieberatung mit iSFP in ${city.name}: Kosten €300–700, davon 80% BAFA-gefördert. Ergebnis: +5% KfW-Bonus auf alle WP-Maßnahmen. Gültig 15 Jahre — auch für spätere Sanierungsschritte nutzbar.`,
+                ][cityHash(city, 4, 351)]}
+              </p>
         </div>
       ),
     },

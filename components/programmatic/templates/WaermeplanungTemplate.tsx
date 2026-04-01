@@ -170,7 +170,14 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
                 <div key={i}><div className="text-wp-text3 text-xs">{l}</div><div className="font-bold text-wp-text">{v}</div></div>
               ))}
             </div>
-            <p className="text-sm text-wp-text2">Die KfW-Förderung gilt jetzt unabhängig vom kommunalen Wärmeplan. Nach Vorliegen des Plans könnten Konditionen angepasst werden — wer jetzt handelt ist auf der sicheren Seite.</p>
+            <p className="text-wp-text2 text-sm leading-relaxed mb-4">
+                {[
+                  `Die KfW-Förderung gilt in ${city.name} unabhängig vom kommunalen Wärmeplan. Nach Vorliegen des Plans könnten KfW-Konditionen angepasst werden — wer jetzt handelt, sichert sich die aktuell attraktiven Fördersätze.`,
+                  `In ${city.name} gilt: KfW-Förderung beantragen und WP installieren ist heute möglich — ohne auf den kommunalen Wärmeplan warten zu müssen. Bei Vorliegen des Plans könnten sich Bedingungen ändern.`,
+                  `Für Hausbesitzer in ${city.name}: Die aktuelle KfW-Förderung (bis 70%) gilt sofort und unabhängig vom Wärmeplan. Frühzeitig handeln sichert die besten Konditionen.`,
+                  `Der kommunale Wärmeplan von ${city.name} ändert nichts an Ihrer KfW-Berechtigung heute. Experten empfehlen, nicht zu warten — Förderkonditionen können sich ab 2026 ändern.`,
+                ][cityHash(city, 4, 340)]}
+              </p>
           </div>
 
           {faqs.length > 0 && (
