@@ -40,12 +40,6 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
     { aussentemp: '+7°C', cop: (jaz + 0.3).toFixed(1)+'–'+(jaz + 0.7).toFixed(1), note: 'DIN-Nennpunkt' },
     { aussentemp: `+${city.avgTemp}°C (Ø ${city.name})`, cop: (jaz + 0.7).toFixed(1)+'–'+(jaz + 1.2).toFixed(1), note: 'JAZ-Basis-Betriebspunkt' },
     { aussentemp: '+15°C', cop: (jaz + 1.2).toFixed(1)+'–'+(jaz + 1.8).toFixed(1), note: 'Übergangszeit — sehr effizient' },
-  ]; `${city.normAussentemp}°C (Normaußentemp. ${city.name})`, cop: (jaz - 1.0).toFixed(1) + '–' + (jaz - 0.5).toFixed(1), note: 'Kältester Auslegungspunkt' },
-    { temp: '-10°C', cop: (jaz - 0.8).toFixed(1) + '–' + (jaz - 0.3).toFixed(1), note: 'Sehr kalt' },
-    { temp: '0°C', cop: jaz.toFixed(1) + '–' + (jaz + 0.4).toFixed(1), note: 'Häufig in Winter' },
-    { temp: '7°C (DIN Nennpunkt)', cop: (jaz + 0.3).toFixed(1) + '–' + (jaz + 0.7).toFixed(1), note: 'Normprüfpunkt' },
-    { temp: `${city.avgTemp}°C (Jahresmittel ${city.name})`, cop: (jaz + 0.5).toFixed(1) + '–' + (jaz + 1.0).toFixed(1), note: 'Jahresarbeitszahl-Basis' },
-    { temp: '20°C (Übergang)', cop: (jaz + 1.2).toFixed(1) + '–' + (jaz + 1.8).toFixed(1), note: 'Sehr effizient' },
   ];
   const WW_INTEGRATION = [
     { system: 'Integrierter WW-Speicher', kosten: '0 € extra', vorteil: `Bestes System für ${city.name} — JAZ ${(jaz-0.1).toFixed(1)} inkl. WW`, nachteil: 'Kombispeicher nötig' },

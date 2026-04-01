@@ -41,9 +41,6 @@ export default function AngebotTemplate({ city, keyword, calc, foerd, jaz, nearb
     { frage: `Wie viele Angebote in ${city.name} einholen?`, antwort: `Mindestens 3 — in ${city.name} typisch 20–40% Preisunterschied. Wir holen sie in 48h ein.` },
     { frage: 'Was muss im Angebot stehen?', antwort: `Heizlastberechnung DIN EN 12831, hydraulischer Abgleich (KfW-Pflicht), alle Positionen separat ausgewiesen.` },
     { frage: `Wie lange gilt das Angebot in ${city.name}?`, antwort: `Typisch 30 Tage — Preise in ${city.bundesland} können bei Engpässen steigen. Zügig entscheiden.` },
-  ]; in ${city.name}?', antwort: `Mind. 3 — in ${city.name} sind Preisunterschiede von 20–40% bei gleicher Leistung normal.` },
-    { frage: 'Wie lange warten auf Angebote?', antwort: `Gute Betriebe in ${city.name} liefern in 3–5 Werktagen. Wir beschleunigen das auf 48h.` },
-    { frage: 'Was tun bei Billig-Angebot?', antwort: 'Prüfen ob alle Pflichtpositionen vorhanden sind — fehlt eine, ist es kein echtes Vergleichsangebot.' },
   ];
 
   const ROTE_FLAGGEN = [

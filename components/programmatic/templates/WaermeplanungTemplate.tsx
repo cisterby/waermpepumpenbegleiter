@@ -30,11 +30,6 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
     { frist: '4 Wo. vor Auftrag', gruppe: 'KfW-Antrag stellen', status: 'Zwingend vor Auftragserteilung — kein Nachantrag möglich' },
     { frist: '2026–2030', gruppe: 'CO₂-Preis steigt', status: 'ETS2: von €55/t (2026) auf voraussichtlich €100+/t (2030)' },
     { frist: 'Ab 2030', gruppe: 'Förderlage unsicher', status: 'KfW-Konditionen können sich ändern — jetzt sichern' },
-  ];.split('-').reverse().join('.'), event: `GEG-Pflicht in ${city.name}`, detail: `Ab diesem Datum keine fossile Heizung mehr ohne 65% EE-Anteil in ${city.name}` },
-    { datum: 'Jetzt', event: 'Optimal: WP planen', detail: `8–12 Wochen Vorlauf für KfW-Antrag + Installateur in ${city.name}` },
-    { datum: '4 Wochen vor Auftrag', event: 'KfW-Antrag stellen', detail: 'Zwingend vor Auftragserteilung — kein Nachantrag' },
-    { datum: '2026–2030', event: 'CO₂-Preis steigt', detail: 'ETS2: von €55/t (2026) auf voraussichtlich €100+/t (2030)' },
-    { datum: '2030', event: 'KfW-Konditionen unklar', detail: 'Förderansätze können sich ändern — jetzt sichern' },
   ];
   const WAS_BEDEUTET = [
     { frage: `Was bedeutet Wärmeplanung für ${city.name}?`, antwort: `Die kommunale Wärmeplanung zeigt, welche Gebiete in ${city.name} zukünftig Fernwärme bekommen. In ${100 - city.fernwaermeQuote}% der Gebäude ist die WP dauerhaft die richtige Lösung.` },
