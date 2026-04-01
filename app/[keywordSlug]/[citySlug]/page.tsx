@@ -139,6 +139,29 @@ export default function CityKeywordPage({ params }: Props) {
   };
 
 
+
+  // Product schema for kaufen/kosten keywords (shows price in SERPs)
+  const productSchema = ['waermepumpe-kaufen','waermepumpe-kosten','waermepumpe-preise'].includes(keyword.slug) ? {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `Wärmepumpe für ${city.name}`,
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    brand: { '@type': 'Brand', name: 'Wärmepumpenbegleiter' },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'EUR',
+      lowPrice: Math.round(foerd.eigenanteil * 0.85),
+      highPrice: Math.round(foerd.eigenanteil * 1.4),
+      offerCount: 3,
+      availability: 'https://schema.org/InStock',
+      areaServed: { '@type': 'City', name: city.name },
+    },
+    additionalProperty: [
+      { '@type': 'PropertyValue', name: 'KfW-Förderquote', value: `${foerd.gesamtSatz}%` },
+      { '@type': 'PropertyValue', name: 'JAZ', value: String(jaz) },
+      { '@type': 'PropertyValue', name: 'Betriebskosten', value: `${calc.wpKosten}€/Jahr` },
+    ],
+  } : null;
   // HowTo Schema — für Ablauf-Keywords
   const HOWTO_KEYWORDS: Record<string, { name: string; steps: string[] }> = {
     'waermepumpe-installation': {
@@ -187,11 +210,21 @@ export default function CityKeywordPage({ params }: Props) {
     '@type': 'HowTo',
     name: howToData.name,
     description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    image: {
+      '@type': 'ImageObject',
+      url: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200`,
+      width: 1200,
+      height: 630,
+    },
     step: howToData.steps.map((text, i) => ({
       '@type': 'HowToStep',
       position: i + 1,
       name: text.split(' — ')[0] ?? text,
       text,
+      image: {
+        '@type': 'ImageObject',
+        url: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800`,
+      },
     })),
     estimatedCost: {
       '@type': 'MonetaryAmount',
@@ -207,6 +240,7 @@ export default function CityKeywordPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
+      {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
       <CityPageRouter
         city={city}
         keyword={keyword}
