@@ -315,7 +315,7 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
-        ?</h2>
+        </h2>
         <div className="space-y-4">
 
           {/* GEG-Reform */}

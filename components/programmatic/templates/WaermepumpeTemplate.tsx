@@ -70,6 +70,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   return (
+    <>
     <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
 
       {/* Header */}
@@ -294,7 +295,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-heading font-bold text-wp-text text-xl mb-6">
           Was sich 2026 geändert hat — und was das für {city.name} bedeutet
-        ?</h2>
+        </h2>
         <div className="space-y-4">
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">GEG-Reform 2026</p>
@@ -322,6 +323,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
           </div>
         </div>
       </div>
+    </>
   );
 }
 
