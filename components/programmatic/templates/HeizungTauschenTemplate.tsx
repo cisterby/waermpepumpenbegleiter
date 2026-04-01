@@ -32,11 +32,6 @@ export default function HeizungTauschenTemplate({ city, keyword, calc, foerd, ja
     { typ: 'Pelletheizung', kosten: fmtEuro(15000)+'–'+fmtEuro(25000), kfw: '45%', betrieb: `ca. ${fmtEuro(Math.round(calc.wpKosten * 1.3))}/J.`, geg: '✅ Ja', empfehlung: `Falls kein Platz für WP in ${city.name}` },
     { typ: 'Fernwärme', kosten: fmtEuro(3000)+'–'+fmtEuro(8000), kfw: '30%', betrieb: `Variabel — ${city.fernwaermeQuote}% in ${city.name}`, geg: '✅ Bedingt', empfehlung: `Nur wenn Netz in ${city.name}` },
     { typ: 'Neue Gasheizung', kosten: fmtEuro(5000)+'–'+fmtEuro(10000), kfw: '0%', betrieb: `${fmtEuro(calc.wpKosten + calc.ersparnis)}/J.`, geg: '❌ Nein', empfehlung: 'Nicht empfohlen 2026+' },
-  ];, kosten: fmtEuro(18000)+'–'+fmtEuro(28000), kfw: `${foerd.gesamtSatz}%`, betrieb: `${fmtEuro(calc.wpKosten)}/J. in ${city.name}`, geg: '✅ Ja', empfehlung: 'Beste Wahl 2026+' },
-    { typ: 'Gas-Hybridheizung', kosten: fmtEuro(8000)+'–'+fmtEuro(15000), kfw: '30%', betrieb: `${fmtEuro(Math.round((calc.wpKosten + calc.ersparnis) * 0.7))}/J. + CO₂-Kosten`, geg: '⚠️ Eingeschränkt', empfehlung: 'Übergangslösung' },
-    { typ: 'Pelletheizung', kosten: fmtEuro(15000)+'–'+fmtEuro(25000), kfw: '45%', betrieb: `ca. ${fmtEuro(Math.round(calc.wpKosten * 1.3))}/J.`, geg: '✅ Ja', empfehlung: `Falls kein Platz für WP in ${city.name}` },
-    { typ: 'Fernwärme', kosten: fmtEuro(3000)+'–'+fmtEuro(8000), kfw: '30%', betrieb: `Variabel — ${city.fernwaermeQuote}% Netzabdeckung in ${city.name}`, geg: '✅ Bedingt', empfehlung: `Nur wenn Anschluss in ${city.name} vorhanden` },
-    { typ: 'Neue Gasheizung', kosten: fmtEuro(5000)+'–'+fmtEuro(10000), kfw: '0%', betrieb: `${fmtEuro(wpKosten + calc.ersparnis)}/J. + CO₂-Aufschlag`, geg: '❌ Nein (solo)', empfehlung: 'Nicht empfohlen 2026+' },
   ];
 
   const WANN_PFLICHT = [

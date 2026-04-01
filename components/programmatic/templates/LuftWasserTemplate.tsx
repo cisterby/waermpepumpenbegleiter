@@ -31,11 +31,6 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
     { kriterium: 'Leitungsverluste', monoblock: 'Leicht höher bei langen Wegen', split: 'Gering', besser: 'Split' },
     { kriterium: 'Schall', monoblock: `Alles außen — besser für dichte Bebauung in ${city.name}`, split: 'Innengerät trägt Schall', besser: 'Monoblock' },
     { kriterium: 'Marktanteil', monoblock: '70% (Trend)', split: '30% (rückläufig)', besser: 'Monoblock' },
-  ];, mono: 'Ja — nur Wasser führt ins Haus', split: 'Nein — Kältemittelleitungen ins Gebäude' },
-    { kriterium: 'Installation', mono: `Einfacher in ${city.name} — kein F-Gas innen`, split: 'F-Gas-Kälteschlosser Pflicht (EU 517/2014)' },
-    { kriterium: 'Leitungsverluste', mono: `Leicht höher bei langen Wegen in ${city.name}`, split: 'Gering — Wärmetauscher innen' },
-    { kriterium: 'Schall', mono: `Alles außen — besser für enge Bebauung in ${city.name}`, split: 'Innengerät trägt Schall — Körperschallschutz wichtig' },
-    { kriterium: 'Marktanteil', mono: '70% (Trend)', split: '30% (rückläufig)' },
   ];
   const COP_BEI_TEMP = [
     { aussentemp: `${city.normAussentemp}°C (Norm ${city.name})`, cop: (jaz - 1.0).toFixed(1)+'–'+(jaz - 0.5).toFixed(1), note: 'Kältester Auslegungspunkt' },
@@ -57,10 +52,6 @@ export default function LuftWasserTemplate({ city, keyword, calc, foerd, jaz, ne
     { system: 'Externer WW-Speicher', kosten: '€800–2.500', vorteil: `Flexibel — JAZ ${jaz.toFixed(1)} separat optimierbar`, nachteil: 'Mehr Platzbedarf' },
     { system: 'Trinkwasser-WP parallel', kosten: '€800–1.500', vorteil: 'Unabhängig von Heizungs-WP', nachteil: `Zweites Gerät — nur bei hohem WW-Bedarf in ${city.name}` },
     { system: 'Elektrischer Heizstab (Backup)', kosten: '€200–400', vorteil: 'Legionellenschutz-Aufheizung', nachteil: 'Stromintensiv — nur als Backup' },
-  ];, kosten: '0 € extra', effekt: `Bestes System für ${city.name} — JAZ ${(jaz - 0.1).toFixed(1)} inkl. WW`, note: 'In Kombispeicher integriert' },
-    { methode: 'Externer WW-Speicher', kosten: '€800–2.500', effekt: `Flexibel — JAZ ${jaz.toFixed(1)} separat optimierbar`, note: 'Empfohlen wenn Platz vorhanden' },
-    { methode: 'Trinkwasser-WP parallel', kosten: '€800–1.500', effekt: 'Unabhängig von Heizungs-WP', note: `In ${city.name} sinnvoll bei hohem WW-Bedarf` },
-    { methode: 'Elektrischer Heizstab (Backup)', kosten: '€200–400', effekt: 'Legionellenschutz-Aufheizung', note: 'Pflicht in allen WP-Anlagen' },
   ];
   const coldDays = city.normAussentemp <= -12 ? '15–25' : city.normAussentemp <= -8 ? '8–15' : '3–8';
 

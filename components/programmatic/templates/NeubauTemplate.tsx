@@ -30,21 +30,12 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
     { titel: 'QP-Grenzwert einhalten', text: `Wärmepumpe senkt Primärenergiebedarf in ${city.name} deutlich unter den GEG-Grenzwert` },
     { titel: 'Lüftungsanlage empfohlen', text: 'Ab Luftdichtigkeit n50 < 0,6 empfohlen — bei gut gedämmtem Neubau Standard' },
     { titel: 'Anlagenbuch & Protokolle', text: 'F-Gas, Hydraulik, Inbetriebnahme für Bauabnahme und KfW-Nachweis' },
-  ];, note: `WP erfüllt das in ${city.name} immer — JAZ ${jaz} → weit über 65% EE-Anteil` },
-    { req: 'GEG §71 Neubau', note: 'Seit 2024 gilt 65%-EE-Pflicht für alle neuen Heizungen' },
-    { req: 'QP-Grenzwert', note: `Wärmepumpe senkt Primärenergiebedarf in ${city.name} deutlich unter GEG-Grenzwert` },
-    { req: 'Lüftungsanlage bei guter Dämmung', note: 'Ab Luftdichtigkeit n50 < 0,6 empfohlen' },
-    { req: 'Anlagenbuch & Protokolle', note: 'F-Gas, Hydraulik, Inbetriebnahme für Bauabnahme' },
   ];
   const NEUBAU_PLANUNG = [
     { phase: 'Bauplanung (vor Baugenehmigung)', items: [`WP-Typ und Leistung in Haustechnikplanung für ${city.name}`, 'Fußbodenheizung mit Verteiler einplanen', 'Außeneinheit-Position und Schallabstand festlegen'] },
     { phase: 'KfW-Antrag (vor Baubeginn!)', items: [`BEG WG Programm 297 für Neubau — bis ${foerd.gesamtSatz}% in ${city.name}`, 'Antrag zwingend vor Baubeginn stellen', 'Fachunternehmen muss KfW-LuL-registriert sein'] },
     { phase: 'Einbau (Rohbauphase)', items: ['Fußbodenheizung + Verteilsystem parallel zur Betondecke', 'Kältemittelleitungen vorinstallieren', 'Starkstromkreis 3×16A vorbereiten'] },
     { phase: `WP-Montage (Ausbauphase)`, items: [`Außeneinheit aufstellen in ${city.name} — Schallabstand prüfen`, 'Inneneinheit / Pufferspeicher installieren', 'Inbetriebnahme + KfW-Protokoll'] },
-  ];, was: `WP-Typ und Leistung in Haustechnikplanung — in ${city.name} empfehlen wir Luft-WP mit FBH` },
-    { phase: 'KfW-Antrag (vor Baubeginn!)', was: `BEG WG Programm 297 für Neubau — in ${city.name} bis ${foerd.gesamtSatz}% gefördert` },
-    { phase: 'Einbau (Rohbauphase)', was: 'Fußbodenheizung + Verteilsystem — parallel zur Betondecke' },
-    { phase: 'WP-Montage (Ausbau)', was: `Außeneinheit aufstellen in ${city.name} — Schallabstand prüfen` },
   ];
   const VERGLEICH_HEIZUNG = [
     { typ: 'Wärmepumpe (Luft/Sole)', kosten: fmtEuro(18000)+'–'+fmtEuro(28000), kfw: `${foerd.gesamtSatz}%`, betrieb: fmtEuro(calc.wpKosten)+'/J.', langfrist: 'Zukunftssicher' },
@@ -52,11 +43,6 @@ export default function NeubauTemplate({ city, keyword, calc, foerd, jaz, nearby
     { typ: 'Pellets', kosten: fmtEuro(15000)+'–'+fmtEuro(25000), kfw: '45%', betrieb: fmtEuro(Math.round(calc.wpKosten*1.35))+'/J.', langfrist: 'Lagerung nötig' },
     { typ: 'Reine Gasheizung', kosten: fmtEuro(5000)+'–'+fmtEuro(10000), kfw: '0%', betrieb: fmtEuro(calc.wpKosten+calc.ersparnis)+'/J.', langfrist: `Nicht empfohlen in ${city.name}` },
     { typ: 'Fernwärme', kosten: fmtEuro(3000)+'–'+fmtEuro(8000), kfw: '30%', betrieb: `Variabel — ${city.fernwaermeQuote}% in ${city.name}`, langfrist: `Nur wenn Netz in ${city.name}` },
-  ];, geg: '✅ Ja', kfw: `${foerd.gesamtSatz}%`, betrieb: fmtEuro(calc.wpKosten)+'/J.', future: 'Zukunftssicher' },
-    { typ: 'Gas-WP-Hybrid', geg: '✅ Bedingt', kfw: '30%', betrieb: fmtEuro(Math.round(calc.wpKosten * 1.3))+'/J.', future: 'CO₂-Risiko' },
-    { typ: 'Pellets', geg: '✅ Ja', kfw: '45%', betrieb: `ca. ${fmtEuro(Math.round(calc.wpKosten * 1.35))}/J.`, future: 'Lagerung nötig' },
-    { typ: 'Reine Gasheizung', geg: '❌ Nein', kfw: '0%', betrieb: fmtEuro(calc.wpKosten + calc.ersparnis)+'/J.', future: `Nicht empfohlen in ${city.name}` },
-    { typ: 'Fernwärme', geg: '✅ Bedingt', kfw: '30%', betrieb: `Variabel — ${city.fernwaermeQuote}% in ${city.name}`, future: `Nur wenn Netz in ${city.name}` },
   ];
   const jazNeubau = Math.min(jaz + 0.5, 4.8).toFixed(1);
 

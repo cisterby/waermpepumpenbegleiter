@@ -29,10 +29,6 @@ export default function AnbieterTemplate({ city, keyword, calc, foerd, jaz, near
     { icon: '🔧', typ: 'Regionaler WP-Spezialist', vorteile: `WP-Erfahrung in ${city.bundesland}, dediziertes Team`, nachteile: 'Höhere Auslastung in der Saison', kfw: true },
     { icon: '🌐', typ: 'Bundesweiter Online-Anbieter', vorteile: 'Oft günstige Gerätepreise', nachteile: `Kein lokaler Service in ${city.name} — bei Störungen langsam`, kfw: false },
     { icon: '🏭', typ: 'Hersteller-Direktvertrieb', vorteile: 'Maximale Herstellerunterstützung', nachteile: 'Nicht herstellerunabhängig — nur eine Marke', kfw: false },
-  ];, typ: 'Lokaler SHK-Meisterbetrieb', vorteile: `Kennt ${city.name} und ${city.bundesland} — kurze Anfahrt, persönlicher Service`, nachteile: 'Evtl. kleinere Modellauswahl' },
-    { icon: '🔧', typ: 'Regionaler WP-Spezialist', vorteile: `WP-Erfahrung in ${city.bundesland}, dediziertes Team`, nachteile: 'Höhere Auslastung in der Saison' },
-    { icon: '🌐', typ: 'Bundesweiter Online-Anbieter', vorteile: 'Oft günstige Gerätepreise', nachteile: `Kein lokaler Service in ${city.name} — bei Störungen langsam` },
-    { icon: '🏭', typ: 'Hersteller-Direktvertrieb', vorteile: 'Maximale Herstellerunterstützung', nachteile: 'Nicht herstellerunabhängig — nur eine Marke' },
   ];
   const ANBIETER_KRITERIEN = [
     { kriterium: 'KfW-LuL-Registrierung', pflicht: true, warum: `Pflicht für KfW-Förderung in ${city.name} — ohne diese kein BEG-Zuschuss möglich` },

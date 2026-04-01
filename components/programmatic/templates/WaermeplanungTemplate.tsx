@@ -40,9 +40,6 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
     { frage: `Was bedeutet Wärmeplanung für ${city.name}?`, antwort: `Die kommunale Wärmeplanung zeigt, welche Gebiete in ${city.name} zukünftig Fernwärme bekommen. In ${100 - city.fernwaermeQuote}% der Gebäude ist die WP dauerhaft die richtige Lösung.` },
     { frage: 'Muss ich auf den Plan warten?', antwort: `Nein — die KfW-Förderung gilt unabhängig vom kommunalen Wärmeplan. In ${city.name} können Sie jetzt fördergerecht installieren.` },
     { frage: 'Was wenn mein Haus im Fernwärmegebiet liegt?', antwort: `Fernwärmequote ${city.name}: ${city.fernwaermeQuote}%. Für die restlichen ${100 - city.fernwaermeQuote}% gilt: WP ist die klare Empfehlung.` },
-  ];, antwort: `Die kommunale Wärmeplanung zeigt, welche Gebiete in ${city.name} zukünftig Fernwärme bekommen. In ${100 - city.fernwaermeQuote}% der Gebäude ist die WP dauerhaft die richtige Lösung.` },
-    { frage: 'Muss ich auf den Plan warten?', antwort: `Nein — die KfW-Förderung gilt unabhängig vom kommunalen Wärmeplan. In ${city.name} können Sie jetzt fördergerecht installieren.` },
-    { frage: 'Was wenn mein Haus im Fernwärmegebiet liegt?', antwort: `Fernwärmequote ${city.name}: ${city.fernwaermeQuote}%. Für die restlichen ${100 - city.fernwaermeQuote}% gilt: WP ist die klare Empfehlung.` },
   ];
   const GEG_STADTTYPEN = [
     { typ: 'Großstadt > 100.000 EW', action: city.einwohner >= 100000 ? `⚠️ Gilt für ${city.name}` : '✅ Nicht betroffen', wann: '30.06.2026' },
@@ -50,11 +47,6 @@ export default function WaermeplanungTemplate({ city, keyword, calc, foerd, jaz,
     { typ: 'Kleinstadt / Gemeinde', action: city.einwohner < 10000 ? `⚠️ Gilt für ${city.name}` : '✅ Nicht betroffen', wann: '30.06.2028' },
     { typ: 'Neubau bundesweit', action: '⚠️ Gilt überall', wann: 'Seit 01.01.2024' },
     { typ: 'Defekte Heizung', action: '⚠️ 3 Jahre Übergangsfrist', wann: 'Ab GEG-Frist' },
-  ];, frist: '30.06.2026', gilt: city.einwohner >= 100000 ? `Gilt für ${city.name}` : 'Nicht ' + city.name },
-    { typ: 'Mittelstadt', frist: '30.06.2028', gilt: city.einwohner >= 10000 && city.einwohner < 100000 ? `Gilt für ${city.name}` : '' },
-    { typ: 'Kleinstadt / Gemeinde', frist: '30.06.2028', gilt: city.einwohner < 10000 ? `Gilt für ${city.name}` : '' },
-    { typ: 'Neubau bundesweit', frist: 'Seit 01.01.2024', gilt: 'Gilt überall' },
-    { typ: 'Defekte Heizung', frist: '3 Jahre Übergangsfrist', gilt: 'Gilt überall' },
   ];
   const fristText = city.einwohner >= 100000 ? '30.06.2026' : '30.06.2028';
   const hatGrosstadtFrist = city.einwohner >= 100000;
