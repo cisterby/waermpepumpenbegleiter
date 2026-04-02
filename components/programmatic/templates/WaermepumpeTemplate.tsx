@@ -48,12 +48,16 @@ function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
 }
 
+// ── Type-Aliases ───────────────────────────────────────────────────────────
+type HeizungTyp = "erdgas" | "heizoel" | "nachtspeicher";
+type WpTyp      = "luft" | "sole" | "wasser";
+
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
-  const [heizung,  setHeizung]  = useState("erdgas" as "erdgas" | "heizoel" | "nachtspeicher");
-  const [wpTyp,    setWpTyp]    = useState("luft" as "luft" | "sole" | "wasser");
+  const [heizung,  setHeizung]  = useState<HeizungTyp>("erdgas");
+  const [wpTyp,    setWpTyp]    = useState<WpTyp>("luft");
   const [vorlauf,  setVorlauf]  = useState(35);
   const [selfOcc,  setSelfOcc]  = useState(true);
   const [fossil,   setFossil]   = useState(true);
@@ -131,7 +135,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 ["1979_1994",  "1979–1994",   "~148 kWh/m²"],
                 ["1995_2009",  "1995–2009",   "~101 kWh/m²"],
                 ["2010_plus",  "ab 2010",     "~72 kWh/m²"],
-              ] as const).map(([v, l, sub]) => (
+              ]).map(([v, l, sub]) => (
                 <button key={v} onClick={() => setBaujahr(v)}
                   className={`p-2.5 rounded-xl border-2 text-center transition-all ${
                     baujahr === v
@@ -153,7 +157,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 ["erdgas",        "🔥 Erdgas",       `${city.gaspreis} ct/kWh`],
                 ["heizoel",       "🛢️ Heizöl",        "ca. 11 ct/kWh"],
                 ["nachtspeicher", "⚡ Nachtspeicher", "ca. 28 ct/kWh"],
-              ] as const).map(([v, l, sub]) => (
+              ]).map(([v, l, sub]) => (
                 <button key={v} onClick={() => setHeizung(v as any)}
                   className={`p-3 rounded-xl border-2 text-center transition-all ${
                     heizung === v
@@ -177,7 +181,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 ["luft",   "💨 Luft-Wasser", "92% Marktanteil"],
                 ["sole",   "🌍 Sole-Wasser",  "+5% KfW-Bonus"],
                 ["wasser", "💧 Wasser-Wasser", "+5% KfW-Bonus"],
-              ] as const).map(([v, l, sub]) => (
+              ]).map(([v, l, sub]) => (
                 <button key={v} onClick={() => setWpTyp(v as any)}
                   className={`p-3 rounded-xl border-2 text-center transition-all ${
                     wpTyp === v
@@ -412,9 +416,7 @@ export default function WaermepumpeTemplate({
 
               <div className="flex flex-wrap gap-3 mb-9">
                 <a href="/rechner"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#1B5E37] text-white
-                    font-bold rounded-xl hover:bg-[#154d2c] hover:-translate-y-0.5
-                    transition-all shadow-lg shadow-[#1B5E37]/40 text-base">
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#1B5E37] text-white font-bold rounded-xl hover:bg-[#154d2c] hover:-translate-y-0.5 transition-all shadow-lg shadow-[#1B5E37]/40 text-base">
                   Kosten berechnen <ArrowRight size={18} />
                 </a>
                 <a href="#foerderung"
@@ -450,8 +452,7 @@ export default function WaermepumpeTemplate({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.65, delay: 0.2 }}
               className="hidden lg:flex justify-end">
-              <div className="w-full max-w-[420px] bg-white rounded-2xl overflow-hidden
-                shadow-2xl border border-gray-100">
+              <div className="w-full max-w-[420px] bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                 <div className="relative h-52">
                   <img src={sideImg} alt={`Wärmepumpe ${city.name}`}
                     className="w-full h-full object-cover"
@@ -474,13 +475,11 @@ export default function WaermepumpeTemplate({
                 <div className="p-5">
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {["Herstellerunabhängig", "HWK-geprüft", "KfW-Begleitung"].map(b => (
-                      <span key={b} className="bg-[#E8F5EE] text-[#1B5E37] text-xs font-semibold
-                        px-2.5 py-1 rounded-full">{b}</span>
+                      <span key={b} className="bg-[#E8F5EE] text-[#1B5E37] text-xs font-semibold px-2.5 py-1 rounded-full">{b}</span>
                     ))}
                   </div>
                   <a href="/rechner"
-                    className="block w-full text-center py-3 bg-[#1B5E37] text-white
-                      font-bold rounded-xl hover:bg-[#154d2c] transition-colors text-sm">
+                    className="block w-full text-center py-3 bg-[#1B5E37] text-white font-bold rounded-xl hover:bg-[#154d2c] transition-colors text-sm">
                     Kostenlos Angebot anfordern →
                   </a>
                 </div>
@@ -538,8 +537,7 @@ export default function WaermepumpeTemplate({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}>
-              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold
-                uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 Klimadaten {city.name}
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -630,8 +628,7 @@ export default function WaermepumpeTemplate({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}>
-              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold
-                uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 Kostenrechner
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -651,8 +648,7 @@ export default function WaermepumpeTemplate({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}>
-              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold
-                uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 KfW-Programm 458
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -680,7 +676,7 @@ export default function WaermepumpeTemplate({
                 <strong className="text-red-600">zwingend vor Baubeginn</strong> gestellt werden.
                 {city.bundeslandFoerderung && (
                   <> In {city.bundesland} gibt es zusätzlich das Programm{" "}
-                  <strong>„{city.bundeslandFoerderung}"</strong>
+                  <strong>„{city.bundeslandFoerderung}&quot;</strong>
                   {city.bundeslandFoerderungBetrag ? ` (${city.bundeslandFoerderungBetrag})` : ""}.
                   </>
                 )}
@@ -730,8 +726,7 @@ export default function WaermepumpeTemplate({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}>
-              <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold
-                uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 Häufige Bedenken
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -796,8 +791,7 @@ export default function WaermepumpeTemplate({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}>
-              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold
-                uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 Welche WP passt zu mir?
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -903,7 +897,7 @@ export default function WaermepumpeTemplate({
                 <p className="text-gray-600 text-sm leading-relaxed italic">
                   „Alle Inhalte auf dieser Seite basieren auf aktuellen Klimadaten des DWD für {city.name},
                   KfW-Konditionen Stand März 2026 und BWP-Feldtestdaten zur Jahresarbeitszahl.
-                  Die stadtspezifischen Energiepreise stammen aus der BDEW-Regionalanalyse."
+                  Die stadtspezifischen Energiepreise stammen aus der BDEW-Regionalanalyse.&quot;
                 </p>
                 <p className="text-xs text-gray-400 mt-2">Zuletzt geprüft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
@@ -914,8 +908,7 @@ export default function WaermepumpeTemplate({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}>
-              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold
-                uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
                 FAQ
               </span>
                             {/* H3 Featured Snippet */}
@@ -943,8 +936,7 @@ export default function WaermepumpeTemplate({
                 {nearby.map(n => (
                   <Link key={n.slug}
                     href={`/${keyword.slug}/${n.slug}`}
-                    className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl text-sm font-medium
-                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-all group">
+                    className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl text-sm font-medium border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-all group">
                     <span className="w-2 h-2 rounded-full bg-[#4CAF7D] shrink-0 group-hover:scale-125 transition-transform" />
                     {n.name}
                   </Link>
@@ -964,8 +956,7 @@ export default function WaermepumpeTemplate({
                 {crossKeywords.map(kw => kw && (
                   <Link key={kw.slug}
                     href={`/${kw.slug}/${city.slug}`}
-                    className="px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium
-                      border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-colors">
+                    className="px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-colors">
                     {kw.keyword.replace("[Stadt]", city.name)}
                   </Link>
                 ))}
@@ -1003,8 +994,7 @@ export default function WaermepumpeTemplate({
                 </div>
 
                 <a href="/rechner"
-                  className="block w-full text-center py-3.5 bg-[#D97706] text-white font-bold
-                    rounded-xl hover:bg-[#b45309] transition-colors mb-2.5 text-sm">
+                  className="block w-full text-center py-3.5 bg-[#D97706] text-white font-bold rounded-xl hover:bg-[#b45309] transition-colors mb-2.5 text-sm">
                   Kostenloses Angebot anfordern →
                 </a>
                 <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.65)" }}>
@@ -1023,8 +1013,7 @@ export default function WaermepumpeTemplate({
                   `Lokale Meisterbetriebe in ${city.name}`,
                   "100% kostenlos für Hausbesitzer",
                 ].map(t => (
-                  <div key={t} className="flex items-center gap-2 text-sm text-gray-700 py-1.5
-                    border-b border-gray-100 last:border-0">
+                  <div key={t} className="flex items-center gap-2 text-sm text-gray-700 py-1.5 border-b border-gray-100 last:border-0">
                     <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />
                     {t}
                   </div>
