@@ -57,7 +57,7 @@ function Toggle({ label, sub, value, onChange }: {
 
 export default function Rechner() {
   const [flaeche, setFlaeche] = useState(120)
-  const [hz,      setHz]      = useState('erdgas' as 'erdgas' | 'heizoel' | 'nachtspeicher')
+  const [hz,      setHz]      = useState<'erdgas'|'heizoel'|'nachtspeicher'>('erdgas')
   const [bj,      setBj]      = useState('1979_1994')
   const [typ,     setTyp]     = useState('einfamilienhaus')
   const [plz,     setPlz]     = useState('')
