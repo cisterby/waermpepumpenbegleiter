@@ -55,7 +55,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
           alt={`Wärmepumpe Förderung ${city.name}`}
           className="absolute inset-0 w-full h-full object-cover"
-          loading="eager" decoding="async"
+          loading="eager" fetchPriority="high" decoding="async"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.30) 100%)' }} />
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
@@ -368,7 +368,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <strong>Reihenfolge ist bindend:</strong> Der KfW-Antrag muss zwingend VOR der Auftragserteilung gestellt werden. Kein Nachantrag möglich. Ausnahme: Vertrag mit aufschiebender Bedingung (Förderklausel). Wir unterstützen bei der korrekten Vertragsgestaltung.
           </p>
           <p>
-            <strong>Was Sie für den KfW-Antrag in {city.name} brauchen:</strong> (1) KfW-Lieferanten- und Leistungserbringer (LuL)-Nummer des Installateurbetriebs — prüfbar auf kdnr.kfw.de. (2) Bestätigung zum Antrag (BzA) vom Fachbetrieb. (3) Registrierung im KfW-Portal „Meine KfW". (4) IBAN für Auszahlung. Bearbeitungszeit: meist 1–5 Werktage.
+            <strong>Was Sie für den KfW-Antrag in {city.name} brauchen:</strong> (1) KfW-Lieferanten- und Leistungserbringer (LuL)-Nummer des Installateurbetriebs — prüfbar auf kdnr.kfw.de. (2) Bestätigung zum Antrag (BzA) vom Fachbetrieb. (3) Registrierung im KfW-Portal „Meine KfW&quot;. (4) IBAN für Auszahlung. Bearbeitungszeit: meist 1–5 Werktage.
           </p>
           <p>
             <strong>Maximale Förderung für {city.name} berechnet:</strong> Brutto-Investition {fmtEuro(foerd.foerderfaehigeBasis)} × {foerd.gesamtSatz}% KfW-Förderquote = {fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil: {fmtEuro(foerd.eigenanteil)}. Dazu §35a-Steuerbonus: bis €1.200 im Installationsjahr. Gesamtersparnis gegenüber Listenpreis: {fmtEuro(foerd.zuschuss + 1200)}.
@@ -441,6 +441,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
