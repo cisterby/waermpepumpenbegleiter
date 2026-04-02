@@ -368,7 +368,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             <strong>Reihenfolge ist bindend:</strong> Der KfW-Antrag muss zwingend VOR der Auftragserteilung gestellt werden. Kein Nachantrag möglich. Ausnahme: Vertrag mit aufschiebender Bedingung (Förderklausel). Wir unterstützen bei der korrekten Vertragsgestaltung.
           </p>
           <p>
-            <strong>Was Sie für den KfW-Antrag in {city.name} brauchen:</strong> (1) KfW-Lieferanten- und Leistungserbringer (LuL)-Nummer des Installateurbetriebs — prüfbar auf kdnr.kfw.de. (2) Bestätigung zum Antrag (BzA) vom Fachbetrieb. (3) Registrierung im KfW-Portal „Meine KfW". (4) IBAN für Auszahlung. Bearbeitungszeit: meist 1–5 Werktage.
+            <strong>Was Sie für den KfW-Antrag in {city.name} brauchen:</strong> (1) KfW-Lieferanten- und Leistungserbringer (LuL)-Nummer des Installateurbetriebs — prüfbar auf kdnr.kfw.de. (2) Bestätigung zum Antrag (BzA) vom Fachbetrieb. (3) Registrierung im KfW-Portal „Meine KfW&quot;. (4) IBAN für Auszahlung. Bearbeitungszeit: meist 1–5 Werktage.
           </p>
           <p>
             <strong>Maximale Förderung für {city.name} berechnet:</strong> Brutto-Investition {fmtEuro(foerd.foerderfaehigeBasis)} × {foerd.gesamtSatz}% KfW-Förderquote = {fmtEuro(foerd.zuschuss)} Zuschuss. Eigenanteil: {fmtEuro(foerd.eigenanteil)}. Dazu §35a-Steuerbonus: bis €1.200 im Installationsjahr. Gesamtersparnis gegenüber Listenpreis: {fmtEuro(foerd.zuschuss + 1200)}.
@@ -441,6 +441,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
