@@ -50,10 +50,17 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 <span>›</span>
                 <span style={{ color: 'rgba(255,255,255,0.95)' }}>{city.name}</span>
               </nav>
-              <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-5 text-white" style={{ background: 'rgba(76,175,125,0.22)', border: '1px solid rgba(76,175,125,0.50)' }}>
-                <span className="w-2 h-2 rounded-full bg-[#4CAF7D] animate-pulse" />
-                {city.bundesland} · GEG 2026
-              </span>
+              <div className="flex flex-wrap gap-2 mb-5">
+                <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-white" style={{ background: 'rgba(76,175,125,0.22)', border: '1px solid rgba(76,175,125,0.50)' }}>
+                  <span className="w-2 h-2 rounded-full bg-[#4CAF7D] animate-pulse" />
+                  {city.bundesland} · GEG 2026
+                </span>
+                {city.einwohner >= 100000 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold text-white" style={{ background: 'rgba(217,119,6,0.85)', border: '1px solid rgba(217,119,6,0.6)' }}>
+                    ⏰ GEG-Frist: {city.gegFrist.split('-').reverse().join('.')}
+                  </span>
+                )}
+              </div>
               <h1 className="font-extrabold text-white leading-tight mb-5 text-4xl sm:text-5xl tracking-tight" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.6)' }}>
                 {h1}
               </h1>
@@ -165,6 +172,12 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 <strong>{fmtEuro(calc.ersparnis)} pro Jahr</strong> — bei {city.strompreis} ct/kWh Strompreis und{' '}
                 JAZ {jaz} (Jahresmitteltemperatur {city.avgTemp}°C in {city.name}).
               </p>
+              {city.fernwaermeQuote >= 50 && (
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800 leading-relaxed">
+                  <strong>Hinweis für {city.name}:</strong> {city.fernwaermeQuote}% der Gebäude in {city.name} sind ans Fernwärmenetz angeschlossen.
+                  Für Eigentümer von Einfamilienhäusern ohne Fernwärmeanschluss ist die Wärmepumpe die wirtschaftlichste und förderfähige Heizalternative.
+                </div>
+              )}
             </div>
 
             {/* Klimadaten */}
@@ -270,8 +283,8 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               <p className="text-gray-600 leading-relaxed mb-6">
                 Die KfW-Bundesfoerderung gilt ueberall in Deutschland, also auch in {city.name}. Der Antrag muss{' '}
                 <strong className="text-red-600">zwingend vor Baubeginn</strong> gestellt werden.
-                {city.bundeslandFoerderung && (
-                  <span> In {city.bundesland} gibt es zusaetzlich das Programm{' '}
+                {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.toLowerCase().includes('ausgesetzt') && (
+                  <span> In {city.bundesland} gibt es zusätzlich das Programm{' '}
                     <strong>{city.bundeslandFoerderung}</strong>
                     {city.bundeslandFoerderungBetrag ? ' (' + city.bundeslandFoerderungBetrag + ')' : ''}.
                   </span>
@@ -461,9 +474,9 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                   </div>
                 ))}
               </div>
-              {city.bundeslandFoerderung && (
+              {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.toLowerCase().includes('ausgesetzt') && (
                 <div className="bg-white rounded-xl border border-gray-200 p-5">
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{city.bundesland} Foerderung</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{city.bundesland} Förderung</p>
                   <p className="font-semibold text-gray-800 text-sm mb-1">{city.bundeslandFoerderung}</p>
                   {city.bundeslandFoerderungBetrag && <p className="text-[#1B5E37] text-sm font-bold">{city.bundeslandFoerderungBetrag}</p>}
                   {city.bundeslandFoerderungUrl && (
