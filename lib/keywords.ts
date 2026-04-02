@@ -328,7 +328,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'niedrig',
     intent: 'informational',
     template: 'WaermeplanungTemplate',
-    titleTemplate: 'Kommunale Wärmeplanung {stadt} {year} – Fristen & WP-Alternative',
+    titleTemplate: 'Kommunale Wärmeplanung {stadt}',
     metaTemplate: 'Kommunale Wärmeplanung {stadt} {year}: Fristen, Pflichten & was das für Ihre Heizung bedeutet ✓ GEG-Kontext ✓ Wärmepumpe als sichere GEG-konforme Alternative.',
     h1Template: 'Kommunale Wärmeplanung {stadt} {year} — Was Hausbesitzer wissen müssen',
     featuredSnippetQuestions: [
@@ -356,7 +356,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'ErdwaermeTemplate',
-    titleTemplate: 'Erdwärmepumpe {stadt} {year} – Kosten, Bohrung & Genehmigung',
+    titleTemplate: 'Erdwärmepumpe {stadt} {year}',
     metaTemplate: 'Erdwärmepumpe in {stadt} {year} ✓ Geologische Eignung in {bundesland} ✓ Sole-Wasser vs. Wasser-Wasser im Vergleich ✓ +5% KfW-Bonus ✓ Kosten & Förderung.',
     h1Template: 'Erdwärmepumpe {stadt} {year} — Eignung, Kosten & Installateure',
     featuredSnippetQuestions: [
@@ -382,7 +382,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'AngebotTemplate',
-    titleTemplate: 'Wärmepumpe Angebot {stadt} {year} – Kostenlos 3 Angebote vergleichen',
+    titleTemplate: 'Wärmepumpe Angebot {stadt} {year}',
     metaTemplate: 'Kostenloses Wärmepumpe Angebot {stadt} {year} ✓ Bis zu 3 geprüfte lokale Fachbetriebe ✓ Alle Positionen transparent ausgewiesen ✓ KfW-Förderung inklusive.',
     h1Template: 'Wärmepumpe Angebot {stadt} {year} — Kostenlos bis zu 3 Angebote vergleichen',
     featuredSnippetQuestions: [
@@ -407,7 +407,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'commercial',
     template: 'PreiseTemplate',
-    titleTemplate: 'Wärmepumpe Preise {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Preise {stadt} {year} – Aktuelle Kosten & Vergleich',
     metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW bis €21.000 ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe Preise {stadt} {year} — Aktuelle Kosten aller Typen',
     featuredSnippetQuestions: [
@@ -433,7 +433,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'AnbieterTemplate',
-    titleTemplate: 'Wärmepumpe Anbieter {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Anbieter {stadt} {year} – Geprüfte lokale Fachbetriebe',
     metaTemplate: 'Geprüfte Wärmepumpen-Anbieter {stadt} ✓ Lokale Meisterbetriebe ✓ Herstellerunabhängig ✓ Kostenlos bis zu 3 vollständige Angebote vergleichen {year}.',
     h1Template: 'Wärmepumpe Anbieter {stadt} {year} — Geprüfte lokale Fachbetriebe',
     featuredSnippetQuestions: [
@@ -458,7 +458,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'LuftwaermepumpeTemplate',
-    titleTemplate: 'Luftwärmepumpe {stadt} {year}',
+    titleTemplate: 'Luftwärmepumpe {stadt} {year} – Kosten, JAZ & Installateure',
     metaTemplate: 'Luftwärmepumpe {stadt} {year}: Luft-Luft vs. Luft-Wasser ✓ JAZ {jaz} bei {avgTemp}°C ✓ Kosten & KfW-Förderung bis 70% ✓ Kostenloser Installateur-Vergleich.',
     h1Template: 'Luftwärmepumpe {stadt} {year} — Kosten, Effizienz & Installateure',
     featuredSnippetQuestions: [
