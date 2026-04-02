@@ -44,10 +44,6 @@ const IMG_ALTBAU     = "https://images.unsplash.com/photo-1570129477492-45c003ed
 const IMG_TEAM       = "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80";
 const IMG_KOSTEN     = "https://images.unsplash.com/photo-1611117775350-ac3950990985?auto=format&fit=crop&w=800&q=80";
 
-function pick(arr: string[], lat: number, lng: number, offset = 0) {
-  return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
-}
-
 // ── HAUPTKOMPONENTE ──────────────────────────────────────────────────────────
 export default function WaermepumpeTemplate({
   city, keyword, jaz, calc, foerd, h1, nearby,
@@ -817,6 +813,11 @@ export default function WaermepumpeTemplate({
     </div>
   );
 }
+
+function pick(arr, lat, lng, offset) {
+  return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
+}
+
 
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
