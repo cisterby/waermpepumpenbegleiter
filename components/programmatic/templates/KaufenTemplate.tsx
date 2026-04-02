@@ -34,7 +34,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
       {/* HERO */}
       <section className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
-          className="absolute inset-0 w-full h-full object-cover" />
+          className="absolute inset-0 w-full h-full object-cover" loading="eager" {...({fetchPriority:"high"} as object)} />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -245,7 +245,18 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
           </div>
           {/* Formspree Form */}
           <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-
+          {/* Trust list */}
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
+            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos für Sie'].map(t => (
+              <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
+                <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* END SIDEBAR */}
+      </div>
+      {/* END MAIN GRID */}
 
       {/* ── VISUELLER TRENNER ─────────────────────── */}
       <div className="relative rounded-2xl overflow-hidden my-8" style={{ height: '180px' }}>
