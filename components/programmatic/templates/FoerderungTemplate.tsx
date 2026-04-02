@@ -35,7 +35,22 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'KfW-Förderung beantragen in ' + city.name + ' — Schritt für Schritt',
+    description: 'So beantragen Sie die KfW-Wärmepumpenförderung (Programm 458) in ' + city.name,
+    step: [
+      { '@type': 'HowToStep', name: 'KfW-Antrag VOR Baubeginn stellen', text: 'Zwingend vor Vertragsabschluss im KfW-Portal "Meine KfW" registrieren und Antrag stellen. Kein Nachantrag möglich.' },
+      { '@type': 'HowToStep', name: 'Landesförderung ' + city.bundesland + ' prüfen', text: 'Zusätzliche Landesprogramme separat beantragen, falls verfügbar. Kombinierbar mit KfW.' },
+      { '@type': 'HowToStep', name: 'iSFP-Bonus sichern', text: 'Mit individuellem Sanierungsfahrplan (BAFA) +5% Zusatzbonus = ' + fmtEuro(Math.round(25000 * 0.05)) + ' extra bei 25.000 Euro Invest.' },
+      { '@type': 'HowToStep', name: 'Installation & Verwendungsnachweis', text: 'Rechnung, Inbetriebnahmeprotokoll und Hydraulischer-Abgleich-Nachweis einreichen. Auszahlung in 4–8 Wochen.' },
+    ],
+  };
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
 
       {/* HERO */}
@@ -255,6 +270,21 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
             </p>
           </div>
 
+          {/* City-specific technical note */}
+          {city.normAussentemp <= -14 && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start gap-3">
+              <span className="text-xl shrink-0">🌡️</span>
+              <div>
+                <p className="font-bold text-slate-800 text-sm mb-1">
+                  {city.name}: Normaußentemperatur {city.normAussentemp}°C — Hochtemperatur-WP empfohlen
+                </p>
+                <p className="text-slate-600 text-xs leading-relaxed">
+                  Mit {city.normAussentemp}°C gehört {city.name} zu den kältesten deutschen Großstädten. Achten Sie auf WP-Modelle die bis −20°C effizient arbeiten (z.B. Viessmann Vitocal 250-A, Vaillant aroTHERM plus). Die KfW-Förderung gilt unabhängig vom Modell.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* FAQ */}
           <div>
             {faqs.length > 0 && (
@@ -400,5 +430,6 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
       </div>
 
     </div>
+  </>
   );
 }
