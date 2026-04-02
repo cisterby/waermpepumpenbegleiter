@@ -286,8 +286,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
           </div>
 
           <a href="/rechner"
-            className="block w-full text-center py-3.5 bg-[#D97706] text-white font-bold rounded-xl
-              hover:bg-[#b45309] transition-colors text-sm">
+            className="block w-full text-center py-3.5 bg-[#D97706] text-white font-bold rounded-xl hover:bg-[#b45309] transition-colors text-sm">
             Kostenloses Angebot in {city.name} →
           </a>
           <div className="mt-3 flex flex-col gap-2">
@@ -310,8 +309,7 @@ function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
     <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
       {faqs.map((faq, i) => (
         <details key={i} className="group">
-          <summary className="w-full flex items-center justify-between gap-4 p-5 text-left
-            bg-white hover:bg-gray-50 transition-colors cursor-pointer list-none">
+          <summary className="w-full flex items-center justify-between gap-4 p-5 text-left bg-white hover:bg-gray-50 transition-colors cursor-pointer list-none">
             <span className="font-semibold text-gray-900 text-[15px] leading-snug">{faq.q}</span>
             <ChevronDown size={18} className="flex-shrink-0 text-gray-400 group-open:rotate-180 transition-transform" />
           </summary>
@@ -1103,6 +1101,8 @@ export default function WaermepumpeTemplate({
           </div>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }
