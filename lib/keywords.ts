@@ -248,7 +248,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'commercial',
     template: 'NachruestenTemplate',
-    titleTemplate: 'Wärmepumpe nachrüsten {stadt} {year} – Kosten, Eignung & Förderung',
+    titleTemplate: 'Wärmepumpe nachrüsten {stadt} {year}',
     metaTemplate: 'Wärmepumpe nachrüsten in {stadt} ✓ GEG-Fristen {year} ✓ Bestandsgebäude umrüsten ✓ KfW-Förderung bis 70% = max. €21.000 ✓ Geprüfte Fachbetriebe kostenlos.',
     h1Template: 'Wärmepumpe nachrüsten {stadt} {year} — Bestandsgebäude umrüsten',
     featuredSnippetQuestions: [
@@ -274,7 +274,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'commercial',
     template: 'HeizungTauschenTemplate',
-    titleTemplate: 'Heizung tauschen {stadt} {year} – Wärmepumpe, Kosten & Förderung',
+    titleTemplate: 'Heizung tauschen {stadt}',
     metaTemplate: 'Heizung tauschen {stadt} {year} ✓ WP vs. Gas vs. Pellet ehrlicher Vergleich ✓ GEG-konforme Lösungen ✓ Stadtspezifische Betriebskosten ✓ Kostenlos anfragen.',
     h1Template: 'Heizung tauschen in {stadt} {year} — Alle Optionen im Vergleich',
     featuredSnippetQuestions: [
@@ -301,7 +301,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'InstallationTemplate',
-    titleTemplate: 'Wärmepumpe Installation {stadt} {year} – Ablauf, Dauer & Kosten',
+    titleTemplate: 'WP Installation {stadt} {year}',
     metaTemplate: 'Wärmepumpe Installation {stadt} ✓ Vollständiger Ablauf & Zeitplan {year} ✓ Genehmigungen {bundesland} ✓ HWK-Betriebe vor Ort ✓ KfW-Antragsbegleitung inklusive.',
     h1Template: 'Wärmepumpe Installation {stadt} {year} — Ablauf, Kosten & Genehmigungen',
     featuredSnippetQuestions: [
@@ -328,7 +328,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'niedrig',
     intent: 'informational',
     template: 'WaermeplanungTemplate',
-    titleTemplate: 'Kommunale Wärmeplanung {stadt}',
+    titleTemplate: 'Kommunale Wärmeplanung {stadt} {year} – Fristen & WP-Alternative',
     metaTemplate: 'Kommunale Wärmeplanung {stadt} {year}: Fristen, Pflichten & was das für Ihre Heizung bedeutet ✓ GEG-Kontext ✓ Wärmepumpe als sichere GEG-konforme Alternative.',
     h1Template: 'Kommunale Wärmeplanung {stadt} {year} — Was Hausbesitzer wissen müssen',
     featuredSnippetQuestions: [
@@ -356,7 +356,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'ErdwaermeTemplate',
-    titleTemplate: 'Erdwärmepumpe {stadt} {year}',
+    titleTemplate: 'Erdwärmepumpe {stadt} {year} – Kosten, Bohrung & Genehmigung',
     metaTemplate: 'Erdwärmepumpe in {stadt} {year} ✓ Geologische Eignung in {bundesland} ✓ Sole-Wasser vs. Wasser-Wasser im Vergleich ✓ +5% KfW-Bonus ✓ Kosten & Förderung.',
     h1Template: 'Erdwärmepumpe {stadt} {year} — Eignung, Kosten & Installateure',
     featuredSnippetQuestions: [
@@ -382,7 +382,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'AngebotTemplate',
-    titleTemplate: 'Wärmepumpe Angebot {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Angebot {stadt} {year} – Kostenlos 3 Angebote vergleichen',
     metaTemplate: 'Kostenloses Wärmepumpe Angebot {stadt} {year} ✓ Bis zu 3 geprüfte lokale Fachbetriebe ✓ Alle Positionen transparent ausgewiesen ✓ KfW-Förderung inklusive.',
     h1Template: 'Wärmepumpe Angebot {stadt} {year} — Kostenlos bis zu 3 Angebote vergleichen',
     featuredSnippetQuestions: [
