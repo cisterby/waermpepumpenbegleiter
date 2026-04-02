@@ -26,9 +26,7 @@ const IMG_TEAM       = "https://images.unsplash.com/photo-1600880292203-757bb62b
 const IMG_KOSTEN     = "https://images.unsplash.com/photo-1611117775350-ac3950990985?auto=format&fit=crop&w=800&q=80";
 
 // Main component
-export default function WaermepumpeTemplate({
-  city, keyword, jaz, calc, foerd, h1, nearby,
-}: CityPageRouterProps) {
+export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h1, nearby }: CityPageRouterProps) {
   const variant = Math.abs(Math.round(city.lat * 3 + city.lng * 7)) % 4;
   const heroImg  = pick(HERO_IMGS,  city.lat, city.lng, 0);
   const sideImg  = pick(SIDE_IMGS,  city.lat, city.lng, 1);
