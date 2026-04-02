@@ -36,7 +36,7 @@ export default function WaermepumpeTemplate({
   const klimazone = getKlimazone(city);
 
   // Intro-Textvarianten (stadtspezifisch + deterministisch)
-  // Intro-Paragraphen: 8 × 4 Stadtgrößen × 6 Keyword-Kategorien = unique pro Stadt
+  // Intro-Paragraphen: 8   4 Stadtgr  en   6 Keyword-Kategorien = unique pro Stadt
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
   const [introText] = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
@@ -54,7 +54,7 @@ export default function WaermepumpeTemplate({
     <div className="min-h-screen" style={{ background: "#F4F6F4" }}>
 
 
-      {/* ── HERO ────────────────────────────────────────────────────────── */}
+      {/*    HERO                                                            */}
       <section className="relative flex items-center overflow-hidden" style={{ minHeight: "90vh" }}>
         <img src={heroImg} alt={`Wärmepumpe ${city.name}`}
           className="absolute inset-0 w-full h-full object-cover"
@@ -188,7 +188,7 @@ export default function WaermepumpeTemplate({
         </div>
       </section>
 
-      {/* ── TRUST BAR ────────────────────────────────────────────────────── */}
+      {/*    TRUST BAR                                                        */}
       <div className="bg-white border-b border-gray-200 py-4">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-5 flex-wrap">
@@ -205,7 +205,7 @@ export default function WaermepumpeTemplate({
         </div>
       </div>
 
-      {/* ── MAIN ─────────────────────────────────────────────────────────── */}
+      {/*    MAIN                                                             */}
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
 
@@ -243,7 +243,7 @@ export default function WaermepumpeTemplate({
                 {h2s.klimadaten}
               </h2>
             <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.klimadaten}</p>
-              {/* Klimabild — stadtspezifisch per pick() */}
+              {/* Klimabild   stadtspezifisch per pick() */}
               <div className="relative rounded-2xl overflow-hidden mb-6 h-48">
                 <img
                   src={pick(STRIP_IMGS, city.lat, city.lng, 10)}
@@ -297,7 +297,7 @@ export default function WaermepumpeTemplate({
               </p>
             </motion.section>
 
-            {/* CO₂ + Ersparnis Visual */}
+            {/* CO  + Ersparnis Visual */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -341,7 +341,7 @@ export default function WaermepumpeTemplate({
               <WPKostenRechner city={city} />
             </motion.section>
 
-            {/* KfW Förderung */}
+            {/* KfW F rderung */}
             <motion.section
               id="foerderung"
               initial={{ opacity: 0, y: 20 }}
@@ -420,7 +420,7 @@ export default function WaermepumpeTemplate({
               </p>
             </motion.section>
 
-            {/* Einwände / Objection Handling */}
+            {/* Einw nde / Objection Handling */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -623,7 +623,7 @@ export default function WaermepumpeTemplate({
               <FAQAccordion faqs={faqs} />
             </motion.section>
 
-            {/* Nachbarstädte */}
+            {/* Nachbarst dte */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -664,7 +664,7 @@ export default function WaermepumpeTemplate({
 
           </div>
 
-          {/* RIGHT — Sticky CTA */}
+          {/* RIGHT   Sticky CTA */}
           <div className="hidden lg:block">
             <div className="sticky top-24 space-y-4">
               <div className="bg-[#1B5E37] rounded-2xl p-6 shadow-2xl shadow-[#1B5E37]/20">
@@ -719,7 +719,7 @@ export default function WaermepumpeTemplate({
                 ))}
               </div>
 
-              {/* Bundesland Förderung */}
+              {/* Bundesland F rderung */}
               {city.bundeslandFoerderung && (
                 <div className="bg-white rounded-xl border border-gray-200 p-5">
                   <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
@@ -742,7 +742,7 @@ export default function WaermepumpeTemplate({
         </div>
       </div>
 
-      {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
+      {/*    AKTUALIT TSBLOCK 2026                             */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         {/* Trenner-Bild */}
         <div className="relative rounded-2xl overflow-hidden mb-8 h-44">
@@ -858,7 +858,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
       <div className="p-8 grid md:grid-cols-[1fr_300px] gap-8">
         {/* Inputs */}
         <div className="space-y-5">
-          {/* Wohnfläche */}
+          {/* Wohnfl che */}
           <div>
             <p className="font-semibold text-gray-700 text-sm mb-1">
               Wohnfläche: <span className="text-[#1B5E37] font-bold">{flaeche} m²</span>
@@ -959,7 +959,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
             </div>
           </div>
 
-          {/* Fördersituation */}
+          {/* F rdersituation */}
           <div className="space-y-2">
             <p className="font-semibold text-gray-700 text-sm">Ihre Fördersituation</p>
             {([
