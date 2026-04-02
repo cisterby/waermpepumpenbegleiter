@@ -193,6 +193,15 @@ export default function CityKeywordPage({ params }: Props) {
         `Wärmepumpe montieren und in Betrieb nehmen — 2–3 Tage`,
       ],
     },
+    'erdwaermepumpe': {
+      name: `Erdwärmepumpe in ${city.name} installieren — Genehmigung & Ablauf`,
+      steps: [
+        `Hydrogeologisches Gutachten einholen — Pflicht in ${city.bundesland} vor Tiefenbohrung`,
+        `Wasserrechtliche Genehmigung beantragen — Untere Wasserbehörde ${city.bundesland}, 4–8 Wochen`,
+        `KfW-Antrag stellen — vor Auftragserteilung, +5% Bonus für Erdwärme automatisch`,
+        `Tiefenbohrung & Installation — 2–3 Tage, Bohrprotokoll für KfW-Nachweis erforderlich`,
+      ],
+    },
     'heizung-tauschen': {
       name: `Heizung tauschen in ${city.name} — GEG-konformer Ablauf`,
       steps: [

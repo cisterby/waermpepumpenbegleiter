@@ -74,7 +74,7 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
       {/* Hero */}
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
         <img src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
-          className="absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async" />
+          className="absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async" {...({fetchPriority:"high"} as object)} />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/90 via-[#0A1910]/70 to-[#0A1910]/20" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
@@ -213,9 +213,9 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
                 <div key={i}><div className="text-[#7A9E8E] text-xs">{l}</div><div className="font-bold text-[#1C2B2B]">{v}</div></div>
               ))}
             </div>
-            {city.bundeslandFoerderung && (
-              <p className="text-sm text-[#4A6358] pt-3 border-t border-gray-200l">
-                <strong>{city.bundesland}:</strong> {city.bundeslandFoerderung}
+            {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.toLowerCase().includes('ausgesetzt') && !city.bundeslandFoerderungBetrag?.toLowerCase().includes('eingestellt') && (
+              <p className="text-sm text-[#4A6358] pt-3 border-t border-gray-200">
+                <strong>{city.bundesland}:</strong> {city.bundeslandFoerderung} — {city.bundeslandFoerderungBetrag}
               </p>
             )}
           </div>
@@ -342,6 +342,41 @@ export default function BeratungTemplate({ city, keyword, calc, foerd, jaz, near
           </div>
         </div>
       </div>
+
+      {/* Landesförderung */}
+      {city.bundeslandFoerderung && !city.bundeslandFoerderungBetrag?.toLowerCase().includes('ausgesetzt') && !city.bundeslandFoerderungBetrag?.toLowerCase().includes('eingestellt') && (
+        <div className="max-w-3xl mx-auto px-6 pb-6">
+          <div className="bg-[#E8F5EE] border border-[#3DA16A]/30 rounded-xl p-4 flex items-start gap-3">
+            <span className="text-xl shrink-0">💶</span>
+            <div>
+              <p className="font-bold text-[#1A4731] text-sm mb-1">{city.bundesland}-Förderung: {city.bundeslandFoerderung}</p>
+              <p className="text-[#4A6358] text-xs leading-relaxed">
+                {city.bundeslandFoerderungBetrag} — kombinierbar mit KfW-Bundesförderung.
+                {city.bundeslandFoerderungUrl && <a href={city.bundeslandFoerderungUrl} target="_blank" rel="noopener noreferrer" className="ml-1 text-[#1A4731] font-semibold hover:underline">Mehr Infos →</a>}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      {!city.bundeslandFoerderung && city.bundeslandFoerderungBetrag && (
+        <div className="max-w-3xl mx-auto px-6 pb-6">
+          <div className="bg-[#F8F9FA] border border-gray-200 rounded-xl p-4">
+            <p className="text-[#4A6358] text-xs"><strong className="text-[#1C2B2B]">{city.bundesland}:</strong> Kein aktives Landesprogramm — {city.bundeslandFoerderungBetrag}. KfW gilt vollständig.</p>
+          </div>
+        </div>
+      )}
+
+      {city.avgTemp >= 11.0 && (
+        <div className="max-w-3xl mx-auto px-6 pb-6">
+          <div className="bg-[#E8F5EE] border border-[#3DA16A]/30 rounded-xl p-4 flex items-start gap-3">
+            <span className="text-xl shrink-0">✅</span>
+            <div>
+              <p className="font-bold text-[#1A4731] text-sm mb-1">{city.name}: {city.avgTemp}°C Jahresmittel — ideale Bedingungen</p>
+              <p className="text-[#4A6358] text-xs leading-relaxed">{city.name} hat eine der günstigsten Klimabedingungen für Wärmepumpen in Deutschland. Bei {city.avgTemp}°C Jahresmittel erreicht eine Luft-WP JAZ {jaz} — das macht die Investition besonders wirtschaftlich.</p>
+            </div>
+          </div>
+        </div>
+      )}
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-bold font-bold text-[#1C2B2B] text-xl mb-6">

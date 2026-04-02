@@ -54,7 +54,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'mixed',
     template: 'WaermepumpeTemplate',
-    titleTemplate: 'Wärmepumpe {stadt} {year} – Kosten, Förderung & Installateure',
+    titleTemplate: 'Wärmepumpe {stadt} {year}',
     metaTemplate: 'Wärmepumpe in {stadt} einbauen ✓ Kosten ab {preisVon} ✓ Bis 70% KfW-Förderung ✓ Geprüfte lokale Installateure ✓ Kostenlos bis zu 3 Angebote vergleichen.',
     h1Template: 'Wärmepumpe {stadt} — Kosten, Förderung & Installateure {year}',
     featuredSnippetQuestions: [
@@ -556,7 +556,7 @@ faqPool: [
     competition: 'niedrig_mittel',
     intent: 'transactional',
     template: 'MontageTemplate',
-    titleTemplate: 'Wärmepumpe Montage {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Montage {stadt} {year} – Aufstellort, Ablauf & Kosten',
     metaTemplate: 'Wärmepumpe Montage {stadt} {year} ✓ Aufstellort & Lärmschutz {bundesland} ✓ Montagekosten transparent ✓ Genehmigungscheck ✓ Geprüfte Fachbetriebe kostenlos.',
     h1Template: 'Wärmepumpe Montage {stadt} {year} — Ablauf, Aufstellort & Kosten',
     featuredSnippetQuestions: ['Wo kann ich die Wärmepumpe in {stadt} aufstellen?'],
@@ -579,7 +579,7 @@ faqPool: [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'VergleichTemplate',
-    titleTemplate: 'Wärmepumpe oder Gas {stadt} {year}',
+    titleTemplate: 'Wärmepumpe oder Gas {stadt} {year} – Ehrlicher Kostenvergleich',
     metaTemplate: 'Wärmepumpe oder Gas in {stadt}? Ehrlicher Kostenvergleich {year} mit CO₂-Preis ✓ GEG-Konformität ✓ Stadtspezifische Zahlen ✓ Kostenloser Angebotsvergleich.',
     h1Template: 'Wärmepumpe oder Gas in {stadt} {year} — Der ehrliche Vergleich',
     featuredSnippetQuestions: [
@@ -605,7 +605,7 @@ faqPool: [
     competition: 'mittel',
     intent: 'informational',
     template: 'StromverbrauchTemplate',
-    titleTemplate: 'WP Stromverbrauch {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Stromverbrauch {stadt} {year} – Berechnung & Optimierung',
     metaTemplate: 'Wärmepumpe Stromverbrauch {stadt} {year}: Berechnung mit lokalem Strompreis {strompreis} ct/kWh, JAZ {jaz} ✓ Optimierungstipps ✓ WP-Sondertarif & PV-Kombination.',
     h1Template: 'Wärmepumpe Stromverbrauch {stadt} {year} — Berechnung & Optimierung',
     featuredSnippetQuestions: [

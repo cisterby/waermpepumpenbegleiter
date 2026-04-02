@@ -603,6 +603,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
         </div>
       </div>
     </div>
+  </div>
   );
 }
 

@@ -51,7 +51,7 @@ export default function WaermepumpeKostenTemplate({
       {/* FAQ Schema */}
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" {...({fetchPriority:'high'} as any)} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(10,25,16,0.97) 0%, rgba(10,25,16,0.88) 52%, rgba(10,25,16,0.35) 100%)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
@@ -296,6 +296,23 @@ export default function WaermepumpeKostenTemplate({
             </div>
           </div>
 
+          {/* Interne Content-Links */}
+          <div className="grid sm:grid-cols-2 gap-3 mb-4">
+            <Link href={`/waermepumpe-foerderung/${city.slug}`} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-[#1A4731] transition-colors group">
+              <span className="text-2xl">💶</span>
+              <div>
+                <p className="font-bold text-sm text-gray-900 group-hover:text-[#1A4731]">Förderung in {city.name}</p>
+                <p className="text-xs text-gray-500">KfW + Landesförderung im Detail</p>
+              </div>
+            </Link>
+            <Link href={`/waermepumpe-installateur/${city.slug}`} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-[#1A4731] transition-colors group">
+              <span className="text-2xl">🔧</span>
+              <div>
+                <p className="font-bold text-sm text-gray-900 group-hover:text-[#1A4731]">Installateure in {city.name}</p>
+                <p className="text-xs text-gray-500">Geprüfte lokale Fachbetriebe</p>
+              </div>
+            </Link>
+          </div>
           {/* ── BILD + BETRIEBSKOSTEN ── */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="relative rounded-2xl overflow-hidden h-60">
@@ -420,6 +437,12 @@ export default function WaermepumpeKostenTemplate({
                   {city.bundeslandFoerderungBetrag}
                   {!city.bundeslandFoerderungBetrag?.includes('ausgesetzt') && ' — kombinierbar mit KfW-Bundesförderung.'}
                 </p>
+                {city.bundeslandFoerderungUrl && !city.bundeslandFoerderungBetrag?.includes('ausgesetzt') && (
+                  <a href={city.bundeslandFoerderungUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-block mt-2 text-xs font-semibold text-[#1A4731] hover:underline">
+                    → Mehr zur {city.bundesland}-Förderung ↗
+                  </a>
+                )}
               </div>
             ) : (
               <div className="bg-[#F8F9FA] border border-gray-200 rounded-xl p-4">
