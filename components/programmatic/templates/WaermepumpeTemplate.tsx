@@ -48,16 +48,12 @@ function pick(arr: string[], lat: number, lng: number, offset = 0) {
   return arr[Math.abs(Math.round(lat * 7 + lng * 13 + offset)) % arr.length];
 }
 
-// ── Type-Aliases ───────────────────────────────────────────────────────────
-type HeizungTyp = "erdgas" | "heizoel" | "nachtspeicher";
-type WpTyp      = "luft" | "sole" | "wasser";
-
 // ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
-  const [heizung,  setHeizung]  = useState<HeizungTyp>("erdgas");
-  const [wpTyp,    setWpTyp]    = useState<WpTyp>("luft");
+  const [heizung,  setHeizung]  = useState("erdgas");
+  const [wpTyp,    setWpTyp]    = useState("luft");
   const [vorlauf,  setVorlauf]  = useState(35);
   const [selfOcc,  setSelfOcc]  = useState(true);
   const [fossil,   setFossil]   = useState(true);
@@ -135,7 +131,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 ["1979_1994",  "1979–1994",   "~148 kWh/m²"],
                 ["1995_2009",  "1995–2009",   "~101 kWh/m²"],
                 ["2010_plus",  "ab 2010",     "~72 kWh/m²"],
-              ]).map(([v, l, sub]) => (
+              ] as const).map(([v, l, sub]) => (
                 <button key={v} onClick={() => setBaujahr(v)}
                   className={`p-2.5 rounded-xl border-2 text-center transition-all ${
                     baujahr === v
@@ -157,7 +153,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 ["erdgas",        "🔥 Erdgas",       `${city.gaspreis} ct/kWh`],
                 ["heizoel",       "🛢️ Heizöl",        "ca. 11 ct/kWh"],
                 ["nachtspeicher", "⚡ Nachtspeicher", "ca. 28 ct/kWh"],
-              ]).map(([v, l, sub]) => (
+              ] as const).map(([v, l, sub]) => (
                 <button key={v} onClick={() => setHeizung(v as any)}
                   className={`p-3 rounded-xl border-2 text-center transition-all ${
                     heizung === v
@@ -181,7 +177,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
                 ["luft",   "💨 Luft-Wasser", "92% Marktanteil"],
                 ["sole",   "🌍 Sole-Wasser",  "+5% KfW-Bonus"],
                 ["wasser", "💧 Wasser-Wasser", "+5% KfW-Bonus"],
-              ]).map(([v, l, sub]) => (
+              ] as const).map(([v, l, sub]) => (
                 <button key={v} onClick={() => setWpTyp(v as any)}
                   className={`p-3 rounded-xl border-2 text-center transition-all ${
                     wpTyp === v
@@ -308,7 +304,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
 
 // ── FAQ Accordion ────────────────────────────────────────────────────────────
 function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState(null as null | number);
   return (
     <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
       {faqs.map((faq, i) => (
@@ -676,228 +672,9 @@ export default function WaermepumpeTemplate({
                 <strong className="text-red-600">zwingend vor Baubeginn</strong> gestellt werden.
                 {city.bundeslandFoerderung && (
                   <> In {city.bundesland} gibt es zusätzlich das Programm{" "}
-                  <strong>„{city.bundeslandFoerderung}&quot;</strong>
-                  {city.bundeslandFoerderungBetrag ? ` (${city.bundeslandFoerderungBetrag})` : ""}.
-                  </>
-                )}
-              </p>
-
-              <div className="space-y-3 mb-6">
-                {[
-                  { lbl: "Grundförderung",                            pct: 30, color: "#1B5E37" },
-                  { lbl: "Klima-Speed-Bonus (fossile Heizung →WP)",   pct: 20, color: "#D97706" },
-                  { lbl: "Einkommens-Bonus (unter €40.000 netto/J.)", pct: 30, color: "#F59E0B" },
-                  { lbl: "Natürliches Kältemittel R290",              pct: 5,  color: "#2A7D4F" },
-                ].map((b, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}>
-                    <div className="flex justify-between mb-1.5">
-                      <span className="text-sm text-gray-700">{b.lbl}</span>
-                      <span className="font-mono font-bold text-sm" style={{ color: b.color }}>+{b.pct}%</span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden border border-gray-200">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(b.pct / 70) * 100}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.2, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                        className="h-full rounded-full"
-                        style={{ backgroundColor: b.color }}
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="bg-[#E8F5EE] rounded-xl p-4 flex items-center justify-between">
-                <span className="font-bold text-[#1B5E37] text-sm">Gesamt möglich</span>
-                <span className="font-mono font-extrabold text-[#1B5E37] text-2xl">bis 70% = €21.000</span>
-              </div>
-              <p className="text-xs text-gray-400 mt-2">
-                Quelle: KfW Bundesförderung für effiziente Gebäude (BEG), Stand März 2026
-              </p>
-            </motion.section>
-
-            {/* Einwände / Objection Handling */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}>
-              <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                Häufige Bedenken
-              </span>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                {[
-                `Ehrliche Antworten auf Ihre Fragen zu ${city.name}`,
-                `Was Eigentümer in ${city.name} wirklich wissen wollen`,
-                `Häufige Bedenken — was Hausbesitzer in ${city.name} beschäftigt`,
-                `Offene Fragen zur WP in ${city.name}: Wir antworten ehrlich`,
-              ][cityHash(city, 4, 151)]}
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  {
-                    q: "Funktioniert WP im Altbau in " + city.name + "?",
-                    a: `Ja — in den meisten Altbauten in ${city.name}. Entscheidend ist die benötigte Vorlauftemperatur. Moderne Geräte (z.B. Viessmann Vitocal, Stiftung Warentest 2,0) arbeiten bis 70°C und sind mit normalen Heizkörpern kompatibel.`,
-                    badge: "Kein Problem",
-                    badgeColor: "bg-[#E8F5EE] text-[#1B5E37]",
-                    icon: <Home size={22} className="text-[#1B5E37]" />,
-                  },
-                  {
-                    q: "Ist eine WP in " + city.name + " zu laut?",
-                    a: `Moderne Luft-WP erzeugen 45–55 dB auf 1 Meter — wie normales Gespräch. Mit korrekter Aufstellung (Abstand zur Grenze in ${city.bundesland}: mind. 3m) ist Lärm kein Problem.`,
-                    badge: "Kein Problem",
-                    badgeColor: "bg-[#E8F5EE] text-[#1B5E37]",
-                    icon: <Shield size={22} className="text-[#1B5E37]" />,
-                  },
-                  {
-                    q: "Lohnt WP ohne PV in " + city.name + "?",
-                    a: `Ja. Auch ohne PV spart eine WP in ${city.name} bei ${city.gaspreis} ct/kWh Gas vs. ${city.strompreis} ct/kWh WP-Strom und JAZ ${jaz} rund ${fmtEuro(calc.ersparnis)}/Jahr. Mit PV sinken die Kosten um weitere 30–40%.`,
-                    badge: "Kein Problem",
-                    badgeColor: "bg-[#E8F5EE] text-[#1B5E37]",
-                    icon: <Zap size={22} className="text-[#1B5E37]" />,
-                  },
-                  {
-                    q: "Gibt es versteckte Kosten in " + city.name + "?",
-                    a: `Häufig unterschätzt: hydraulischer Abgleich (€500–1.500), Fundament (€300–800), Elektroinstallation (€500–1.500). Wir stellen sicher, dass alle Betriebe in ${city.name} diese Positionen vollständig ausweisen.`,
-                    badge: "Wichtig",
-                    badgeColor: "bg-amber-100 text-amber-800",
-                    icon: <AlertTriangle size={22} className="text-amber-600" />,
-                  },
-                ].map((item, i) => (
-                  <div key={i} className="bg-white rounded-xl p-5 border border-gray-200 flex gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <h3 className="font-semibold text-gray-900 text-sm leading-snug">{item.q}</h3>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${item.badgeColor}`}>
-                          {item.badge}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.section>
-
-            {/* WP Typen */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}>
-              <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                Welche WP passt zu mir?
-              </span>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {h2s.typen}
-              </h2>
-              <p className="text-[#4A6358] text-base leading-relaxed mb-5">{si.typen}</p>
-
-              {/* Vergleichs-Bild: drei WP-Typen visuell */}
-              <div className="relative rounded-2xl overflow-hidden mb-6 h-44">
-                <img
-                  src={pick(STRIP_IMGS, city.lat, city.lng, 20)}
-                  alt={`Wärmepumpe Typen ${city.name}`}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,25,16,0.55) 0%, rgba(10,25,16,0.80) 100%)" }} />
-                <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end">
-                  <div>
-                    <p className="text-white font-bold text-base leading-none">Luft · Sole · Wasser</p>
-                    <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.72)" }}>JAZ-Vergleich für {city.name} bei {city.avgTemp}°C Jahresmittel</p>
-                  </div>
-                  <span className="bg-[#D97706] text-white text-xs font-bold px-3 py-1.5 rounded-lg">
-                    92% wählen Luft-WP
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid sm:grid-cols-3 gap-4">
-                {[
-                  {
-                    type: "Luft-Wasser", share: "92%",
-                    jaz: estimateJAZ(city, "luft").toString(),
-                    install: "€3.000–6.000",
-                    pros: ["Keine Erdarbeiten", "Auch im Altbau", "Montage 1–2 Tage"],
-                    highlight: true,
-                  },
-                  {
-                    type: "Sole-Wasser", share: "6%",
-                    jaz: estimateJAZ(city, "sole").toString(),
-                    install: "€6.000–12.000",
-                    pros: ["+5% KfW-Bonus", "Konstante Effizienz", "Leiser Betrieb"],
-                    highlight: false,
-                  },
-                  {
-                    type: "Wasser-Wasser", share: "2%",
-                    jaz: estimateJAZ(city, "wasser").toString(),
-                    install: "€8.000–15.000",
-                    pros: ["+5% KfW-Bonus", "Höchste JAZ", "Niedrigste Betriebskosten"],
-                    highlight: false,
-                  },
-                ].map((t, i) => (
-                  <div key={i}
-                    className={`bg-white rounded-xl overflow-hidden border-2 transition-all hover:-translate-y-1
-                      hover:shadow-lg ${t.highlight ? "border-[#1B5E37]" : "border-gray-200"}`}>
-                    {t.highlight && (
-                      <div className="bg-[#1B5E37] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide text-center">
-                        Meistgewählt · Stiftung Warentest 2,0 (Gut)
-                      </div>
-                    )}
-                    <div className="p-5">
-                      <div className="flex items-start justify-between mb-3">
-                        <h3 className="font-bold text-gray-900">{t.type}</h3>
-                        <span className="bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold px-2 py-0.5 rounded-full">
-                          {t.share}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        {[{ l: "JAZ in " + city.name, v: t.jaz }, { l: "Installation", v: t.install }].map(s => (
-                          <div key={s.l} className="bg-gray-50 rounded-lg p-2.5">
-                            <p className="text-xs text-gray-400 font-semibold mb-0.5">{s.l}</p>
-                            <p className="font-mono font-bold text-gray-800 text-sm">{s.v}</p>
-                          </div>
-                        ))}
-                      </div>
-                      {t.pros.map(p => (
-                        <div key={p} className="flex items-center gap-2 text-sm text-gray-600 mb-1.5">
-                          <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />
-                          {p}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.section>
-
-            {/* Experten-Box */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl border border-gray-200 p-6 flex gap-5">
-              <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#E8F5EE]">
-                <img src={IMG_TEAM} alt="Bastian Saupe" className="w-full h-full object-cover object-top" />
-              </div>
-              <div>
-                <div className="flex items-center gap-3 mb-2 flex-wrap">
-                  <span className="font-bold text-gray-900">Bastian Saupe</span>
-                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                    Gründer & Geschäftsführer · Webflott.de
-                  </span>
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed italic">
-                  „Alle Inhalte auf dieser Seite basieren auf aktuellen Klimadaten des DWD für {city.name},
-                  KfW-Konditionen Stand März 2026 und BWP-Feldtestdaten zur Jahresarbeitszahl.
-                  Die stadtspezifischen Energiepreise stammen aus der BDEW-Regionalanalyse.&quot;
+                  <strong>„{city.bundeslandFoerderung}"</strong> {city.bundeslandFoerderungBetrag ? ` (${city.bundeslandFoerderungBetrag})` : ""}. </> )} </p> <div className="space-y-3 mb-6"> {[ { lbl: "Grundförderung",                            pct: 30, color: "#1B5E37" }, { lbl: "Klima-Speed-Bonus (fossile Heizung →WP)",   pct: 20, color: "#D97706" }, { lbl: "Einkommens-Bonus (unter €40.000 netto/J.)", pct: 30, color: "#F59E0B" }, { lbl: "Natürliches Kältemittel R290",              pct: 5,  color: "#2A7D4F" }, ].map((b, i) => ( <motion.div key={i} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}> <div className="flex justify-between mb-1.5"> <span className="text-sm text-gray-700">{b.lbl}</span> <span className="font-mono font-bold text-sm" style={{ color: b.color }}>+{b.pct}%</span> </div> <div className="h-2 bg-gray-100 rounded-full overflow-hidden border border-gray-200"> <motion.div initial={{ width: 0 }} whileInView={{ width: `${(b.pct / 70) * 100}%` }} viewport={{ once: true }} transition={{ duration: 1.2, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }} className="h-full rounded-full" style={{ backgroundColor: b.color }} /> </div> </motion.div> ))} </div> <div className="bg-[#E8F5EE] rounded-xl p-4 flex items-center justify-between"> <span className="font-bold text-[#1B5E37] text-sm">Gesamt möglich</span> <span className="font-mono font-extrabold text-[#1B5E37] text-2xl">bis 70% = €21.000</span> </div> <p className="text-xs text-gray-400 mt-2"> Quelle: KfW Bundesförderung für effiziente Gebäude (BEG), Stand März 2026 </p> </motion.section> {/* Einwände / Objection Handling */} <motion.section initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}> <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold
+                uppercase tracking-widest px-3 py-1 rounded-full mb-4"> Häufige Bedenken </span> <h2 className="text-3xl font-bold text-gray-900 mb-6"> {[ `Ehrliche Antworten auf Ihre Fragen zu ${city.name}`, `Was Eigentümer in ${city.name} wirklich wissen wollen`, `Häufige Bedenken — was Hausbesitzer in ${city.name} beschäftigt`, `Offene Fragen zur WP in ${city.name}: Wir antworten ehrlich`, ][cityHash(city, 4, 151)]} </h2> <div className="grid sm:grid-cols-2 gap-4"> {[ { q: "Funktioniert WP im Altbau in " + city.name + "?", a: `Ja — in den meisten Altbauten in ${city.name}. Entscheidend ist die benötigte Vorlauftemperatur. Moderne Geräte (z.B. Viessmann Vitocal, Stiftung Warentest 2,0) arbeiten bis 70°C und sind mit normalen Heizkörpern kompatibel.`, badge: "Kein Problem", badgeColor: "bg-[#E8F5EE] text-[#1B5E37]", icon: <Home size={22} className="text-[#1B5E37]" />, }, { q: "Ist eine WP in " + city.name + " zu laut?", a: `Moderne Luft-WP erzeugen 45–55 dB auf 1 Meter — wie normales Gespräch. Mit korrekter Aufstellung (Abstand zur Grenze in ${city.bundesland}: mind. 3m) ist Lärm kein Problem.`, badge: "Kein Problem", badgeColor: "bg-[#E8F5EE] text-[#1B5E37]", icon: <Shield size={22} className="text-[#1B5E37]" />, }, { q: "Lohnt WP ohne PV in " + city.name + "?", a: `Ja. Auch ohne PV spart eine WP in ${city.name} bei ${city.gaspreis} ct/kWh Gas vs. ${city.strompreis} ct/kWh WP-Strom und JAZ ${jaz} rund ${fmtEuro(calc.ersparnis)}/Jahr. Mit PV sinken die Kosten um weitere 30–40%.`, badge: "Kein Problem", badgeColor: "bg-[#E8F5EE] text-[#1B5E37]", icon: <Zap size={22} className="text-[#1B5E37]" />, }, { q: "Gibt es versteckte Kosten in " + city.name + "?", a: `Häufig unterschätzt: hydraulischer Abgleich (€500–1.500), Fundament (€300–800), Elektroinstallation (€500–1.500). Wir stellen sicher, dass alle Betriebe in ${city.name} diese Positionen vollständig ausweisen.`, badge: "Wichtig", badgeColor: "bg-amber-100 text-amber-800", icon: <AlertTriangle size={22} className="text-amber-600" />, }, ].map((item, i) => ( <div key={i} className="bg-white rounded-xl p-5 border border-gray-200 flex gap-3"> <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center flex-shrink-0 mt-0.5"> {item.icon} </div> <div> <div className="flex items-center gap-2 mb-1.5 flex-wrap"> <h3 className="font-semibold text-gray-900 text-sm leading-snug">{item.q}</h3> <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${item.badgeColor}`}> {item.badge} </span> </div> <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p> </div> </div> ))} </div> </motion.section> {/* WP Typen */} <motion.section initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}> <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold
+                uppercase tracking-widest px-3 py-1 rounded-full mb-4"> Welche WP passt zu mir? </span> <h2 className="text-3xl font-bold text-gray-900 mb-4"> {h2s.typen} </h2> <p className="text-[#4A6358] text-base leading-relaxed mb-5">{si.typen}</p> {/* Vergleichs-Bild: drei WP-Typen visuell */} <div className="relative rounded-2xl overflow-hidden mb-6 h-44"> <img src={pick(STRIP_IMGS, city.lat, city.lng, 20)} alt={`Wärmepumpe Typen ${city.name}`} className="w-full h-full object-cover" loading="lazy" /> <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,25,16,0.55) 0%, rgba(10,25,16,0.80) 100%)" }} /> <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end"> <div> <p className="text-white font-bold text-base leading-none">Luft · Sole · Wasser</p> <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.72)" }}>JAZ-Vergleich für {city.name} bei {city.avgTemp}°C Jahresmittel</p> </div> <span className="bg-[#D97706] text-white text-xs font-bold px-3 py-1.5 rounded-lg"> 92% wählen Luft-WP </span> </div> </div> <div className="grid sm:grid-cols-3 gap-4"> {[ { type: "Luft-Wasser", share: "92%", jaz: estimateJAZ(city, "luft").toString(), install: "€3.000–6.000", pros: ["Keine Erdarbeiten", "Auch im Altbau", "Montage 1–2 Tage"], highlight: true, }, { type: "Sole-Wasser", share: "6%", jaz: estimateJAZ(city, "sole").toString(), install: "€6.000–12.000", pros: ["+5% KfW-Bonus", "Konstante Effizienz", "Leiser Betrieb"], highlight: false, }, { type: "Wasser-Wasser", share: "2%", jaz: estimateJAZ(city, "wasser").toString(), install: "€8.000–15.000", pros: ["+5% KfW-Bonus", "Höchste JAZ", "Niedrigste Betriebskosten"], highlight: false, }, ].map((t, i) => ( <div key={i} className={`bg-white rounded-xl overflow-hidden border-2 transition-all hover:-translate-y-1 hover:shadow-lg ${t.highlight ? "border-[#1B5E37]" : "border-gray-200"}`}> {t.highlight && ( <div className="bg-[#1B5E37] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide text-center"> Meistgewählt · Stiftung Warentest 2,0 (Gut) </div> )} <div className="p-5"> <div className="flex items-start justify-between mb-3"> <h3 className="font-bold text-gray-900">{t.type}</h3> <span className="bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold px-2 py-0.5 rounded-full"> {t.share} </span> </div> <div className="grid grid-cols-2 gap-2 mb-4"> {[{ l: "JAZ in " + city.name, v: t.jaz }, { l: "Installation", v: t.install }].map(s => ( <div key={s.l} className="bg-gray-50 rounded-lg p-2.5"> <p className="text-xs text-gray-400 font-semibold mb-0.5">{s.l}</p> <p className="font-mono font-bold text-gray-800 text-sm">{s.v}</p> </div> ))} </div> {t.pros.map(p => ( <div key={p} className="flex items-center gap-2 text-sm text-gray-600 mb-1.5"> <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" /> {p} </div> ))} </div> </div> ))} </div> </motion.section> {/* Experten-Box */} <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white rounded-2xl border border-gray-200 p-6 flex gap-5"> <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#E8F5EE]"> <img src={IMG_TEAM} alt="Bastian Saupe" className="w-full h-full object-cover object-top" /> </div> <div> <div className="flex items-center gap-3 mb-2 flex-wrap"> <span className="font-bold text-gray-900">Bastian Saupe</span> <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full"> Gründer & Geschäftsführer · Webflott.de </span> </div> <p className="text-gray-600 text-sm leading-relaxed italic"> „Alle Inhalte auf dieser Seite basieren auf aktuellen Klimadaten des DWD für {city.name}, KfW-Konditionen Stand März 2026 und BWP-Feldtestdaten zur Jahresarbeitszahl. Die stadtspezifischen Energiepreise stammen aus der BDEW-Regionalanalyse."
                 </p>
                 <p className="text-xs text-gray-400 mt-2">Zuletzt geprüft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
