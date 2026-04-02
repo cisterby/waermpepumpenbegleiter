@@ -1,7 +1,6 @@
 // components/programmatic/templates/KaufenTemplate.tsx
 // "waermepumpe-kaufen" — transactional
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
@@ -37,7 +36,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
           className="absolute inset-0 w-full h-full object-cover" loading="eager" {...({fetchPriority:"high"} as object)} />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div>
             <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
               <Link href="/" className="text-white/80 hover:text-white/70 transition-colors">Startseite</Link>
               <span className="text-white/70">›</span>
@@ -83,7 +82,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
                 <div className="text-center"><p className="font-mono font-bold text-[#3DA16A] text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

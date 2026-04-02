@@ -2,7 +2,6 @@
 // Vollwertiges Template für alle Tier 2-4 Keywords (17 Keywords × 733 Städte)
 // Unique Content durch: city-hash Textvarianten + rotierende Blöcke + keyword-spezifische Sektionen
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';

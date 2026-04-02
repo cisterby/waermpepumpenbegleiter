@@ -1,7 +1,6 @@
 // components/programmatic/templates/InstallateurTemplate.tsx
 // "waermepumpe-installateur" — vollständig, 1500+ Wörter, Bilder, visuell stark
 'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Star } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
