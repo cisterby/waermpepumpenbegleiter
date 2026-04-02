@@ -15,36 +15,17 @@ import { getVariantIndex, getKlimazone, estimateJAZ } from "@/lib/city-utils";
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from "@/lib/calculations";
 import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock } from "@/lib/content-variation";
 
-// ── Bildpools (Unsplash — free commercial use) ──────────────────────────────
-const HERO_IMGS = [
-  // Moderne Häuser bei Dämmerung — warm beleuchtet, hoher Kontrast für weißen Text
-  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=85",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85",
-  "https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=1920&q=85",
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=85",
-  "https://images.unsplash.com/photo-1416331108676-a22ccbe8c3f1?auto=format&fit=crop&w=1920&q=85",
-];
-const SIDE_IMGS = [
-  // Fachmann / Installation / Handwerk — professionell, vertrauenswürdig
-  "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=85",
-  "https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&w=800&q=85",
-];
-const STRIP_IMGS = [
-  // Natur / grüne Energie / Landschaft — für visuelle Abwechslung in Sektionen
-  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1540188757-e5be54c62e4b?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1509391111902-de5d52b3f785?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
-];
-// Abschnittsspezifische Bilder
+// Image pools
+const HERO_IMGS = ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=85','https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85','https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=1920&q=85','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=85','https://images.unsplash.com/photo-1416331108676-a22ccbe8c3f1?auto=format&fit=crop&w=1920&q=85'];
+const SIDE_IMGS = ['https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=800&q=85','https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=85','https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=85','https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&w=800&q=85'];
+const STRIP_IMGS = ['https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1540188757-e5be54c62e4b?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1509391111902-de5d52b3f785?auto=format&fit=crop&w=1200&q=80','https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80'];
+// Section images
 const IMG_FOERDERUNG = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80";
 const IMG_ALTBAU     = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80";
 const IMG_TEAM       = "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80";
 const IMG_KOSTEN     = "https://images.unsplash.com/photo-1611117775350-ac3950990985?auto=format&fit=crop&w=800&q=80";
 
-// ── HAUPTKOMPONENTE ──────────────────────────────────────────────────────────
+// Main component
 export default function WaermepumpeTemplate({
   city, keyword, jaz, calc, foerd, h1, nearby,
 }: CityPageRouterProps) {
@@ -819,7 +800,7 @@ function pick(arr, lat, lng, offset) {
 }
 
 
-// ── Interaktiver WP-Kostenrechner ────────────────────────────────────────────
+// WP cost calculator sub-component
 function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
   const [flaeche,  setFlaeche]  = useState(120);
   const [baujahr,  setBaujahr]  = useState("1979_1994");
@@ -1074,7 +1055,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps["city"] }) {
 }
 
 
-// ── FAQ Accordion ────────────────────────────────────────────────────────────
+// FAQ accordion sub-component
 function FAQAccordion({ faqs }: { faqs: Array<{ q: string; a: string }> }) {
   const [open, setOpen] = useState(null as null | number);
   return (
