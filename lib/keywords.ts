@@ -140,9 +140,9 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'info_commercial',
     template: 'FoerderungTemplate',
-    titleTemplate: 'Wärmepumpe Förderung {stadt} {year} – Bis 70% KfW-Zuschuss',
+    titleTemplate: 'Wärmepumpe Förderung {stadt} {year}',
     metaTemplate: 'Wärmepumpe Förderung {stadt} {year}: Bis 70% KfW-Zuschuss = max. €21.000 + {bundesland}-Landesförderung ✓ Förderrechner ✓ Antragsprozess ✓ Jetzt anfragen.',
-    h1Template: 'Wärmepumpe Förderung {stadt} {year} — KfW-Zuschuss bis 21.000 Euro',
+    h1Template: 'Wärmepumpe Förderung {stadt} {year} — KfW & {bundesland}-Programme',
     featuredSnippetQuestions: [
       'Wie hoch ist die Förderung für Wärmepumpen in {stadt}?',
       'Welche Förderung gibt es in {bundesland} für Wärmepumpen?',
@@ -168,7 +168,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'info_commercial',
     template: 'LuftWasserTemplate',
-    titleTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}',
+    titleTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year} – Kosten, JAZ & Installateure',
     metaTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}: JAZ {jaz} bei {avgTemp}°C Jahresmittel ✓ 92% Marktanteil ✓ Kosten ab {preisVon} ✓ Kostenloser Installateur-Vergleich. Jetzt.',
     h1Template: 'Luft-Wasser-Wärmepumpe {stadt} — Effizienz, Kosten & Installateure {year}',
     featuredSnippetQuestions: [
@@ -196,7 +196,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'transactional',
     template: 'KaufenTemplate',
-    titleTemplate: 'Wärmepumpe kaufen {stadt} {year}',
+    titleTemplate: 'Wärmepumpe kaufen {stadt} {year} – Kosten, Förderung & Angebote',
     metaTemplate: 'Wärmepumpe kaufen in {stadt} {year} ✓ Kostenloser Kaufberater ✓ Welche WP passt? ✓ Kosten, Förderung & Hersteller-Vergleich ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe kaufen in {stadt} {year} — Ihr Kaufberater',
     featuredSnippetQuestions: [
@@ -222,7 +222,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'AltbauTemplate',
-    titleTemplate: 'Wärmepumpe Altbau {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Altbau {stadt} {year} – Geeignet? Kosten & Förderung',
     metaTemplate: 'Wärmepumpe im Altbau {stadt} ✓ Eignung & Voraussetzungen {year} ✓ Heizlastberechnung ✓ Vorlauftemperatur optimieren ✓ Kostenloser Fachbetrieb-Vergleich.',
     h1Template: 'Wärmepumpe Altbau {stadt} {year} — Eignung, Kosten & Voraussetzungen',
     featuredSnippetQuestions: [
