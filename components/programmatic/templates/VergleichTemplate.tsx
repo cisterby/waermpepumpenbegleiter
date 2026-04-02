@@ -71,7 +71,7 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[55vh] flex items-center overflow-hidden">
         src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
-          className="absolute inset-0 w-full h-full object-cover" loading="eager" fetchPriority="high" decoding="async" />
+          className="absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/90 via-[#0A1910]/70 to-[#0A1910]/20" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">

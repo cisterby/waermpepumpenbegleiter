@@ -19,7 +19,16 @@ const IMGS = {
   outdoor:   'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',
 };
 
+function getMarketData(einwohner: number) {
+  if (einwohner >= 1000000) return { wartezeit: '8–14 Wochen', kosten: '€22.000–€32.000', note: 'Sehr hohe Nachfrage — früh anfragen', urgent: true };
+  if (einwohner >= 500000)  return { wartezeit: '6–12 Wochen', kosten: '€20.000–€29.000', note: 'Hohe Nachfrage', urgent: true };
+  if (einwohner >= 200000)  return { wartezeit: '5–10 Wochen', kosten: '€18.000–€27.000', note: 'Gute Verfügbarkeit', urgent: false };
+  return                          { wartezeit: '4–8 Wochen',  kosten: '€17.000–€26.000', note: 'Gute lokale Auswahl', urgent: false };
+}
 
+/* CRITERIA moved inside component */
+
+/* CHECKLIST moved inside component */
 
 export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean).slice(0, 6);
@@ -604,11 +613,4 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
       </div>
     </div>
   );
-}
-
-function getMarketData(einwohner: number) {
-  if (einwohner >= 1000000) return { wartezeit: '8–14 Wochen', kosten: '€22.000–€32.000', note: 'Sehr hohe Nachfrage — früh anfragen', urgent: true };
-  if (einwohner >= 500000)  return { wartezeit: '6–12 Wochen', kosten: '€20.000–€29.000', note: 'Hohe Nachfrage', urgent: true };
-  if (einwohner >= 200000)  return { wartezeit: '5–10 Wochen', kosten: '€18.000–€27.000', note: 'Gute Verfügbarkeit', urgent: false };
-  return                          { wartezeit: '4–8 Wochen',  kosten: '€17.000–€26.000', note: 'Gute lokale Auswahl', urgent: false };
 }

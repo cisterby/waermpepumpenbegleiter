@@ -1,6 +1,6 @@
 // components/programmatic/CityVariationBlocks.tsx
 // Stadtspezifische Content-Blöcke für alle 22 Templates
-// Nutzung: [CityVariationBlocks]
+// Nutzung: <CityVariationBlocks city={city} keyword={keyword} jaz={jaz} calc={calc} />
 'use client';
 import { getCityVariationData } from '@/lib/content-variation';
 import type { City } from '@/lib/city-utils';
