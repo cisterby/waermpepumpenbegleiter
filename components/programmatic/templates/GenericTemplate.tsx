@@ -497,6 +497,5 @@ export default function GenericTemplate({
       </div>
     </div>
     </div>
-    </div>
   );
 }
