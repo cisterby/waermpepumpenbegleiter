@@ -54,7 +54,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'mixed',
     template: 'WaermepumpeTemplate',
-    titleTemplate: 'Wärmepumpe {stadt} {year}',
+    titleTemplate: 'Wärmepumpe {stadt} {year} – Kosten, Förderung & Installateure',
     metaTemplate: 'Wärmepumpe in {stadt} einbauen ✓ Kosten ab {preisVon} ✓ Bis 70% KfW-Förderung ✓ Geprüfte lokale Installateure ✓ Kostenlos bis zu 3 Angebote vergleichen.',
     h1Template: 'Wärmepumpe {stadt} — Kosten, Förderung & Installateure {year}',
     featuredSnippetQuestions: [
