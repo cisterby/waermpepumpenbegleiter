@@ -535,7 +535,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
   const [r290, setR290] = useState(false);
 
   const jaz = estimateJAZ(city, wpTyp as any, vorlauf);
-  const calc = calcBetriebskosten(flaeche, baujahr, heizung, { strompreisCtKwh: city.strompreis, gaspreisCtKwh: city.gaspreis, avgTemp: city.avgTemp, vorlaufTemp: vorlauf, wpTyp: wpTyp as any });
+  const calc = calcBetriebskosten(flaeche, baujahr, heizung as any, { strompreisCtKwh: city.strompreis, gaspreisCtKwh: city.gaspreis, avgTemp: city.avgTemp, vorlaufTemp: vorlauf, wpTyp: wpTyp as any });
   const foerd = calcFoerderung({ investitionskosten: 25000, isSelfOccupied: selfOcc, hasOldFossilHeating: fossil, einkommenUnter40k: lowInc, hasNaturalRefrigerant: r290, usesErdwaermeOrWasser: wpTyp !== 'luft' });
   const gewinnNach20 = Math.round(calc.ersparnis * 20 - foerd.eigenanteil);
 
