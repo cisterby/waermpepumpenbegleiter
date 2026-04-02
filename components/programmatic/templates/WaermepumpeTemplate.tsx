@@ -35,7 +35,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
 
       {/* HERO */}
       <section className="relative flex items-center overflow-hidden" style={{ minHeight: '90vh' }}>
-        <img src={heroImg} alt={'Waermepumpe ' + city.name} className="absolute inset-0 w-full h-full object-cover" loading="eager" width={1200} height={800} />
+        <img src={heroImg} alt={'Wärmepumpe ' + city.name} className="absolute inset-0 w-full h-full object-cover" loading="eager" width={1200} height={800} {...({fetchPriority:'high'} as any)} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(4,14,8,0.98) 0%, rgba(4,14,8,0.95) 30%, rgba(4,14,8,0.88) 52%, rgba(4,14,8,0.50) 70%, rgba(4,14,8,0.08) 100%)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(4,14,8,0.60) 0%, rgba(4,14,8,0.30) 45%, transparent 68%)' }} />
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
@@ -76,7 +76,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                   Kosten berechnen <ArrowRight size={18} />
                 </a>
                 <a href="#foerderung" className="inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl text-white transition-all text-base" style={{ background: 'rgba(255,255,255,0.15)', border: '1.5px solid rgba(255,255,255,0.45)' }}>
-                  Foerderung pruefen
+                  Förderung prüfen
                 </a>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -99,22 +99,22 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
             <div className="hidden lg:flex justify-end">
               <div className="w-full max-w-[420px] bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                 <div className="relative h-52">
-                  <img src={sideImg} alt={'Waermepumpe ' + city.name} className="w-full h-full object-cover" loading="eager" width={420} height={208} />
+                  <img src={sideImg} alt={'Wärmepumpe ' + city.name} className="w-full h-full object-cover" loading="eager" width={420} height={208} {...({fetchPriority:'high'} as any)} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-[#0A1910]/15" />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between">
                     <div className="bg-white/95 rounded-lg px-3 py-2">
-                      <p className="text-xs text-gray-500 mb-0.5">Jaehrl. Ersparnis</p>
+                      <p className="text-xs text-gray-500 mb-0.5">Jährl. Ersparnis</p>
                       <p className="font-mono font-bold text-[#D97706] text-lg">{fmtEuro(calc.ersparnis)}</p>
                     </div>
                     <div className="bg-white/95 rounded-lg px-3 py-2 text-right">
-                      <p className="text-xs text-gray-500 mb-0.5">KfW-Foerderung</p>
+                      <p className="text-xs text-gray-500 mb-0.5">KfW-Förderung</p>
                       <p className="font-mono font-bold text-[#1B5E37] text-lg">bis 70%</p>
                     </div>
                   </div>
                 </div>
                 <div className="p-5">
                   <div className="flex flex-wrap gap-1.5 mb-4">
-                    {['Herstellerunabhaengig', 'HWK-geprueft', 'KfW-Begleitung'].map(b => (
+                    {['Herstellerunabhaengig', 'HWK-geprüft', 'KfW-Begleitung'].map(b => (
                       <span key={b} className="bg-[#E8F5EE] text-[#1B5E37] text-xs font-semibold px-2.5 py-1 rounded-full">{b}</span>
                     ))}
                   </div>
@@ -138,7 +138,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
             ))}
           </div>
           <div className="flex items-center gap-3">
-            {['DSGVO-konform', 'HWK-geprueft', 'Kostenloser Service'].map(b => (
+            {['DSGVO-konform', 'HWK-geprüft', 'Kostenloser Service'].map(b => (
               <span key={b} className="text-xs font-semibold text-[#1A4731] bg-[#E8F5EE] px-3 py-1.5 rounded-full hidden sm:inline">✓ {b}</span>
             ))}
           </div>
@@ -155,11 +155,11 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
             {/* Featured Snippet */}
             <div className="bg-white rounded-2xl border border-gray-200 p-7 border-l-4 border-l-[#1B5E37]">
               <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                {fillTemplate(keyword.featuredSnippetQuestions[0] || 'Was kostet eine Waermepumpe in {stadt}?', city, jaz)}
+                {fillTemplate(keyword.featuredSnippetQuestions[0] || 'Was kostet eine Wärmepumpe in {stadt}?', city, jaz)}
               </h2>
               <p className="text-gray-600 leading-relaxed text-[15px]">
-                Eine <strong>Luft-Wasser-Waermepumpe</strong> kostet in {city.name} inklusive Installation zwischen{' '}
-                <strong>18.000 und 28.000 Euro</strong> brutto. Nach KfW-Foerderung (typisch 50-55%) reduziert sich der
+                Eine <strong>Luft-Wasser-Wärmepumpe</strong> kostet in {city.name} inklusive Installation zwischen{' '}
+                <strong>€18.000 und €28.000</strong> brutto. Nach KfW-Förderung (typisch 50–55%) reduziert sich der
                 Eigenanteil auf <strong>{fmtEuro(foerd.eigenanteil)}</strong>. Die jaehrliche Ersparnis gegenueber
                 Erdgas betraegt bei einem 120 m² EFH ca.{' '}
                 <strong>{fmtEuro(calc.ersparnis)} pro Jahr</strong> — bei {city.strompreis} ct/kWh Strompreis und{' '}
@@ -180,7 +180,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 <div className="absolute inset-0 flex items-center px-7 gap-8">
                   {[
                     { label: city.heizgradtage.toLocaleString('de-DE'), sub: 'Heizgradtage/Jahr' },
-                    { label: city.normAussentemp + '°C', sub: 'Normausentemperatur' },
+                    { label: city.normAussentemp + '°C', sub: 'Normaußentemperatur' },
                     { label: 'JAZ ' + jaz, sub: 'Erreichbare Jahresarbeitszahl' },
                     { label: city.avgTemp + '°C', sub: 'Jahresmitteltemperatur' },
                   ].map((s, i) => (
@@ -212,8 +212,8 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               <p className="text-gray-600 leading-relaxed">
                 {city.name} ({city.bundesland}) hat mit{' '}
                 <strong>{city.heizgradtage} Heizgradtagen pro Jahr</strong> (Bundesdurchschnitt: ca. 3.200 Kd/a) einen{' '}
-                {city.heizgradtage > 3200 ? 'ueberdurchschnittlichen' : 'unterdurchschnittlichen'} Waermebedarf.
-                Eine Luft-Wasser-Waermepumpe erreicht hier eine <strong>JAZ von {jaz}</strong>.
+                {city.heizgradtage > 3200 ? 'überdurchschnittlichen' : 'unterdurchschnittlichen'} Wärmebedarf.
+                Eine Luft-Wasser-Wärmepumpe erreicht hier eine <strong>JAZ von {jaz}</strong>.
               </p>
             </section>
 
@@ -243,7 +243,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 Kostenrechner
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                {['Kosten berechnen fuer Ihr Haus in ' + city.name, 'Was kostet die WP konkret in ' + city.name + '?', 'WP-Kostenrechner fuer ' + city.name, 'Stadtspezifischer Rechner fuer ' + city.name][cityHash(city, 4, 150)]}
+                {['Kosten berechnen für Ihr Haus in ' + city.name, 'Was kostet die WP konkret in ' + city.name + '?', 'WP-Kostenrechner für ' + city.name, 'Stadtspezifischer Rechner für ' + city.name][cityHash(city, 4, 150)]}
               </h2>
               <WPKostenRechner city={city} />
             </section>
@@ -279,10 +279,10 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               </p>
               <div className="space-y-3 mb-6">
                 {[
-                  { lbl: 'Grundfoerderung', pct: 30, color: '#1B5E37' },
+                  { lbl: 'Grundförderung', pct: 30, color: '#1B5E37' },
                   { lbl: 'Klima-Speed-Bonus (fossile Heizung → WP)', pct: 20, color: '#D97706' },
                   { lbl: 'Einkommens-Bonus (unter 40.000 Euro netto/J.)', pct: 30, color: '#F59E0B' },
-                  { lbl: 'Natuerliches Kaeltemittel R290', pct: 5, color: '#2A7D4F' },
+                  { lbl: 'Natuerliches Kältemittel R290', pct: 5, color: '#2A7D4F' },
                 ].map((b, i) => (
                   <div key={i}>
                     <div className="flex justify-between mb-1.5">
@@ -299,16 +299,16 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 <span className="font-bold text-[#1B5E37] text-sm">Gesamt moeglich</span>
                 <span className="font-mono font-extrabold text-[#1B5E37] text-2xl">bis 70% = 21.000 Euro</span>
               </div>
-              <p className="text-xs text-gray-400 mt-2">Quelle: KfW BEG, Stand Maerz 2026</p>
+              <p className="text-xs text-gray-400 mt-2">Quelle: KfW BEG, Stand März 2026</p>
             </section>
 
             {/* Einwaende */}
             <section>
               <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                Haeufige Bedenken
+                Häufige Bedenken
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                {['Ehrliche Antworten auf Ihre Fragen zu ' + city.name, 'Was Eigentuemer in ' + city.name + ' wirklich wissen wollen', 'Haeufige Bedenken in ' + city.name, 'Offene Fragen zur WP in ' + city.name][cityHash(city, 4, 151)]}
+                {['Ehrliche Antworten auf Ihre Fragen zu ' + city.name, 'Was Eigentümer in ' + city.name + ' wirklich wissen wollen', 'Häufige Bedenken in ' + city.name, 'Offene Fragen zur WP in ' + city.name][cityHash(city, 4, 151)]}
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
@@ -342,7 +342,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 {[
                   { type: 'Luft-Wasser', share: '92%', jaz: estimateJAZ(city, 'luft').toString(), install: '3.000-6.000 Euro', pros: ['Keine Erdarbeiten', 'Auch im Altbau', 'Montage 1-2 Tage'], highlight: true },
                   { type: 'Sole-Wasser', share: '6%', jaz: estimateJAZ(city, 'sole').toString(), install: '6.000-12.000 Euro', pros: ['+5% KfW-Bonus', 'Konstante Effizienz', 'Leiser Betrieb'], highlight: false },
-                  { type: 'Wasser-Wasser', share: '2%', jaz: estimateJAZ(city, 'wasser').toString(), install: '8.000-15.000 Euro', pros: ['+5% KfW-Bonus', 'Hoechste JAZ', 'Niedrigste Betriebskosten'], highlight: false },
+                  { type: 'Wasser-Wasser', share: '2%', jaz: estimateJAZ(city, 'wasser').toString(), install: '8.000-15.000 Euro', pros: ['+5% KfW-Bonus', 'Höchste JAZ', 'Niedrigste Betriebskosten'], highlight: false },
                 ].map((t, i) => (
                   <div key={i} className={'bg-white rounded-xl overflow-hidden border-2 transition-all hover:-translate-y-1 hover:shadow-lg ' + (t.highlight ? 'border-[#1B5E37]' : 'border-gray-200')}>
                     {t.highlight && <div className="bg-[#1B5E37] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide text-center">Meistgewaehlt</div>}
@@ -378,13 +378,13 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               <div>
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
                   <span className="font-bold text-gray-900">Bastian Saupe</span>
-                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Gruender &amp; Geschaeftsfuehrer · Webflott.de</span>
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Gründer &amp; Geschäftsführer · Webflott.de</span>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed italic">
-                  Alle Inhalte basieren auf aktuellen Klimadaten des DWD fuer {city.name}, KfW-Konditionen Stand Maerz 2026 und BWP-Feldtestdaten zur Jahresarbeitszahl.
+                  Alle Inhalte basieren auf aktuellen Klimadaten des DWD fuer {city.name}, KfW-Konditionen Stand März 2026 und BWP-Feldtestdaten zur Jahresarbeitszahl.
                   Die stadtspezifischen Energiepreise stammen aus der BDEW-Regionalanalyse.
                 </p>
-                <p className="text-xs text-gray-400 mt-2">Zuletzt geprueft: Maerz 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
+                <p className="text-xs text-gray-400 mt-2">Zuletzt geprueft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
             </div>
 
@@ -403,7 +403,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
 
             {/* Nachbarstaedte */}
             <section>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Waermepumpe in der Region {city.bundesland}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Wärmepumpe in der Region {city.bundesland}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={'/' + keyword.slug + '/' + n.slug} className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl text-sm font-medium border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-all group">
@@ -416,7 +416,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
 
             {/* Cross-Links */}
             <section>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Weitere Themen fuer {city.name}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Weitere Themen für {city.name}</h3>
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw => kw && (
                   <Link key={kw.slug} href={'/' + kw.slug + '/' + city.slug} className="px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 hover:border-[#1B5E37] hover:text-[#1B5E37] transition-colors">
@@ -433,8 +433,8 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
             <div className="sticky top-24 space-y-4">
               <div className="bg-[#1B5E37] rounded-2xl p-6 shadow-2xl shadow-[#1B5E37]/20">
                 <p className="text-[#4CAF7D] text-xs font-bold uppercase tracking-wider mb-1">KOSTENLOSER SERVICE</p>
-                <p className="text-white font-bold text-xl mb-1">Angebot fuer {city.name}</p>
-                <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.78)' }}>Bis zu 3 gepruef te lokale Betriebe · 48h</p>
+                <p className="text-white font-bold text-xl mb-1">Angebot für {city.name}</p>
+                <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.78)' }}>Bis zu 3 geprüfte lokale Betriebe · 48h</p>
                 <div className="space-y-1.5 mb-5">
                   {[
                     { l: 'Ersparnis/Jahr', v: fmtEuro(calc.ersparnis), c: 'text-amber-300' },
@@ -455,7 +455,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-5">
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Warum Waermepumpenbegleiter?</p>
-                {['Herstellerunabhaengig seit 2025', 'Alle Betriebe HWK-geprueft', 'KfW-Antrag-Begleitung inklusive', 'Lokale Meisterbetriebe in ' + city.name, '100% kostenlos fuer Hausbesitzer'].map(t => (
+                {['Herstellerunabhängig seit 2025', 'Alle Betriebe HWK-geprüft', 'KfW-Antrag-Begleitung inklusive', 'Lokale Meisterbetriebe in ' + city.name, '100% kostenlos für Hausbesitzer'].map(t => (
                   <div key={t} className="flex items-center gap-2 text-sm text-gray-700 py-1.5 border-b border-gray-100 last:border-0">
                     <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />{t}
                   </div>
@@ -479,14 +479,14 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
       {/* AKTUALITAETSBLOCK 2026 */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <div className="relative rounded-2xl overflow-hidden mb-8 h-44">
-          <img src={pickImg(STRIP_IMGS, city.lat, city.lng, 30)} alt="Waermepumpe 2026" className="w-full h-full object-cover" loading="lazy" />
+          <img src={pickImg(STRIP_IMGS, city.lat, city.lng, 30)} alt="Wärmepumpe 2026" className="w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.55) 100%)' }} />
           <div className="absolute inset-0 flex items-center px-8">
             <div>
               <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(76,175,125,0.25)', color: '#4CAF7D', border: '1px solid rgba(76,175,125,0.4)' }}>
                 Aktuell · 2026
               </span>
-              <h2 className="text-white text-xl font-bold leading-tight">Was sich 2026 geaendert hat fuer {city.name}</h2>
+              <h2 className="text-white text-xl font-bold leading-tight">Was sich 2026 geändert hat für {city.name}</h2>
             </div>
           </div>
         </div>
@@ -547,17 +547,17 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
         <div className="absolute inset-0 flex items-center px-8">
           <div>
             <p className="text-[#4CAF7D] text-xs font-bold uppercase tracking-wider mb-1">KOSTENLOSER RECHNER</p>
-            <p className="text-white font-extrabold text-2xl leading-tight">Was kostet die Waermepumpe wirklich in {city.name}?</p>
-            <p className="text-white/80 text-sm">{city.strompreis} ct/kWh · {city.heizgradtage} Heizgradtage · JAZ {jaz} · Stand Maerz 2026</p>
+            <p className="text-white font-extrabold text-2xl leading-tight">Was kostet die Wärmepumpe wirklich in {city.name}?</p>
+            <p className="text-white/80 text-sm">{city.strompreis} ct/kWh · {city.heizgradtage} Heizgradtage · JAZ {jaz} · Stand März 2026</p>
           </div>
         </div>
       </div>
       <div className="p-8 grid md:grid-cols-[1fr_300px] gap-8">
         <div className="space-y-5">
           <div>
-            <p className="font-semibold text-gray-700 text-sm mb-1">Wohnflaeche: <span className="text-[#1B5E37] font-bold">{flaeche} m²</span></p>
+            <p className="font-semibold text-gray-700 text-sm mb-1">Wohnfläche: <span className="text-[#1B5E37] font-bold">{flaeche} m²</span></p>
             <input type="range" min={50} max={300} step={10} value={flaeche} onChange={e => setFlaeche(+e.target.value)} className="w-full accent-[#1B5E37]" />
-            <div className="flex justify-between text-xs text-gray-300 mt-1"><span>50 m²</span><span className="text-[#1B5E37]">Oe 120 m²</span><span>300 m²</span></div>
+            <div className="flex justify-between text-xs text-gray-300 mt-1"><span>50 m²</span><span className="text-[#1B5E37]">Ø 120 m²</span><span>300 m²</span></div>
           </div>
           <div>
             <p className="font-semibold text-gray-700 text-sm mb-2">Baujahr</p>
@@ -582,7 +582,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
             </div>
           </div>
           <div>
-            <p className="font-semibold text-gray-700 text-sm mb-2">Waermepumpentyp</p>
+            <p className="font-semibold text-gray-700 text-sm mb-2">Wärmepumpentyp</p>
             <div className="grid grid-cols-3 gap-2">
               {[['luft', 'Luft-Wasser', '92% Marktanteil'], ['sole', 'Sole-Wasser', '+5% KfW-Bonus'], ['wasser', 'Wasser-Wasser', '+5% KfW-Bonus']].map(([v, l, sub]) => (
                 <button key={v} onClick={() => setWpTyp(v)} className={'p-3 rounded-xl border-2 text-center transition-all ' + (wpTyp === v ? 'border-[#1B5E37] bg-[#E8F5EE]' : 'border-gray-200')}>
@@ -597,12 +597,12 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
             <input type="range" min={30} max={70} step={5} value={vorlauf} onChange={e => setVorlauf(+e.target.value)} className="w-full accent-[#1B5E37]" />
           </div>
           <div className="space-y-2">
-            <p className="font-semibold text-gray-700 text-sm">Ihre Foerdersituation</p>
+            <p className="font-semibold text-gray-700 text-sm">Ihre Fördersituation</p>
             {[
               { s: selfOcc, f: setSelfOcc, l: 'Eigennutzer', sub: 'Grundvoraussetzung fuer KfW-Bonus' },
               { s: fossil, f: setFossil, l: 'Fossile Heizung ersetzen', sub: '+20% Klima-Speed-Bonus' },
-              { s: lowInc, f: setLowInc, l: 'Einkommen unter 40.000 Euro/J', sub: '+30% Einkommens-Bonus' },
-              { s: r290, f: setR290, l: 'R290 Kaeltemittel', sub: '+5% Bonus' },
+              { s: lowInc, f: setLowInc, l: 'Einkommen unter 40.000 €/J', sub: '+30% Einkommens-Bonus' },
+              { s: r290, f: setR290, l: 'R290 Kältemittel', sub: '+5% Bonus' },
             ].map((o, i) => (
               <button key={i} onClick={() => o.f(!o.s)} className={'w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all ' + (o.s ? 'border-[#1B5E37] bg-[#E8F5EE]' : 'border-gray-200')}>
                 <div className="flex-1 text-left">
@@ -618,12 +618,12 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
         </div>
         <div className="space-y-3">
           <div className="bg-[#1B5E37] rounded-2xl p-5">
-            <p className="text-[#4CAF7D] text-xs font-bold uppercase tracking-wider mb-3">ERGEBNIS FUER {city.name.toUpperCase()}</p>
+            <p className="text-[#4CAF7D] text-xs font-bold uppercase tracking-wider mb-3">ERGEBNIS FÜR {city.name.toUpperCase()}</p>
             <div className="space-y-1.5 text-sm mb-4">
               {[
-                { l: 'Heizkosten heute (' + heizung + ')', v: fmtEuro(calc.altKosten) + '/J', c: 'text-amber-300' },
+                { l: 'Heizkosten heute (Heiztyp)', v: fmtEuro(calc.altKosten) + '/J', c: 'text-amber-300' },
                 { l: 'Mit WP (JAZ ' + jaz + ')', v: fmtEuro(calc.wpKosten) + '/J', c: 'text-[#4CAF7D]' },
-                { l: 'Jaehrliche Ersparnis', v: fmtEuro(calc.ersparnis), c: 'text-white font-bold text-base' },
+                { l: 'Jährliche Ersparnis', v: fmtEuro(calc.ersparnis), c: 'text-white font-bold text-base' },
               ].map((r, i) => (
                 <div key={i} className="flex justify-between border-b border-white/10 pb-1.5">
                   <span style={{ color: 'rgba(255,255,255,0.80)' }}>{r.l}</span>
@@ -632,7 +632,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
               ))}
             </div>
             <div className="border-t border-white/20 pt-3 space-y-1.5 text-xs">
-              <p className="text-[#4CAF7D] font-bold uppercase tracking-wider text-xs mb-2">KfW-FOERDERUNG ({foerd.gesamtSatz}%)</p>
+              <p className="text-[#4CAF7D] font-bold uppercase tracking-wider text-xs mb-2">KfW-FÖRDERUNG ({foerd.gesamtSatz}%)</p>
               {[
                 { l: 'Gesamtinvestition', v: '25.000 Euro' },
                 { l: 'KfW-Zuschuss ' + foerd.gesamtSatz + '%', v: '-' + fmtEuro(foerd.zuschuss), c: 'text-[#4CAF7D]' },
