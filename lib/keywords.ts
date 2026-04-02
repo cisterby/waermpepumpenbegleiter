@@ -84,7 +84,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'commercial',
     template: 'WaermepumpeKostenTemplate',
-    titleTemplate: 'Wärmepumpe Kosten {stadt} {year} – Aktuelle Preise & Förderung',
+    titleTemplate: 'Wärmepumpe Kosten {stadt} {year}',
     metaTemplate: 'Was kostet eine Wärmepumpe in {stadt}? ✓ Aktuelle Preise {year} ✓ Alle Typen im Vergleich ✓ Betriebskosten {strompreis} ct/kWh ✓ Bis 70% KfW ✓ Kostenlos.',
     h1Template: 'Wärmepumpe Kosten {stadt} {year} — Aktuelle Preise & Förderung',
     featuredSnippetQuestions: [
@@ -140,9 +140,9 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'info_commercial',
     template: 'FoerderungTemplate',
-    titleTemplate: 'Wärmepumpe Förderung {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Förderung {stadt} {year} – Bis 70% KfW-Zuschuss',
     metaTemplate: 'Wärmepumpe Förderung {stadt} {year}: Bis 70% KfW-Zuschuss = max. €21.000 + {bundesland}-Landesförderung ✓ Förderrechner ✓ Antragsprozess ✓ Jetzt anfragen.',
-    h1Template: 'Wärmepumpe Förderung {stadt} {year} — KfW & {bundesland}-Programme',
+    h1Template: 'Wärmepumpe Förderung {stadt} {year} — KfW-Zuschuss bis 21.000 Euro',
     featuredSnippetQuestions: [
       'Wie hoch ist die Förderung für Wärmepumpen in {stadt}?',
       'Welche Förderung gibt es in {bundesland} für Wärmepumpen?',
