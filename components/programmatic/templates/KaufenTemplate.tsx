@@ -328,8 +328,5 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             ))}
           </div>
     </div>
-      </div>
-        </div>
-    </div>
   );
 }
