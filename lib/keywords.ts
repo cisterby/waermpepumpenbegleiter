@@ -407,7 +407,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'commercial',
     template: 'PreiseTemplate',
-    titleTemplate: 'Wärmepumpe Preise {stadt} {year} – Aktuelle Kosten & Vergleich',
+    titleTemplate: 'Wärmepumpe Preise {stadt} {year}',
     metaTemplate: 'Wärmepumpe Preise {stadt} {year} ✓ Alle Typen im Vergleich ✓ Luft-Wasser ab {preisVon} ✓ Aktuelle Marktpreise ✓ KfW bis €21.000 ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe Preise {stadt} {year} — Aktuelle Kosten aller Typen',
     featuredSnippetQuestions: [
@@ -433,7 +433,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'AnbieterTemplate',
-    titleTemplate: 'Wärmepumpe Anbieter {stadt} {year} – Geprüfte lokale Fachbetriebe',
+    titleTemplate: 'Wärmepumpe Anbieter {stadt} {year}',
     metaTemplate: 'Geprüfte Wärmepumpen-Anbieter {stadt} ✓ Lokale Meisterbetriebe ✓ Herstellerunabhängig ✓ Kostenlos bis zu 3 vollständige Angebote vergleichen {year}.',
     h1Template: 'Wärmepumpe Anbieter {stadt} {year} — Geprüfte lokale Fachbetriebe',
     featuredSnippetQuestions: [
@@ -458,7 +458,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'LuftwaermepumpeTemplate',
-    titleTemplate: 'Luftwärmepumpe {stadt} {year} – Kosten, JAZ & Installateure',
+    titleTemplate: 'Luftwärmepumpe {stadt} {year}',
     metaTemplate: 'Luftwärmepumpe {stadt} {year}: Luft-Luft vs. Luft-Wasser ✓ JAZ {jaz} bei {avgTemp}°C ✓ Kosten & KfW-Förderung bis 70% ✓ Kostenloser Installateur-Vergleich.',
     h1Template: 'Luftwärmepumpe {stadt} {year} — Kosten, Effizienz & Installateure',
     featuredSnippetQuestions: [
@@ -483,7 +483,7 @@ faqPool: [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'NeubauTemplate',
-    titleTemplate: 'Wärmepumpe Neubau {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Neubau {stadt} {year} – GEG-Pflicht, Kosten & Förderung',
     metaTemplate: 'Wärmepumpe Neubau {stadt} {year} ✓ GEG-Pflicht seit 01.01.2024 ✓ Optimale Planung für maximale Effizienz ✓ KfW-Kredit 297/298 ✓ Geprüfte Fachbetriebe.',
     h1Template: 'Wärmepumpe Neubau {stadt} {year} — GEG-konform & optimal geplant',
     featuredSnippetQuestions: [
@@ -510,7 +510,7 @@ faqPool: [
     competition: 'niedrig_mittel',
     intent: 'transactional',
     template: 'BeratungTemplate',
-    titleTemplate: 'Wärmepumpe Beratung {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Beratung {stadt} {year} – Kostenlos & unabhängig',
     metaTemplate: 'Kostenlose Wärmepumpen-Beratung {stadt} {year} ✓ Unabhängig & herstellerneutral ✓ Gebäudeanalyse & Heizlast ✓ Förderberechnung ✓ Geprüfte Fachbetriebe.',
     h1Template: 'Wärmepumpe Beratung {stadt} {year} — Kostenlos & unabhängig',
     featuredSnippetQuestions: ['Wo bekomme ich eine unabhängige WP-Beratung in {stadt}?'],
@@ -533,7 +533,7 @@ faqPool: [
     competition: 'niedrig_mittel',
     intent: 'transactional',
     template: 'FachbetriebTemplate',
-    titleTemplate: 'Wärmepumpe Fachbetrieb {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Fachbetrieb {stadt} {year} – Zertifizierte Meisterbetriebe',
     metaTemplate: 'Zertifizierte WP-Fachbetriebe {stadt} ✓ HWK-eingetragene Meisterbetriebe ✓ KfW-registriert ✓ Mindestens 5 WP-Referenzen ✓ Kostenlos bis zu 3 Angebote.',
     h1Template: 'Wärmepumpe Fachbetrieb {stadt} {year} — Zertifizierte Meisterbetriebe',
     featuredSnippetQuestions: ['Was macht einen guten WP-Fachbetrieb in {stadt} aus?'],
