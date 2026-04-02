@@ -281,6 +281,8 @@ export default function WaermepumpeKostenTemplate({
               <div className="px-4 py-2.5 bg-[#F8F9FA] border-t border-gray-200 text-xs text-[#7A9E8E]">
                 Strompreis {city.name}: {city.strompreis} ct/kWh · Gaspreis: {city.gaspreis} ct/kWh · 120 m² EFH Baujahr 1980–1994 · Stand März 2026
               </div>
+              </div>
+            </div>
 
             {/* Nebenkosten-Warnung */}
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-3">
@@ -292,6 +294,7 @@ export default function WaermepumpeKostenTemplate({
                 </p>
               </div>
             </div>
+          </div>
 
           {/* ── BILD + BETRIEBSKOSTEN ── */}
           <div className="grid sm:grid-cols-2 gap-6">
@@ -537,6 +540,8 @@ export default function WaermepumpeKostenTemplate({
           <div id="angebot">
             <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
           </div>
+        </div>
+      </div>
 
 
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
@@ -616,12 +621,13 @@ export default function WaermepumpeKostenTemplate({
               ))}
             </div>
             <p className="text-[#4A6358] text-xs leading-relaxed italic mb-2">
-              „In {city.name} haben wir innerhalb von 48 Stunden drei vollständige, vergleichbare Angebote erhalten. KfW-Antrag wurde direkt mit gestellt."
+              „In {city.name} haben wir innerhalb von 48 Stunden drei vollständige, vergleichbare Angebote erhalten. KfW-Antrag wurde direkt mit gestellt.&quot;
             </p>
             <p className="text-[#7A9E8E] text-xs font-semibold">
               Hausbesitzer aus {city.name} · Luft-WP · {fmtEuro(ersparnisLuft)}/Jahr gespart
             </p>
           </div>
     </div>
+  </div>
   );
 }
