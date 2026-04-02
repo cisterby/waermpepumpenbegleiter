@@ -168,7 +168,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'info_commercial',
     template: 'LuftWasserTemplate',
-    titleTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year} – Kosten, JAZ & Installateure',
+    titleTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}',
     metaTemplate: 'Luft-Wasser-Wärmepumpe {stadt} {year}: JAZ {jaz} bei {avgTemp}°C Jahresmittel ✓ 92% Marktanteil ✓ Kosten ab {preisVon} ✓ Kostenloser Installateur-Vergleich. Jetzt.',
     h1Template: 'Luft-Wasser-Wärmepumpe {stadt} — Effizienz, Kosten & Installateure {year}',
     featuredSnippetQuestions: [
@@ -196,7 +196,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'hoch',
     intent: 'transactional',
     template: 'KaufenTemplate',
-    titleTemplate: 'Wärmepumpe kaufen {stadt} {year} – Kosten, Förderung & Angebote',
+    titleTemplate: 'Wärmepumpe kaufen {stadt} {year}',
     metaTemplate: 'Wärmepumpe kaufen in {stadt} {year} ✓ Kostenloser Kaufberater ✓ Welche WP passt? ✓ Kosten, Förderung & Hersteller-Vergleich ✓ Jetzt kostenlos anfragen.',
     h1Template: 'Wärmepumpe kaufen in {stadt} {year} — Ihr Kaufberater',
     featuredSnippetQuestions: [
@@ -222,7 +222,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'info_commercial',
     template: 'AltbauTemplate',
-    titleTemplate: 'Wärmepumpe Altbau {stadt} {year} – Geeignet? Kosten & Förderung',
+    titleTemplate: 'Wärmepumpe Altbau {stadt} {year}',
     metaTemplate: 'Wärmepumpe im Altbau {stadt} ✓ Eignung & Voraussetzungen {year} ✓ Heizlastberechnung ✓ Vorlauftemperatur optimieren ✓ Kostenloser Fachbetrieb-Vergleich.',
     h1Template: 'Wärmepumpe Altbau {stadt} {year} — Eignung, Kosten & Voraussetzungen',
     featuredSnippetQuestions: [
@@ -248,7 +248,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'commercial',
     template: 'NachruestenTemplate',
-    titleTemplate: 'Wärmepumpe nachrüsten {stadt} {year}',
+    titleTemplate: 'Wärmepumpe nachrüsten {stadt} {year} – Kosten, Eignung & Förderung',
     metaTemplate: 'Wärmepumpe nachrüsten in {stadt} ✓ GEG-Fristen {year} ✓ Bestandsgebäude umrüsten ✓ KfW-Förderung bis 70% = max. €21.000 ✓ Geprüfte Fachbetriebe kostenlos.',
     h1Template: 'Wärmepumpe nachrüsten {stadt} {year} — Bestandsgebäude umrüsten',
     featuredSnippetQuestions: [
@@ -274,7 +274,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel_hoch',
     intent: 'commercial',
     template: 'HeizungTauschenTemplate',
-    titleTemplate: 'Heizung tauschen {stadt}',
+    titleTemplate: 'Heizung tauschen {stadt} {year} – Wärmepumpe, Kosten & Förderung',
     metaTemplate: 'Heizung tauschen {stadt} {year} ✓ WP vs. Gas vs. Pellet ehrlicher Vergleich ✓ GEG-konforme Lösungen ✓ Stadtspezifische Betriebskosten ✓ Kostenlos anfragen.',
     h1Template: 'Heizung tauschen in {stadt} {year} — Alle Optionen im Vergleich',
     featuredSnippetQuestions: [
@@ -301,7 +301,7 @@ export const KEYWORDS: Keyword[] = [
     competition: 'mittel',
     intent: 'transactional',
     template: 'InstallationTemplate',
-    titleTemplate: 'WP Installation {stadt} {year}',
+    titleTemplate: 'Wärmepumpe Installation {stadt} {year} – Ablauf, Dauer & Kosten',
     metaTemplate: 'Wärmepumpe Installation {stadt} ✓ Vollständiger Ablauf & Zeitplan {year} ✓ Genehmigungen {bundesland} ✓ HWK-Betriebe vor Ort ✓ KfW-Antragsbegleitung inklusive.',
     h1Template: 'Wärmepumpe Installation {stadt} {year} — Ablauf, Kosten & Genehmigungen',
     featuredSnippetQuestions: [
