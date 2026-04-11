@@ -9,7 +9,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { getKlimazone, estimateJAZ } from '@/lib/city-utils';
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 
 // Image pools
@@ -48,6 +48,12 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const finanzierung = getFinanzierungsOptionen(city, foerd.gesamtSatz);
+  const wartung = getWartungsInfo(city, keyword);
+  const garantie = getGarantieInfo(city);
+  const caseStudy = getCaseStudy(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const gegCountdown = getGEGCountdown(city);
+  const laermschutz = getLaermschutzInfo(city);
     const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
     const videoData = getVideoPlaceholder(city, keyword);
     const socialProof = getSocialProofData(city, keyword);

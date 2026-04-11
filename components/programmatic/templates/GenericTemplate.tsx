@@ -7,7 +7,7 @@ import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -239,6 +239,12 @@ export default function GenericTemplate({
   const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
   const videoData = getVideoPlaceholder(city, keyword);
   const socialProof = getSocialProofData(city, keyword);
+  const finanzierung = getFinanzierungsOptionen(city, foerd.gesamtSatz);
+  const wartung = getWartungsInfo(city, keyword);
+  const garantie = getGarantieInfo(city);
+  const caseStudy = getCaseStudy(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const gegCountdown = getGEGCountdown(city);
+  const laermschutz = getLaermschutzInfo(city);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
@@ -658,6 +664,131 @@ export default function GenericTemplate({
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* ── GEG-Countdown — Urgency Signal ── */}
+          <div className={`rounded-2xl p-6 border ${
+            gegCountdown.urgencyLevel === 'kritisch' ? 'bg-red-50 border-red-300' :
+            gegCountdown.urgencyLevel === 'dringend' ? 'bg-amber-50 border-amber-300' :
+            'bg-blue-50 border-blue-200'
+          }`}>
+            <div className="flex items-center gap-3 mb-3">
+              <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full ${
+                gegCountdown.urgencyLevel === 'kritisch' ? 'bg-red-600 text-white' :
+                gegCountdown.urgencyLevel === 'dringend' ? 'bg-amber-600 text-white' :
+                'bg-blue-600 text-white'
+              }`}>{gegCountdown.badge}</span>
+            </div>
+            <p className="text-gray-800 text-sm leading-relaxed">{gegCountdown.message}</p>
+          </div>
+
+          {/* ── Praxisbeispiel / Case Study ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-4">
+            <h2 className="text-xl font-bold text-[#1A4731]">{caseStudy.title}</h2>
+            <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{caseStudy.building}</p>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Ausgangslage</p>
+                <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.situation}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Lösung</p>
+                <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.solution}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Ergebnis</p>
+                <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.result}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-gray-100">
+              {caseStudy.stats.map((s, i) => (
+                <div key={i} className="text-center">
+                  <p className="text-[#1A4731] font-bold text-lg">{s.value}</p>
+                  <p className="text-gray-500 text-xs">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Finanzierungsoptionen ── */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#1A4731]">{finanzierung.title}</h2>
+            <div className="grid gap-3">
+              {finanzierung.options.map((opt, i) => (
+                <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 hover:border-[#3DA16A]/50 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-semibold text-[#1C2B2B] text-sm">{opt.name}</h3>
+                    <span className="text-[#D97706] font-bold text-sm whitespace-nowrap">{opt.monatlich}</span>
+                  </div>
+                  <p className="text-[#4A6358] text-xs leading-relaxed mb-1">{opt.detail}</p>
+                  <p className="text-gray-400 text-xs">Geeignet für: {opt.geeignet}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Wartung & Langzeitkosten ── */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#1A4731]">{wartung.title}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{wartung.paragraph}</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-[#1A4731] text-white">
+                    <th className="px-4 py-2.5 text-left text-xs font-semibold">Posten</th>
+                    <th className="px-4 py-2.5 text-left text-xs font-semibold">Intervall</th>
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold">Kosten</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {wartung.kostenTabelle.map((row, i) => (
+                    <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="px-4 py-2.5 text-gray-700 text-xs">{row.posten}</td>
+                      <td className="px-4 py-2.5 text-gray-500 text-xs">{row.intervall}</td>
+                      <td className="px-4 py-2.5 text-right text-gray-700 text-xs font-semibold">{row.kosten}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* ── Garantie-Vergleich ── */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#1A4731]">{garantie.title}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{garantie.paragraph}</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-[#1A4731] text-white">
+                    <th className="px-3 py-2.5 text-left text-xs font-semibold">Hersteller</th>
+                    <th className="px-3 py-2.5 text-center text-xs font-semibold">Gerät</th>
+                    <th className="px-3 py-2.5 text-center text-xs font-semibold">Verdichter</th>
+                    <th className="px-3 py-2.5 text-left text-xs font-semibold">Tipp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {garantie.vergleich.map((row, i) => (
+                    <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="px-3 py-2.5 text-gray-900 text-xs font-semibold">{row.hersteller}</td>
+                      <td className="px-3 py-2.5 text-center text-gray-700 text-xs">{row.geraet}</td>
+                      <td className="px-3 py-2.5 text-center text-gray-700 text-xs">{row.verdichter}</td>
+                      <td className="px-3 py-2.5 text-gray-500 text-xs">{row.tipp}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* ── Lärmschutz ── */}
+          <div className="bg-[#F0F7FF] rounded-2xl p-6 border border-blue-200 space-y-3">
+            <h2 className="text-xl font-bold text-[#1A4731]">{laermschutz.title}</h2>
+            <p className="text-[#4A6358] text-sm leading-relaxed">{laermschutz.paragraph}</p>
+            <div className="flex flex-wrap gap-3">
+              <span className="bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
+              <span className="bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">💡 {laermschutz.tipp}</span>
             </div>
           </div>
 

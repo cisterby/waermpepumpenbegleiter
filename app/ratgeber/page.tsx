@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Clock, Calendar, User } from 'lucide-react';
+import Head from 'next/head';
 
 // ── VOLLSTÄNDIGE ARTIKEL ───────────────────────────────────────────────────
 const ARTICLES = [
@@ -296,8 +297,30 @@ export default function Ratgeber() {
 
   if (openArticle) {
     const article = ARTICLES.find(a => a.slug === openArticle)!;
+    const articleSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      '@id': `https://xn--wrmepumpenbegleiter-gwb.de/ratgeber#${article.slug}`,
+      headline: article.title,
+      description: article.excerpt,
+      image: article.img,
+      datePublished: new Date().toISOString(),
+      author: {
+        '@type': 'Person',
+        name: article.author,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Wärmepumpenbegleiter.de',
+        url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+      },
+    };
     return (
       <div className="min-h-screen bg-[#F8F9FA]">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
         <div className="relative h-80 overflow-hidden">
           <Image src={article.img} alt={article.title} className="w-full h-full object-cover" fill priority />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.85) 0%, rgba(10,21,16,0.3) 100%)' }} />

@@ -46,9 +46,43 @@ const VORTEILE = [
   { icon: <Zap size={20} className="text-[#1A4731]" />, title: 'KfW-Begleitung', text: 'Wir helfen beim KfW-Antrag — bis zu 70% Förderung, max. €21.000.' },
 ];
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'So funktioniert Wärmepumpenbegleiter in 3 Schritten',
+  description: 'Kostenlose Wärmepumpen-Vermittlung: Anfrage stellen, Fachbetriebe finden, Angebote vergleichen',
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: '1',
+      name: 'Anfrage stellen — 2 Minuten',
+      text: 'Geben Sie Gebäudetyp, Baujahr und aktuelle Heizung ein. Das war\'s. Kein Papierkram, kein Anruf notwendig.',
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+    },
+    {
+      '@type': 'HowToStep',
+      position: '2',
+      name: 'Wir finden geprüfte Fachbetriebe',
+      text: 'Unser System vergleicht verfügbare Installateure in Ihrer Region nach HWK-Eintragung, KfW-Registrierung und Referenzen.',
+      image: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80',
+    },
+    {
+      '@type': 'HowToStep',
+      position: '3',
+      name: 'Bis zu 3 Angebote in 48h',
+      text: 'Sie erhalten vollständige, vergleichbare Angebote mit Heizlastberechnung, KfW-Förderquote und Eigenanteil — kostenlos.',
+      image: 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=800&q=80',
+    },
+  ],
+};
+
 export default function WieEsFunktioniertPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
 
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-end overflow-hidden">

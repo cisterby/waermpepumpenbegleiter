@@ -201,6 +201,36 @@
   }
 }
 
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* Smooth scroll for anchor links */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed nav */
+}
+
+/* Better focus-visible for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #3DA16A;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Print styles */
+@media print {
+  .no-print, nav, footer, .sticky, [class*="fixed"] { display: none !important; }
+  body { font-size: 12pt; color: #000; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+}
+
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -8,6 +8,38 @@ const HERO_IMG = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w
 const TEAM_IMG  = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=80';
 const OFFICE_IMG= 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&q=80';
 
+const bastianSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns#bastian-saupe',
+  name: 'Bastian Saupe',
+  jobTitle: 'Gründer & Geschäftsführer',
+  description: 'Gründer von Wärmepumpenbegleiter.de und Webflott. Digitales Unternehmertum und Lead-Generierung im Energiesektor.',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Wärmepumpenbegleiter.de',
+    url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+  },
+  sameAs: ['https://www.webflott.de', 'https://www.linkedin.com/in/bastian-saupe'],
+  url: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
+};
+
+const philipSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns#philip-lindner',
+  name: 'Philip Lindner',
+  jobTitle: 'Gründer & Geschäftsführer',
+  description: 'Gründer von Wärmepumpenbegleiter.de und Webflott. Expertise in digitalen Geschäftsmodellen für die Energiewende.',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Wärmepumpenbegleiter.de',
+    url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+  },
+  sameAs: ['https://www.webflott.de'],
+  url: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
+};
+
 const WERTE = [
   { icon: '🏠', title: 'Hausbesitzer-zuerst', text: 'Unser Service ist für Hausbesitzer immer kostenlos. Wir verdienen nur, wenn Sie einen Auftrag erteilen — kein Interessenkonflikt.' },
   { icon: '🔍', title: 'Herstellerunabhängig', text: 'Wir sind an keinen Hersteller gebunden. Wir empfehlen was zu Ihrem Haus und Budget passt — nicht was die höchste Provision bringt.' },
@@ -25,6 +57,14 @@ const STATS = [
 export default function UeberUnsPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bastianSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(philipSchema) }}
+      />
 
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden">
@@ -41,7 +81,7 @@ export default function UeberUnsPage() {
             Unabhängige WP-Vermittlung — aus Weißenfels für ganz Deutschland
           </h1>
           <p className="text-white/75 text-lg leading-relaxed max-w-xl">
-            Wärmepumpenbegleiter.de ist ein Projekt von Webflott, gegründet von Bastian Saupe und Philip Lindner. Wir glauben: die Energiewende funktioniert nur, wenn der Weg zur Wärmepumpe einfach und transparent ist.
+            Wärmepumpenbegleiter.de ist ein Projekt von Webflott, gegründet 2025 von Bastian Saupe und Philip Lindner in Weißenfels, Sachsen-Anhalt. Wir glauben: die Energiewende funktioniert nur, wenn der Weg zur Wärmepumpe einfach und transparent ist.
           </p>
         </div>
       </section>
@@ -86,6 +126,14 @@ export default function UeberUnsPage() {
                 </div>
               ))}
             </div>
+            <div className="mt-8 pt-7 border-t border-white/10">
+              <p className="text-white/65 text-xs uppercase tracking-wider mb-3 font-semibold">Gründer & Expertise</p>
+              <div className="space-y-3 text-white/75 text-sm">
+                <p><strong>Bastian Saupe:</strong> Gründer von Webflott, Spezialist für programmgesteuerte SEO-Portale und digitale Lead-Generierung in der Energiebranche. Expertise: KfW-Förderung, GEG, Energiewende.</p>
+                <p><strong>Philip Lindner:</strong> Mitgründer und Geschäftsführer von Webflott. Fachkompetenz in digitalen Geschäftsmodellen für die Energiewende und Vermittlungsportale.</p>
+                <p className="text-white/50 text-xs">Gegründet 2025 als unabhängiges Vermittlungsportal für alle Bundesländer.</p>
+              </div>
+            </div>
           </div>
           <div className="relative rounded-3xl overflow-hidden shadow-2xl">
             <Image src={TEAM_IMG} alt="Bastian Saupe und Philip Lindner" className="w-full h-80 object-cover" width={900} height={320} loading="lazy" />
@@ -126,7 +174,7 @@ export default function UeberUnsPage() {
                 </div>
                 <div>
                   <p className="text-[#1C2B2B] font-semibold text-sm">Adresse</p>
-                  <p className="text-[#4A6358] text-sm">Weißenfels, Sachsen-Anhalt</p>
+                  <p className="text-[#4A6358] text-sm">Zum Ried 3<br />06667 Weißenfels<br />Sachsen-Anhalt, Deutschland</p>
                 </div>
               </div>
               <a href="tel:+4915563566199" className="flex items-start gap-3 group">

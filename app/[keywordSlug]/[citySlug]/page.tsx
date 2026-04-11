@@ -12,6 +12,7 @@ import type { City } from '@/lib/city-utils';
 import { calcBetriebskosten, calcFoerderung, fmtEuro } from '@/lib/calculations';
 import { cityHash, getCitySize, getKlimaZone } from '@/lib/content-variation';
 import CityPageRouter from '@/components/programmatic/CityPageRouter';
+import StickyMobileCTA from '@/components/programmatic/StickyMobileCTA';
 
 interface Props {
   params: { keywordSlug: string; citySlug: string };
@@ -389,6 +390,7 @@ export default function CityKeywordPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
       {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
+      <StickyMobileCTA ersparnis={calc.ersparnis} cityName={city.name} keywordSlug={keyword.slug} citySlug={city.slug} />
       <CityPageRouter keyword={keyword} city={city} jaz={jaz} calc={calc} foerd={foerd} nearby={nearby} h1={h1} />
     </>
   );

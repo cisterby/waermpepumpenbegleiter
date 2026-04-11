@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -95,6 +95,12 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const finanzierung = getFinanzierungsOptionen(city, foerd.gesamtSatz);
+  const wartung = getWartungsInfo(city, keyword);
+  const garantie = getGarantieInfo(city);
+  const caseStudy = getCaseStudy(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const gegCountdown = getGEGCountdown(city);
+  const laermschutz = getLaermschutzInfo(city);
     const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
     const videoData = getVideoPlaceholder(city, keyword);
     const socialProof = getSocialProofData(city, keyword);
@@ -670,6 +676,49 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
         </div>
       </div>
                   {/* ── Social Proof Counter ── */}
+            {/* ── GEG-Countdown ── */}
+            <div className={`rounded-xl p-5 border ${
+              gegCountdown.urgencyLevel === 'kritisch' ? 'bg-red-50 border-red-300' :
+              gegCountdown.urgencyLevel === 'dringend' ? 'bg-amber-50 border-amber-300' :
+              'bg-blue-50 border-blue-200'
+            }`}>
+              <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full mb-2 ${
+                gegCountdown.urgencyLevel === 'kritisch' ? 'bg-red-600 text-white' :
+                gegCountdown.urgencyLevel === 'dringend' ? 'bg-amber-600 text-white' :
+                'bg-blue-600 text-white'
+              }`}>{gegCountdown.badge}</span>
+              <p className="text-gray-800 text-sm leading-relaxed">{gegCountdown.message}</p>
+            </div>
+
+            {/* ── Praxisbeispiel ── */}
+            <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+              <h3 className="text-lg font-bold text-[#1A4731]">{caseStudy.title}</h3>
+              <p className="text-xs text-gray-400 font-semibold">{caseStudy.building}</p>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.situation}</p>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.result}</p>
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
+                {caseStudy.stats.slice(0, 2).map((s, i) => (
+                  <div key={i} className="text-center">
+                    <p className="text-[#1A4731] font-bold">{s.value}</p>
+                    <p className="text-gray-500 text-xs">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Wartung ── */}
+            <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+              <h3 className="text-lg font-bold text-[#1A4731]">{wartung.title}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{wartung.paragraph}</p>
+            </div>
+
+            {/* ── Lärmschutz ── */}
+            <div className="bg-[#F0F7FF] rounded-xl p-5 border border-blue-200 space-y-2">
+              <h3 className="text-lg font-bold text-[#1A4731]">{laermschutz.title}</h3>
+              <p className="text-[#4A6358] text-sm leading-relaxed">{laermschutz.paragraph}</p>
+              <span className="inline-block bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
+            </div>
+
             <SocialProofBar
               anfragenGesamt={socialProof.anfragenGesamt}
               anfragenStadt={socialProof.anfragenStadt}

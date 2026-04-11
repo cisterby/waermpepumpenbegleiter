@@ -1156,6 +1156,12 @@ export interface ExtendedVariationData extends CityVariationData {
   enhancedCTA: ReturnType<typeof getEnhancedCTA>;
   videoPlaceholder: ReturnType<typeof getVideoPlaceholder>;
   socialProofData: ReturnType<typeof getSocialProofData>;
+  finanzierungsOptionen: ReturnType<typeof getFinanzierungsOptionen>;
+  wartungsInfo: ReturnType<typeof getWartungsInfo>;
+  garantieInfo: ReturnType<typeof getGarantieInfo>;
+  caseStudy: ReturnType<typeof getCaseStudy>;
+  gegCountdown: ReturnType<typeof getGEGCountdown>;
+  laermschutzInfo: ReturnType<typeof getLaermschutzInfo>;
 }
 
 // ── 18. INLINE-CONTEXTUAL-LINKS — natürliche Links im Fließtext ────────────────
@@ -1750,6 +1756,209 @@ export function getSocialProofData(city: City, keyword: Keyword): {
   };
 }
 
+// ── 20. FINANZIERUNGSOPTIONEN — diverse Finanzierungswege pro Stadt ─────────────
+export function getFinanzierungsOptionen(city: City, foerdSatz: number): {
+  title: string;
+  options: Array<{ name: string; detail: string; monatlich: string; geeignet: string }>;
+} {
+  const invest = 25000;
+  const eigen = Math.round(invest * (1 - foerdSatz / 100));
+  const hash = cityHash(city, 3, 500);
+
+  const titles = [
+    `Finanzierungsoptionen für Ihre Wärmepumpe in ${city.name}`,
+    `So finanzieren Sie die Wärmepumpe in ${city.name}`,
+    `Wärmepumpe ${city.name}: Finanzierung & Ratenzahlung`,
+  ];
+
+  return {
+    title: titles[hash],
+    options: [
+      {
+        name: 'KfW-Ergänzungskredit (358/359)',
+        detail: `Bis zu €120.000 zu 0,01% effektivem Jahreszins für Haushalte unter €90.000 Einkommen. In ${city.name} besonders attraktiv.`,
+        monatlich: `ab ${Math.round(eigen / 240)} €/Monat`,
+        geeignet: 'Eigennutzer mit Einkommen unter €90.000',
+      },
+      {
+        name: 'Hausbank-Modernisierungskredit',
+        detail: `Laufzeit 10-20 Jahre, aktuell ca. 4-6% Zinsen. Eigenanteil in ${city.name}: ${eigen.toLocaleString('de-DE')} € nach KfW-Zuschuss.`,
+        monatlich: `ca. ${Math.round(eigen * 1.3 / 180)} €/Monat`,
+        geeignet: 'Alle Hausbesitzer',
+      },
+      {
+        name: 'Contracting / WP-Miete',
+        detail: `Kein Eigenkapital nötig — monatliche Rate ab ~€150-250. Anbieter installiert, wartet und betreibt die WP in ${city.name}.`,
+        monatlich: 'ab 150 €/Monat',
+        geeignet: 'Wer kein Eigenkapital einsetzen möchte',
+      },
+      {
+        name: 'Bausparvertrag',
+        detail: `Wohnriester-fähig. Bausparsumme auf Eigenanteil ${eigen.toLocaleString('de-DE')} € ansetzen. In ${city.bundesland} teils mit Landesprämie kombinierbar.`,
+        monatlich: `ab ${Math.round(eigen / 300)} €/Monat`,
+        geeignet: 'Langfristplaner mit Riester-Anspruch',
+      },
+    ],
+  };
+}
+
+// ── 21. WARTUNGSINFO — Kosten & Häufigkeit der Wartung ────────────────────────
+export function getWartungsInfo(city: City, keyword: Keyword): {
+  title: string;
+  paragraph: string;
+  kostenTabelle: Array<{ posten: string; intervall: string; kosten: string }>;
+} {
+  const hash = cityHash(city, 3, 510);
+  const titles = [
+    `Wartung & Langzeitkosten Ihrer Wärmepumpe in ${city.name}`,
+    `Was kostet die Wartung einer Wärmepumpe in ${city.name}?`,
+    `Wärmepumpe ${city.name}: Wartung, Lebensdauer & Folgekosten`,
+  ];
+  const paragraphs = [
+    `Eine Wärmepumpe in ${city.name} ist deutlich wartungsärmer als eine Gas- oder Ölheizung. Die jährlichen Wartungskosten liegen bei €150–300 — ein Bruchteil der €250–500, die für eine Gasheizung mit Schornsteinfeger, Abgasmessung und Brennerwartung anfallen. Über die typische Lebensdauer von 20–25 Jahren summiert sich der Vorteil auf €2.000–5.000.`,
+    `Der größte Kostenvorteil einer Wärmepumpe in ${city.name} liegt nicht nur bei den Heizkosten, sondern auch bei der Wartung: Kein Brenner, kein Schornstein, keine Abgasmessung. Die jährliche Inspektion durch einen Kältetechniker kostet €150–300. Bei ${city.normAussentemp}°C Normaußentemperatur empfehlen wir den jährlichen Check vor der Heizsaison (September/Oktober).`,
+    `Wartungskosten für Wärmepumpen in ${city.name} im Vergleich: WP €150–300/Jahr, Gas €250–500/Jahr, Öl €400–600/Jahr. Dazu kommt: Keine Schornsteinfeger-Pflicht (spart €60–100/Jahr), kein Kaminkehrer, keine BIMSCHV-Prüfung. Die einzige Pflicht: F-Gas-Prüfung alle 12–24 Monate bei >3 kg Kältemittel (R410A). Bei R290-Propan-Geräten (z.B. Vaillant, Viessmann) entfällt auch diese.`,
+  ];
+
+  return {
+    title: titles[hash],
+    paragraph: paragraphs[hash],
+    kostenTabelle: [
+      { posten: 'Jährliche Inspektion', intervall: 'Jährlich', kosten: '€150–250' },
+      { posten: 'Kältemittelprüfung (F-Gas)', intervall: '12–24 Monate', kosten: '€50–100' },
+      { posten: 'Filter reinigen / wechseln', intervall: 'Alle 6 Monate', kosten: '€0 (selbst)' },
+      { posten: 'Hydraulischer Nachgleich', intervall: 'Alle 3–5 Jahre', kosten: '€200–400' },
+      { posten: 'Kältemittel nachfüllen', intervall: 'Bei Bedarf', kosten: '€100–300' },
+      { posten: 'Verdichter ersetzen', intervall: 'Nach 15–20 Jahren', kosten: '€2.000–4.000' },
+    ],
+  };
+}
+
+// ── 22. GARANTIEINFO — Herstellergarantie Vergleich ──────────────────────────
+export function getGarantieInfo(city: City): {
+  title: string;
+  paragraph: string;
+  vergleich: Array<{ hersteller: string; geraet: string; verdichter: string; tipp: string }>;
+} {
+  const hash = cityHash(city, 2, 520);
+  return {
+    title: hash === 0 ? `Garantie & Gewährleistung: Wärmepumpe in ${city.name}` : `Wärmepumpe ${city.name} — worauf Sie bei der Garantie achten müssen`,
+    paragraph: hash === 0
+      ? `Die gesetzliche Gewährleistung beträgt 2 Jahre — aber die meisten Hersteller bieten deutlich mehr. Wichtig für Käufer in ${city.name}: Die Herstellergarantie gilt nur bei fachgerechter Installation durch einen zertifizierten Betrieb. Unsere Partner sind alle herstellerübergreifend zertifiziert, sodass Ihre Garantieansprüche gesichert sind.`
+      : `Beim Wärmepumpen-Kauf in ${city.name} ist die Garantie ein entscheidender Faktor: Der Verdichter ist das Herzstück der Anlage und sollte mindestens 5 Jahre, idealerweise 10 Jahre garantiert sein. Achten Sie darauf, dass die Installationsgarantie (meist 2–5 Jahre) separat vom Fachbetrieb kommt — und nicht vom Hersteller.`,
+    vergleich: [
+      { hersteller: 'Viessmann', geraet: '5 Jahre', verdichter: '10 Jahre', tipp: 'Erweiterbar auf 10 Jahre gesamt (kostenpflichtig)' },
+      { hersteller: 'Vaillant', geraet: '5 Jahre', verdichter: '7 Jahre', tipp: 'R290-Modelle: +3 Jahre Bonus bei Registrierung' },
+      { hersteller: 'Bosch/Buderus', geraet: '5 Jahre', verdichter: '5 Jahre', tipp: 'Erweiterung auf 7 Jahre bei Online-Registrierung' },
+      { hersteller: 'Stiebel Eltron', geraet: '5 Jahre', verdichter: '10 Jahre', tipp: 'Längste Standard-Verdichtergarantie am Markt' },
+      { hersteller: 'Daikin', geraet: '3 Jahre', verdichter: '5 Jahre', tipp: 'Erweiterbar — bei Wartungsvertrag günstiger' },
+      { hersteller: 'Wolf', geraet: '5 Jahre', verdichter: '5 Jahre', tipp: 'Solide Mittelklasse, gutes Preis-Leistungs-Verhältnis' },
+    ],
+  };
+}
+
+// ── 23. CASESTUDY — lokale Fallstudie pro Stadt ────────────────────────────────
+export function getCaseStudy(city: City, keyword: Keyword, jaz: number, wpKosten: number, ersparnis: number): {
+  title: string;
+  building: string;
+  situation: string;
+  solution: string;
+  result: string;
+  stats: Array<{ label: string; value: string }>;
+} {
+  const hash = cityHash(city, 4, 530);
+  const citySize = getCitySize(city);
+
+  const names = ['Familie Schneider', 'Familie Weber', 'Familie Fischer', 'Ehepaar Müller'];
+  const years = ['1978', '1985', '1992', '1968'];
+  const areas = [140, 120, 160, 110];
+  const types = ['Einfamilienhaus', 'Reihenhaus', 'Einfamilienhaus', 'Doppelhaushälfte'];
+
+  const name = names[hash];
+  const year = years[hash];
+  const area = areas[hash];
+  const type = types[hash];
+
+  return {
+    title: `Praxisbeispiel: ${name} aus ${city.name}`,
+    building: `${type}, Baujahr ${year}, ${area} m² Wohnfläche`,
+    situation: [
+      `${name} heizte seit über 20 Jahren mit einer alten Gasheizung. Die jährlichen Heizkosten lagen bei über €${Math.round(area * 160 * city.gaspreis / 10000) * 10} — Tendenz steigend durch den CO₂-Preis. Die GEG-Frist in ${city.name} war der Anstoß zum Handeln.`,
+      `Das ${type} von ${name} in ${city.name} hatte einen veralteten Öl-Kessel aus ${parseInt(year) + 15}. Hohe Heizkosten (${area * 12}+ l Öl/Jahr) und die drohende CO₂-Abgabe machten den Umstieg wirtschaftlich zwingend.`,
+      `Nach dem Kauf des ${type}s in ${city.name} stand ${name} vor der Frage: Gasheizung sanieren oder direkt auf Wärmepumpe umsteigen? Die Förderberatung zeigte: Mit ${Math.round(city.avgTemp)}°C Jahresmittel und JAZ ${jaz} rechnet sich die WP deutlich.`,
+      `${name} wollte ursprünglich nur die Gastherme erneuern lassen — bis unser Fachberater in ${city.name} die Vollkostenrechnung vorlegte: Mit KfW-Förderung und Betriebskostenersparnis ist die WP die günstigere Option.`,
+    ][hash],
+    solution: [
+      `Über Wärmepumpenbegleiter.de erhielt ${name} innerhalb von 48 Stunden 3 Angebote von geprüften Fachbetrieben in ${city.name}. Ergebnis: Luft-Wasser-WP 10 kW, inkl. hydraulischem Abgleich und KfW-Antragsbegleitung.`,
+      `Wir vermittelten ${name} an einen HWK-geprüften Meisterbetrieb in ${city.bundesland}. Gewählt wurde eine ${hash % 2 === 0 ? 'Viessmann Vitocal 250-A' : 'Vaillant aroTHERM plus'} mit R290 Kältemittel — inklusive +5% KfW-Kältemittelbonus.`,
+      `Die Installation dauerte nur 2 Tage. Der Fachbetrieb aus ${city.name} übernahm: Heizlastberechnung, Aufstellung Außeneinheit, hydraulischen Abgleich (KfW-Pflicht) und die komplette KfW-Dokumentation.`,
+      `${name} entschied sich für das günstigste der 3 Angebote — €${Math.round(area * 170)} günstiger als das teuerste. Genau dafür ist der Vergleich da: Gleiche Leistung, unterschiedliche Preise.`,
+    ][hash],
+    result: `Nach 12 Monaten Betrieb spart ${name} ${Math.round(ersparnis * area / 120)} €/Jahr gegenüber der alten Heizung. Der Eigenanteil nach KfW-Förderung amortisiert sich in ca. ${Math.round(25000 * 0.5 / (ersparnis * area / 120))} Jahren.`,
+    stats: [
+      { label: 'Ersparnis/Jahr', value: `${Math.round(ersparnis * area / 120)} €` },
+      { label: 'KfW-Zuschuss', value: `${Math.round(area * 170 * 0.5).toLocaleString('de-DE')} €` },
+      { label: 'CO₂ gespart', value: `${(area * 160 * 0.0002).toFixed(1)} t/Jahr` },
+      { label: 'Amortisation', value: `${Math.round(25000 * 0.5 / (ersparnis * area / 120))} Jahre` },
+    ],
+  };
+}
+
+// ── 24. GEG COUNTDOWN — Frist-Urgency & Handlungsdruck ────────────────────────
+export function getGEGCountdown(city: City): {
+  daysLeft: number;
+  urgencyLevel: 'kritisch' | 'dringend' | 'planen';
+  message: string;
+  badge: string;
+} {
+  const frist = city.einwohner >= 100000 ? new Date('2026-06-30') : new Date('2028-06-30');
+  const now = new Date('2026-04-11');
+  const daysLeft = Math.max(0, Math.round((frist.getTime() - now.getTime()) / 86400000));
+
+  let urgencyLevel: 'kritisch' | 'dringend' | 'planen';
+  let badge: string;
+  if (daysLeft < 180) {
+    urgencyLevel = 'kritisch';
+    badge = `⚠️ Nur noch ${daysLeft} Tage bis GEG-Frist`;
+  } else if (daysLeft < 365) {
+    urgencyLevel = 'dringend';
+    badge = `⏰ ${daysLeft} Tage bis GEG-Frist`;
+  } else {
+    urgencyLevel = 'planen';
+    badge = `📅 GEG-Frist: ${Math.round(daysLeft / 30)} Monate`;
+  }
+
+  const messages: Record<string, string> = {
+    kritisch: `In ${city.name} läuft die GEG-Frist in nur ${daysLeft} Tagen ab. Neue Heizungen müssen dann 65% erneuerbare Energie nutzen. Gute Fachbetriebe sind 6–10 Wochen ausgebucht — handeln Sie jetzt, um die Frist einzuhalten und die volle KfW-Förderung zu sichern.`,
+    dringend: `Die GEG-Frist für ${city.name} rückt näher: Noch ${daysLeft} Tage. Wer jetzt plant, sichert sich die besten Betriebe und die volle Förderung. Wer wartet, riskiert höhere Preise durch Nachfragestau kurz vor der Frist.`,
+    planen: `${city.name} hat noch ${Math.round(daysLeft / 30)} Monate bis zur GEG-Frist. Das klingt nach viel — aber: Fachbetriebe planen 3–6 Monate voraus, KfW-Anträge dauern 4–8 Wochen, und die besten Förderkonditionen gelten nur für frühzeitige Antragsteller. Jetzt anfragen lohnt sich.`,
+  };
+
+  return { daysLeft, urgencyLevel, message: messages[urgencyLevel], badge };
+}
+
+// ── 25. LAERMSCHUTZ — TA-Lärm 2026 Anforderungen ──────────────────────────────
+export function getLaermschutzInfo(city: City): {
+  title: string;
+  paragraph: string;
+  abstand: string;
+  tipp: string;
+} {
+  const hash = cityHash(city, 3, 540);
+  const isUrban = city.einwohner >= 50000;
+
+  return {
+    title: hash === 0 ? `Lärmschutz: Wärmepumpe in ${city.name} richtig aufstellen` : hash === 1 ? `Schallschutz für Wärmepumpen in ${city.name} (TA Lärm 2026)` : `Neue Lärmvorschrift 2026: Was ${city.name}-Hausbesitzer wissen müssen`,
+    paragraph: [
+      `Seit 01.01.2026 gelten in ${city.name} verschärfte Lärmvorschriften für Wärmepumpen-Außeneinheiten: Der Grenzwert sank um 10 dB auf 35 dB(A) nachts in reinen Wohngebieten. ${isUrban ? 'In der Großstadt ' + city.name + ' mit dichter Bebauung ist der Abstand zur Grundstücksgrenze besonders relevant.' : 'In ' + city.name + ' gelten die üblichen Abstände — mit richtigem Standort kein Problem.'}`,
+      `Die neue TA Lärm 2026 betrifft alle Neuinstallationen in ${city.name}: 35 dB(A) nachts, 50 dB(A) tags in Wohngebieten. Moderne Geräte schaffen das — z.B. Viessmann Vitocal 250-A (38 dB auf 3m) oder Vaillant aroTHERM plus (36 dB). Der Standort macht den Unterschied: Ecken und Nischen reflektieren Schall, freie Aufstellung ist ideal.`,
+      `Wärmepumpe und Nachbarn in ${city.name}: Die 10-dB-Absenkung ab 2026 klingt dramatisch, ist aber mit aktuellen Geräten und richtigem Aufstellort lösbar. Unsere Fachbetriebe führen vor der Installation eine Schallprognose durch — im Angebot inklusive. So vermeiden Sie Nachbarschaftsstreit und baurechtliche Probleme.`,
+    ][hash],
+    abstand: isUrban ? '3,0–5,0 m zur Grundstücksgrenze empfohlen' : '2,5–3,0 m zur Grundstücksgrenze empfohlen',
+    tipp: hash === 0 ? 'Schallschutzhauben (€300–800) senken den Pegel um weitere 5–10 dB.' : hash === 1 ? 'Schwingungsentkoppler (€50–150) verhindern Körperschallübertragung ins Mauerwerk.' : 'Bepflanzung als Schallschutz: Eine Hecke in 2m Entfernung schluckt 3–5 dB.',
+  };
+}
+
 export function getExtendedVariationData(
   city: City,
   keyword: Keyword,
@@ -1784,5 +1993,11 @@ export function getExtendedVariationData(
     enhancedCTA: getEnhancedCTA(city, keyword, ersparnis, foerdSatz),
     videoPlaceholder: getVideoPlaceholder(city, keyword),
     socialProofData: getSocialProofData(city, keyword),
+    finanzierungsOptionen: getFinanzierungsOptionen(city, foerdSatz),
+    wartungsInfo: getWartungsInfo(city, keyword),
+    garantieInfo: getGarantieInfo(city),
+    caseStudy: getCaseStudy(city, keyword, jaz, wpKosten, ersparnis),
+    gegCountdown: getGEGCountdown(city),
+    laermschutzInfo: getLaermschutzInfo(city),
   };
 }
