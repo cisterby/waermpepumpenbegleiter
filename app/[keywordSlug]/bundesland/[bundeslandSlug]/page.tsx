@@ -194,10 +194,26 @@ export default function BundeslandPage({ params }: Props) {
     })),
   };
 
+  const blLocalBusiness = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'Wärmepumpenbegleiter',
+    description: `Kostenlose Wärmepumpen-Vermittlung in ${bl.name}`,
+    areaServed: {
+      '@type': 'State',
+      name: bl.name,
+      containedInPlace: { '@type': 'Country', name: 'Deutschland' },
+    },
+    url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/bundesland/${bl.slug}`,
+    telephone: '+4915563566199',
+    priceRange: 'Kostenlos',
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blBreadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blItemList) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blLocalBusiness) }} />
       {/* HERO */}
       <div className="bg-[#1A4731] py-14 px-6">
         <div className="max-w-4xl mx-auto">

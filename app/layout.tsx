@@ -213,6 +213,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
+        {/* Prefetch critical navigation destinations */}
+        <link rel="prefetch" href="/rechner" />
+        <link rel="prefetch" href="/ratgeber" />
+
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -230,7 +234,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#1A4731] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-bold">Zum Hauptinhalt springen</a>
         <Navigation />
-        {children}
+        <main id="main-content">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

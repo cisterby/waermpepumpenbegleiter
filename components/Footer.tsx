@@ -27,12 +27,21 @@ const rechtliches = [
   { href: '/agb',         label: 'AGB' },
 ];
 
+const themen = [
+  { href: '/waermepumpe-kosten', label: 'WP Kosten' },
+  { href: '/waermepumpe-foerderung', label: 'KfW Förderung' },
+  { href: '/waermepumpe-installateur', label: 'Installateur finden' },
+  { href: '/luft-wasser-waermepumpe', label: 'Luft-Wasser-WP' },
+  { href: '/waermepumpe-altbau', label: 'Altbau-Nachrüstung' },
+  { href: '/heizung-tauschen', label: 'Heizung tauschen' },
+];
+
 // Contrast rule: on #0F1F16 background, use white at min 75% for readability
 // WCAG AA requires 4.5:1 — white/75 on #0F1F16 achieves ~7:1 ✓
 
-export default function Footer() {
+export default function Footer({ keywordSlug }: { keywordSlug?: string }) {
   return (
-    <footer style={{ background: '#0F1F16' }}>
+    <footer role="contentinfo" style={{ background: '#0F1F16' }}>
 
       {/* CTA strip — light bg for contrast */}
       <div style={{ background: '#1A4731', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
@@ -63,7 +72,7 @@ export default function Footer() {
 
       {/* Main grid */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
 
           {/* Brand — 2 cols */}
           <div className="lg:col-span-2">
@@ -129,6 +138,24 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Themen */}
+          <div>
+            <h4 className="text-white font-semibold text-xs uppercase tracking-widest mb-4">
+              Themen
+            </h4>
+            <ul className="space-y-3">
+              {themen.map(item => (
+                <li key={item.href}>
+                  <Link href={item.href}
+                    className="text-sm transition-colors hover:text-white"
+                    style={{ color: 'rgba(255,255,255,0.85)' }}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Cities */}
           <div>
             <h4 className="text-white font-semibold text-xs uppercase tracking-widest mb-4">
@@ -137,7 +164,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {topCities.map(city => (
                 <li key={city.slug}>
-                  <Link href={`/waermepumpe/${city.slug}`}
+                  <Link href={`/${keywordSlug || 'waermepumpe'}/${city.slug}`}
                     className="text-sm transition-colors"
                     style={{ color: 'rgba(255,255,255,0.85)' }}>
                     {city.name}

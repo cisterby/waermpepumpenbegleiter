@@ -7,440 +7,7 @@ import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo, getSectionTimestamps, getMethodologyExplainer } from '@/lib/content-variation';
-import { KEYWORDS } from '@/lib/keywords';
-import LeadForm from '@/components/programmatic/LeadForm';
-import AuthorBox from '@/components/programmatic/AuthorBox';
-import InlineCalculator from '@/components/programmatic/InlineCalculator';
-
-// ── Keyword-Kategorien → spezifischer Hauptinhalt ────────────────────────────
-
-function getKwMainContent(city: CityPageRouterProps['city'], keyword: CityPageRouterProps['keyword'], jaz: number, calc: CityPageRouterProps['calc'], foerd: CityPageRouterProps['foerd']) {
-  const cat = getKwCategory(keyword);
-  const fmtK = (n: number) => n.toLocaleString('de-DE') + ' €';
-  const pvErtrag = Math.round(city.avgSunHours * 8 * 0.85);
-  const pvErsparnis = Math.round(Math.min(pvErtrag * 0.65, Math.round(120 * 160 / jaz)) * (city.strompreis / 100));
-  const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
-  const isUrgent = city.einwohner >= 100000;
-
-  // 5 Hash-Varianten pro Kategorie für den Einleitungsabsatz
-  const introsByCategory: Record<string, string[]> = {
-    kosten: [
-      `Eine Wärmepumpe kostet in ${city.name} komplett (Gerät + Montage + Hydraulik + Elektrik) zwischen €18.000 und €28.000 brutto. Bei ${city.strompreis} ct/kWh lokalem Strompreis und JAZ ${jaz} sinken die jährlichen Heizkosten auf ${fmtK(calc.wpKosten)} — das sind ${fmtK(calc.ersparnis)} weniger als mit Erdgas.`,
-      `Der Eigenanteil nach KfW-Förderung (${foerd.gesamtSatz}%) beträgt in ${city.name} ab ${fmtK(foerd.eigenanteil)}. Was viele Angebote weglassen: Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Fundament (€300–800) und Elektroinstallation (€500–1.500). Wir stellen sicher, dass alle 3 Angebote vollständig sind.`,
-      `Preis für die häufigste Wärmepumpe in ${city.name}: Luft-Wasser-WP 10 kW — ca. €22.000 brutto, nach 50% KfW-Förderung: ab ${fmtK(Math.round(22000 * 0.50))} Eigenanteil. Amortisation bei ${fmtK(calc.ersparnis)}/Jahr Ersparnis: ca. ${calc.amortisationJahre} Jahre.`,
-      `Die versteckten Kostenunterschiede zwischen Angeboten in ${city.name} liegen nicht am Gerät, sondern an der Installation: Montageaufwand, hydraulischer Abgleich und Elektrik können je nach Betrieb um 20–40% variieren. Wir vergleichen kostenlos.`,
-      `Beim Strompreis ${city.strompreis} ct/kWh in ${city.name} und JAZ ${jaz} kostet eine kWh WP-Wärme nur ${(city.strompreis / jaz).toFixed(1)} ct — günstiger als jede andere Heizoption. Über 20 Jahre Laufzeit summiert sich das auf ${fmtK(calc.ersparnis * 20)} Gesamtersparnis.`,
-    ],
-    foerderung: [
-      `In ${city.name} (${city.bundesland}) beträgt die KfW-Bundesförderung ${foerd.gesamtSatz}% = ${fmtK(foerd.zuschuss)} nicht rückzahlbarer Zuschuss. Dieser Antrag muss zwingend VOR Baubeginn gestellt werden — eine nachträgliche Förderung ist ausgeschlossen.`,
-      `Die häufigste Förderkombination für ${city.name}: 30% Grundförderung + 20% Klima-Speed-Bonus (bei Ersatz einer Gasheizung als Eigennutzer) = 50% = ${fmtK(Math.round(25000 * 0.50))} bei €25.000 Investition.${city.bundeslandFoerderung ? ` Dazu kommt in ${city.bundesland}: ${city.bundeslandFoerderung} (${city.bundeslandFoerderungBetrag}).` : ''}`,
-      `Wenige kennen den iSFP-Bonus: Wer vor der WP-Beantragung einen Individuellen Sanierungsfahrplan (iSFP) erstellen lässt, erhält +5% zusätzliche KfW-Förderung. Der iSFP selbst wird zu 80% von BAFA gefördert — Eigenanteil ca. €60–140. In ${city.name} = +${fmtK(Math.round(25000 * 0.05))} mehr Zuschuss.`,
-      `Der Einkommensbonus (30%) für Haushalte unter €40.000 Nettoeinkommen/Jahr macht in ${city.name} den Unterschied: ${foerd.gesamtSatz + 30 > 70 ? 70 : foerd.gesamtSatz + 30}% = bis zu ${fmtK(Math.round(Math.min(25000, 30000) * Math.min((foerd.gesamtSatz + 30) / 100, 0.70)))} Zuschuss. Kombinierbar mit Klima-Speed-Bonus.`,
-      `${city.bundesland} hat ${city.bundeslandFoerderung ? `zusätzlich das Programm "${city.bundeslandFoerderung}": ${city.bundeslandFoerderungBetrag}. Das` : 'kein eigenes WP-Förderprogramm. Dafür'} gilt die KfW-Bundesförderung in ${city.name} uneingeschränkt — ohne Landesantrag, ohne Wartezeit, direkt online.`,
-    ],
-    installateur: [
-      `In ${city.name} gibt es sowohl lokale SHK-Meisterbetriebe als auch bundesweite Anbieter wie Thermondo oder Enpal. Der entscheidende Unterschied: Lokale Betriebe kennen die Netzbetreiber, die Auflagen in ${city.bundesland} und sind bei Störungen schnell vor Ort. Wir vermitteln nur lokal ansässige, HWK-geprüfte Betriebe.`,
-      `Für die KfW-Förderung brauchen Sie einen im KfW-Portal registrierten Lieferanten- und Leistungserbringer (LuL). Nicht jeder SHK-Betrieb in ${city.name} ist das — alle unsere Partner schon. Ohne LuL-Registrierung: kein KfW-Antrag, keine Förderung.`,
-      `Die Wartezeit bei guten Fachbetrieben in ${city.name} liegt aktuell bei 4–10 Wochen. Wer jetzt anfrägt, sichert sich Kapazität für die nächste Heizsaison — und das zum richtigen Zeitpunkt vor der GEG-Frist ${gegFristFormatted}.`,
-      `Was ein gutes Installateur-Angebot in ${city.name} enthält: Heizlastberechnung nach DIN EN 12831, alle Positionen einzeln (Gerät, Montage, Hydraulik, Elektrik), hydraulischen Abgleich (KfW-Pflicht) und KfW-Antragsbegleitung. Wir prüfen das für Sie.`,
-      `Preisunterschiede von 20–40% bei identischer Leistung sind in ${city.name} keine Seltenheit. Deshalb empfiehlt die Verbraucherzentrale mindestens 3 Vergleichsangebote. Wir holen sie in 48 Stunden ein — kostenlos, von geprüften lokalen Betrieben.`,
-    ],
-    vergleich: [
-      `Wärmepumpe vs. Gasheizung in ${city.name}: Gaspreis ${city.gaspreis} ct/kWh + steigender CO₂-Preis (2026: 55 €/t) vs. WP-Strom ${city.strompreis} ct/kWh × JAZ ${jaz}. Heute: ${fmtK(calc.ersparnis)}/Jahr Vorteil WP. Ab 2030 mit CO₂-Preis 100 €/t: Abstand wächst auf ca. ${fmtK(calc.ersparnis + 350)}/Jahr.`,
-      `Das GEG 2024 macht in ${city.name} die Entscheidung einfach: Ab ${gegFristFormatted} muss jede neue Heizung 65% erneuerbare Energie nutzen. Eine Wärmepumpe erfüllt das automatisch — eine Gasheizung allein nicht mehr. ${isUrgent ? 'Als Großstadt trifft Sie die Frist zuerst.' : 'Sie haben noch Zeit, aber die besten Betriebe sind schnell ausgebucht.'}`,
-      `Heizung tauschen in ${city.name}: Alle GEG-konformen Optionen im Vergleich — Wärmepumpe (günstigste Betriebskosten ${fmtK(calc.wpKosten)}/J, bis 70% KfW), Pellets (GEG-konform, aber Wartung + Lagerung), Fernwärme (${city.fernwaermeQuote}% Abdeckung in ${city.name}, Preise variieren). Unsere Empfehlung: WP für die meisten Häuser.`,
-      `Altbau in ${city.name}: Der häufigste Einwand — "Mein Haus ist für eine WP nicht geeignet." In der Praxis sind über 80% der Bestandsgebäude mit moderner Luft-WP (bis 70°C Vorlauf) kompatibel. Bei ${city.normAussentemp}°C Norm-Außentemperatur und JAZ ${jaz} rechnet sich die WP auch im Altbau.`,
-      `Hybridheizung (WP + Gas) als Kompromiss: Günstiger Einstieg, aber: Gas-Abhängigkeit bleibt, CO₂-Preise steigen, GEG-Konformität ist eingeschränkt. Für ${city.name} mit ${city.gaspreis} ct/kWh Gaspreis empfehlen wir die reine Wärmepumpe — die Vollkosten sind langfristig günstiger.`,
-    ],
-    technik: [
-      `Bei ${city.avgTemp}°C Jahresmitteltemperatur und ${city.normAussentemp}°C Norm-Außentemperatur (DIN EN 12831) in ${city.name} erreicht eine Luft-Wasser-WP eine JAZ von ${jaz}. Das bedeutet: Aus 1 kWh Strom werden ${jaz} kWh Wärme. Mit Fußbodenheizung (35°C Vorlauf) steigt die JAZ auf ${(jaz + 0.3).toFixed(1)}.`,
-      `Die Heizlastberechnung nach DIN EN 12831 ist der entscheidende erste Schritt in ${city.name}: Sie verhindert Über- und Unterdimensionierung. Eine zu große WP "taktet" häufig — das senkt die JAZ und verkürzt die Lebensdauer. Unsere Partner führen die Berechnung vor jedem Angebot durch.`,
-      `Luft-WP in ${city.name} und PV: Mit ${city.avgSunHours} Sonnenstunden/Jahr erzeugt eine 8-kWp-Anlage ca. ${pvErtrag.toLocaleString('de-DE')} kWh/Jahr. Davon direkt für die WP genutzt: ca. ${Math.round(pvErtrag * 0.65 / Math.max(pvErtrag * 0.65, 1) * Math.min(pvErtrag * 0.65, Math.round(120 * 160 / jaz))).toLocaleString('de-DE')} kWh — Zusatzersparnis: ${fmtK(pvErsparnis)}/Jahr.`,
-      `Sole-Wasser vs. Luft-Wasser in ${city.name}: Sole-WP (Erdwärme) erreicht JAZ 4,3–5,0, braucht aber Erdbohrung (100–150m, ca. €6.000–12.000 Mehrkosten) und Genehmigung. Luft-WP: JAZ ${jaz}, keine Bohrung, schnell installiert, 92% Marktanteil. Für die meisten Häuser in ${city.name}: Luft-WP.`,
-      `Vorlauftemperatur in ${city.name}: Mit dem hydraulischen Abgleich (€500–1.500, KfW-Pflicht) sinkt die nötige Vorlauftemperatur um oft 5–10°C — das verbessert die JAZ von ${jaz} auf ${(jaz + 0.2).toFixed(1)}. Ältere Heizkörper sind in den meisten Häusern in ${city.bundesland} kompatibel.`,
-    ],
-    allgemein: [
-      `In ${city.name} setzen immer mehr Hausbesitzer auf Wärmepumpen: 299.000 Anlagen wurden 2025 in Deutschland installiert (+55% ggü. 2024). Bei ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und ${city.strompreis} ct/kWh Strompreis macht die WP in ${city.name} besonderen Sinn — JAZ ${jaz}, Ersparnis ${fmtK(calc.ersparnis)}/Jahr.`,
-      `${city.name} (${city.bundesland}) hat ${city.efhQuote}% Einfamilienhäuser — das ist der klassische Wärmepumpen-Markt. Dazu ${city.fernwaermeQuote}% Fernwärmeabdeckung — für die übrigen ${100 - city.fernwaermeQuote}% der Gebäude ist die WP die klare GEG-konforme Alternative.`,
-      `Die GEG-Frist für ${city.name}: ${gegFristFormatted}. ${isUrgent ? 'Als Großstadt über 100.000 Einwohner handeln Sie jetzt — gute Betriebe sind 8–12 Wochen ausgebucht.' : 'Handeln Sie frühzeitig: Die besten lokalen Betriebe in ' + city.name + ' haben lange Wartelisten.'} Wir vermitteln kostenlos.`,
-      `Was ${city.name} besonders macht: ${city.avgTemp}°C Jahresmittel erlaubt JAZ ${jaz}, ${city.avgSunHours} Sonnenstunden ermöglichen attraktive WP+PV-Kombination (${fmtK(pvErsparnis)}/Jahr Zusatzersparnis mit 8 kWp).${city.bundeslandFoerderung ? ` Dazu ${city.bundeslandFoerderung} in ${city.bundesland}.` : ''}`,
-      `Unser Service in ${city.name}: Kostenlose Vermittlung an HWK-geprüfte Meisterbetriebe, KfW-Antragsbegleitung inklusive, bis zu 3 vollständige Vergleichsangebote — herstellerunabhängig, ohne Druckverkäufe. 100% kostenlos für Hausbesitzer.`,
-    ],
-  };
-
-  const variants = introsByCategory[cat] ?? introsByCategory.allgemein;
-  const introIdx = cityHash(city, variants.length, 5);
-  return variants[introIdx];
-}
-
-// ── Rotierende Zusatzblöcke (2 von 4 je Stadt) ───────────────────────────────
-function getRotatingBlocks(city: CityPageRouterProps['city'], foerd: CityPageRouterProps['foerd'], jaz: number, calc: CityPageRouterProps['calc']) {
-  const pvErtrag = Math.round(city.avgSunHours * 8 * 0.85);
-  const pvErsparnis = Math.round(Math.min(pvErtrag * 0.65, Math.round(120 * 160 / jaz)) * (city.strompreis / 100));
-  const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
-  const isUrgent = city.einwohner >= 100000;
-
-  const allBlocks = [
-    // Block 0: GEG
-    {
-      title: `GEG-Status ${city.name}: Frist ${gegFristFormatted}`,
-      icon: '📋',
-      color: isUrgent ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-white',
-      content: (
-        <div className="space-y-2 text-sm text-[#4A6358]">
-          <p>{isUrgent ? `⚠️ Als Großstadt über 100.000 Einwohner gilt in ${city.name} die 65%-EE-Pflicht ab ${gegFristFormatted}.` : `In ${city.name} gilt die 65%-EE-Pflicht ab ${gegFristFormatted}. Frühzeitiges Handeln sichert volle Förderung.`}</p>
-          <p className="text-[#4A6358] text-base leading-relaxed">
-                {[
-                  `In ${city.name} ist die Wärmepumpe die einzige Heiztechnologie, die GEG-konform ist, bis 70% KfW-gefördert wird, CO₂-Kosten eliminiert und die Immobilie langfristig wertstabil hält.`,
-                  `Für Hausbesitzer in ${city.name}: Die WP ist GEG-konform ohne Einschränkungen, bis 70% KfW-gefördert, unabhängig von steigenden CO₂-Preisen und wertsteigernd für Ihre Immobilie.`,
-                  `Die WP ist in ${city.name} die einzige Heiztechnologie ohne Wenn und Aber: GEG-konform, KfW-gefördert bis 70%, kein CO₂-Aufschlag, langfristig sichere Investition.`,
-                  `In ${city.name} kombiniert die Wärmepumpe alle Vorteile: volle GEG-Konformität, KfW-Förderung bis 70% (max. €21.000), keine CO₂-Preis-Abhängigkeit und ${fmtEuro(calc.ersparnis)}/Jahr Betriebsersparnis.`,
-                ][cityHash(city, 4, 350)]}
-              </p>
-        </div>
-      ),
-    },
-    // Block 1: PV + WP
-    {
-      title: `WP + PV in ${city.name}: ${pvErtrag.toLocaleString('de-DE')} kWh/Jahr`,
-      icon: '☀️',
-      color: 'border-gray-200 bg-white',
-      content: (
-        <div className="space-y-2 text-sm text-[#4A6358]">
-          <p>Mit {city.avgSunHours} Sonnenstunden/Jahr und 8 kWp PV produzieren Sie in {city.name} ca. {pvErtrag.toLocaleString('de-DE')} kWh Strom/Jahr — genug um die WP tagsüber direkt zu betreiben.</p>
-          <p>Zusatzersparnis durch PV+WP-Kombination: <strong className="text-[#1A4731]">{pvErsparnis.toLocaleString('de-DE')} €/Jahr</strong> — weil PV-Strom die Wärme auf unter 10 ct/kWh senkt.</p>
-        </div>
-      ),
-    },
-    // Block 2: iSFP
-    {
-      title: `iSFP: +5% KfW-Bonus für ${city.name}`,
-      icon: '📑',
-      color: 'border-gray-200 bg-white',
-      content: (
-        <div className="space-y-2 text-sm text-[#4A6358]">
-          <p>Mit einem Individuellen Sanierungsfahrplan (iSFP) erhalten Sie +5% zusätzliche KfW-Förderung. Bei €25.000 WP-Investition = +{Math.round(25000 * 0.05).toLocaleString('de-DE')} € mehr Zuschuss.</p>
-          <p className="text-[#4A6358] text-base leading-relaxed">
-                {[
-                  `Der iSFP kostet in ${city.name} €300–700 — und wird zu 80% von BAFA gefördert (Eigenanteil ca. €60–140). Mit iSFP gibt es +5% KfW-Bonus: bei €25.000 Invest = +€1.250 extra Förderung. Lohnt sich fast immer.`,
-                  `iSFP in ${city.name}: Eigenanteil nur ca. €60–140 (80% BAFA-gefördert). Der +5% iSFP-Bonus bringt bei typischen Vollkosten von €20.000–25.000 eine Zusatzförderung von €1.000–1.250 — der iSFP finanziert sich selbst.`,
-                  `Mit iSFP erhalten Eigenheimbesitzer in ${city.name} +5% KfW-Bonus zusätzlich. Bei ${fmtEuro(Math.round(25000 * 0.05))} Mehrförderung auf €25.000 Invest ist der iSFP-Eigenanteil von ~€120 klar rentabel.`,
-                  `BAFA-Energieberatung mit iSFP in ${city.name}: Kosten €300–700, davon 80% BAFA-gefördert. Ergebnis: +5% KfW-Bonus auf alle WP-Maßnahmen. Gültig 15 Jahre — auch für spätere Sanierungsschritte nutzbar.`,
-                ][cityHash(city, 4, 351)]}
-              </p>
-        </div>
-      ),
-    },
-    // Block 3: Hersteller
-    {
-      title: 'Bewährte WP-Hersteller',
-      icon: '🏆',
-      color: 'border-gray-200 bg-white',
-      content: (
-        <div className="space-y-1.5 text-sm">
-          {[
-            { n: 'Viessmann Vitocal', v: 'Testsieger Stiftung Warentest 2024/25' },
-            { n: 'Vaillant aroTHERM', v: 'R290 Propan-WP, +5% KfW-Kältemittelbonus' },
-            { n: 'Bosch / Buderus', v: 'Gutes Preis-Leistungs-Verhältnis' },
-            { n: 'Stiebel Eltron', v: 'Deutsche Qualität, lange Garantie' },
-          ].map((h, i) => (
-            <div key={i} className="flex justify-between text-xs border-b border-gray-200 pb-1.5">
-              <span className="font-semibold text-[#1C2B2B]">{h.n}</span>
-              <span className="text-[#7A9E8E]">{h.v}</span>
-            </div>
-          ))}
-          <p className="text-[#7A9E8E] text-xs pt-1">Herstellerunabhängig — wir empfehlen das für Ihr Haus passende Gerät.</p>
-        </div>
-      ),
-    },
-    // Block 4: Bundesland
-    {
-      title: `${city.bundesland}-Förderung`,
-      icon: '🏛️',
-      color: city.bundeslandFoerderung ? 'border-[#3DA16A]/30 bg-[#E8F5EE]' : 'border-gray-200 bg-white',
-      content: city.bundeslandFoerderung ? (
-        <div className="space-y-2 text-sm text-[#4A6358]">
-          <p><strong>{city.bundeslandFoerderung}</strong>: {city.bundeslandFoerderungBetrag}</p>
-          {city.bundeslandFoerderungUrl && (
-            <a href={city.bundeslandFoerderungUrl} target="_blank" rel="noopener noreferrer" className="text-[#1A4731] text-xs font-semibold hover:underline">Mehr Infos ↗</a>
-          )}
-        </div>
-      ) : (
-        <p className="text-sm text-[#4A6358]">{city.bundesland} setzt auf KfW-Bundesprogramme. Die volle Bundesförderung (bis 70%) gilt in {city.name} uneingeschränkt.</p>
-      ),
-    },
-    // Block 5: CO₂
-    {
-      title: `CO₂-Einsparung in ${city.name}`,
-      icon: '🌿',
-      color: 'border-gray-200 bg-white',
-      content: (
-        <div className="space-y-2 text-sm text-[#4A6358]">
-          <p>Ein 120 m² EFH in {city.name} spart mit einer WP ca. <strong className="text-[#1A4731]">{Math.round(120 * 160 * 0.0002 * 10) / 10} Tonnen CO₂/Jahr</strong> gegenüber einer Gasheizung.</p>
-          <p>Entspricht {Math.round(120 * 160 * 0.0002 * 10000)} km weniger mit einem Diesel-PKW. Über 20 Jahre: {Math.round(120 * 160 * 0.0002 * 20 * 10) / 10} Tonnen CO₂ gespart.</p>
-        </div>
-      ),
-    },
-  ];
-
-  // 2 von 6 Blöcken city-hash-basiert auswählen
-  const idx1 = cityHash(city, allBlocks.length, 30);
-  const idx2 = (idx1 + 2 + cityHash(city, 3, 31)) % allBlocks.length;
-  return [allBlocks[idx1], allBlocks[idx2]];
-}
-
-// ══ HAUPTKOMPONENTE ═══════════════════════════════════════════════════════════
-
-// ── Bildpool ─────────────────────────────────────────────
-const HERO_IMGS = [
-  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85",
-  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85",
-  "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85",
-];
-const SEC1_IMGS = ["https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85", "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85", "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85"];
-const SEC2_IMGS = ["https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85", "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85", "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85"];
-const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
-  arr[Math.abs(Math.round(lat * 7 + lng * 13 + salt)) % arr.length];
-
-export default function GenericTemplate({
-  city, keyword, calc, foerd, jaz, nearby, h1,
-}: CityPageRouterProps) {
-
-  const h2s = getDynamicH2s(city, keyword, jaz);
-  const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
-  const introParagraphs = getIntroParagraphs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const kwMainContent = getKwMainContent(city, keyword, jaz, calc, foerd);
-  const ctaVariation = getCTAVariation(city, keyword, calc.ersparnis);
-  const rotatingBlocks = getRotatingBlocks(city, foerd, jaz, calc);
-
-  const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
-  const kw = keyword.keyword.replace('[Stadt]', '').trim();
-
-
-  const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
-
-  const bundeslandText = getBundeslandParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-
-  // E-E-A-T: section timestamps & methodology
-  const extendedData = {
-    sectionTimestamps: getSectionTimestamps(),
-    methodologyExplainer: getMethodologyExplainer(city, keyword, jaz),
-  };
-  const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
-  const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
-  const seasonalText = getSeasonalAdvice(city);
-  const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
-  const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const pvWP = getPVWPKombination(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const roiTimeline = getROITimeline(city, jaz, calc.wpKosten, calc.ersparnis, foerd.gesamtSatz);
-  const nachbarVergleich = getNachbarschaftsvergleich(city, nearby, jaz, calc.wpKosten, calc.ersparnis);
-  const heizkoerper = getHeizkoerperCheck(city, keyword);
-  const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
-  const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
-  const videoData = getVideoPlaceholder(city, keyword);
-  const socialProof = getSocialProofData(city, keyword);
-  const finanzierung = getFinanzierungsOptionen(city, foerd.gesamtSatz);
-  const wartung = getWartungsInfo(city, keyword);
-  const garantie = getGarantieInfo(city);
-  const caseStudy = getCaseStudy(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
-  const gegCountdown = getGEGCountdown(city);
-  const laermschutz = getLaermschutzInfo(city);
-
-  return (
-    <div className="min-h-screen bg-[#F8F9FA] font-sans">
-      {/* HERO */}
-      <div className="relative min-h-[52vh] flex items-end overflow-hidden">
-        <Image
-          src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
-          alt={h1}
-          className="absolute inset-0 w-full h-full object-cover"
-          fill priority
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.25) 100%)' }} />
-        <div className="relative z-10 w-full pt-28 pb-14 px-6">
-        <div className="max-w-5xl mx-auto">
-          <nav className="flex items-center gap-2 text-sm mb-5 text-white/80 flex-wrap">
-            <Link href="/" className="hover:text-white/70 transition-colors">Startseite</Link>
-            <span className="text-white/70">›</span>
-            <Link href={`/${keyword.slug}`} className="hover:text-white/70 transition-colors">{kw}</Link>
-            <span className="text-white/70">›</span>
-            <span className="text-white/80">{city.name}</span>
-          </nav>
-
-          <h1 className="font-extrabold text-white mb-4 leading-tight" style={{ fontSize: 'clamp(28px,4vw,52px)' }}>
-            {h1}
-          </h1>
-              {/* Ultra-lokale Fakten */}
-              <p className="text-white/60 text-sm leading-relaxed max-w-xl mb-5">
-                {city.name}: {city.strompreis} ct/kWh Strom · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage · {city.normAussentemp}°C Normaußentemp. · {city.fernwaermeQuote}% Fernwärme
-              </p>
-              {/* Preis-Badge — Eigenanteil nach KfW-Förderung */}
-              <div className="flex flex-wrap gap-2 mt-3 mb-1">
-                <span className="inline-flex items-center gap-1.5 bg-[#D97706]/90 text-white text-xs font-bold px-3 py-1.5 rounded-full">
-                  💰 ab {fmtEuro(foerd.eigenanteil)} Eigenanteil
-                </span>
-                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
-                  💚 {fmtEuro(calc.ersparnis)}/J. sparen
-                </span>
-              </div>
-
-          {/* Intro — variiert per cityHash × Keyword-Kategorie */}
-          <p className="text-white/65 text-base leading-relaxed max-w-2xl mb-8">
-            {introParagraphs[0]}
-          </p>
-
-          {/* Letzte Aktualisierung Badge — E-E-A-T Trust Signal */}
-          <div className="flex items-center gap-4 text-xs text-white/60 mb-8 flex-wrap">
-            <span className="flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              Aktualisiert: April 2026
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Geprüft von Bastian Saupe, Energieberater
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-              Quellen: KfW, BAFA, BWP, DWD
-            </span>
-          </div>
-
-          {/* Stats — immer stadtspezifisch */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
-            {[
-              { label: 'JAZ in ' + city.name, val: String(jaz), sub: city.avgTemp + '°C Jahresmittel' },
-              { label: 'Ersparnis/Jahr', val: fmtEuro(calc.ersparnis), sub: 'vs. Erdgas' },
-              { label: 'KfW-Förderung', val: foerd.gesamtSatz + '%', sub: fmtEuro(foerd.zuschuss) + ' Zuschuss' },
-              { label: 'GEG-Frist', val: city.einwohner >= 100000 ? '30.06.2026' : '30.06.2028', sub: city.einwohner >= 100000 ? '⚠️ Dringend' : 'Frühzeitig planen' },
-            ].map((s, i) => (
-              <div key={i} className="bg-white/10 rounded-xl p-3 border border-white/10">
-                <div className="font-mono font-bold text-white text-lg leading-none mb-0.5">{s.val}</div>
-                <div className="text-[#3DA16A] text-xs font-semibold">{s.label}</div>
-                <div className="text-white/75 text-xs">{s.sub}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* BREADCRUMB NAV */}
-      <nav aria-label="Breadcrumb" className="max-w-5xl mx-auto px-6 pt-4 pb-2">
-        <ol className="flex flex-wrap items-center gap-1 text-xs text-[#7A9E8E]" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <a itemProp="item" href="/"><span itemProp="name">Start</span></a>
-            <meta itemProp="position" content="1" />
-          </li>
-          <li className="mx-1">›</li>
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <a itemProp="item" href={`/${keyword.slug}`} className="hover:text-[#1A4731]"><span itemProp="name">{kw}</span></a>
-            <meta itemProp="position" content="2" />
-          </li>
-          <li className="mx-1">›</li>
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <span itemProp="name">{city.name}</span>
-            <meta itemProp="position" content="3" />
-          </li>
-        </ol>
-      </nav>
-
-      {/* MAIN */}
-      <div className="max-w-5xl mx-auto px-6 py-14 grid lg:grid-cols-[1fr_340px] gap-10 items-start">
-
-        {/* LEFT */}
-        <div>
-          {/* Featured Snippet Antwort */}
-          {keyword.featuredSnippetQuestions[0] && (
-            <div className="bg-white border border-gray-200 border-l-4 border-l-wp-green rounded-xl p-6 mb-8 shadow-md">
-              <h2 className="font-bold text-[#1C2B2B] text-xl mb-3">
-                {fillTemplate(keyword.featuredSnippetQuestions[0], city, jaz)}
-              </h2>
-              <p className="text-[#4A6358] text-base leading-relaxed">
-                {kwMainContent}
-              </p>
-            </div>
-          )}
-
-          {/* Inhaltsverzeichnis — bessere UX für lange Seiten */}
-          <nav className="bg-white border border-gray-200 rounded-xl p-5 mb-8 shadow-sm" aria-label="Inhaltsverzeichnis">
-            <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-3">Inhaltsverzeichnis</p>
-            <ol className="space-y-1.5 text-sm">
-              {[
-                { label: fillTemplate(keyword.featuredSnippetQuestions[1] ?? `${kw} in ${city.name}`, city, jaz), id: 'hauptinhalt' },
-                { label: `Wärmepumpe in ${city.bundesland}`, id: 'bundesland' },
-                { label: `Energiekosten-Analyse ${city.name}`, id: 'energiekosten' },
-                { label: `Wärmepumpen-Rechner`, id: 'rechner' },
-                { label: `PV + Wärmepumpe Kombination`, id: 'pv-kombination' },
-                { label: `Heizkörper-Check`, id: 'heizkoerper' },
-                { label: `Regionaler Vergleich`, id: 'vergleich' },
-                { label: `Methodik & Datenquellen`, id: 'methodik' },
-                { label: `FAQ — Häufige Fragen`, id: 'faq' },
-              ].map((item, i) => (
-                <li key={i}>
-                  <a href={`#${item.id}`} className="flex items-center gap-2 text-[#4A6358] hover:text-[#1A4731] transition-colors py-0.5">
-                    <span className="text-[#3DA16A] font-mono text-xs font-bold">{i + 1}.</span>
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-
-          {/* Keyword-spezifischer Hauptinhalt (2. Paragraph aus content-variation) */}
-          <h2 id="hauptinhalt" className="font-bold text-[#1C2B2B] mb-4" style={{ fontSize: 'clamp(22px,2.5vw,34px)' }}>
-            {fillTemplate(keyword.featuredSnippetQuestions[1] ?? `${kw} in ${city.name} — was Sie wissen müssen`, city, jaz)}
-          </h2>
-          <div className="space-y-4 mb-8">
-            <p className="text-[#4A6358] text-base leading-relaxed">{introParagraphs[1]}</p>
-            <p className="text-[#4A6358] text-base leading-relaxed">{introParagraphs[2]}</p>
-          </div>
-
-          {/* Stadtspezifische Klimafakten */}
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
-            {[
-              { icon: '🌡️', label: 'Jahresmitteltemperatur', val: city.avgTemp + '°C', sub: 'Quelle: DWD' },
-              { icon: '📊', label: 'Heizgradtage', val: city.heizgradtage.toLocaleString('de-DE') + ' Kd/a', sub: 'IWU GTZ20/15' },
-              { icon: '⚡', label: 'Lokaler Strompreis', val: city.strompreis + ' ct/kWh', sub: 'BDEW Regional' },
-            ].map((d, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 border border-gray-200 shadow-md">
-                <div className="text-2xl mb-2">{d.icon}</div>
-                <div className="font-mono font-bold text-[#1A4731] text-lg leading-none mb-0.5">{d.val}</div>
-                <div className="font-semibold text-[#1C2B2B] text-xs mb-0.5">{d.label}</div>
-                <div className="text-[#7A9E8E] text-xs">{d.sub}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* 2 rotierende Zusatzblöcke (city-hash basiert) */}
-          <div className="space-y-4 mb-8">
-            {rotatingBlocks.map((block, i) => (
-              <div key={i} className={`rounded-xl border p-5 ${block.color}`}>
-                <h3 className="font-semibold text-[#1C2B2B] text-base mb-3 flex items-center gap-2">
-                  <span>{block.icon}</span> {block.title}
-                </h3>
-                {block.content}
-              </div>
-            ))}
-          </div>
-
-          {/* Weitere Featured Snippet Fragen */}
-          {keyword.featuredSnippetQuestions.slice(2).map((q, i) => (
-            <div key={i} className="mb-6">
-              <h3 className="font-semibold text-[#1C2B2B] text-lg mb-2">
-                {fillTemplate(q, city, jaz)}
-              </h3>
-              <p className="text-[#4A6358] text-sm leading-relaxed">
-                {faqs[i + 2]?.a ?? `Erfahren Sie mehr von unseren geprüften Fachbetrieben in ${city.name}.`}
-              </p>
-            </div>
-          ))}
-                    {/* Bundesland & Gebäudekontext */}
-          <div className="space-y-4">
+          <div className="space-y-4 cv-auto">
             <div className="flex items-start justify-between gap-4">
               <h2 id="bundesland" className="text-2xl font-bold text-gray-900">Wärmepumpe in {city.bundesland} — {city.name} im Fokus</h2>
               {extendedData?.sectionTimestamps?.bundesland && (
@@ -454,7 +21,7 @@ export default function GenericTemplate({
           </div>
 
           {/* Energie & Wirtschaftlichkeit Deep-Dive */}
-          <div className="space-y-4">
+          <div className="space-y-4 cv-auto">
             <div className="flex items-start justify-between gap-4">
               <h2 id="energiekosten" className="text-2xl font-bold text-gray-900">Energiekosten-Analyse für {city.name}</h2>
               {extendedData?.sectionTimestamps?.energiekosten && (
@@ -598,7 +165,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── PV + Wärmepumpe Kombination ── */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-5">
+          <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-5 cv-auto">
             <div className="flex items-start justify-between gap-4">
               <h2 id="pv-kombination" className="text-xl font-bold text-[#1A4731]">{pvWP.title}</h2>
               {extendedData?.sectionTimestamps?.pvKombination && (
@@ -622,7 +189,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── Heizkörper-Kompatibilitäts-Check ── */}
-          <div className="space-y-4">
+          <div className="space-y-4 cv-auto">
             <div className="flex items-start justify-between gap-4">
               <h2 id="heizkoerper" className="text-xl font-bold text-[#1A4731]">{heizkoerper.title}</h2>
               {extendedData?.sectionTimestamps?.heizkoerper && (
@@ -657,7 +224,7 @@ export default function GenericTemplate({
 
           {/* ── Nachbarschaftsvergleich ── */}
           {nearby.length > 0 && (
-            <div className="space-y-4">
+            <div className="space-y-4 cv-auto">
               <div className="flex items-start justify-between gap-4">
                 <h2 id="vergleich" className="text-xl font-bold text-[#1A4731]">Regionaler Vergleich: {city.name} vs. Umland</h2>
                 {extendedData?.sectionTimestamps?.vergleich && (
@@ -691,7 +258,7 @@ export default function GenericTemplate({
           )}
 
           {/* ── Stromtarif-Optimierung ── */}
-          <div className="bg-gradient-to-br from-[#1A4731] to-[#0A1910] rounded-2xl p-7 text-white space-y-4">
+          <div className="bg-gradient-to-br from-[#1A4731] to-[#0A1910] rounded-2xl p-7 text-white space-y-4 cv-auto">
             <h2 className="text-xl font-bold">Stromkosten senken: WP-Tarife für {city.name}</h2>
             <p className="text-white/80 text-sm leading-relaxed">{stromtarif.paragraph}</p>
             <div className="space-y-2 mt-3">
@@ -705,7 +272,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── ROI-Timeline (Auszug: 5 Meilensteine) ── */}
-          <div className="space-y-4">
+          <div className="space-y-4 cv-auto">
             <h2 className="text-xl font-bold text-[#1A4731]">Wirtschaftlichkeit über 20 Jahre in {city.name}</h2>
             <div className="space-y-2">
               {roiTimeline.filter(r => r.highlight).map((r, i) => (
@@ -730,7 +297,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── GEG-Countdown — Urgency Signal ── */}
-          <div className={`rounded-2xl p-6 border ${
+          <div className={`rounded-2xl p-6 border cv-auto ${
             gegCountdown.urgencyLevel === 'kritisch' ? 'bg-red-50 border-red-300' :
             gegCountdown.urgencyLevel === 'dringend' ? 'bg-amber-50 border-amber-300' :
             'bg-blue-50 border-blue-200'
@@ -746,7 +313,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── Praxisbeispiel / Case Study ── */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-4">
+          <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-4 cv-auto">
             <h2 className="text-xl font-bold text-[#1A4731]">{caseStudy.title}</h2>
             <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{caseStudy.building}</p>
             <div className="space-y-3">
@@ -774,7 +341,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── Finanzierungsoptionen ── */}
-          <div className="space-y-4">
+          <div className="space-y-4 cv-auto">
             <h2 className="text-xl font-bold text-[#1A4731]">{finanzierung.title}</h2>
             <div className="grid gap-3">
               {finanzierung.options.map((opt, i) => (
@@ -791,7 +358,7 @@ export default function GenericTemplate({
           </div>
 
           {/* ── Wartung & Langzeitkosten ── */}
-          <div className="space-y-4">
+          <div className="space-y-4 cv-auto">
             <h2 className="text-xl font-bold text-[#1A4731]">{wartung.title}</h2>
             <p className="text-[#4A6358] text-base leading-relaxed">{wartung.paragraph}</p>
             <div className="overflow-x-auto">

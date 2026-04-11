@@ -324,7 +324,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="relative rounded-2xl overflow-hidden h-48 sm:h-full min-h-48">
-                <Image src={IMGS.pump} alt="Wärmepumpe Installation" className="w-full h-full object-cover" fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
+                <Image src={IMGS.pump} alt={`Wärmepumpen-Installation in ${city.name} – Installateur Checkliste`} className="w-full h-full object-cover" fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.80) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-4 left-4">
                   <p className="text-white font-bold text-sm">Vollständige Angebote</p>

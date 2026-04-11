@@ -223,6 +223,12 @@ html {
   border-radius: 4px;
 }
 
+/* ── Content Visibility — lazy-render below-fold sections ── */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
 /* Print styles */
 @media print {
   .no-print, nav, footer, .sticky, [class*="fixed"] { display: none !important; }
