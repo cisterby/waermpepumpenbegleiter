@@ -19,7 +19,8 @@ export async function GET(
 
   const cities = citiesData as City[];
   const base = 'https://xn--wrmepumpenbegleiter-gwb.de';
-  const lastmod = new Date('2026-03-25').toISOString();
+  // Dynamisches lastmod: aktuelles Datum bei Generierung (ISR revalidiert täglich)
+  const lastmod = new Date().toISOString().split('T')[0];
 
   // Nur indexierbare Seiten in die Sitemap aufnehmen
   // Muss synchron mit der noindex-Logik in [citySlug]/page.tsx sein

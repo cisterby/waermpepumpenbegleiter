@@ -135,8 +135,8 @@ export function buildLocalBusinessSchema(keywordSlug: string, city: City) {
 
 /** Nachbarstädte aus nearbyCities-Slugs auflösen (braucht CITIES — nur server-side) */
 export function getNearbyFromSlugs(slugs: string[], allCities: City[], count = 6): City[] {
-  const result = slugs.slice(0, count)
-    .map(s => allCities.find(c => c.slug === s))
+  return slugs
+    .slice(0, count)
+    .map(slug => allCities.find(c => c.slug === slug))
     .filter(Boolean) as City[]
-  return result
 }

@@ -70,8 +70,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title, description: desc, url,
       type: 'website', locale: 'de_DE',
+      images: [{
+        url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: title,
+      }],
     },
-    twitter: { card: 'summary_large_image', title, description: desc },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: [`https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}/opengraph-image`],
+    },
     robots: {
       index: shouldIndex,
       follow: true, // follow immer true — Links trotzdem vererben
@@ -264,15 +275,7 @@ export default function CityKeywordPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
       {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
-      <CityPageRouter
-        city={city}
-        keyword={keyword}
-        calc={calc}
-        foerd={foerd}
-        jaz={jaz}
-        nearby={nearby}
-        h1={h1}
-      />
+      <CityPageRouter keyword={keyword} city={city} jaz={jaz} calc={calc} foerd={foerd} nearby={nearby} h1={h1} />
     </>
   );
 }

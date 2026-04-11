@@ -42,7 +42,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description: desc,
     alternates: { canonical: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}` },
-    openGraph: { title, description: desc, type: 'website', locale: 'de_DE' },
+    openGraph: {
+      title, description: desc, type: 'website', locale: 'de_DE',
+      url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`,
+      images: [{
+        url: 'https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: title,
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: ['https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png'],
+    },
     robots: { index: true, follow: true },
   };
 }
@@ -488,12 +503,12 @@ export default function PillarPage({ params }: Props) {
           <h2 className="font-bold text-white text-2xl mb-2">
             Ihre Stadt nicht gefunden?
           </h2>
-          <p className="text-white/65 text-sm mb-6 max-w-md mx-auto">
-            Wir sind in ganz Deutschland aktiv. Senden Sie uns eine Anfrage — wir finden geprüfte Fachbetriebe auch in Ihrer Nähe.
+          <p className="text-white/65 text-sm mb-6 max-w-lg mx-auto">
+            Wir decken 733 deutsche Städte ab. Kontaktieren Sie uns — wir finden auch in Ihrer Region einen geprüften Fachbetrieb.
           </p>
-          <a href="/kontakt"
-            className="inline-flex items-center gap-2 px-7 py-4 bg-[#D97706] text-white rounded-xl font-bold text-sm hover:bg-amber-700 transition-all hover:-translate-y-0.5">
-            Kostenlos anfragen <ArrowRight size={16} />
+          <a href="/kontakt" className="inline-flex items-center gap-2 px-6 py-3 bg-[#D97706] text-white font-semibold rounded-xl hover:bg-[#B45309] transition-colors">
+            Jetzt Kontakt aufnehmen
+            <ArrowRight size={16} />
           </a>
         </div>
       </div>

@@ -709,22 +709,9 @@ export function getNearbyLinkContext(
 ): Array<{ city: City; text: string; url: string }> {
   const kwName = keyword.keyword.replace('[Stadt]', '').trim();
 
-  return nearby.slice(0, 6).map((nc, i) => {
-    const ncJaz = 2.7 + (nc.avgTemp - 7) * 0.15; // simplified JAZ estimate
-    const ncJazRounded = Math.round(ncJaz * 10) / 10;
-
-    // Varianten für den Ankertext
-    const textVariants = [
-      `${kwName} in ${nc.name} (JAZ ${ncJazRounded}, ${nc.strompreis}\u00a0ct/kWh)`,
-      `${nc.name}: ${kwName} — ${nc.heizgradtage}\u00a0HGT, ${nc.avgTemp}°C`,
-      `${kwName} ${nc.name} (${nc.bundesland})`,
-      `→ ${nc.name}: ${nc.einwohner.toLocaleString('de-DE')} Einwohner, ${nc.strompreis}\u00a0ct/kWh`,
-    ];
-
-    return {
-      city: nc,
-      text: textVariants[(i + cityHash(city, 4, 200)) % textVariants.length],
-      url: `/${keyword.slug}/${nc.slug}`,
-    };
-  });
+  return nearby.slice(0, 6).map(nc => ({
+    city: nc,
+    text: `${kwName} in ${nc.name}`,
+    url: `/${keyword.slug}/${nc.slug}`,
+  }))
 }

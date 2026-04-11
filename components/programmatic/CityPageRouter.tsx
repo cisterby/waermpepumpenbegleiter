@@ -63,6 +63,7 @@ export default function CityPageRouter(props: CityPageRouterProps) {
     case 'waermepumpe-montage':       return <MontageTemplate           {...props} />;
     case 'waermepumpe-oder-gas':      return <VergleichTemplate         {...props} />;
     case 'waermepumpe-stromverbrauch': return <StromverbrauchTemplate   {...props} />;
-    default:                           return <WaermepumpeTemplate      {...props} />;
+    default:
+      return <WaermepumpeTemplate {...props} />;
   }
 }

@@ -190,11 +190,10 @@ export default function Footer() {
             © 2026 Wärmepumpenbegleiter.de — Webflott GbR, Weißenfels
           </p>
           <p className="text-xs text-center max-w-md" style={{ color: 'rgba(255,255,255,0.55)' }}>
-            Wir erhalten eine Vermittlungsprovision von Installateuren. Für Hausbesitzer ist unser Service kostenlos.
+            © 2026 Wärmepumpenbegleiter — Alle Rechte vorbehalten
           </p>
         </div>
       </div>
-
     </footer>
   );
 }

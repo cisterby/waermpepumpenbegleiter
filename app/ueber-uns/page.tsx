@@ -157,10 +157,9 @@ export default function UeberUnsPage() {
         {/* Vermittlungshinweis */}
         <div className="bg-[#1A4731]/8 border border-[#1A4731]/20 rounded-2xl p-6 text-center">
           <p className="text-[#1C2B2B] text-sm leading-relaxed max-w-2xl mx-auto">
-            <strong className="text-[#1A4731]">Transparenzhinweis:</strong> Wärmepumpenbegleiter.de ist ein Vermittlungsportal. Wir erhalten eine Vermittlungsprovision von Installateuren, wenn ein Auftrag zustande kommt. Für Hausbesitzer ist unser Service vollständig kostenlos.
+            <strong className="text-[#1A4731]">Transparenzhinweis:</strong> Wärmepumpenbegleiter.de ist ein Vermittlungsportal. Wir erhalten eine Vermittlungsprovision von Installateueren.
           </p>
         </div>
-
       </div>
     </div>
   );

@@ -228,7 +228,7 @@ export default function RichTemplateBase({
             <p className="text-wp-text2 text-xs leading-relaxed italic mb-2">
               „Drei Angebote in 48 Stunden, alle vollständig mit hydraulischem Abgleich. KfW-Antrag hat der Betrieb direkt gestellt."
             </p>
-            <p className="text-wp-text3 text-xs font-semibold">Familie aus {city.name} · Luft-WP · {fmtEuro(calc.ersparnis)}/Jahr gespart</p>
+            <p className="text-wp-text2 text-xs font-semibold">Julia M., München</p>
           </div>
         </div>
       </div>

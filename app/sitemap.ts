@@ -7,7 +7,7 @@ import citiesData from '@/lib/cities.json';
 import type { City } from '@/lib/city-utils';
 
 const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
-const MOD  = new Date('2026-03-25');
+const MOD  = new Date(); // Dynamisch bei Build/ISR-Revalidierung
 
 const BUNDESLAENDER = [
   'berlin','hamburg','bayern','nordrhein-westfalen','baden-wuerttemberg',

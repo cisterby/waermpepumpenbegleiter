@@ -175,8 +175,8 @@ export default function BundeslandPage({ params }: Props) {
 
         {/* Back to pillar */}
         <Link href={`/${keyword.slug}`}
-          className="inline-flex items-center gap-2 text-[#1A4731] font-semibold text-sm hover:underline">
-          ← Alle Städte: {kw}
+          className="inline-flex items-center gap-2 text-[#1A4731] font-semibold hover:underline mt-8">
+          ← Alle Städte anzeigen
         </Link>
       </div>
     </div>

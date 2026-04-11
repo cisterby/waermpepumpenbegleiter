@@ -319,5 +319,6 @@ export default function GenericTemplate({ city, keyword, jaz, calc, foerd, h1, n
         </div>
       </div>
     </div>
-  )
+  );
 }
+     

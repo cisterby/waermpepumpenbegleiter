@@ -59,7 +59,7 @@ export default function Datenschutz() {
           Aufbewahrungspflichten bestehen.
         </p>
 
-        <p className="text-wp-text3 text-xs mt-10">Stand: März 2026</p>
+        <p className="text-wp-text3 text-xs mt-10">Stand: 2026</p>
       </div>
     </div>
   );
