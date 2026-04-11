@@ -1,6 +1,6 @@
 'use client'
 
-
+import Image from 'next/image';
 import { useState } from 'react'
 
 const BEDARF: Record<string, number> = {
@@ -104,10 +104,13 @@ export default function Rechner() {
 
       {/* ── HERO IMAGE STRIP ── */}
       <div style={{ height: 260, overflow: 'hidden', position: 'relative' }}>
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1920&q=80"
           alt="Modernes Haus mit Wärmepumpe"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%' }}
+          fill
+          className="object-cover"
+          style={{ objectPosition: 'center 60%' }}
+          priority
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(26,55,40,.15), rgba(246,243,238,1))' }}/>
       </div>
@@ -174,10 +177,13 @@ export default function Rechner() {
 
             {/* Info box with image */}
             <div style={{ background: 'white', border: '1px solid rgba(26,71,49,.1)', borderRadius: 14, overflow: 'hidden' }}>
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80"
                 alt="Wärmepumpen-Fachbetrieb"
-                style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }}
+                width={800}
+                height={200}
+                className="block"
+                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
               />
               <div style={{ padding: '20px 24px' }}>
                 <h3 style={{ fontSize: 18, marginBottom: 8 }}>Diese Berechnung ist ein Richtwert</h3>

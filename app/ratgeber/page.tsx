@@ -1,5 +1,6 @@
 // app/ratgeber/page.tsx — Ratgeber-Index + 5 vollständige Artikel inline
 'use client';
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Clock, Calendar, User } from 'lucide-react';
@@ -298,7 +299,7 @@ export default function Ratgeber() {
     return (
       <div className="min-h-screen bg-[#F8F9FA]">
         <div className="relative h-80 overflow-hidden">
-          <img src={article.img} alt={article.title} className="w-full h-full object-cover" />
+          <Image src={article.img} alt={article.title} className="w-full h-full object-cover" fill priority />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.85) 0%, rgba(10,21,16,0.3) 100%)' }} />
           <div className="absolute inset-0 flex items-end px-6 pb-10">
             <div className="max-w-3xl">
@@ -365,7 +366,7 @@ export default function Ratgeber() {
             className="w-full bg-white rounded-2xl border border-wp-border shadow-wp-sm overflow-hidden mb-6 group text-left hover:-translate-y-0.5 transition-all">
             <div className="grid md:grid-cols-2">
               <div className="relative h-64 md:h-auto overflow-hidden">
-                <img src={hero.img} alt={hero.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
+                <Image src={hero.img} alt={hero.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" width={600} height={256} loading="lazy" />
                 <div className="absolute top-4 left-4">
                   <span className="bg-[#D97706] text-white text-xs font-bold px-3 py-1.5 rounded-full">{hero.cat}</span>
                 </div>
@@ -394,7 +395,7 @@ export default function Ratgeber() {
             <button key={article.slug} onClick={() => setOpenArticle(article.slug)}
               className="bg-white rounded-2xl border border-wp-border shadow-wp-sm overflow-hidden text-left group hover:-translate-y-0.5 transition-all">
               <div className="relative h-44 overflow-hidden">
-                <img src={article.img} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <Image src={article.img} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" width={400} height={176} loading="lazy" />
                 <div className="absolute top-3 left-3">
                   <span className="bg-white/90 text-[#1C2B2B] text-xs font-bold px-2.5 py-1 rounded-full">{article.cat}</span>
                 </div>

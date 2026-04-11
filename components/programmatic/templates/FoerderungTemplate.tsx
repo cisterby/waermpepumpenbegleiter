@@ -1,11 +1,12 @@
 // components/programmatic/templates/FoerderungTemplate.tsx
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Info } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -60,6 +61,8 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
   const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
+  const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   return (
     <>
@@ -68,7 +71,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
       {/* HERO */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden">
-        <img src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={'Wärmepumpe Förderung ' + city.name} className="absolute inset-0 w-full h-full object-cover" loading="eager" {...({fetchPriority:'high'} as any)} />
+        <Image src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={'Wärmepumpe Förderung ' + city.name} className="absolute inset-0 w-full h-full object-cover" fill priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.30) 100%)' }} />
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
           <div className="max-w-5xl mx-auto">
@@ -367,6 +370,21 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
               </div>
             </div>
           )}
+
+          {/* Inline verlinkte Absätze */}
+          {inlineLinkedParagraph && (
+            <div className="prose prose-sm max-w-none">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Weiterführende Informationen für {city.name}</h2>
+              <p className="text-[#4A6358] text-base leading-relaxed [&_a]:text-[#1B5E37] [&_a]:font-semibold [&_a]:underline [&_a]:decoration-[#1B5E37]/30 hover:[&_a]:decoration-[#1B5E37]"
+                dangerouslySetInnerHTML={{ __html: inlineLinkedParagraph }} />
+            </div>
+          )}
+
+          {/* Lokale Tiefenanalyse */}
+          <div className="bg-[#F2FAF5] rounded-2xl p-7 border border-[#D1E7DD]">
+            <h2 className="text-xl font-bold text-[#1A4731] mb-3">Lokale Analyse: Wärmepumpe in {city.name}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{lokaleTiefenanalyse}</p>
+          </div>
 
           {/* Saisonale Empfehlung */}
           <div className="bg-[#FEFCE8] border border-[#FDE68A] rounded-xl p-5">

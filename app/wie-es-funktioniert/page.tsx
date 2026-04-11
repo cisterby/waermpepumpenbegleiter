@@ -1,5 +1,6 @@
 // app/wie-es-funktioniert/page.tsx
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Clock, Shield, Zap, Phone } from 'lucide-react';
 
@@ -51,8 +52,10 @@ export default function WieEsFunktioniertPage() {
 
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-end overflow-hidden">
-        <img src={HERO_IMG} alt="Wie Wärmepumpenbegleiter funktioniert"
-          className="absolute inset-0 w-full h-full object-cover" loading="eager" />
+        <Image src={HERO_IMG} alt="Wie Wärmepumpenbegleiter funktioniert"
+          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.9) 30%, rgba(10,21,16,0.35) 100%)' }} />
         <div className="relative z-10 max-w-5xl mx-auto px-6 pb-14 pt-28 w-full">
           <span className="inline-block px-4 py-1.5 bg-[#4CAF7D]/20 border border-[#4CAF7D]/40 rounded-full text-[#4CAF7D] text-xs font-semibold uppercase tracking-wider mb-5">
@@ -88,7 +91,7 @@ export default function WieEsFunktioniertPage() {
               </ul>
             </div>
             <div className={`relative rounded-3xl overflow-hidden shadow-xl ${i % 2 === 1 ? 'lg:col-start-1' : ''}`}>
-              <img src={step.img} alt={step.imgAlt} className="w-full h-72 object-cover" />
+              <Image src={step.img} alt={step.imgAlt} className="w-full h-72 object-cover" width={600} height={288} loading="lazy" />
               <div className="absolute inset-0 rounded-3xl" style={{ background: `linear-gradient(135deg, ${step.color}22 0%, transparent 60%)` }} />
             </div>
           </section>

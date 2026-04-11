@@ -1145,6 +1145,148 @@ export interface ExtendedVariationData extends CityVariationData {
   comparisonTable: { headers: string[]; rows: string[][] };
   localTestimonial: { quote: string; author: string; location: string; rating: number };
   seasonalAdvice: string;
+  inlineLinkedParagraph: string;
+  lokaleTiefenanalyse: string;
+}
+
+// ── 18. INLINE-CONTEXTUAL-LINKS — natürliche Links im Fließtext ────────────────
+// Google bewertet Links im Fließtext deutlich höher als Links in dedizierten Sektionen.
+// Diese Funktion erzeugt HTML-Strings mit <a>-Tags, die in Absätze eingebaut werden.
+
+export function getInlineLinkedParagraph(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): string {
+  const crossSlugs = keyword.crossLinks || [];
+  const hash = cityHash(city, 100);
+  const base = `https://xn--wrmepumpenbegleiter-gwb.de`;
+
+  // Kontextuelle Sätze mit eingebetteten Links — 12 Varianten
+  const linkedSentences: string[] = [];
+
+  if (crossSlugs.includes('waermepumpe-kosten')) {
+    const anchors = [
+      `aktuelle Wärmepumpen-Kosten in ${city.name}`,
+      `Kosten einer Wärmepumpe in ${city.name}`,
+      `Preisübersicht für ${city.name}`,
+    ];
+    const a = anchors[hash % anchors.length];
+    linkedSentences.push(
+      `Wer sich für die <a href="/${crossSlugs.includes('waermepumpe-kosten') ? 'waermepumpe-kosten' : 'waermepumpe-preise'}/${city.slug}">${a}</a> interessiert, findet bei JAZ ${jaz} und ${city.strompreis} ct/kWh Strompreis attraktive Betriebskosten von nur ${fmtEuro(wpKosten)} pro Jahr.`
+    );
+  }
+
+  if (crossSlugs.includes('waermepumpe-foerderung')) {
+    const anchors = [
+      `KfW-Förderung für Wärmepumpen in ${city.name}`,
+      `Fördermöglichkeiten in ${city.name}`,
+      `staatliche Zuschüsse in ${city.name}`,
+    ];
+    const a = anchors[(hash + 1) % anchors.length];
+    linkedSentences.push(
+      `Die <a href="/waermepumpe-foerderung/${city.slug}">${a}</a> decken bis zu 70 % der Investitionskosten — bei korrektem KfW-Antrag vor Baubeginn.`
+    );
+  }
+
+  if (crossSlugs.includes('waermepumpe-installateur') || crossSlugs.includes('waermepumpe-fachbetrieb')) {
+    const slug = crossSlugs.includes('waermepumpe-installateur') ? 'waermepumpe-installateur' : 'waermepumpe-fachbetrieb';
+    const anchors = [
+      `zertifizierte Installateure in ${city.name}`,
+      `lokale Fachbetriebe in ${city.name}`,
+      `HWK-geprüfte Betriebe in ${city.name}`,
+    ];
+    const a = anchors[(hash + 2) % anchors.length];
+    linkedSentences.push(
+      `Entscheidend ist die Wahl des richtigen Betriebs: <a href="/${slug}/${city.slug}">${a}</a> garantieren fachgerechte Installation und reibungslose KfW-Abwicklung.`
+    );
+  }
+
+  if (crossSlugs.includes('luft-wasser-waermepumpe')) {
+    linkedSentences.push(
+      `Die <a href="/luft-wasser-waermepumpe/${city.slug}">Luft-Wasser-Wärmepumpe in ${city.name}</a> ist mit über 90 % Marktanteil die beliebteste Technologie — kein Erdreich nötig, keine Bohrung, schnelle Installation.`
+    );
+  }
+
+  if (crossSlugs.includes('heizung-tauschen')) {
+    linkedSentences.push(
+      `Wer seine <a href="/heizung-tauschen/${city.slug}">alte Heizung in ${city.name} tauschen</a> möchte, profitiert vom Klima-Speed-Bonus: +20 % KfW-Zuschuss beim Ersatz fossiler Heizsysteme.`
+    );
+  }
+
+  if (crossSlugs.includes('waermepumpe-altbau') || crossSlugs.includes('waermepumpe-nachruesten')) {
+    const slug = crossSlugs.includes('waermepumpe-altbau') ? 'waermepumpe-altbau' : 'waermepumpe-nachruesten';
+    linkedSentences.push(
+      `Auch im Bestandsbau lohnt sich der Umstieg: Eine <a href="/${slug}/${city.slug}">Wärmepumpe im Altbau in ${city.name}</a> arbeitet dank moderner Hochtemperatur-Technik effizient bis 70 °C Vorlauf.`
+    );
+  }
+
+  if (crossSlugs.includes('erdwaermepumpe')) {
+    linkedSentences.push(
+      `Wer maximale Effizienz sucht, sollte die <a href="/erdwaermepumpe/${city.slug}">Erdwärmepumpe für ${city.name}</a> prüfen — JAZ bis 4,5 und zusätzlich 5 % KfW-Bonus.`
+    );
+  }
+
+  if (crossSlugs.includes('waermepumpe-neubau')) {
+    linkedSentences.push(
+      `Im <a href="/waermepumpe-neubau/${city.slug}">Neubau in ${city.name}</a> ist die Wärmepumpe ohnehin Standard: GEG-konform, förderfähig und mit Fußbodenheizung besonders effizient.`
+    );
+  }
+
+  // Wähle 2-3 Sätze deterministisch aus
+  const count = Math.min(linkedSentences.length, hash % 2 === 0 ? 3 : 2);
+  const selected: string[] = [];
+  for (let i = 0; i < count && i < linkedSentences.length; i++) {
+    selected.push(linkedSentences[(hash + i * 3) % linkedSentences.length]);
+  }
+
+  return selected.join(' ');
+}
+
+// ── 19. LOKALE TIEFENANALYSE — einzigartiger Absatz pro Stadt ─────────────────
+// Generiert einen tiefen, datenreichen Absatz, der rein aus lokalen Daten besteht.
+// Ziel: Jede Seite hat mindestens 150 Wörter einzigartigen Inhalt aus Stadtdaten.
+
+export function getLokaleTiefenanalyse(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): string {
+  const sz = getCitySize(city);
+  const kl = getKlimaZone(city);
+  const hash = cityHash(city, 6);
+  const gasKosten = wpKosten + ersparnis;
+  const co2Ersparnis = Math.round((gasKosten / (city.gaspreis / 100)) * 0.235 - (wpKosten / (city.strompreis / 100)) * 0.420);
+  const pvErtrag = Math.round(city.avgSunHours * 8 * 0.85);
+  const wpStrom = Math.round(wpKosten / (city.strompreis / 100));
+  const pvAnteil = Math.min(Math.round(pvErtrag * 0.35 / wpStrom * 100), 65);
+  const wpMitPV = Math.round(wpKosten * (1 - pvAnteil / 100 * 0.7));
+
+  const paragraphs = [
+    // Variante 1: Klimatisch-technischer Fokus
+    `${city.name} liegt in der Klimazone „${kl}" mit einer Jahresmitteltemperatur von ${city.avgTemp} °C und ${city.heizgradtage} Heizgradtagen (Kd/a). Die DIN-Norm-Außentemperatur beträgt ${city.normAussentemp} °C — dieser Wert bestimmt die Auslegung der Wärmepumpe am kältesten Tag. Bei diesen Bedingungen erreicht eine Luft-Wasser-Wärmepumpe in ${city.name} eine Jahresarbeitszahl von ${jaz}. Das bedeutet: Aus ${wpStrom.toLocaleString('de-DE')} kWh Strom werden ${Math.round(wpStrom * jaz).toLocaleString('de-DE')} kWh Heizwärme erzeugt. Im Vergleich: Ein Gaskessel benötigt ${Math.round(gasKosten / (city.gaspreis / 100)).toLocaleString('de-DE')} kWh Erdgas für die gleiche Wärme und stößt dabei ca. ${co2Ersparnis > 0 ? co2Ersparnis.toLocaleString('de-DE') : '1.200'} kg CO₂ mehr aus als die Wärmepumpe.`,
+
+    // Variante 2: Wirtschaftlicher Fokus
+    `Die Wirtschaftlichkeit einer Wärmepumpe in ${city.name} ergibt sich aus dem lokalen Strompreis von ${city.strompreis} ct/kWh und dem Gaspreis von ${city.gaspreis} ct/kWh. Bei JAZ ${jaz} kostet eine Kilowattstunde Wärme aus der Wärmepumpe ${(city.strompreis / jaz).toFixed(1)} ct — Gas liegt bei ${city.gaspreis} ct/kWh, Tendenz steigend durch den CO₂-Preis (2026: 55 €/t, 2027: 65 €/t). Auf das Jahr gerechnet sind das ${fmtEuro(wpKosten)} Heizkosten mit WP gegenüber ${fmtEuro(gasKosten)} mit Gas — eine Differenz von ${fmtEuro(ersparnis)}. Über 20 Jahre Nutzungsdauer summiert sich die Ersparnis auf rund ${fmtEuro(ersparnis * 20)}, abzüglich Wartung (Ø 300 €/a) verbleiben ${fmtEuro(ersparnis * 20 - 6000)} netto. Mit einer 8-kWp-PV-Anlage (${pvErtrag.toLocaleString('de-DE')} kWh/a in ${city.name}) sinken die WP-Betriebskosten auf ca. ${fmtEuro(wpMitPV)}/Jahr.`,
+
+    // Variante 3: Gebäudebestand-Fokus
+    `Der Gebäudebestand in ${city.name} ist für Wärmepumpen ${sz === 'metropole' || sz === 'grossstadt' ? 'vielfältig — von Gründerzeit-Altbauten bis zum Neubauquartier' : 'typisch für ' + city.bundesland + ' — überwiegend Ein- und Zweifamilienhäuser'}. ${city.efhQuote}% Einfamilienhäuser und eine Fernwärmequote von ${city.fernwaermeQuote}% bedeuten: In ${100 - city.fernwaermeQuote}% der Gebäude ist die Wärmepumpe die wirtschaftlichste GEG-konforme Option. Der mittlere Gebäudeenergiebedarf liegt bei ca. ${Math.round(wpStrom * jaz / 120)} kWh/m²/a — bei 120 m² Wohnfläche ergibt das einen jährlichen Wärmebedarf von ${Math.round(wpStrom * jaz).toLocaleString('de-DE')} kWh. Eine Luft-Wasser-WP mit JAZ ${jaz} benötigt dafür ${wpStrom.toLocaleString('de-DE')} kWh Strom zu ${fmtEuro(wpKosten)}/Jahr.`,
+
+    // Variante 4: Förder-Fokus mit Bundesland
+    `In ${city.name} (${city.bundesland}) stehen Hausbesitzern 2026 umfangreiche Fördermittel zur Verfügung. Die KfW-Bundesförderung (BEG 458) gewährt 30% Grundförderung + 20% Klima-Speed-Bonus (bei Ersatz einer fossilen Heizung als Eigennutzer) + optional 30% Einkommensbonus oder 5% Kältemittelbonus. ${city.bundeslandFoerderung ? `Zusätzlich gibt es in ${city.bundesland} das Programm „${city.bundeslandFoerderung}" mit ${city.bundeslandFoerderungBetrag}.` : `${city.bundesland} setzt primär auf die KfW-Bundesmittel — kein separater Landesantrag nötig.`} Bei einer typischen Investition von 25.000 € und 55% Förderquote beträgt der Eigenanteil ${fmtEuro(Math.round(25000 * 0.45))}. Mit der jährlichen Ersparnis von ${fmtEuro(ersparnis)} amortisiert sich das in ${Math.round(25000 * 0.45 / ersparnis)} Jahren.`,
+
+    // Variante 5: Vergleichsfokus mit Nachbarregion
+    `${city.name} im regionalen Vergleich: Mit ${city.strompreis} ct/kWh Strompreis liegt die Stadt ${city.strompreis < 30 ? 'unter' : city.strompreis > 31 ? 'über' : 'im'} dem Bundesdurchschnitt von 30,5 ct/kWh. Der Gaspreis von ${city.gaspreis} ct/kWh ist ${city.gaspreis < 8.5 ? 'günstig' : city.gaspreis > 10 ? 'erhöht' : 'durchschnittlich'} — steigt aber durch den CO₂-Preis jährlich um ca. 0,5–1,0 ct/kWh. ${city.heizgradtage} Heizgradtage bedeuten ${city.heizgradtage > 3400 ? 'überdurchschnittlichen Heizbedarf — die Einsparung durch die effiziente WP fällt hier besonders hoch aus' : city.heizgradtage < 3000 ? 'einen moderaten Heizbedarf, der die WP-Betriebskosten niedrig hält' : 'einen typischen Heizbedarf für die Region'}. JAZ ${jaz} bei ${city.avgTemp} °C Jahresmittel ist der für ${city.name} spezifische Effizienzwert.`,
+
+    // Variante 6: Zukunftsperspektive
+    `Die Entscheidung für eine Wärmepumpe in ${city.name} ist auch eine Investition in den Immobilienwert. Studien zeigen: Häuser mit Wärmepumpe erzielen 5–15% höhere Verkaufspreise als vergleichbare Objekte mit fossiler Heizung. In ${city.name} mit ${city.einwohner.toLocaleString('de-DE')} Einwohnern und ${city.efhQuote}% EFH-Anteil ist der Immobilienmarkt ${sz === 'metropole' || sz === 'grossstadt' ? 'stark nachgefragt — eine moderne Heizung ist ein wichtiges Verkaufsargument' : 'stabil — eine zukunftssichere Heizung schützt den Wert Ihrer Immobilie'}. Dazu kommt: Ab ${city.gegFrist.split('-').reverse().join('.')} gilt in ${city.name} die GEG-65%-Pflicht. Wer vorher umrüstet, sichert sich die volle Förderung und ist dem Zeitdruck voraus.`,
+  ];
+
+  return paragraphs[hash % paragraphs.length];
 }
 
 export function getExtendedVariationData(
@@ -1169,5 +1311,7 @@ export function getExtendedVariationData(
     comparisonTable: getComparisonTable(city, jaz, wpKosten, ersparnis),
     localTestimonial: getLocalTestimonial(city, keyword),
     seasonalAdvice: getSeasonalAdvice(city),
+    inlineLinkedParagraph: getInlineLinkedParagraph(city, keyword, jaz, wpKosten, ersparnis),
+    lokaleTiefenanalyse: getLokaleTiefenanalyse(city, keyword, jaz, wpKosten, ersparnis),
   };
 }

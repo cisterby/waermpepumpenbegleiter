@@ -3,11 +3,12 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, CheckCircle, AlertTriangle, TrendingUp, Calculator } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -58,13 +59,15 @@ export default function WaermepumpeKostenTemplate({
   const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
+  const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* FAQ Schema */}
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <img src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" loading="eager" {...({fetchPriority:'high'} as any)} />
+        <Image src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" fill priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(10,25,16,0.97) 0%, rgba(10,25,16,0.88) 52%, rgba(10,25,16,0.35) 100%)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
@@ -177,8 +180,8 @@ export default function WaermepumpeKostenTemplate({
           {/* ── BILD + STANDORTDATEN ── */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="relative rounded-2xl overflow-hidden h-64">
-              <img src={IMG_HOUSE} alt={`Wärmepumpe Kosten ${city.name}`}
-                className="w-full h-full object-cover" />
+              <Image src={IMG_HOUSE} alt={`Wärmepumpe Kosten ${city.name}`}
+                className="w-full h-full object-cover" fill />
               <div className="absolute inset-0 bg-[#1A4731]/60 flex items-end p-5">
                 <div>
                   <p className="font-bold text-white text-base">{city.name} · JAZ {jazLuft}</p>
@@ -329,8 +332,8 @@ export default function WaermepumpeKostenTemplate({
           {/* ── BILD + BETRIEBSKOSTEN ── */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="relative rounded-2xl overflow-hidden h-60">
-              <img src={IMG_MONEY} alt={`WP Betriebskosten ${city.name}`}
-                className="w-full h-full object-cover" />
+              <Image src={IMG_MONEY} alt={`WP Betriebskosten ${city.name}`}
+                className="w-full h-full object-cover" fill />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 25%, rgba(10,25,16,0.88) 100%)' }} />
               <div className="absolute bottom-5 left-5 right-5">
                 <p className="font-extrabold text-white text-xl mb-1">Betriebskosten {city.name}</p>
@@ -428,8 +431,8 @@ export default function WaermepumpeKostenTemplate({
                 </div>
               </div>
               <div className="relative rounded-2xl overflow-hidden h-64 sm:h-auto min-h-[200px]">
-                <img src={IMG_WORKER} alt={`KfW Förderung WP ${city.name}`}
-                  className="w-full h-full object-cover" />
+                <Image src={IMG_WORKER} alt={`KfW Förderung WP ${city.name}`}
+                  className="w-full h-full object-cover" fill />
                 <div className="absolute inset-0 bg-[#1A4731]/60 flex items-end p-5">
                   <div>
                     <p className="text-[rgba(255,255,255,0.55)] text-xs font-bold uppercase tracking-wider mb-1">Typisch für {city.name}</p>
@@ -553,6 +556,21 @@ export default function WaermepumpeKostenTemplate({
               </div>
             </div>
           )}
+
+          {/* Inline verlinkte Absätze */}
+          {inlineLinkedParagraph && (
+            <div className="prose prose-sm max-w-none">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Weiterführende Informationen für {city.name}</h2>
+              <p className="text-[#4A6358] text-base leading-relaxed [&_a]:text-[#1B5E37] [&_a]:font-semibold [&_a]:underline [&_a]:decoration-[#1B5E37]/30 hover:[&_a]:decoration-[#1B5E37]"
+                dangerouslySetInnerHTML={{ __html: inlineLinkedParagraph }} />
+            </div>
+          )}
+
+          {/* Lokale Tiefenanalyse */}
+          <div className="bg-[#F2FAF5] rounded-2xl p-7 border border-[#D1E7DD]">
+            <h2 className="text-xl font-bold text-[#1A4731] mb-3">Lokale Analyse: Wärmepumpe in {city.name}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{lokaleTiefenanalyse}</p>
+          </div>
 
           {/* Saisonale Empfehlung */}
           <div className="bg-[#FEFCE8] border border-[#FDE68A] rounded-xl p-5">

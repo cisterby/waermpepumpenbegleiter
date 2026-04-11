@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react'
 
 const BEDARF: Record<string,number> = { vor_1978:215,'1979_1994':165,'1995_2009':101,'2010_plus':72 }
@@ -138,7 +139,7 @@ export default function Home(){
 
       {/* ── HERO ── */}
       <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',overflow:'hidden',paddingTop:72}}>
-        <img src={IMGS.hero} alt="Einfamilienhaus mit moderner Wärmepumpe" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0}}/>
+        <Image src={IMGS.hero} alt="Einfamilienhaus mit moderner Wärmepumpe" fill className="object-cover" style={{zIndex:0}} priority />
         <div style={{position:'absolute',inset:0,zIndex:1,background:'linear-gradient(105deg,rgba(10,25,16,.94) 0%,rgba(10,25,16,.85) 45%,rgba(10,25,16,.3) 100%)'}}/>
         <div className="c" style={{position:'relative',zIndex:2,width:'100%',padding:'96px 40px 80px'}}>
           <div className="hero-g" style={{display:'grid',gridTemplateColumns:'54% 46%',gap:60,alignItems:'center'}}>
@@ -180,7 +181,7 @@ export default function Home(){
             <div className="hero-card" style={{display:'flex',justifyContent:'flex-end'}}>
               <div style={{width:'100%',maxWidth:420,background:'white',borderRadius:16,overflow:'hidden',boxShadow:SHL,animation:'float 6s ease-in-out infinite'}}>
                 <div style={{position:'relative',height:230}}>
-                  <img src={IMGS.wp1} alt="Haus mit Wärmepumpe" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <Image src={IMGS.wp1} alt="Haus mit Wärmepumpe" fill className="object-cover" loading="lazy" />
                   <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%)'}}/>
                   <div style={{position:'absolute',bottom:16,left:16,right:16,display:'flex',justifyContent:'space-between'}}>
                     <div style={{background:'rgba(255,255,255,.95)',borderRadius:8,padding:'8px 12px'}}>
@@ -266,7 +267,7 @@ export default function Home(){
               <div style={{background:BG,border:`1px solid ${BDR}`,borderRadius:12,padding:'20px 22px',marginBottom:20}}>
                 <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:12}}>
                   <div style={{width:52,height:52,borderRadius:'50%',overflow:'hidden',flexShrink:0,border:'2px solid '+GLT}}>
-                    <img src={IMGS.team} alt="Bastian Saupe" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'top'}} />
+                    <Image src={IMGS.team} alt="Bastian Saupe" width={52} height={52} className="w-full h-full object-cover" style={{objectPosition:'top'}} loading="lazy" />
                   </div>
                   <div>
                     <div style={{fontWeight:600,color:TX,fontSize:16}}>Bastian Saupe</div>
@@ -342,7 +343,7 @@ export default function Home(){
         <div className="c">
           <div className="why-g" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}}>
             <div style={{position:'relative',borderRadius:16,overflow:'hidden',boxShadow:SHL}} className={'fu '+(whyRef.v?'fv':'')}>
-              <img src={IMGS.house} alt="Einfamilienhaus" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
+              <Image src={IMGS.house} alt="Einfamilienhaus" width={600} height={480} className="block" style={{width:'100%',height:'auto',objectFit:'cover'}} loading="lazy" />
               <div style={{position:'absolute',bottom:24,left:24,background:'white',borderRadius:12,padding:'14px 18px',boxShadow:'0 4px 20px rgba(0,0,0,.15)'}}>
                 <div style={{fontSize:11,fontWeight:700,color:TX3,textTransform:'uppercase',letterSpacing:'.06em',marginBottom:3}}>GEG Frist</div>
                 <div className="mono" style={{fontSize:20,fontWeight:700,color:AMB}}>30.06.2026</div>
@@ -398,7 +399,7 @@ export default function Home(){
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
                 <div style={{height:160,overflow:'hidden',position:'relative'}}>
-                  <img src={s.img} alt={s.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <Image src={s.img} alt={s.title} fill className="object-cover" loading="lazy" />
                   <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.45) 100%)'}}/>
                   <div style={{position:'absolute',top:12,left:12,background:s.accent,color:'white',fontFamily:'Outfit,sans-serif',fontSize:11,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'4px 10px',borderRadius:100}}>{s.badge}</div>
                   <div style={{position:'absolute',bottom:12,left:16,fontFamily:'Outfit,sans-serif',fontSize:32,fontWeight:800,color:'rgba(255,255,255,.2)',lineHeight:1}}>{s.n}</div>
@@ -463,7 +464,7 @@ export default function Home(){
           </div>
           <div className="g2" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,alignItems:'start'}}>
             <div className={'fu '+(calcRef.v?'fv':'')} style={{background:BG,border:`1px solid ${BDR}`,borderRadius:16,boxShadow:SH,overflow:'hidden'}}>
-              <img src={IMGS.tech} alt="Fachbetrieb" style={{width:'100%',height:200,objectFit:'cover',display:'block'}}/>
+              <Image src={IMGS.tech} alt="Fachbetrieb" width={400} height={200} className="block" style={{width:'100%',height:'auto',objectFit:'cover'}} loading="lazy" />
               <div style={{padding:28}}>
                 {[
                   {label:'Wohnfläche',el:(
@@ -565,7 +566,7 @@ export default function Home(){
             <div className={'fu '+(foerdRef.v?'fv':'')} style={{transitionDelay:'.15s'}}>
               <div style={{borderRadius:16,overflow:'hidden',boxShadow:SHL}}>
                 <div style={{position:'relative',height:190}}>
-                  <img src={IMGS.money} alt="Wärmepumpe Kostenrechner" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <Image src={IMGS.money} alt="Wärmepumpe Kostenrechner" fill className="object-cover" loading="lazy" />
                   <div style={{position:'absolute',inset:0,background:'rgba(27,94,55,.65)'}}/>
                   <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
                     <div style={{fontFamily:'Outfit,sans-serif',fontSize:17,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:4}}>Beispiel: 120 m² EFH</div>
@@ -670,7 +671,7 @@ export default function Home(){
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
                 <div style={{position:'relative',height:180}}>
-                  <img src={t.img} alt={t.type} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  <Image src={t.img} alt={t.type} fill className="object-cover" loading="lazy" />
                   <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 60%)'}}/>
                   {t.hi&&<div style={{position:'absolute',top:0,left:0,right:0,background:G,padding:'5px 16px',fontSize:11,fontWeight:700,color:'white',fontFamily:'Outfit,sans-serif',letterSpacing:'.06em',textTransform:'uppercase',textAlign:'center'}}>Meistgewählt · Stiftung Warentest 2,0 (Gut)</div>}
                   <div style={{position:'absolute',bottom:10,right:12}}>
@@ -854,7 +855,7 @@ export default function Home(){
 
       {/* ── CTA ── */}
       <section style={{position:'relative',overflow:'hidden'}}>
-        <img src={IMGS.outdoor} alt="Wärmepumpe Installation Fachbetrieb" style={{width:'100%',height:480,objectFit:'cover',display:'block'}}/>
+        <Image src={IMGS.outdoor} alt="Wärmepumpe Installation Fachbetrieb" width={1220} height={480} className="block" style={{width:'100%',height:'auto',objectFit:'cover'}} priority />
         <div style={{position:'absolute',inset:0,background:'rgba(10,25,16,.82)'}}/>
         <div className="c" style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
           <Tag bg="rgba(255,255,255,.1)" color="rgba(255,255,255,.8)" text="Jetzt starten"/>

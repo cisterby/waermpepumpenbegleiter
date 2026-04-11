@@ -1,7 +1,7 @@
 // components/programmatic/RichTemplateBase.tsx
 // Geteilt von allen 20 spezialisierten Templates — sorgt für einheitliche visuelle Tiefe
 'use client';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
@@ -30,9 +30,55 @@ export default function RichTemplateBase({
 
   return (
     <div className="min-h-screen bg-wp-bg font-sans">
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInUpSmall {
+          from {
+            opacity: 0;
+            transform: translateY(16px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInUpStaggered {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fadeInUp {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .animate-fadeInUpDelayed {
+          animation: fadeInUpSmall 0.6s ease-out forwards;
+        }
+
+        .animate-fadeInUpStagger {
+          animation: fadeInUpStaggered 0.6s ease-out forwards;
+        }
+      `}</style>
       {/* ── HERO ── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <img src={heroImg} alt={h1} className="absolute inset-0 w-full h-full object-cover" />
+        <Image src={heroImg} alt={h1} fill className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(10,25,16,0.97) 0%, rgba(10,25,16,0.88) 52%, rgba(10,25,16,0.35) 100%)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
@@ -53,30 +99,29 @@ export default function RichTemplateBase({
             </div>
           )}
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            className="font-heading font-extrabold text-white leading-tight mb-5"
+          <h1
+            className="font-heading font-extrabold text-white leading-tight mb-5 animate-fadeInUp"
             style={{ fontSize: 'clamp(32px,4.5vw,62px)' }}>
             {h1}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-[rgba(255,255,255,0.68)] text-lg leading-relaxed max-w-xl mb-10">
+          <p
+            className="text-[rgba(255,255,255,0.68)] text-lg leading-relaxed max-w-xl mb-10 animate-fadeInUpDelayed"
+            style={{ animationDelay: '0.1s' }}>
             In {city.name} ({city.bundesland}): JAZ {jaz} · {city.heizgradtage.toLocaleString('de-DE')} Heizgradtage ·
             bis zu {foerd.gesamtSatz}% KfW = {fmtEuro(foerd.zuschuss)} Zuschuss.
             Jährliche Ersparnis gegenüber Gas: <strong className="text-white">{fmtEuro(calc.ersparnis)}</strong>.
-          </motion.p>
+          </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
             {heroStats.map((s, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.06 }}
-                className="bg-[rgba(255,255,255,0.09)] border border-[rgba(255,255,255,0.13)] rounded-xl p-4">
+              <div key={i}
+                className="bg-[rgba(255,255,255,0.09)] border border-[rgba(255,255,255,0.13)] rounded-xl p-4 animate-fadeInUpStagger"
+                style={{ animationDelay: `${0.15 + i * 0.06}s` }}>
                 <p className="font-mono font-extrabold text-white text-xl leading-none mb-1">{s.val}</p>
                 <p className="text-wp-green3 text-xs font-bold">{s.label}</p>
                 <p className="text-[rgba(255,255,255,0.35)] text-xs mt-0.5">{s.sub}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
 

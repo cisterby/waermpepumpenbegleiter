@@ -2,11 +2,12 @@
 // waermepumpe-installateur
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Star } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -78,13 +79,15 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
   const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
+  const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* ══ HERO ══════════════════════════════════════════════ */}
       <div className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <img src={IMGS.hero} alt={`Wärmepumpe Installateur ${city.name}`}
-          className="absolute inset-0 w-full h-full object-cover" />
+        <Image src={IMGS.hero} alt={`Wärmepumpe Installateur ${city.name}`}
+          className="absolute inset-0 w-full h-full object-cover" fill priority />
         <div className="absolute inset-0"
           style={{ background: 'linear-gradient(115deg,rgba(10,25,16,.97) 0%,rgba(10,25,16,.88) 55%,rgba(10,25,16,.5) 100%)' }} />
 
@@ -213,7 +216,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
               <div className="relative rounded-2xl overflow-hidden h-56">
-                <img src={IMGS.worker} alt={`Wärmepumpe Installateur in ${city.name}`} className="w-full h-full object-cover" />
+                <Image src={IMGS.worker} alt={`Wärmepumpe Installateur in ${city.name}`} className="w-full h-full object-cover" fill />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.85) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-bold text-sm mb-1">Geprüfter Fachbetrieb</p>
@@ -302,7 +305,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="relative rounded-2xl overflow-hidden h-48 sm:h-full min-h-48">
-                <img src={IMGS.pump} alt="Wärmepumpe Installation" className="w-full h-full object-cover" />
+                <Image src={IMGS.pump} alt="Wärmepumpe Installation" className="w-full h-full object-cover" fill />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.80) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-4 left-4">
                   <p className="text-white font-bold text-sm">Vollständige Angebote</p>
@@ -394,7 +397,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 ))}
               </div>
               <div className="relative rounded-2xl overflow-hidden">
-                <img src={IMGS.outdoor} alt={`Luft-Wasser-Wärmepumpe Installation ${city.name}`} className="w-full h-full object-cover" style={{ minHeight: 280 }} />
+                <Image src={IMGS.outdoor} alt={`Luft-Wasser-Wärmepumpe Installation ${city.name}`} className="w-full h-full object-cover" fill style={{ minHeight: 280 }} />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.85) 0%, transparent 50%)' }} />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-bold text-sm mb-1">Fertige Installation</p>
@@ -536,6 +539,21 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               </div>
             </div>
           )}
+
+          {/* Inline verlinkte Absätze */}
+          {inlineLinkedParagraph && (
+            <div className="prose prose-sm max-w-none">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Weiterführende Informationen für {city.name}</h2>
+              <p className="text-[#4A6358] text-base leading-relaxed [&_a]:text-[#1B5E37] [&_a]:font-semibold [&_a]:underline [&_a]:decoration-[#1B5E37]/30 hover:[&_a]:decoration-[#1B5E37]"
+                dangerouslySetInnerHTML={{ __html: inlineLinkedParagraph }} />
+            </div>
+          )}
+
+          {/* Lokale Tiefenanalyse */}
+          <div className="bg-[#F2FAF5] rounded-2xl p-7 border border-[#D1E7DD]">
+            <h2 className="text-xl font-bold text-[#1A4731] mb-3">Lokale Analyse: Wärmepumpe in {city.name}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{lokaleTiefenanalyse}</p>
+          </div>
 
           {/* Saisonale Empfehlung */}
           <div className="bg-[#FEFCE8] border border-[#FDE68A] rounded-xl p-5">

@@ -2,11 +2,12 @@
 // waermepumpe-oder-gas — vollständig standalone, 500+ Wörter unique content
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -80,12 +81,14 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
   const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
+  const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[55vh] flex items-center overflow-hidden">
-        <img src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
-          className="absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async" {...({fetchPriority:"high"} as object)} />
+        <Image src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
+          className="absolute inset-0 w-full h-full object-cover" fill priority />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/90 via-[#0A1910]/70 to-[#0A1910]/20" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
@@ -301,6 +304,21 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
             </div>
           )}
 
+          {/* Inline verlinkte Absätze */}
+          {inlineLinkedParagraph && (
+            <div className="prose prose-sm max-w-none">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Weiterführende Informationen für {city.name}</h2>
+              <p className="text-[#4A6358] text-base leading-relaxed [&_a]:text-[#1B5E37] [&_a]:font-semibold [&_a]:underline [&_a]:decoration-[#1B5E37]/30 hover:[&_a]:decoration-[#1B5E37]"
+                dangerouslySetInnerHTML={{ __html: inlineLinkedParagraph }} />
+            </div>
+          )}
+
+          {/* Lokale Tiefenanalyse */}
+          <div className="bg-[#F2FAF5] rounded-2xl p-7 border border-[#D1E7DD]">
+            <h2 className="text-xl font-bold text-[#1A4731] mb-3">Lokale Analyse: Wärmepumpe in {city.name}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{lokaleTiefenanalyse}</p>
+          </div>
+
           {/* Saisonale Empfehlung */}
           <div className="bg-[#FEFCE8] border border-[#FDE68A] rounded-xl p-5">
             <p className="text-sm font-semibold text-[#92400E] mb-1">Beste Installationszeit für {city.name}</p>
@@ -428,10 +446,11 @@ export default function VergleichTemplate({ city, keyword, calc, foerd, jaz, nea
 
       {/* ── VISUELLER TRENNER ─────────────────────── */}
       <div className="relative rounded-2xl overflow-hidden my-8" style={{ height: '180px' }}>
-        <img
+        <Image
           src={pickImg(SEC1_IMGS, city.lat, city.lng, 5)}
           alt={`${keyword.keyword.replace('[Stadt]', city.name)} Übersicht`}
           className="w-full h-full object-cover"
+          fill
           loading="lazy"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.88) 0%, rgba(10,25,16,0.45) 60%, rgba(10,25,16,0.15) 100%)' }} />

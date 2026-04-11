@@ -1,5 +1,6 @@
 // app/ueber-uns/page.tsx
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Users, Award, MapPin, Phone } from 'lucide-react';
 
@@ -27,8 +28,10 @@ export default function UeberUnsPage() {
 
       {/* Hero */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden">
-        <img src={HERO_IMG} alt="Das Wärmepumpenbegleiter-Team"
-          className="absolute inset-0 w-full h-full object-cover" />
+        <Image src={HERO_IMG} alt="Das Wärmepumpenbegleiter-Team"
+          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.92) 40%, rgba(10,21,16,0.4) 100%)' }} />
         <div className="relative z-10 max-w-5xl mx-auto px-6 pb-16 pt-32 w-full">
           <span className="inline-block px-4 py-1.5 bg-[#4CAF7D]/20 border border-[#4CAF7D]/40 rounded-full text-[#4CAF7D] text-xs font-semibold uppercase tracking-wider mb-5">
@@ -85,7 +88,7 @@ export default function UeberUnsPage() {
             </div>
           </div>
           <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-            <img src={TEAM_IMG} alt="Bastian Saupe und Philip Lindner" className="w-full h-80 object-cover" />
+            <Image src={TEAM_IMG} alt="Bastian Saupe und Philip Lindner" className="w-full h-80 object-cover" width={900} height={320} loading="lazy" />
             <div className="absolute bottom-0 inset-x-0 p-5" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.88), transparent)' }}>
               <p className="text-white font-semibold">Bastian Saupe & Philip Lindner</p>
               <p className="text-white/65 text-sm">Gründer — Webflott, Weißenfels</p>
@@ -112,7 +115,7 @@ export default function UeberUnsPage() {
 
         {/* Office image + contact */}
         <section className="grid lg:grid-cols-2 gap-12 items-center bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
-          <img src={OFFICE_IMG} alt="Webflott Office Weißenfels" className="w-full h-72 lg:h-full object-cover" />
+          <Image src={OFFICE_IMG} alt="Webflott Office Weißenfels" className="w-full h-72 lg:h-full object-cover" width={900} height={288} loading="lazy" />
           <div className="p-8">
             <span className="text-[#1A4731] font-semibold text-xs uppercase tracking-widest mb-3 block">Kontakt</span>
             <h2 className="text-[#1C2B2B] text-2xl font-bold font-display mb-5">Sprechen Sie uns an</h2>

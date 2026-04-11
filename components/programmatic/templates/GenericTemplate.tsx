@@ -3,11 +3,12 @@
 // Unique Content durch: city-hash Textvarianten + rotierende Blöcke + keyword-spezifische Sektionen
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -227,16 +228,18 @@ export default function GenericTemplate({
   const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
+  const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* HERO */}
       <div className="relative min-h-[52vh] flex items-end overflow-hidden">
-        <img
+        <Image
           src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
           alt={h1}
           className="absolute inset-0 w-full h-full object-cover"
-          loading="eager" decoding="async"
+          fill priority
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.25) 100%)' }} />
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
@@ -423,6 +426,21 @@ export default function GenericTemplate({
               </div>
             </div>
           )}
+
+          {/* Inline verlinkte Absätze — natürliche Links im Fließtext */}
+          {inlineLinkedParagraph && (
+            <div className="prose prose-sm max-w-none">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Weiterführende Informationen für {city.name}</h2>
+              <p className="text-[#4A6358] text-base leading-relaxed [&_a]:text-[#1B5E37] [&_a]:font-semibold [&_a]:underline [&_a]:decoration-[#1B5E37]/30 hover:[&_a]:decoration-[#1B5E37]"
+                dangerouslySetInnerHTML={{ __html: inlineLinkedParagraph }} />
+            </div>
+          )}
+
+          {/* Lokale Tiefenanalyse — einzigartiger datenreicher Absatz */}
+          <div className="bg-[#F2FAF5] rounded-2xl p-7 border border-[#D1E7DD]">
+            <h2 className="text-xl font-bold text-[#1A4731] mb-3">Lokale Analyse: Wärmepumpe in {city.name}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{lokaleTiefenanalyse}</p>
+          </div>
 
           {/* Saisonale Empfehlung */}
           <div className="bg-[#FEFCE8] border border-[#FDE68A] rounded-xl p-5">
