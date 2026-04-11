@@ -152,12 +152,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!keyword || !bl) return {};
 
   const kw = keyword.keyword.replace('[Stadt]', '').trim();
+  const cities = (citiesData as City[]).filter(c => c.bundeslandSlug === params.bundeslandSlug);
+  const cityCount = cities.length;
+
   const title = `${kw} ${bl.name} 2026 — Alle ${bl.name}-Städte | Wärmepumpenbegleiter`;
-  const desc = `${kw} in ${bl.name}: Alle Städte, ${bl.foerderung ? bl.foerderung + ' Landesförderung' : 'KfW-Förderung bis 70%'}, geprüfte Fachbetriebe. Kostenlos vergleichen.`;
+
+  // Enhanced meta description with keyword, state name, city count, funding, and costs
+  const desc = `${kw} in ${bl.name}: ${cityCount} Städte mit ${bl.foerderung ? bl.foerderung + ', Förderung' : 'KfW-Förderung bis 70%'} und Kosten im Überblick. Geprüfte Fachbetriebe, Preisvergleich, Installation.`;
+
+  const url = `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/bundesland/${params.bundeslandSlug}`;
+
   return {
     title,
     description: desc,
-    alternates: { canonical: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/bundesland/${params.bundeslandSlug}` },
+    alternates: {
+      canonical: url,
+      languages: { 'de-DE': url },
+    },
+    openGraph: {
+      title,
+      description: desc,
+      url,
+      type: 'website',
+      locale: 'de_DE',
+      siteName: 'Wärmepumpenbegleiter',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+    },
     robots: { index: true, follow: true },
   };
 }

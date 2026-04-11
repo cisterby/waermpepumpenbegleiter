@@ -22,8 +22,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const keyword = getKeywordBySlug(params.keywordSlug);
   if (!keyword) return {};
 
-  const title = `${keyword.keyword.replace('[Stadt]', '').trim()} 2026 — Alle Städte im Überblick | Wärmepumpenbegleiter`;
-  const desc  = `${keyword.keyword.replace('[Stadt]', '').trim()} in Ihrer Stadt — ${(citiesData as City[]).length} Städte, aktuelle Preise 2026, bis zu 70% KfW-Förderung. Geprüfte Fachbetriebe kostenlos vergleichen.`;
+  const keywordName = keyword.keyword.replace('[Stadt]', '').trim();
+  const cityCount = (citiesData as City[]).length;
+
+  const title = `${keywordName} 2026 — Alle Städte im Überblick | Wärmepumpenbegleiter`;
+
+  // Enhanced description with explicit mentions of required elements: 733 cities, costs, and subsidies
+  const desc  = `${keywordName} in 733 Städten — aktuelle Kosten 2026, KfW-Förderung bis 70%, Preisvergleiche. Geprüfte Wärmepumpen-Fachbetriebe kostenlos vergleichen.`;
 
   const itemListSchema = {
     '@context': 'https://schema.org',
@@ -39,18 +44,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     about: {
       '@type': 'Service',
-      name: keyword.keyword.replace('[Stadt]', '').trim(),
+      name: keywordName,
       areaServed: { '@type': 'Country', name: 'Deutschland' },
     },
   };
 
+  const canonicalUrl = `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`;
+
   return {
     title,
     description: desc,
-    alternates: { canonical: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`, languages: { 'de-DE': `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}` } },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: { 'de-DE': canonicalUrl }
+    },
     openGraph: {
-      title, description: desc, type: 'article', locale: 'de_DE',
-      url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`,
+      title,
+      description: desc,
+      type: 'article',
+      locale: 'de_DE',
+      url: canonicalUrl,
       images: [{
         url: 'https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png',
         width: 1200,

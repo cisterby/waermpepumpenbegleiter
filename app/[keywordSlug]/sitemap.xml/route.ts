@@ -8,6 +8,25 @@ import { getSitemapPriority } from '@/lib/city-utils';
 import citiesData from '@/lib/cities.json';
 import type { City } from '@/lib/city-utils';
 
+const BUNDESLAENDER_SLUGS = [
+  'berlin',
+  'hamburg',
+  'bayern',
+  'nordrhein-westfalen',
+  'baden-wuerttemberg',
+  'niedersachsen',
+  'hessen',
+  'rheinland-pfalz',
+  'sachsen',
+  'thueringen',
+  'sachsen-anhalt',
+  'mecklenburg-vorpommern',
+  'brandenburg',
+  'schleswig-holstein',
+  'saarland',
+  'bremen',
+];
+
 export const revalidate = 86400;
 
 export async function GET(
@@ -30,7 +49,7 @@ export async function GET(
     return true;
   });
 
-  const urls = indexableCities.map((city, index) => {
+  const cityUrls = indexableCities.map((city, index) => {
     // Tier-based priority: Top 50 cities (tier 1) = 0.9, next 100 (tier 2) = 0.7, rest = 0.5
     let basePriority = 0.5; // Default for rest
     if (index < 50) basePriority = 0.9;
@@ -44,6 +63,18 @@ export async function GET(
     <priority>${priority}</priority>
   </url>`;
   });
+
+  // Add Bundesland hub page URLs
+  const bundeslandUrls = BUNDESLAENDER_SLUGS.map(bundeslandSlug => {
+    return `  <url>
+    <loc>${base}/${keyword.slug}/bundesland/${bundeslandSlug}</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+  });
+
+  const urls = [...cityUrls, ...bundeslandUrls];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -26,7 +26,7 @@ export async function GET() {
       xml += `  <url>\n`;
       xml += `    <loc>${url}</loc>\n`;
       xml += `    <video:video>\n`;
-      xml += `      <video:thumbnail_loc>${base}${kw.slug}/${city.slug}/opengraph-image</video:thumbnail_loc>\n`;
+      xml += `      <video:thumbnail_loc>${base}/${kw.slug}/${city.slug}/opengraph-image</video:thumbnail_loc>\n`;
       xml += `      <video:title>${escapeXml(title)} — Video-Guide</video:title>\n`;
       xml += `      <video:description>${escapeXml(description)}</video:description>\n`;
       xml += `      <video:family_friendly>yes</video:family_friendly>\n`;
