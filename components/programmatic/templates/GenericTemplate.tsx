@@ -1,7 +1,6 @@
 // components/programmatic/templates/GenericTemplate.tsx
 // Vollwertiges Template für alle Tier 2-4 Keywords (17 Keywords × 733 Städte)
 // Unique Content durch: city-hash Textvarianten + rotierende Blöcke + keyword-spezifische Sektionen
-'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 'lucide-react';
@@ -274,6 +273,22 @@ export default function GenericTemplate({
             {introParagraphs[0]}
           </p>
 
+          {/* Letzte Aktualisierung Badge — E-E-A-T Trust Signal */}
+          <div className="flex items-center gap-4 text-xs text-white/60 mb-8 flex-wrap">
+            <span className="flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              Aktualisiert: April 2026
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Geprüft von Bastian Saupe, Energieberater
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              Quellen: KfW, BAFA, BWP, DWD
+            </span>
+          </div>
+
           {/* Stats — immer stadtspezifisch */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
             {[
@@ -448,7 +463,20 @@ export default function GenericTemplate({
             <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
           </div>
 
-          
+
+          {/* Quellenangaben & Datengrundlage — E-E-A-T Trust Signal */}
+          <div className="bg-gray-50 rounded-xl p-5 border border-gray-200 mb-8">
+            <h3 className="text-sm font-bold text-gray-700 mb-3">Quellenangaben & Datengrundlage</h3>
+            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-gray-500">
+              <span>• Strompreis {city.name}: Verivox/CHECK24, Stand 03/2026</span>
+              <span>• Heizgradtage: Deutscher Wetterdienst (DWD)</span>
+              <span>• KfW-Förderung: BEG Programm 458, Stand 01/2026</span>
+              <span>• JAZ-Berechnung: VDI 4650 Blatt 1</span>
+              <span>• GEG-Fristen: §71 GEG i.d.F. vom 01.01.2024</span>
+              <span>• CO₂-Preis: BEHG §10, Brennstoffemissionshandel</span>
+            </div>
+          </div>
+
           {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
             <div className="mb-6 p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">

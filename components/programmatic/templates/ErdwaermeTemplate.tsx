@@ -1,6 +1,5 @@
 // components/programmatic/templates/ErdwaermeTemplate.tsx
 // erdwaermepumpe — vollständig standalone
-'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronDown, CheckCircle } from 'lucide-react';
@@ -315,6 +314,19 @@ export default function ErdwaermeTemplate({ city, keyword, calc, foerd, jaz, nea
               <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
+
+          {/* Quellenangaben & Datengrundlage */}
+          <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+            <h3 className="text-sm font-bold text-gray-700 mb-2">Quellenangaben & Datengrundlage</h3>
+            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-gray-500">
+              <span>• Strompreis {city.name}: Verivox/CHECK24, Stand 03/2026</span>
+              <span>• Heizgradtage: Deutscher Wetterdienst (DWD)</span>
+              <span>• KfW-Förderung: BEG Programm 458, Stand 01/2026</span>
+              <span>• JAZ-Berechnung: VDI 4650 Blatt 1</span>
+              <span>• GEG-Fristen: §71 GEG i.d.F. vom 01.01.2024</span>
+              <span>• CO₂-Preis: BEHG §10, Brennstoffemissionshandel</span>
+            </div>
+          </div>
 
           <div>
             <h2 className="font-bold text-[#1C2B2B] text-2xl mb-5">{h2s.faq}</h2>

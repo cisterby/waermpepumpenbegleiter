@@ -505,6 +505,19 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
             </div>
 
+            {/* Quellenangaben & Datengrundlage */}
+            <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+              <h3 className="text-sm font-bold text-gray-700 mb-2">Quellenangaben & Datengrundlage</h3>
+              <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-gray-500">
+                <span>• Strompreis {city.name}: Verivox/CHECK24, Stand 03/2026</span>
+                <span>• Heizgradtage: Deutscher Wetterdienst (DWD)</span>
+                <span>• KfW-Förderung: BEG Programm 458, Stand 01/2026</span>
+                <span>• JAZ-Berechnung: VDI 4650 Blatt 1</span>
+                <span>• GEG-Fristen: §71 GEG i.d.F. vom 01.01.2024</span>
+                <span>• CO₂-Preis: BEHG §10, Brennstoffemissionshandel</span>
+              </div>
+            </div>
+
             {/* FAQ */}
             <section>
               <span className="inline-block bg-[#E8F5EE] text-[#1B5E37] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">FAQ</span>

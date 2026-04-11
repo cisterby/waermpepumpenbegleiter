@@ -1,7 +1,5 @@
 // components/programmatic/templates/KaufenTemplate.tsx
 // "waermepumpe-kaufen" — transactional
-'use client';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronDown, ArrowRight, CheckCircle } from 'lucide-react';
@@ -54,7 +52,14 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
           className="absolute inset-0 w-full h-full object-cover" fill priority />
         <div className="absolute inset-0 bg-gradient-to-r from-wp-dark/96 via-wp-dark/88 to-wp-dark/40" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full py-20">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <style>{`
+            @keyframes fadeInUp {
+              from { opacity: 0; transform: translateY(20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+            .fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+          `}</style>
+          <div className="fade-in-up">
             <nav className="flex items-center gap-2 text-sm mb-5 flex-wrap">
               <Link href="/" className="text-white/80 hover:text-white/70 transition-colors">Startseite</Link>
               <span className="text-white/70">›</span>
@@ -100,7 +105,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
                 <div className="text-center"><p className="font-mono font-bold text-[#3DA16A] text-lg leading-none">{fmtEuro(calc.ersparnis)}</p><p className="text-white/50 text-xs">/ Jahr</p></div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -300,6 +305,20 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
+
+          {/* Quellenangaben & Datengrundlage */}
+          <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+            <h3 className="text-sm font-bold text-gray-700 mb-2">Quellenangaben & Datengrundlage</h3>
+            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-gray-500">
+              <span>• Strompreis {city.name}: Verivox/CHECK24, Stand 03/2026</span>
+              <span>• Heizgradtage: Deutscher Wetterdienst (DWD)</span>
+              <span>• KfW-Förderung: BEG Programm 458, Stand 01/2026</span>
+              <span>• JAZ-Berechnung: VDI 4650 Blatt 1</span>
+              <span>• GEG-Fristen: §71 GEG i.d.F. vom 01.01.2024</span>
+              <span>• CO₂-Preis: BEHG §10, Brennstoffemissionshandel</span>
+            </div>
+          </div>
+
           <h2 className="font-bold text-[#1C2B2B] mt-12 mb-5" style={{ fontSize: 'clamp(20px,2.5vw,32px)' }}>{h2s.faq}</h2>
           <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-md mb-10">
             {faqs.map((faq, i) => (
