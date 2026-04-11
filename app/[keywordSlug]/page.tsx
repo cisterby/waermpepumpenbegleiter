@@ -328,6 +328,26 @@ function getDefaultContent(keyword: { keyword: string; slug: string; baseVolume:
   };
 }
 
+// Bundesland-spezifische Inhalte — 2-3 Sätze zu Klima, WP-Markt, regionaler Besonderheit
+const BUNDESLAND_CONTENT: Record<string, string> = {
+  'Baden-Württemberg': 'Baden-Württemberg gehört mit seinem milden Klima im Oberrheingraben und den kälteren Höhenlagen des Schwarzwalds zu den vielfältigsten WP-Standorten Deutschlands. Das L-Bank-Kombi-Darlehen ergänzt die KfW-Förderung optimal. Mit über 1.700 Sonnenstunden pro Jahr lohnt sich die PV+WP-Kombination besonders und treibt die hohe Installations­quote.',
+  'Bayern': 'Bayern ist Deutschlands größtes Bundesland mit starken klimatischen Unterschieden zwischen dem kalten Alpenvorland (JAZ ~3,2) und dem warmen Mainfranken (JAZ ~3,8). Die hohe Eigenheimquote und ländliche Struktur machen Bayern zum WP-Spitzenreiter bei Installationen. Zusätzlich zu KfW gibt es regionale Förderungen wie das Modernisierungsprogramm.',
+  'Berlin': 'Berlin als Großstadt mit dichtem Wohnbestand stellt besondere Anforderungen: viele Wohnungen in Mehrfamilienhäusern benötigen Systeme ohne große Außengeräte. Die milde kontinentale Klimazone (JAZ 3,5+) und das hohe Mieterquoten machen zentrale WP-Lösungen und Mietmodelle zunehmend attraktiv.',
+  'Brandenburg': 'Brandenburg hat ein kontinentales Klima mit kalten Wintern und guter WP-Eignung (JAZ 3,3–3,6). Als bevölkerungsarme Flächenregion sind hier gut erreichbare Handwerker essentiell — lokale Netzwerke spielen eine Schlüsselrolle. Das Brandenburger Förderprogramm ergänzt die KfW-Unterstützung.',
+  'Bremen': 'Bremen mit Bremerhaven ist maritime Hafenregion mit mildem, feuchtem Klima und hohem Niederschlag. Die Luft-Wasser-WP ist ideal für die norddeutsche Küstenzone (JAZ 3,4–3,7). Als kleinster Bundesstaat ist die Fachbetrieb-Dichte hoch und Reaktionszeiten sind kurz.',
+  'Hamburg': 'Hamburg an der Unterelbe hat ein gemäßigt-maritimes Klima mit milden Wintern — perfekt für Luft-Wasser-WP (JAZ 3,5+). Die hohe Baudichte und viele Altbauten erfordern clever dimensionierte Systeme. Hamburg fördert Wärmewende zusätzlich zur KfW kräftig mit Landesmitteln.',
+  'Hessen': 'Hessen ist wirtschaftlich stark und hat gemischte Topografie: Rhein-Main wärmer, Bergland kälter (JAZ-Range 3,3–3,9). Die hohe Eigenheimquote im Speckgürtel um Frankfurt fördert WP-Nachfrage. Das Hessische Programm bietet Zusatzboni für Sanierung und Solarintegration.',
+  'Mecklenburg-Vorpommern': 'Mecklenburg-Vorpommern ist Deutschlands dünnste besiedelte Region mit kontinentalem Klima, langen kalten Wintern und schwacher Fachbetrieb-Dichte. Gleichzeitig ist die Luft-WP-Eignung gut (JAZ 3,2–3,5). Hohe Handwerkskostenquoten und längere Anfahrtswege prägen die Region.',
+  'Niedersachsen': 'Niedersachsen ist Deutschlands flächengrößtes Bundesland mit gemischter Topografie (norddeutsche Tiefebene bis Harz) und maritim-kontinentalem Klima. Die hohe Quote an Ein- und Zweifamilienhäusern begünstigt WP-Expansion (JAZ 3,3–3,7). Lokale Fachbetriebe sind vielerorts unterversorgt.',
+  'Nordrhein-Westfalen': 'NRW als bevölkerungsreichster Bundesstaat hat stark variirendes Klima: Rheinland wärmer, Bergland kälter (JAZ 3,2–3,9). Die hohe Dichte an Altbauten und Gewerbe erfordert adaptive Systemdimensionierung. Starke Handwerkszünfte und etablierte Wärmepumpen-Installateure sichern gute Verfügbarkeit.',
+  'Rheinland-Pfalz': 'Rheinland-Pfalz hat mildes Klima im Rheintal (JAZ 3,7+) und ist geprägt von Weinbau und Tourismus. Südexposition vieler Häuser ermöglicht hohe Solarerträge, was WP+PV besonders attraktiv macht. Die Eifel im Westen ist kälter und weniger dicht besiedelt.',
+  'Saarland': 'Das Saarland ist Deutschlands kleinstes Flächenbundesland mit mildem westeuropäischem Klima und guter WP-Eignung (JAZ 3,6–3,9). Wärmemarkt und Handwerksdichte sind konzentriert; kurze Fahrtdistanzen reduzieren Installationskosten. Grenznähe zu Luxemburg und Frankreich öffnet vergleichende Perspektiven.',
+  'Sachsen': 'Sachsen mit Dresden und Leipzig ist ostdeutsche Wachstumsregion mit kontinentalem Klima (JAZ 3,3–3,6) und steigender WP-Quote. Sanierungsquoten sind regional sehr unterschiedlich. Energiepreise sind regional günstiger, aber Fachbetrieb-Verfügbarkeit ländlich schwächer.',
+  'Sachsen-Anhalt': 'Sachsen-Anhalt ist dünner besiedelt mit kontinentalem Klima und guter WP-Effizienz (JAZ 3,3–3,7). Die Region kämpft mit Handwerksmangel und längeren Anfahrtswegen. Steinkohle-Ausstieg und Energiewende treiben Biomasse und WP-Interesse, aber Kapazitäten sind knapp.',
+  'Schleswig-Holstein': 'Schleswig-Holstein ist maritime Nordsee-Ostsee-Region mit mildem Klima, hohem Windpotenzial und ideal für WP-Kombination mit Windstrom (JAZ 3,5–3,8). Landesteil Dithmarschen und Eider sind weniger dicht, aber Küstenregionen haben starken Handwerkseinsatz. Inseln stellen Sonderfall dar.',
+  'Thüringen': 'Thüringen ist waldreiches Mittelgebirgsland mit kontinentalem Klima und variabler WP-Eignung (JAZ 3,2–3,7, kälter in höheren Lagen). Ländliche Struktur mit Handwerksmangel; Finanzierbarkeit oft kritischer als in Westdeutschland. Regionale Biomasse-Tradition konkurriert mit WP-Expansion.',
+};
+
 export default function PillarPage({ params }: Props) {
   const keyword = getKeywordBySlug(params.keywordSlug);
   if (!keyword) notFound();
@@ -518,6 +538,11 @@ export default function PillarPage({ params }: Props) {
                   {state}
                   <span className="text-[#7A9E8E] font-normal text-sm">({stateCities.length} Städte)</span>
                 </h3>
+                {BUNDESLAND_CONTENT[state] && (
+                  <p className="text-[#4A6358] text-sm leading-relaxed mb-4 max-w-4xl">
+                    {BUNDESLAND_CONTENT[state]}
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {stateCities
                     .sort((a, b) => b.einwohner - a.einwohner)

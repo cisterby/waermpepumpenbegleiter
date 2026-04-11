@@ -1122,16 +1122,32 @@ export function getLocalTestimonial(
 
 export function getSeasonalAdvice(city: City): string {
   const kl = getKlimaZone(city)
-  const sz = getCitySize(city)
+  const variant = cityHash(city, 3)
 
-  const advices: Record<KlimaZone, string> = {
-    warm: `In {{city.name}} mit {{city.avgTemp}}°C Jahresmittel und {{city.heizgradtage}} Heizgradtagen können Sie die Wärmepumpe ganzjährig installieren — Sommer ist ideal für Planung und schnelle Montage, Winter bietet niedrige Strompreise (Off-Peak). Empfehlung: März–September für Ruhe und optimale Bedingungen, Dezember–Februar für schnellere Terminfindung bei Installateuren.`,
-    mittel: `{{city.name}} mit {{city.heizgradtage}} Heizgradtagen hat ausgeprägte Heizsaison — Herbst (September–Oktober) ist der beste Installationszeitpunkt: keine extremen Temperaturen, Installateure noch nicht überbucht, Heizperiode startet Mitte Oktober. Vorteil: System läuft durch die kritischsten Monate (Dezember–Februar) ein. Vermeiden Sie Sommer (Hitze, Baubrache) und Jänner (Kälte, Frostschutz-Komplexität).`,
-    kalt: `In {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C ist Installation im Sommer (Juni–August) empfohlen — lange Tage, trockenes Wetter, keine Heizausfallrisiken. Installateur-Kapazität ist hoch, Arbeitszeiten lang. Nachteil: System ist im Winter noch "grün" und wird maximal gefordert. Alternativ: März–April (Frühling) für sanfteres Laufverhalten im ersten Winter.`,
-    sehr_kalt: `In dieser Extremkaltzone {{city.name}} mit {{city.heizgradtage}} Heizgradtagen muss die Installation über den Sommer erfolgen — mindestens Juni–August verfügbar, besser Mai–September. Winter-Installation in {{city.name}} ist möglich, aber risikobehaftet (Eisfernwärme, Gefrier-Gefahr, lange Ausfallzeiten). Fachbetriebe hier empfehlen Sommer-Installation + {{Math.round(4)}} Wochen Testlauf vor Heizstart. Kosten: {{Math.round(500)}} EUR extra, aber Sicherheit ist wert's.`,
+  const advices: Record<KlimaZone, Record<number, string>> = {
+    warm: {
+      0: `In {{city.name}} mit {{city.avgTemp}}°C Jahresmittel können Sie die Wärmepumpe ganzjährig installieren. Der März bis Mai bietet perfekte Bedingungen: angenehme Temperaturen, trockenes Wetter, moderate Auslastung der Installateure. Die Luft-Wasser-Pumpe kann sich vor der heißen Jahreszeit einfahren. Vorteil: Sommerspitzenlasten entlasten, Pufferspeicher lädt natürlich auf.`,
+      1: `{{city.name}} mit {{city.heizgradtagen}} Heizgradtagen profitiert von Sommer-Installation (Juni–August): lange Tage für sichere Elektroarbeiten, stabile Wetterverhältnisse für Außengerät-Platzierung, niedrige Stromlastspitzen. Im Dezember–Februar wird die neue Anlage maximal gefordert — Installation im Hochsommer garantiert Einhfahrtrieb in ruhiger Phase. Installateur-Termine sind leicht zu finden.`,
+      2: `In {{city.name}} mit {{city.avgTemp}}°C ist November–Dezember ideal: Saisoneröffnung für Heizbedarf steht bevor, Installateure sind noch nicht überbucht, Feuchte sinkt. Die Wärmepumpe läuft durch die erste intensive Heizperiode selbst ein und zeigt Optimierungspotentiale vor den kältesten Monaten (Januar–Februar). Warme Klimazonen kennen keine Frostschutz-Risiken — keine Verzögerung nötig.`,
+    },
+    mittel: {
+      0: `{{city.name}} mit {{city.heizgradtagen}} Heizgradtagen sollte Installation im Herbst (September–Oktober) planen: Sommer-Baubrache vorbei, Heizsaison startet Mitte Oktober, keine Extremtemperaturen stören Montage. Installateure sind noch nicht überbucht, Lieferketten normalisiert. Vorteil: System läuft durch die kritischsten Monate Dezember–Februar schon ein und kann Schwachstellen zeigen.`,
+      1: `In {{city.name}} mit {{city.heizgradtagen}} Heizgradtagen ist März–April (Frühling) eine Alternative: Kälte ist vorbei, aber Heizlast sinkt — das System kann "entspannt" einfahren. Sommer-Planung ist völlig falsch (Hitzestau, Installateure-Chaos). Bestes Fenster bleibt aber September–Oktober: da treffen Systemreife, Fachkompetenz und Heizstart-Nähe perfekt zusammen.`,
+      2: `{{city.name}} mit {{city.heizgradtagen}} Heizgradtagen: Vermeiden Sie Dezember–Jänner (überbucht, Frostrisiken, lange Ausfallzeiten). Sommer ist Fehler (Hitze-Stau, Leerlauf-Betrieb schadet). Optimal: August–September für Vorlauf-Planung, dann Oktober-Start ins Heizen. Das System rundet sich vier Wochen lang ein, bevor Dezember-Spitzen kommen. Zusatz: Hydraulischen Abgleich im September noch warm durchführen.`,
+    },
+    kalt: {
+      0: `In {{city.name}} mit {{city.heizgradtagen}} Heizgradtagen (kalt) ist Juni–Juli die beste Wahl: lange Tage (5–6 Uhr Sonnenaufgang, 21–22 Uhr Untergang), trockenes Wetter für Außengerät-Arbeiten, keine Frostrisiken. Installateure haben volle Kapazität, können 10+ Stunden arbeiten. Nachteil: System im Winter noch jung — wird maximal gefordert. Möglichkeit: 6–8 Wochen Testlauf vor echtem Heizbetrieb planen.`,
+      1: `{{city.name}} mit {{city.heizgradtagen}} Heizgradtagen profitiert von Mai–Juni-Installation: Frühling ist stabil, keine Spätfröste mehr, erste Wärmewellen sind schwach. System arbeitet sich Sommer über sanft ein, Kompressor-Verschleiß ist niedrig bei moderaten Temperaturen. Im Herbst (September–Oktober) zeigt sich das reife System unter Heizbedarf-Bedingungen, bevor Winter hart zuschlägt. Ideal für langfristige Systemgesundheit.`,
+      2: `In {{city.name}} mit {{city.heizgradtagen}} Heizgradtagen und {{city.avgTemp}}°C: März–April (Frühling) ist sekundäre Option — Kälte zieht sich zurück, erste Heiznachfrage ist schwach. System läuft unter realistischer Last ein (nicht wie im Sommer-Leerlauf). Nachteil: Installateure in Osterferien knapp. Sommerkurs (Juni–Juli) bleibt erste Wahl — einfach planen und warten, bis Fachbetrieb frei ist.`,
+    },
+    sehr_kalt: {
+      0: `In dieser Extremkaltzone {{city.name}} mit {{city.heizgradtagen}} Heizgradtagen ist Mai–August das Fenster. Juni–Juli sind ideal: Temperaturen 15–20°C, niedrige Heizlast, trockenes Wetter für alle Außenarbeiten. Installateure-Kapazität ist maximal, Eisfernwärme ist kein Risiko. System läuft vier Monate "warm" ein — kommt mit reifer Kalibrierung in den Herbst. Kosten: Standard (kein Teuer-Zuschlag für Winter-Installation).`,
+      1: `{{city.name}} mit {{city.heizgradtagen}} Heizgradtagen (sehr kalt): Sommer-Installation (Mai–September) ist Pflicht — Winter ist unmöglich (Eisfernwärme, Gefrier-Risiken, lange Ausfälle, Fachleute-Knappheit). Mai ist Anfang des Fensters (noch Spätfrost-Risiko, aber gering), September ist Ende (erste Frostnächte). Juni–August sind goldene Mitte: stabil, warm, trocken. 6–8 Wochen Testlauf vor Heizstart einplanen.`,
+      2: `In {{city.name}} mit {{city.heizgradtagen}} Heizgradtagen ist Winter-Installation tabu — Extremkälte-Schutzmaßnahmen treiben Kosten auf 1500–2500 EUR extra, Eisfernwärme-Risiko ist real, Ausfallzeiten sind Wochen lang. Nur April–August ergibt Sinn. Spät-Frühjahr (April–Anfang Mai) ist Alternative zu Hochsommer: weniger Hitze-Belastung beim Einfahren, System ist bereits stabil, wenn Kälte-Saison (November) kommt. Reserve-Heizung im Sommer testen!`,
+    },
   }
 
-  return advices[kl] || advices['mittel']
+  return advices[kl]?.[variant] || advices['mittel']?.[0] || `Allgemeine Empfehlung für {{city.name}}: Installation im Herbst (September–Oktober) ist für die meisten Klimazonen optimal.`
 }
 
 // ── 17. EXTENDED VARIATION DATA ─────────────────────────────────────────────
@@ -1162,6 +1178,8 @@ export interface ExtendedVariationData extends CityVariationData {
   caseStudy: ReturnType<typeof getCaseStudy>;
   gegCountdown: ReturnType<typeof getGEGCountdown>;
   laermschutzInfo: ReturnType<typeof getLaermschutzInfo>;
+  methodologyExplainer: ReturnType<typeof getMethodologyExplainer>;
+  sectionTimestamps: Record<string, string>;
 }
 
 // ── 18. INLINE-CONTEXTUAL-LINKS — natürliche Links im Fließtext ────────────────
@@ -1589,6 +1607,22 @@ export function getKeywordDeepContent(
           `${city.bundeslandFoerderung ? `Zusätzlich in ${city.bundesland}: Das Programm „${city.bundeslandFoerderung}" (${city.bundeslandFoerderungBetrag}) kann in bestimmten Fällen mit der KfW-Förderung kombiniert werden. Achtung: Doppelförderung für dieselbe Maßnahme ist nicht zulässig — aber für unterschiedliche Gewerke (z.B. KfW für WP, Landesförderung für PV-Speicher) oft möglich.` : `${city.bundesland} hat aktuell kein eigenes Landesprogramm für Wärmepumpen — die KfW-Bundesmittel sind aber großzügig genug. Einige Kommunen in ${city.bundesland} bieten zusätzliche Zuschüsse — fragen Sie bei Ihrer Stadtverwaltung in ${city.name} nach.`} Wir helfen Ihnen, die maximale Förderkombination für Ihre Situation in ${city.name} zu ermitteln.`,
         ]
       },
+      {
+        heading: `Häufige KfW-Antragsfehl­er — und wie Sie sie in ${city.name} vermeiden`,
+        paragraphs: [
+          `Die Top 5 Fehler, die wir in ${city.name} bei KfW-Anträgen sehen: (1) Antrag nach Vertragsabschluss — Zuschuss weg. (2) Ungenaue Kostenaufstellung — der Antrag wird abgelehnt, weil nicht klar ist, welche Gewerke förderfähig sind (z.B. Elektroinstallation ja, Mauerwerk-Sanierung nein). (3) Vergessen, die „Energetische Fachplanung" durch einen unabhängigen Energie-Effizienz-Experten durchführen zu lassen — diese ist seit BEG 2021 KfW-Pflicht. (4) Keine iSFP (individuelle Sanierungsfahrplan) oder Nachweise für Klima-Speed-Bonus, obwohl Anspruch besteht — das ist bares Geld auf dem Tisch. (5) Umsatzsteuer-Fehler: Viele denken, die KfW fördert inklusive MwSt. — aber der förderfähige Betrag ist begrenzt auf 30.000 € netto für die WP selbst.`,
+          `Kosten-Fallen in ${city.name}: Die meisten Angebote überschreiten die 30.000-€-Grenze, weil Nebengewerke (Elektro, Hydraulik, Schallschutz) mitgerechnet werden. Richtig: Nur die WP und der hydraulische Abgleich zählen zu den 30.000 €. Lüftung, Dämmung, PV-Speicher sind separate Maßnahmen mit eigenen Förderungen. In ${city.name} sollte ein gutes Angebot in dieser Struktur aufgeteilt sein — fordert Sie ein Angebot an, das dies nicht tut, wird die KfW Punkte streichen. Unsere Partnerbetriebe in ${city.name} kennen diese Regeln und erstellen KfW-konforme Kostenaufstellungen.`,
+          `Was macht ein Energie-Effizienz-Experte in ${city.name}? Der Experte bestätigt, dass die geplante WP-Installation den KfW-Standards entspricht (JAZ-Mindestanforderungen, Wärmequellen-Anbindung, Wärmespeicher-Dimensionierung). Die Expertise kostet 400–800 € und wird von der KfW zu 50% gefördert — unterm Strich also 200–400 € Eigenkosten. Das ist die beste Investition: Sie sichern sich den gesamten Zuschuss und die Betriebssicherheit der Anlage für die nächsten 20 Jahre. In ${city.name} und ${city.bundesland} vermitteln wir Ihnen zertifizierte Experten.`,
+        ]
+      },
+      {
+        heading: `Bund + Land + Kommune: Förderungs-Combos für ${city.name}`,
+        paragraphs: [
+          `Die Förderungslandschaft in ${city.name} ist fragmentiert — aber clever kombinieren lohnt sich. Basis: KfW-Zuschuss 455/458 mit bis zu 70% (max. 21.000 €). Darüber hinaus: ${city.bundeslandFoerderung ? `Das Landesprogramm „${city.bundeslandFoerderung}" (${city.bundeslandFoerderungBetrag}) adressiert oft unterschiedliche Gewerke oder leistet Bonuszuschüsse. Beispiel: KfW zahlt die WP, das Landesprogramm bezuschusst die PV-Anlage oder den Speicher zusätzlich. Achtung: Nicht kombinierbar sind zwei Programme, die dieselbe Maßnahme finanzieren — aber bei unterschiedlichen Gewerken ist Kombinierbarkeit oft gegeben.` : `${city.bundesland} hat momentan kein Landesprogramm, aber einzelne Landkreise und Kommunen bieten Zusatzmittel.`} Kommunale Ebene: Viele Stadtwerke in ${city.name} bieten Zuschüsse für WP-Installationen (oft 500–2.000 €), wenn der Anschluss an ein Wärmenetz erfolgt oder der Stromvertrag bei den lokalen Stadtwerken bleibt. Fragen Sie nach!`,
+          `Beispiel-Förder-Mix für ${city.name}: Ein Selbstnutzer mit 39.000 EUR zu versteuerndem Einkommen und alter Gasheizung (>20 Jahre) mit WP-Kosten von 22.000 EUR: KfW 455 = 30% Basis + 20% Klima-Speed + 30% Einkommensbonus + 5% Effizienz (natürliches Kältemittel) = insgesamt 85%, aber gedeckelt auf 70% von 22.000 EUR = 15.400 EUR. ${city.bundeslandFoerderung ? 'Zusätzlich ' + city.bundeslandFoerderung + ': weitere Landesmittel möglich. Kommunale Zuschüsse (z.B. Stadtwerke ' + city.name + '): +0–2.000 EUR.' : 'Kommunale Zuschüsse (Stadtwerke ' + city.name + ', Landkreis): +0–2.000 EUR.'} Gesamtförderung: 15.400–19.000 EUR möglich. Eigenanteil unter 6.000 EUR.`,
+          `Antragsreihenfolge ist entscheidend: Zuerst KfW (1–2 Wochen für Bewilligung), dann Landesmittel (wenn parallel möglich), dann kommunale Zuschüsse. Manche Programme fordern, dass die KfW-Bewilligung vorliegt, bevor der Antrag gestellt wird. In ${city.name} und ${city.bundesland} helfen unsere Experten Ihnen, die Reihenfolge richtig zu planen und keine Fristen zu verpassen. Mit guter Planung können Sie die maximalen Fördermittel nutzen — wir kümmern uns um den Papierkram.`,
+        ]
+      },
     ],
     installateur: [
       {
@@ -1597,6 +1631,22 @@ export function getKeywordDeepContent(
           `Die Qualität der Installation entscheidet über die Effizienz Ihrer Wärmepumpe in ${city.name}. Eine schlecht dimensionierte oder falsch installierte WP kann 20–30% weniger effizient arbeiten — das bedeutet ${fmtEuro(Math.round(wpKosten * 0.25))} mehr Stromkosten pro Jahr. Deshalb ist die Wahl des richtigen Fachbetriebs der wichtigste Schritt.`,
           `Qualitätskriterien für WP-Installateure in ${city.name}: (1) Mindestens 10 dokumentierte WP-Installationen (fragen Sie nach Referenzen). (2) HWK-eingetragener Meisterbetrieb. (3) Registrierung als KfW-Lieferanten- und Leistungserbringer (LuL). (4) Haftpflichtversicherung für Installationsfehler. (5) Vollständige Angebote ohne versteckte Positionen. ${sz === 'metropole' || sz === 'grossstadt' ? `In ${city.name} gibt es genug Auswahl — vergleichen Sie mindestens 3 Angebote.` : `In ${city.name} und Umgebung sind die Kapazitäten begrenzter — buchen Sie frühzeitig.`}`,
           `Wartezeiten in ${city.name}: Aktuell beträgt die durchschnittliche Wartezeit für einen WP-Installationstermin ${sz === 'metropole' ? '4–8 Wochen' : sz === 'grossstadt' ? '6–10 Wochen' : '8–14 Wochen'}. ${city.gegFrist <= '2026-12-31' ? `Besonders wichtig: Die GEG-Frist in ${city.name} rückt näher (${city.gegFrist.split('-').reverse().join('.')}). Wer jetzt anfrägt, sichert sich rechtzeitig Kapazität.` : `Die GEG-Frist in ${city.name} ist ${city.gegFrist.split('-').reverse().join('.')} — noch Zeit, aber die besten Betriebe sind oft weit im Voraus ausgebucht.`} Wir vermitteln Sie kostenlos an 3 geprüfte Fachbetriebe in ${city.name} und Umgebung.`,
+        ]
+      },
+      {
+        heading: `Schnelligkeit vs. Qualität: Wie Sie die beste Entscheidung für ${city.name} treffen`,
+        paragraphs: [
+          `Das Dilemma in ${city.name}: Der Installateur mit freier Kapazität ist oft nicht der beste. Ein Betrieb, der Ihnen innerhalb 2 Wochen einen Termin anbietet, hat entweder wenig Anfragen (warnsignal), oder er arbeitet übertrieben schnell. Bei einer Wärmepumpen-Installation sollte mindestens 3–5 Tage für die Arbeiten eingeplant werden — nicht wegen Bummelei, sondern wegen Qualität. Hydraulischer Abgleich alleine dauert 1–2 Tage (für 60+ Heizkörper oder lange Rohrstrecken). Montage der Außeneinheit mit sorgfältiger Elektro-Anbindung und Schallschutz: 1–2 Tage. Inbetriebnahme und Kalibrierung: 1–2 Tage. Eine gute Installation in ${city.name} dauert eine Woche, inklusive Planung und Nachkontrolle.`,
+          `Die Kosten-Fallstricke für Eilaufträge in ${city.name}: Wenn Sie einen Installateur unter Druck setzen, die Installation zu beschleunigen, zahlen Sie dafür — oft nicht im Preis sichtbar, sondern in mangelhaften Detaillösungen. Beispiele: Hydraulischer Abgleich wird oberflächlich durchgeführt (nur 10 statt 20 Heizkörper gemessen), Schallschutzmaßnahmen entfallen, Elektroinstallation wird notdürftig gelöst. Das rächt sich durch Effizienzeinbußen: statt JAZ ${jaz} nur JAZ ${Math.max(jaz - 0.3, 2.5)} → mehr Stromkosten von ${fmtEuro(Math.round(wpKosten * 0.12))}+ pro Jahr. In ${city.name} rechnet sich die geduldige Planung: Lieber 2 Monate warten auf den richtigen Betrieb als 20 Jahre mit schlechter Effizienz leben.`,
+          `Mein Tipp für ${city.name} und ${city.bundesland}: Suchen Sie einen Installateur, der 6–12 Wochen Vorlaufzeit benötigt und diese Zeit für Planung nutzt (Dimensionierung, hydraulisches Schaltschema, Elektroplan). Das ist ein gutes Zeichen. Betriebe mit 4-Wochen-Planung sind oft zu schnell. Fordern Sie ein detailliertes Zeitschema an — jedes Gewerk einzeln aufgelistet. Ein strukturiertes Zeitschema zeigt Professionalität. Bei der Inbetriebnahme sollte der Installateur mindestens 4 Stunden vor Ort sein und Messungen durchführen (Druck, Durchfluss, Spreizung, COP-Verifikation). Das ist keine Luxus, sondern Standard für KfW-Projekte.`,
+        ]
+      },
+      {
+        heading: `Installationsqualität prüfen: Checkliste für ${city.name}`,
+        paragraphs: [
+          `Nach der Installation sollte der Installateur in ${city.name} Ihnen folgende Dokumente übergeben: (1) Anlagenschema (P&ID) mit Symbolen für jeden Komponente. (2) Elektroschaltplan (DIN-konform). (3) Abnahmebericht mit Messwerten (Druck, Durchfluss im Primär- und Sekundärkreis, Spreizung, elektrische Parameter, Schallpegel gemessen). (4) Wartungsprotokoll mit Einträgen für die hydraulischen Funktionsprüfung und Befestigung aller Komponenten. (5) Betriebsanleitungen für die WP und alle Regelgeräte. (6) Garantieurkunde und Gewährleistungsverzicht (damit Garantie auch bei Eigenwartung läuft).`,
+          `Funktionsprüfungen in der ersten Woche nach Installation in ${city.name}: Der Installateur sollte Sie anweisen, die Anlage während der ersten 7 Tage intensiv zu nutzen und Auffälligkeiten zu dokumentieren. Die WP sollte im Teillastbetrieb laufen (nicht wild fluktuieren), die Spreizung sollte 5–8 K sein (nicht unter 3 K, nicht über 15 K), die Geräuschentwicklung sollte konstant sein (kein Aufheulen oder Schaltern). Nach einer Woche sollte der Installateur eine Nachkontrolle durchführen — Messwerte nochmal checken, alle Anschlüsse auch auf Undichtigkeit prüfen. In ${city.name} ist dies leider nicht Standard, aber die besten Betriebe machen das.`,
+          `Langzeit-Qualitätsmerkmale für ${city.name}: Nach 6 Monaten sollten Sie einen deutlichen Rückgang der Heizkosten sehen (bei ${jaz} JAZ sollten die Stromkosten um ${Math.round((gasKosten - wpKosten) / gasKosten * 100)}% unter den vorherigen Gaskosten liegen). Nach 2 Jahren sollte die Effizienz stabil sein — wenn die JAZ plötzlich um 10% einbricht, deutet das auf verschlissene Komponenten oder Refrigerant-Leckage hin. Der Installateur sollte auf Anfrage innerhalb 48 Stunden einen Wartungstermin anbieten können. In ${city.name} ist ein guter Installateur auch nach der Fertigstellung Ihr Ansprechpartner für Fragen und Verbesserungen. Wir vermitteln Ihnen Betriebe, die das verstehen.`,
         ]
       },
     ],
@@ -1609,6 +1659,22 @@ export function getKeywordDeepContent(
           `Schallemissionen in ${city.name}: Moderne WP erzeugen 35–50 dB(A) in 3m Entfernung (vergleichbar mit einem Kühlschrank). ${sz === 'metropole' || sz === 'grossstadt' ? `In ${city.name} gelten TA-Lärm-Richtwerte von 35 dB(A) nachts in reinen Wohngebieten. Schallschutzmaßnahmen (Schallhaube, optimale Aufstellung) können nötig sein — unsere Betriebe kennen die lokalen Auflagen.` : `In ${city.name} sind Schallprobleme selten — die typischen Abstände zum Nachbarn reichen in der Regel aus.`} Tipp: Inverter-WP (modulierend) sind im Teillastbetrieb deutlich leiser als On/Off-Geräte.`,
         ]
       },
+      {
+        heading: `Inverter vs. On/Off — Technologiewahl für Ihren Standort ${city.name}`,
+        paragraphs: [
+          `Inverter-Wärmepumpen (variable Verdichterdrehzahl) sind heute Standard und sollten Ihre erste Wahl für ${city.name} sein. Das Prinzip: Der Verdichter läuft nicht ständig mit voller Leistung und schaltet dann aus, sondern moduliert kontinuierlich von 20% bis 100% Leistung. Vorteil für ${city.name}: Bei mildem Wetter (das ist ${city.heizgradtage < 4000 ? 'häufig' : 'oft'} der Fall) läuft die WP auf 30–50% und erreicht einen COP von 5,5–6,5 statt nur 4,0 bei Vollast. Die JAZ von ${jaz} wird dadurch um 0,3–0,5 besser. Das spart ${fmtEuro(Math.round(wpKosten * 0.15 / jaz))} pro Jahr in ${city.name}. On/Off-Geräte sind günstiger in der Anschaffung (3.000–5.000 € weniger), aber weniger effizient — nur noch bei sehr beengten Budgets sinnvoll.`,
+          `Regelungsstrategien in ${city.name}: Moderne Inverter-WP können modulierend fahren (kontinuierlich) oder „staged" laufen (stufig: 20%, 40%, 60%, 80%, 100%). Gestaffelte Regelung ist in den meisten Fällen optimal für den Heizkomfort und die Schallentwicklung. Ihr Installateur sollte in ${city.name} vor Inbetriebnahme die Regelkurve anpassen — Standard-Voreinstellungen sind oft für mildere Klimazonen (wie Bayern) ausgelegt, nicht für die spezifischen Bedingungen von ${city.name}. Bei ${city.normAussentemp}°C sollte die WP auf 90–100% fahren, bei 0°C sollte ggf. ein Zusatz-Heizstab (2–3 kW) schalten (das ist keine Verschwendung, sondern energetische Logik: Der Zusatzstab für wenige Tage im Jahr ist günstiger als eine zu große WP, die 350 Tage im Jahr unterlastet läuft).`,
+          `Wartung und Zuverlässigkeit für ${city.name}: Inverter-Komponenten haben früher (bis ~2015) unter Verschleiß gelitten. Moderne Geräte (2020+) sind zuverlässig — Lebenserwartung 20–25 Jahre ohne Komponentenaustausch. In ${city.name} sollte Ihre Wartung bestehen aus: Jährlich Luftfilter prüfen (kostet nix, dauert 5 min), jährlich Druck und Temperaturverteilung prüfen (vom Installateur, 100–150 €), alle 5 Jahre Kältemittel-Lecktest (DIN EN 378, manche Bundesländer schreiben das vor). Die Gesamtwartungskosten über 20 Jahre sind überschaubar — deutlich unter denen einer Gasheizung (Wartung + Inspektionen jedes Jahr, TÜV-Abnahme vor Inbetriebnahme).`,
+        ]
+      },
+      {
+        heading: `Kältemittel-Technologie: R290 vs. R410A für ${city.name}`,
+        paragraphs: [
+          `Das Kältemittel ist das Herzstück jeder Wärmepumpe und beeinflusst sowohl die Effizienz als auch die Umweltbilanz. In ${city.name} müssen Sie zwei Hauptoptionen verstehen: R410A (etabliert, nicht brennbar, aber höheres GWP 2.088) und R290 (Propan, natürliches Kältemittel, A3-brennbar, aber GWP nur 3). Die Zeichen sind klar: Die EU schreibt vor, dass neue WP bis 2025 auf brennbare Kältemittel wie R290 umsteigen müssen — R410A wird in der EU ab 2030 nicht mehr hergestellt. Für ${city.name} heißt das: Kaufen Sie 2026 eine WP mit R410A, haben Sie möglicherweise 2035 Probleme, Kältemittel zum Nachfüllen zu bekommen. R290 ist der zukunftssichere Standard.`,
+          `Effizienz-Unterschied für ${city.name}: R290 erreicht einen COP von etwa 10–15% besser als R410A bei gleicher Verdichter-Leistung (das liegt an den thermodynamischen Eigenschaften von Propan). Das bedeutet: Bei gleicher WP-Größe und gleicher Installation liegt die JAZ mit R290 bei ${Math.round(jaz * 1.12)} statt ${jaz}. Für ${city.name} sind das ca. ${fmtEuro(Math.round(wpKosten * 0.12))} weniger Stromkosten pro Jahr. Over 20 Jahre spart das ${fmtEuro(Math.round(wpKosten * 0.12 * 20))}. Der KfW gibt sogar +5% Bonus für R290-WP (das ist ganz bewusste Förderung der besseren Technologie).`,
+          `Sicherheitsaspekte von R290 in ${city.name}: Propan ist brennbar — aber moderne Systeme halten nur 0,5–1,5 kg Kältemittelcharge, während ein Gasfeuerzeug oder eine Gasleitung mit kilo­weise Propan arbeitet. Der Sicherheitsstandard DIN EN 378 regelt die Handhabung: WP mit R290 müssen zertifiziert sein, Installateur muss R290-geschult sein, und die Installation muss dokumentiert sein. In ${city.name} und ${city.bundesland} müssen Installateure, die R290-WP installieren, ein spezielles Zertifikat haben — das ist kein Problem, aber fragen Sie beim Angebot nach, ob der Installateur R290-zertifiziert ist. Brände von R290-WP sind in europäischen Daten nicht dokumentiert (null Fälle) — die Sicherheit ist höher als früher von manchen erwartet. Unser Rat: Fordern Sie für ${city.name} auf jeden Fall eine R290-WP an.`,
+        ]
+      },
     ],
     vergleich: [
       {
@@ -1619,6 +1685,22 @@ export function getKeywordDeepContent(
           `CO₂-Bilanz im Vergleich: Die Wärmepumpe in ${city.name} erzeugt ca. ${Math.round(wpKosten / (city.strompreis / 100) * 0.420)} kg CO₂/Jahr (dt. Strommix). Gas: ca. ${Math.round(gasKosten / (city.gaspreis / 100) * 0.201)} kg CO₂/Jahr. Öl: ca. ${Math.round(gasKosten * 1.15 / (city.oelpreis / 100) * 0.266)} kg CO₂/Jahr. Mit PV-Eigenverbrauch sinkt der CO₂-Ausstoß der WP auf unter ${Math.round(wpKosten / (city.strompreis / 100) * 0.420 * 0.6)} kg/Jahr. Die WP ist damit die klimafreundlichste Heiztechnologie — und wird durch den sinkenden CO₂-Gehalt des Strommixes jedes Jahr sauberer.`,
         ]
       },
+      {
+        heading: `Total Cost of Ownership über 20 Jahre: ${city.name} im Fokus`,
+        paragraphs: [
+          `Die billigste Anschaffung ist nicht die günstigste Lösung. Eine echte Kostenanalyse für ${city.name} über 20 Jahre muss Anschaffung, Betrieb, Wartung und Reparaturen berücksichtigen. Wärmepumpe (Luft-Wasser): Anschaffung €22.000 → nach 55% KfW ca. €10.000 Eigenanteil, Betriebskosten €$(wpKosten + 350)/Jahr × 20 = ca. €${fmtEuro((wpKosten + 350) * 20)}, Wartung €100–200/Jahr × 20 = ca. €3.000, Reparatur-Rücklagen €100/Jahr × 20 = ca. €2.000. Summe über 20 Jahre: €${fmtEuro(10000 + (wpKosten + 350) * 20 + 3000 + 2000)}.`,
+          `Gasheizung in ${city.name} zum Vergleich: Anschaffung €6.000 (kein KfW), Betriebskosten €$(gasKosten + 250)/Jahr × 20 (mit CO₂-Preis-Steigerung, ab 2026 ca. 55 €/t, 2030 ca. 100 €/t) = ca. €${fmtEuro((gasKosten + 250 + Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 75)) * 20)}, Wartung + Inspektionen €250–300/Jahr × 20 = ca. €5.500, Heizungserneuerung nach 15 Jahren €8.000. Summe über 20 Jahre: €${fmtEuro(6000 + (gasKosten + 250 + Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 75)) * 20 + 5500 + 8000)}.`,
+          `Der finanzielle Vorteil der Wärmepumpe in ${city.name}: €${fmtEuro(Math.round((6000 + (gasKosten + 250 + Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 75)) * 20 + 5500 + 8000) - (10000 + (wpKosten + 350) * 20 + 3000 + 2000)))} über 20 Jahre. Das ist die wirkliche Amortisationsrechnung — nicht die naive Betrachtung von Anschaffungskosten. Hinzu kommt: Ihre Unabhängigkeit von Gaspreisen und CO₂-Abgaben. In ${city.name} und ${city.bundesland} ist die WP eine finanzielle Gewissheit, während Gas unsicherer wird. Unser Rat: Vergessen Sie die billige Gasheizung von der Stange. Investieren Sie €10.000 mehr in die WP und sparen Sie €50.000+ über die Lebensdauer.`,
+        ]
+      },
+      {
+        heading: `Umweltvergleich: Wärmepumpen-Nachhaltigkeit in ${city.name}`,
+        paragraphs: [
+          `Die CO₂-Bilanz einer Wärmepumpe in ${city.name} ist heute besser als früher oft behauptet. Energiewende-Status: Der dt. Strommix 2025 ist zu ca. 53% aus erneuerbaren Quellen. Die WP in ${city.name} erzeugt damit ca. ${Math.round(wpKosten / (city.strompreis / 100) * 0.420)} kg CO₂/Jahr. Ein modernes E-Auto (Strom) führt zu ca. 100–120 g CO₂/km, ein Benzinauto zu ca. 200–220 g CO₂/km — also Faktor 2 schlechter. Die Gasheizung in ${city.name} erzeugt ca. ${Math.round(gasKosten / (city.gaspreis / 100) * 0.201)} kg CO₂/Jahr — das ist ein direkter Vergleich zu sehen, ohne Umrechnung von Stromemissionen. Fazit: Die WP ist mindestens ${Math.round(Math.round(gasKosten / (city.gaspreis / 100) * 0.201) / Math.round(wpKosten / (city.strompreis / 100) * 0.420))}× sauberer als Gas.`,
+          `Langzeit-Perspektive für ${city.name}: Der Strommix wird jedes Jahr grüner (2030: ca. 70%, 2040: ca. 90% erneuerbar). Das bedeutet: Die WP-Installation 2026 wird 2036 dreimal sauberer laufen als heute — ohne dass Sie etwas machen müssen. Die Gasheizung wird hingegen nicht sauberer, sie erzeugt 2036 genauso viel CO₂ wie 2026. Mit einer PV-Anlage auf dem Dach ({{city.avgSunHours}} Sonnenstunden in ${city.name}) sinkt Ihr CO₂-Ausstoß sofort auf ca. ${Math.round(wpKosten / (city.strompreis / 100) * 0.420 * 0.4)} kg CO₂/Jahr — fast CO₂-neutral heizen.`,
+          `Materialzyklus und Recycling: Eine WP ist ein technisches Gerät mit definierten Recyclingwegen. Der Verdichter (das wertvollste Teil) wird komplett recycelt, das Aluminium der Wärmewechsler ist 100% recyclierbar, das Kältemittel wird zurückgewonnen (bei R290: Propan, chemisch wertvoll). Nach 20 Jahren ist die WP zu ca. 95% recycelbar. Eine Gasheizung ist rohstofftechnisch einfacher, aber fossile Energieträger haben keinen "Recyclingweg" — eine Tonne Gas ist nach der Verbrennung weg. Für ${city.name} und ${city.bundesland}: Die Wärmepumpe ist nicht nur während des Betriebs klimafreundlicher, sondern auch am Lebensende besser für die Umwelt.`,
+        ]
+      },
     ],
     allgemein: [
       {
@@ -1627,6 +1709,22 @@ export function getKeywordDeepContent(
           `${city.name} (${city.bundesland}) mit ${city.einwohner.toLocaleString('de-DE')} Einwohnern ist ein ${sz === 'metropole' ? 'Metropolen-' : sz === 'grossstadt' ? 'Großstadt-' : sz === 'mittelstadt' ? 'Mittelstadt-' : 'Kleinstadt-'}Standort für Wärmepumpen. Die lokalen Rahmenbedingungen: ${city.avgTemp}°C Jahresdurchschnittstemperatur, ${city.heizgradtage} Heizgradtage, ${city.normAussentemp}°C Norm-Außentemperatur. Der Strompreis liegt bei ${city.strompreis} ct/kWh, Gas bei ${city.gaspreis} ct/kWh. Bei diesen Werten erreicht eine Luft-Wasser-WP JAZ ${jaz} — und spart ${fmtEuro(ersparnis)} pro Jahr gegenüber Erdgas.`,
           `Der Wärmepumpenmarkt in ${city.bundesland}: 2025 wurden in Deutschland 299.000 Wärmepumpen installiert (+55% ggü. 2024). ${city.bundesland} liegt ${city.bundesland === 'Bayern' || city.bundesland === 'Baden-Württemberg' || city.bundesland === 'Nordrhein-Westfalen' ? 'bei den Installationszahlen vorne' : 'im soliden Mittelfeld'}. In ${city.name} steigt die Nachfrage spürbar — lokale Fachbetriebe berichten von ${sz === 'metropole' || sz === 'grossstadt' ? '30–50' : '10–20'} WP-Installationen pro Jahr. Wir verbinden Sie mit dem Betrieb, der Erfahrung mit Ihrem Gebäudetyp in ${city.name} hat.`,
           `Warum jetzt? Drei Gründe für den WP-Umstieg in ${city.name} in 2026: (1) KfW-Förderung bis 70% — historisch hoch, nicht garantiert auf Dauer. (2) GEG-Frist in ${city.name}: ${city.gegFrist.split('-').reverse().join('.')} — wer rechtzeitig plant, vermeidet den Ansturm kurz vor Fristende. (3) Gas wird durch den CO₂-Preis jedes Jahr teurer (2026: +${Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 55)} €/Jahr CO₂-Abgabe, 2030: +${Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 100)} €/Jahr). Die Wärmepumpe macht Sie unabhängig von fossilen Preisschwankungen.`,
+        ]
+      },
+      {
+        heading: `Schritt-für-Schritt-Wechsel von Gas zur Wärmepumpe in ${city.name}`,
+        paragraphs: [
+          `Schritt 1 — Entscheidung & Planung (Wochen 1–4 in ${city.name}): Sind Sie Selbstnutzer oder Vermieter? Das entscheidet über KfW-Bonus (Klima-Speed, Einkommensbonus). Lassen Sie einen Fachbetrieb ein unverbindliches Angebot erstellen (kostenlos). Fordern Sie mindestens 3 Angebote an, um die Marktpreise für ${city.name} zu kennen. Typischer Kostenrahmen: €18.000–26.000 (vor Förderung). Berechnen Sie Ihre Einsparung mit unserem Rechner: JAZ ${jaz} × Strompreis ${city.strompreis} ct/kWh = ca. €${wpKosten}/Jahr. Ersparnis gegenüber Gas: ca. €${ersparnis}/Jahr.`,
+          `Schritt 2 — Förderung sichern (Wochen 4–8): Stellen Sie den KfW-Antrag BEVOR Sie einen Liefervertrag unterschreiben. Der Antrag wird über das KfW-Zuschussportal gestellt (mit Registernum­mer und Kostenaufstellung des Handwerkers). Wartezeit für Bewilligung: 1–2 Wochen. Sie erhalten eine Zuwendungsbescheinigung. Erst danach darf der Installateur den Auftrag unterschreiben. In ${city.bundesland}: Prüfen Sie, ob Landesmittel (z.B. „${city.bundeslandFoerderung}") zusätzlich möglich sind — meist erst nach KfW-Bewilligung beantragbar.`,
+          `Schritt 3 — Installation & Inbetriebnahme (Wochen 8–20 in ${city.name}): Wartezeit für Installationstermin: ${sz === 'metropole' ? '4–8 Wochen' : sz === 'grossstadt' ? '6–10 Wochen' : '8–14 Wochen'} (die besten Betriebe sind weit im Voraus gebucht). Installation selbst: 1 Woche (3–5 Tage intensive Arbeit, danach Mess- und Einstellungs-Phase). Hydraulischer Abgleich, Elektro-Anbindung, Schallschutz sollten parallel laufen. Nach Fertigstellung: Abnahmebericht mit Messwerten (COP-Verifikation, Druck, Durchfluss). Sie sollten monatliche Verbrauchsdaten tracken — bei JAZ ${jaz} sollten die Stromkosten stabil bleiben.`,
+        ]
+      },
+      {
+        heading: `Mythen & Wahrheit: Wärmepumpen-Missverständnisse demystifiziert`,
+        paragraphs: [
+          `Mythos 1: „Wärmepumpen funktionieren nur bei Neubau mit niedriger Heizlast." FALSCH. In ${city.name} und allen Altbauten funktionieren WP hervorragend — mit Vorlauftemperaturen bis 55°C (moderne WP). Eine 120-m²-Altbau-Wohnung mit alten Heizkörpern und Einfach-Verglasung braucht zwar eine größere WP, aber das ist einfach dimensionierbar. Wichtig: Ein hydraulischer Abgleich ist Pflicht — damit arbeitet die WP effizient, nicht "verschwenderisch". Mythos 2: „WP sind zu laut und ärgern die Nachbarn." HALBWAHR in lauten Städten. Modern sind WP 35–50 dB(A) — leiser als ein Auto auf der Straße. In Wohngebieten mit Bäumen (wie in ${city.name} oft der Fall) sind Nachbarprobleme selten. In dicht bebauten Stadtgebieten können Schallschutzmaßnahmen nötig sein (€500–1.500). Inverter-WP sind im Teillastbetrieb deutlich leiser.`,
+          `Mythos 3: „Zusatzheizsystem ist eine Verschwendung und lauft ständig." FALSCH. Der Zusatzstab (2–3 kW elektrisch) sollte an max. 5–10 Tagen/Jahr laufen (nur an den extremst kalten Tagen um ${city.normAussentemp}°C in ${city.name}). Das ist nicht Verschwendung, sondern ökonomisch: Eine 10 kW-WP nur für 3–5 extreme Tage dimensionieren ist dumm — dann läuft sie 350 Tage im Jahr unterlastet. Ein kleiner Zusatzstab ist das intelligente Design. Mythos 4: „Kältemittel-Leckage ist ein großes Risiko." SELTEN. Moderne WP werden auf Leckdichtheit geprüft (DIN EN 378). In Deutschland gibt es ca. 2,5 Millionen installierte WP — statistische Leckquoten sind deutlich unter 1%/Jahr. Ein Leck zu reparieren kostet €200–500. Für ${city.name}: Wählen Sie einen zertifizierten Installateur, und Lecks sind minimal wahrscheinlich.`,
+          `Mythos 5: „Strompreise sind zu volatil — Gas ist sicherer." FALSCH. Die größte Volatilität hatte Gas (2021–2023: +300%). Strompreise steigen kontinuierlich (+3–5% pro Jahr). Mit einem WP-Tarif (ca. {{wpTarifPreis}} ct/kWh für WP-Strom bei den Stadtwerken in ${city.name}) sind Sie gegen Volatilität geschützt und machen sich unabhängig von Gaspreisschwankungen. Eine Gasheizung ist volatiler als eine WP mit stabilen Stromtarifen. Die WP ist damit auch eine finanzielle Versicherung gegen zukünftige Energiepreis-Schocks.`,
         ]
       },
     ],
@@ -1959,6 +2057,88 @@ export function getLaermschutzInfo(city: City): {
   };
 }
 
+// ── 26. METHODOLOGY EXPLAINER — VDI 4650 & DIN EN 12831 Standards ──────────────
+export function getMethodologyExplainer(city: City, keyword: Keyword, jaz: number): {
+  heading: string;
+  paragraphs: string[];
+  standards: Array<{ name: string; description: string }>;
+  disclaimer: string;
+} {
+  const hash = cityHash(city, 3, 500);
+  const heatingLoad = Math.round((city.normAussentemp * -1 + 21) * city.heizgradtage / 24 * 0.8);
+
+  // Variant 0: JAZ & Performance Methodology
+  if (hash === 0) {
+    return {
+      heading: `Berechnungsmethodologie: JAZ ${jaz} in ${city.name} nach VDI 4650`,
+      paragraphs: [
+        `Die Jahresarbeitszahl (JAZ) von ${jaz} ist das zentrale Leistungskriterium für Wärmepumpen in ${city.name}. Sie wird nach VDI 4650 berechnet: Wärmeerzeugung pro Jahr dividiert durch Stromaufwand. Bei ${city.normAussentemp}°C Auslegungstemperatur und durchschnittlichen Witterungsverhältnissen in ${city.name} (${city.heizgradtage} Heizgradtage) erreichen moderne Luft-Wasser-Wärmepumpen diese Effizienz zuverlässig. Eine JAZ von ${jaz} bedeutet: Pro kWh Strom erzeugt die Wärmepumpe ${jaz} kWh Heizwärme — wirtschaftlich und nachhaltig.`,
+        `Die Berechnung der JAZ nach VDI 4650 berücksichtigt alle Verbrauchskomponenten: Verdichterleistung, Regelung, Kältemittelzustand und Nebenaggregate. In ${city.name} mit durchschnittlicher Jahresaußentemperatur ${city.avgTemp}°C liegt die reale JAZ praktisch immer höher als die Auslegungs-JAZ, weil die Anlage über 90 % des Jahres bei günstigen Bedingungen läuft. Das ist der Grund, warum Wärmepumpen auch in rauen Klimazonen wirtschaftlich sind.`,
+        `KfW und BAFA orientieren sich bei der Förderung explizit an VDI 4650. Ohne Nachweis dieser Berechnung wird die Förderung nicht bewilligt. Unsere Fachbetriebe in ${city.name} arbeiten standardmäßig nach dieser Norm: Heizlastberechnung nach DIN EN 12831, Auslegung nach VDI 4650, hydraulischer Abgleich zur Optimierung der JAZ. So sichern Sie sich die volle staatliche Unterstützung.`,
+      ],
+      standards: [
+        { name: 'VDI 4650:2024', description: 'Berechnung und Bewertung der Jahresarbeitszahl für Wärmepumpen. Standard für JAZ-Nachweise in KfW/BAFA-Anträgen.' },
+        { name: 'DIN EN 12831-1:2017', description: 'Heizlastberechnung: Ermittlung der erforderlichen Heizleistung. Pflicht für KfW-Förderung und normgerechte Auslegung.' },
+        { name: 'KfW-Richtlinie 440/441', description: 'Förderstandard für Wärmepumpen: Mindest-JAZ abhängig von Außentemperatur und Gebäudeklasse.' },
+        { name: 'BAFA-Richtlinie 2024', description: 'Zuschussregelung mit JAZ-Anforderungen und Qualitätssicherung durch Fachbetrieb-Zertifizierung.' },
+      ],
+      disclaimer: `Die angegebenen Werte sind auf Basis öffentlich verfügbarer Klimadaten für ${city.name} und der VDI 4650-Methodik berechnet. Individuelle JAZ-Werte hängen von Gebäudezustand, Heizverteilung, Regelung und Installationsqualität ab. Für verbindliche Aussagen konsultieren Sie einen zertifizierten Fachbetrieb in ${city.name}.`,
+    };
+  }
+
+  // Variant 1: Local Climate & Heizgradtage Focus
+  if (hash === 1) {
+    return {
+      heading: `Klimagerechte Dimensionierung: ${city.name} nach DIN EN 12831`,
+      paragraphs: [
+        `${city.name} mit ${city.heizgradtage} Heizgradtagen pro Jahr liegt im ${city.bundesland.includes('Bayern') || city.bundesland.includes('Württemberg') ? 'südlichen' : city.bundesland.includes('Schleswig') || city.bundesland.includes('Mecklenburg') ? 'nördlichen' : 'mittleren'} Klima-Bereich Deutschlands. Die Heizlastberechnung nach DIN EN 12831 nutzt diese Daten, um die korrekte Wärmepumpen-Größe zu ermitteln. Die Auslegungsaußentemperatur ${city.normAussentemp}°C ist dabei entscheidend: Sie bestimmt, ob eine 8 kW oder 12 kW Wärmepumpe erforderlich ist — und damit auch den Energieverbrauch und die KfW-Förderung.`,
+        `In ${city.name} mit Durchschnittstemperatur ${city.avgTemp}°C läuft eine nach DIN EN 12831 dimensionierte Wärmepumpe die meiste Zeit des Jahres mit hoher Effizienz im Teillastbereich. Das ist günstiger als Überprovisioning: Niemand braucht eine 15 kW Wärmepumpe für eine Heizlast von 10 kW. Die DIN-konforme Auslegung optimiert die JAZ und reduziert Stromverbrauch sowie Lärmentwicklung. Besonders in dichter besiedelten Gebieten von ${city.name} ein großer Vorteil.`,
+        `Die Heizlastberechnung ist eine KfW-Pflicht und Grundlage der Effizienzklasse. Seriöse Fachbetriebe in ${city.name} werden Ihnen eine ausführliche Berechnung vor der Angebotsabgabe vorlegen. Das schützt Sie vor Übergröße, unsauberer Planung und späteren Reklamationen. Mit dieser Norm sichern Sie sich nicht nur die Förderung, sondern auch optimale Betriebsergebnisse über 20+ Jahre.`,
+      ],
+      standards: [
+        { name: 'DIN EN 12831-1:2017', description: 'Heizlastberechnung mit Klimadaten des Standorts (Außentemperatur, Heizgradtage).' },
+        { name: 'VDI 4650:2024', description: 'JAZ-Berechnung basierend auf Heizlast und Standort-Klimadaten.' },
+        { name: 'BAFA-Effizienzklassen', description: 'Einteilung nach DIN EN 12831 und örtlichen Klimaparametern (wie Heizgradtage).' },
+        { name: 'Hydraulischer Abgleich', description: 'Optimierung nach DIN EN 15125 zur Sicherung der Heizlastabdeckung in jedem Raum.' },
+      ],
+      disclaimer: `Die Heizgradtage von ${city.heizgradtage} und die Auslegungstemperatur ${city.normAussentemp}°C sind Richtwerte auf Basis langjähriger Messdaten. Extreme Winter oder sommerspezifische Schwankungen können individuelle Verbrauchswerte verändern. Die DIN EN 12831-Berechnung wird vom Fachbetrieb für Ihr konkretes Gebäude durchgeführt.`,
+    };
+  }
+
+  // Variant 2: Quality Assurance & Certification Focus
+  return {
+    heading: `Qualitätssicherung in ${city.name}: Zertifizierung nach VDI und BAFA`,
+    paragraphs: [
+      `Wärmepumpen-Installationen in ${city.name} müssen nach den Standards VDI 4650 und DIN EN 12831 zertifiziert sein — das ist keine Option, sondern Voraussetzung für KfW 440/441 und BAFA-Zuschüsse. Diese Standards sichern, dass die Wärmepumpe wirklich die berechnete JAZ von ${jaz} erreicht. Ohne fachgerechte Installation (hydraulischer Abgleich, Regeleinstellung, Dichtheitsprüfung) sinkt die reale JAZ schnell um 15–30 %. Unsere Fachbetriebe in ${city.name} sind geschult und zertifiziert, um diese Norm einzuhalten.`,
+      `Die BAFA und KfW beauftragen regelmäßig Kontrollen und Audits in ${city.name}: Sie prüfen, ob Installationen wirklich nach DIN EN 12831 berechnet wurden, ob die Heizlast korrekt ermittelt ist, und ob die Wärmepumpe sachgerecht dimensioniert wurde. Die Chancen stehen gut, dass Ihre Installation geprüft wird — deshalb lohnt sich die saubere Arbeit. Pfuscher riskieren Förderkürzung und Regressforderungen.`,
+      `Für Sie als Hausbesitzer in ${city.name} bedeutet das: Arbeiten Sie nur mit BAFA-zertifizierten Betrieben zusammen. Diese sind in der Liste der KfW registriert, haften für ihre Planung und können Sie bei Fragen zur Abwicklung unterstützen. Damit wird aus einer Einzelmaßnahme ein gesamter Prozess, der juristisch und energetisch sauber dokumentiert ist — Ihr Schutz und der Beweis des Werts Ihrer Investition.`,
+    ],
+    standards: [
+      { name: 'VDI 4650:2024', description: 'Zertifizierungsstandard für Wärmepumpen-Fachbetriebe und JAZ-Nachweise.' },
+      { name: 'DIN EN 12831-1:2017', description: 'Normgerechte Heizlastberechnung ist Zertifizierungs-Voraussetzung.' },
+      { name: 'BAFA-Zertifizierung', description: 'Betriebe müssen aktuell zertifiziert sein und Fortbildungen nachweisen.' },
+      { name: 'Hydraulischer Abgleich nach DIN EN 15125', description: 'Pflichtmaßnahme für die Gewährung der KfW-Förderung und JAZ-Sicherung.' },
+    ],
+    disclaimer: `Die aufgelisteten Standards gelten bundesweit und sind in ${city.name} genauso wie überall verbindlich. Fachbetriebe, die sich nicht an diese Standards halten, sind nicht BAFA-zertifiziert und können keine KfW-Förderung abwickeln. Prüfen Sie den Zertifizierungsstatus vor Auftragsvergabe.`,
+  };
+}
+
+export function getSectionTimestamps(): Record<string, string> {
+  return {
+    foerderung: 'April 2026',
+    kosten: 'März 2026',
+    technik: 'Februar 2026',
+    geg: 'April 2026',
+    installateur: 'März 2026',
+    wartung: 'Januar 2026',
+    garantie: 'Februar 2026',
+    laermschutz: 'März 2026',
+    finanzierung: 'April 2026',
+    pvKombination: 'März 2026',
+    stromtarif: 'Februar 2026',
+  };
+}
+
 export function getExtendedVariationData(
   city: City,
   keyword: Keyword,
@@ -1999,5 +2179,7 @@ export function getExtendedVariationData(
     caseStudy: getCaseStudy(city, keyword, jaz, wpKosten, ersparnis),
     gegCountdown: getGEGCountdown(city),
     laermschutzInfo: getLaermschutzInfo(city),
+    methodologyExplainer: getMethodologyExplainer(city, keyword, jaz),
+    sectionTimestamps: getSectionTimestamps(),
   };
 }

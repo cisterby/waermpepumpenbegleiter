@@ -7,7 +7,7 @@ import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo, getSectionTimestamps, getMethodologyExplainer } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -222,6 +222,12 @@ export default function GenericTemplate({
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   const bundeslandText = getBundeslandParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+
+  // E-E-A-T: section timestamps & methodology
+  const extendedData = {
+    sectionTimestamps: getSectionTimestamps(),
+    methodologyExplainer: getMethodologyExplainer(city, keyword, jaz),
+  };
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
@@ -352,6 +358,7 @@ export default function GenericTemplate({
                 { label: `PV + Wärmepumpe Kombination`, id: 'pv-kombination' },
                 { label: `Heizkörper-Check`, id: 'heizkoerper' },
                 { label: `Regionaler Vergleich`, id: 'vergleich' },
+                { label: `Methodik & Datenquellen`, id: 'methodik' },
                 { label: `FAQ — Häufige Fragen`, id: 'faq' },
               ].map((item, i) => (
                 <li key={i}>
@@ -414,14 +421,28 @@ export default function GenericTemplate({
           ))}
                     {/* Bundesland & Gebäudekontext */}
           <div className="space-y-4">
-            <h2 id="bundesland" className="text-2xl font-bold text-gray-900">Wärmepumpe in {city.bundesland} — {city.name} im Fokus</h2>
+            <div className="flex items-start justify-between gap-4">
+              <h2 id="bundesland" className="text-2xl font-bold text-gray-900">Wärmepumpe in {city.bundesland} — {city.name} im Fokus</h2>
+              {extendedData?.sectionTimestamps?.bundesland && (
+                <span className="inline-flex items-center gap-1 text-xs text-[#3DA16A] bg-[#E8F5E9] px-2 py-0.5 rounded-full whitespace-nowrap">
+                  ✓ Aktualisiert: {extendedData.sectionTimestamps.bundesland}
+                </span>
+              )}
+            </div>
             <p className="text-[#4A6358] leading-relaxed">{bundeslandText}</p>
             <p className="text-[#4A6358] leading-relaxed">{gebaeudeText}</p>
           </div>
 
           {/* Energie & Wirtschaftlichkeit Deep-Dive */}
           <div className="space-y-4">
-            <h2 id="energiekosten" className="text-2xl font-bold text-gray-900">Energiekosten-Analyse für {city.name}</h2>
+            <div className="flex items-start justify-between gap-4">
+              <h2 id="energiekosten" className="text-2xl font-bold text-gray-900">Energiekosten-Analyse für {city.name}</h2>
+              {extendedData?.sectionTimestamps?.energiekosten && (
+                <span className="inline-flex items-center gap-1 text-xs text-[#3DA16A] bg-[#E8F5E9] px-2 py-0.5 rounded-full whitespace-nowrap">
+                  ✓ Aktualisiert: {extendedData.sectionTimestamps.energiekosten}
+                </span>
+              )}
+            </div>
             <p className="text-[#4A6358] leading-relaxed">{energieText}</p>
             {/* Vergleichstabelle */}
             <div className="overflow-x-auto">
@@ -558,7 +579,14 @@ export default function GenericTemplate({
 
           {/* ── PV + Wärmepumpe Kombination ── */}
           <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-5">
-            <h2 id="pv-kombination" className="text-xl font-bold text-[#1A4731]">{pvWP.title}</h2>
+            <div className="flex items-start justify-between gap-4">
+              <h2 id="pv-kombination" className="text-xl font-bold text-[#1A4731]">{pvWP.title}</h2>
+              {extendedData?.sectionTimestamps?.pvKombination && (
+                <span className="inline-flex items-center gap-1 text-xs text-[#3DA16A] bg-[#E8F5E9] px-2 py-0.5 rounded-full whitespace-nowrap">
+                  ✓ Aktualisiert: {extendedData.sectionTimestamps.pvKombination}
+                </span>
+              )}
+            </div>
             {pvWP.paragraphs.map((p, i) => (
               <p key={i} className="text-[#4A6358] text-sm leading-relaxed">{p}</p>
             ))}
@@ -575,7 +603,14 @@ export default function GenericTemplate({
 
           {/* ── Heizkörper-Kompatibilitäts-Check ── */}
           <div className="space-y-4">
-            <h2 id="heizkoerper" className="text-xl font-bold text-[#1A4731]">{heizkoerper.title}</h2>
+            <div className="flex items-start justify-between gap-4">
+              <h2 id="heizkoerper" className="text-xl font-bold text-[#1A4731]">{heizkoerper.title}</h2>
+              {extendedData?.sectionTimestamps?.heizkoerper && (
+                <span className="inline-flex items-center gap-1 text-xs text-[#3DA16A] bg-[#E8F5E9] px-2 py-0.5 rounded-full whitespace-nowrap">
+                  ✓ Aktualisiert: {extendedData.sectionTimestamps.heizkoerper}
+                </span>
+              )}
+            </div>
             <p className="text-[#4A6358] text-base leading-relaxed">{heizkoerper.paragraph}</p>
             <div className="grid gap-2">
               {heizkoerper.checklist.map((item, i) => (
@@ -603,7 +638,14 @@ export default function GenericTemplate({
           {/* ── Nachbarschaftsvergleich ── */}
           {nearby.length > 0 && (
             <div className="space-y-4">
-              <h2 id="vergleich" className="text-xl font-bold text-[#1A4731]">Regionaler Vergleich: {city.name} vs. Umland</h2>
+              <div className="flex items-start justify-between gap-4">
+                <h2 id="vergleich" className="text-xl font-bold text-[#1A4731]">Regionaler Vergleich: {city.name} vs. Umland</h2>
+                {extendedData?.sectionTimestamps?.vergleich && (
+                  <span className="inline-flex items-center gap-1 text-xs text-[#3DA16A] bg-[#E8F5E9] px-2 py-0.5 rounded-full whitespace-nowrap">
+                    ✓ Aktualisiert: {extendedData.sectionTimestamps.vergleich}
+                  </span>
+                )}
+              </div>
               <p className="text-[#4A6358] text-base leading-relaxed">{nachbarVergleich.paragraph}</p>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm border-collapse">
@@ -812,6 +854,28 @@ export default function GenericTemplate({
               <p className="text-[#4A6358] text-sm leading-relaxed">{faqs[0].a}</p>
             </div>
           )}
+
+          {/* ── Methodik & Datenquellen ── */}
+          {extendedData?.methodologyExplainer && (
+            <section className="bg-gradient-to-br from-[#F0FDF4] to-white rounded-2xl border border-[#BBF7D0] p-6 lg:p-8 mb-8">
+              <h2 id="methodik" className="font-heading font-bold text-[#1C2B2B] text-xl lg:text-2xl mb-4">
+                {extendedData.methodologyExplainer.heading}
+              </h2>
+              {extendedData.methodologyExplainer.paragraphs.map((p, i) => (
+                <p key={i} className="text-[#4A6358] text-sm leading-relaxed mb-3">{p}</p>
+              ))}
+              <div className="grid sm:grid-cols-2 gap-3 mt-4">
+                {extendedData.methodologyExplainer.standards.map((s, i) => (
+                  <div key={i} className="bg-white rounded-lg p-3 border border-gray-200">
+                    <div className="font-semibold text-[#1C2B2B] text-xs mb-1">{s.name}</div>
+                    <div className="text-[#7A9E8E] text-xs">{s.description}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[#7A9E8E] text-xs mt-4 italic">{extendedData.methodologyExplainer.disclaimer}</p>
+            </section>
+          )}
+
           {/* FAQ */}
           <h2 id="faq" className="font-bold text-[#1C2B2B] mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
             {h2s.faq}

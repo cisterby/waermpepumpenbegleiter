@@ -71,13 +71,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Add meta description variation based on city characteristics to fight SERP duplication
   const klimaZone = getKlimaZone(city);
-  const hash = cityHash(city, 4);
+  const citySize = getCitySize(city);
+  const hash = cityHash(city, 10);
+
+  // Population-based descriptor
+  const populationDesc = city.einwohner >= 500000 ? 'Metropole'
+    : city.einwohner >= 100000 ? 'Großstadt'
+    : city.einwohner >= 50000 ? 'Stadt'
+    : city.einwohner >= 20000 ? 'Mittelstadt'
+    : 'Kleinstadt';
+
+  // Determine GEG timeline reference
+  const gegRef = 'GEG-konform bis 2045';
+
+  // Calculate WP cost percentage for variation
+  const wpCostPercent = Math.round((calc.ersparnis / (calc.wpKosten || 1)) * 100);
 
   const metaSuffixes = [
-    ` ✓ JAZ ${jaz} bei ${city.avgTemp}°C`,
-    ` ▸ ${city.heizgradtage} HGT · JAZ ${jaz}`,
-    ` | ${fmtEuro(Math.round(calc.ersparnis))} Ersparnis/Jahr`,
-    ` ✓ KfW ${foerd.gesamtSatz}% · ${klimaZone}-Klima`,
+    // Variation 1: JAZ + Temperature
+    ` ✓ JAZ ${jaz} bei ${city.avgTemp}°C · ${klimaZone}-Klima`,
+    // Variation 2: Heating degree days + efficiency
+    ` ▸ ${city.heizgradtage} HGT · JAZ ${jaz} · ${populationDesc}`,
+    // Variation 3: Annual savings + KfW subsidy
+    ` | Sparen Sie ${fmtEuro(Math.round(calc.ersparnis))}/Jahr · KfW ${foerd.gesamtSatz}%`,
+    // Variation 4: KfW subsidy + federal state + climate
+    ` ✓ KfW ${foerd.gesamtSatz}% in ${city.bundesland} · ${klimaZone}-Zone`,
+    // Variation 5: Operating costs + cost after subsidy
+    ` · Betriebskosten: ${Math.round(calc.wpKosten)}€/Jahr · Eigenanteil: ${Math.round(foerd.eigenanteil)}€`,
+    // Variation 6: Total investment + specific savings percentage
+    ` | Investition ${Math.round(foerd.foerderfaehigeBasis)}€ · ${wpCostPercent}% Kostenersparnis`,
+    // Variation 7: GEG deadline + location-specific detail
+    ` ✓ ${gegRef} in ${city.name} · ${populationDesc} mit JAZ ${jaz}`,
+    // Variation 8: Multi-factor combination with numeric specificity
+    ` · ${city.heizgradtage} HGT · Ersparnis ${fmtEuro(Math.round(calc.ersparnis))}/a · ${klimaZone}`,
+    // Variation 9: Bundesland focus with subsidy emphasis
+    ` · ${city.bundesland}: ${foerd.gesamtSatz}% Förderung · KfW-${foerd.gesamtSatz}%-Standards`,
+    // Variation 10: Annual costs breakdown
+    ` · WP-Betriebskosten: ${Math.round(calc.wpKosten)}€/Jahr vs. Altanlage · ${populationDesc}`,
   ];
 
   // Append variation and truncate to 160 chars max for meta description
