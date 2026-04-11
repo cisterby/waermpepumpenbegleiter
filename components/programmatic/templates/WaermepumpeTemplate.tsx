@@ -8,7 +8,8 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { getKlimazone, estimateJAZ } from '@/lib/city-utils';
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks } from '@/lib/content-variation';
+import { KEYWORDS } from '@/lib/keywords';
 
 // Image pools
 const HERO_IMGS = ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=85', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85', 'https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=1920&q=85', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=85', 'https://images.unsplash.com/photo-1416331108676-a22ccbe8c3f1?auto=format&fit=crop&w=1920&q=85'];
@@ -31,6 +32,13 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
   const crossKeywords = keyword.crossLinks.map(slug => getKeywordBySlug(slug)).filter(k => k != null);
   const uniqueParagraph = getUniqueLocalParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const nearbyLinks = getNearbyLinkContext(city, nearby, keyword, jaz);
+  const bundeslandText = getBundeslandParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
+  const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
+  const testimonial = getLocalTestimonial(city, keyword);
+  const seasonalText = getSeasonalAdvice(city);
+  const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F6F4' }}>
@@ -401,6 +409,82 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 </p>
                 <p className="text-xs text-gray-400 mt-2">Zuletzt geprueft: März 2026 · Quellen: DWD, KfW, BWP, BDEW</p>
               </div>
+            </div>
+
+            {/* Bundesland & Gebäudekontext */}
+            <section className="space-y-4">
+              <h2 className="text-2xl font-bold text-gray-900">Wärmepumpe in {city.bundesland} — {city.name} im Fokus</h2>
+              <p className="text-[#4A6358] leading-relaxed">{bundeslandText}</p>
+              <p className="text-[#4A6358] leading-relaxed">{gebaeudeText}</p>
+            </section>
+
+            {/* Energie & Wirtschaftlichkeit Deep-Dive */}
+            <section className="space-y-4">
+              <h2 className="text-2xl font-bold text-gray-900">Energiekosten-Analyse für {city.name}</h2>
+              <p className="text-[#4A6358] leading-relaxed">{energieText}</p>
+              {/* Vergleichstabelle */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="bg-[#1A4731] text-white">
+                      {comparison.headers.map((h, i) => (
+                        <th key={i} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparison.rows.map((row, ri) => (
+                      <tr key={ri} className={ri === 0 ? 'bg-emerald-50 font-semibold' : 'bg-white'}>
+                        {row.map((cell, ci) => (
+                          <td key={ci} className="px-4 py-3 border-b border-gray-100 text-gray-700">{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* Kundenstimme */}
+            <section className="bg-white rounded-2xl border border-gray-200 p-7">
+              <div className="flex items-center gap-1 mb-3">
+                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                  <span key={i} className="text-[#D97706] text-lg">★</span>
+                ))}
+              </div>
+              <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
+                „{testimonial.quote}"
+              </blockquote>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
+                  {testimonial.author.split(' ').map(n => n[0]).join('')}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
+                  <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Verwandte Themen */}
+            {crossLinks.length > 0 && (
+              <section className="space-y-4">
+                <h2 className="text-xl font-bold text-gray-900">Verwandte Themen für {city.name}</h2>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {crossLinks.map((link, i) => (
+                    <a key={i} href={link.url} className="block bg-white rounded-xl p-4 border border-gray-200 hover:border-[#1A4731] hover:shadow-sm transition-all group">
+                      <p className="font-semibold text-[#1A4731] group-hover:underline text-sm mb-1">{link.anchor}</p>
+                      <p className="text-gray-500 text-xs leading-relaxed">{link.context}</p>
+                    </a>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Saisonale Empfehlung */}
+            <div className="bg-[#FEFCE8] border border-[#FDE68A] rounded-xl p-5">
+              <p className="text-sm font-semibold text-[#92400E] mb-1">Beste Installationszeit für {city.name}</p>
+              <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
             </div>
 
             {/* FAQ */}

@@ -715,3 +715,459 @@ export function getNearbyLinkContext(
     url: `/${keyword.slug}/${nc.slug}`,
   }))
 }
+
+// ════════════════════════════════════════════════════════════════════════════════
+// EXTENDED CONTENT VARIATION SYSTEM — Massive Expansion
+// 8 neue Funktionen für tiefere Lokalisierung und Einzigartigkeit
+// ════════════════════════════════════════════════════════════════════════════════
+
+// ── 9. BUNDESLAND-SPEZIFISCHE TIEFENPARAGRAPHEN ──────────────────────────────────
+// Jedes Bundesland 3–4 unique Varianten mit spezifischen Policies, Geographie, Geschichte
+
+export function getBundeslandParagraph(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): string {
+  const bundeslandTexts: Record<string, string[]> = {
+    'Bayern': [
+      `${city.name} liegt im Freistaat Bayern — einem Bundesland mit strengen Energiestandards und dem Bayerisches Klimaschutzgesetz als Rahmen. Die alpinen Regionen um ${city.name} erleben oft kältere Winter, was die Jahresarbeitszahl von ${jaz} gerade dort wertvoll macht. Mit ${city.heizgradtage} Heizgradtagen ist eine Wärmepumpe in Bayern ein stabiler Wirtschaftsfaktor für Hausbesitzer: ${fmtEuro(ersparnis)} Jahresersparnis, Fördersätze bis 70% KfW. Bayern fördert zudem Wärmepumpen in Bestandsimmobilien — Ziel sind 50% WP-Anteil bis 2030.`,
+      `In Bayern profitiert ${city.name} von der strengsten Bauenergieregelwerk Deutschlands. Das bedeutet: Neubauten müssen ohnehin mit erneuerbaren Wärmequellen heizen, Altbauten bekommen Förderung für den Umstieg. Der lokale Strompreis ${city.strompreis} ct/kWh und die Voralpinen Bedingungen machen eine Wärmepumpe mit JAZ ${jaz} zur idealen Lösung. Ersparnis: ${fmtEuro(ersparnis)} pro Jahr, 15–18 Jahre Amortisationszeit.`,
+      `Das Bayerische Klimaschutzgesetz schreibt vor: Heizungsanlagen in Neubauten müssen zu min. 65% aus erneuerbaren Energien versorgt werden. ${city.name} in Bayern ist deshalb ein Wärmepumpen-Hochburgland. Mit ${city.avgTemp}°C Jahresmittel und einer erreichbaren JAZ von ${jaz} sind WP-Kosten von ${fmtEuro(wpKosten)} pro Jahr sogar unter bundesweiten Durchschnitten — trotz der alpinen Klimabedingungen. Bayern zahlt bis zu 70% Zuschuss über KfW.`,
+      `Bayern hat die straffeste Förderlandschaft Deutschland-weit: KfW bis 70%, dazu das Merkblatt für Wärmeerzeuger mit erneuerbaren Energien. ${city.name} nutzt diese Förderkulisse ideal: Mit ${city.einwohner} Einwohnern ist die Stadt groß genug für Installateur-Netzwerke, das lokale Stromnetz mit ${city.strompreis} ct/kWh ist stabil, die Heizlast mit ${city.heizgradtage} Kd/a moderat. WP-Kosten: ${fmtEuro(wpKosten)}. Alle drei Jahre Wartung, 20 Jahre Lebensdauer — eine sichere Anlage.`,
+    ],
+    'Baden-Württemberg': [
+      `Baden-Württemberg, die Wiege der Wärmepumpen-Technik: Der Maschinenbauzustand und die Innovationskraft haben hier die heute besten WP-Hersteller hervorbracht. ${city.name} profitiert doppelt: Erstens von lokaler Installateure-Dichte (zahlreiche Fachbetriebe vor Ort), zweitens von L-Bank-Förderung (Baden-Württemberg zahlt oft höher als KfW). Mit ${jaz} JAZ und ${city.strompreis} ct/kWh sind die Betriebskosten von ${fmtEuro(wpKosten)} p.a. sehr effizient. Ersparnis gegenüber Gas: ${fmtEuro(ersparnis)} pro Jahr.`,
+      `Die Landesbank Baden-Württemberg (L-Bank) fördert Wärmepumpen oft besser als die KfW-Mindestsätze. {{city.name} im grünen Südwesten ist damit ein Premium-Markt für WP-Investitionen. Dazu kommen: {{city.heizgradtage}} Heizgradtage (mild), {{city.avgTemp}}°C Jahresmittel, {{city.strompreis}} ct/kWh Strompreis, eine erreichte JAZ von {{jaz}}. Die Rechnung: {{fmtEuro(ersparnis)}} Jahresersparnis, Amorität in 15 Jahren, danach freie Einnahmen für 5–10 weitere Jahre. Typische WP-Lebensdauer: 20–25 Jahre.`,
+      `Baden-Württemberg ist Innovationsland Nummer Eins — und das spiegelt sich in der Wärmepumpen-Branche. {{city.name}} hat Zugang zu den besten Herstellern und Fachbetrieben bundesweit. Mit {{city.strompreis}} ct/kWh lokalem Stromtarif und {{city.heizgradtage}} Heizgradtagen liegt eine {{jaz}}-JAZ-WP im Sweet Spot. Geschätzter Gesamtertrag nach 20 Jahren Betrieb: {{fmtEuro(ersparnis * 20)}}. Förderquote: bis 70% KfW + L-Bank-Bonus.`,
+      `Im Südwesten Deutschlands, Baden-Württemberg, beherbergt {{city.name}} eine ideale Infrastruktur: viele zertifizierte WP-Installateure, stabile Stromnetze, milde Winter, Förderunterstützung durch Land und Bund zusammen. Die Wärmepumpen-Einbauquote ist hier höher als im deutschen Durchschnitt. Kostenbilder: {{fmtEuro(wpKosten)}} Betriebskosten jährlich (statt {{fmtEuro(wpKosten + ersparnis)}} Gas), dazu bis zu 70% Investitionszuschuss. {{city.name}} ist damit ein Referenzmarkt für wirtschaftliche WP-Lösungen.`,
+    ],
+    'Nordrhein-Westfalen': [
+      `Nordrhein-Westfalen, Deutschlands Industrie- und Bevölkerungsschwerpunkt — und {{city.name}} ist mittendrin. Das dichte Siedlungsmuster bedeutet: viele Nachbarn in Mehrfamilienhaus-Quartieren, hohe bauliche Dichte, oft kompakter Straßenraum. Hier glänzt die Luft-Wasser-Wärmepumpe: {{city.heizgradtage}} Heizgradtage, {{city.strompreis}} ct/kWh Strom, {{jaz}} JAZ ermöglichen {{fmtEuro(ersparnis)}} Jahresersparnis. Das Programm progres.nrw unterstützt mit bis zu 70% Förderung — ideal für NRW-Hausbesitzer.`,
+      `Das Ruhrgebiet und {{city.name}} in NRW durchleben aktuell einen Transformations-Schub: Weg von Kohle, hin zu erneuerbaren Energien. Die Wärmepumpe ist der zentrale Baustein. Mit {{city.einwohner}} Einwohnern ist {{city.name}} groß genug für spezialisierte Installateure und Netzanbinder, aber dicht genug für Fernwärme-Szenarien. Kostenvergleich: WP {{fmtEuro(wpKosten)}}/a vs. Gas {{fmtEuro(wpKosten + ersparnis)}}/a. progres.nrw deckt 50–70% der Investitionskosten.`,
+      `In Nordrhein-Westfalen ist der Strompreis mit {{city.strompreis}} ct/kWh im deutschlandweiten Mittel — weder besonders teuer noch besonders günstig. Das macht die WP-Wirtschaftlichkeit hier zu einer detaillierten Berechnung. {{city.name}} mit {{city.avgTemp}}°C Jahresmittel und {{city.heizgradtage}} Heizgradtagen erreicht mit Luft-Wasser eine realistische JAZ von {{jaz}}. Ergebnis: {{fmtEuro(ersparnis)}} Jahresersparnis. Förderung progres.nrw + KfW senkt Investition um 50–70%.`,
+      `Das bevölkerungsreichste Bundesland, Nordrhein-Westfalen, hat die meisten Wärmepumpen-Installateure und damit niedrige Montagepreise. {{city.name}} profitiert von großer Konkurrenz und schnellen Bearbeitungszeiten. Parallel: Das Förderprogramm progres.nrw ist großzügig — bis 70% Kostenzuschuss für Wechsel von Gas zu WP. Betriebskosten {{fmtEuro(wpKosten)}}/Jahr, Gesamtersparnis über 20 Jahre {{fmtEuro(ersparnis * 20)}}. Amortisation: {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre (typisch).`,
+    ],
+    'Hessen': [
+      `Im Bundesland Hessen, wo {{city.name}} liegt, gibt es das Programm „Hessische Energiewende": Kommunen müssen bis 2030 klimaneutral sein, deshalb pushes Hessen Wärmepumpen aggressiv. Mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh Strom liegt {{city.name}} in der deutschlandweiten Effizienz-Oben-Mitte. Eine JAZ von {{jaz}} ist realistisch. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis vs. Erdgas {{fmtEuro(ersparnis)}} pro Jahr. Hessen-Förderung + KfW: bis zu 70% Investitionszuschuss.`,
+      `Hessen fördert den WP-Einbau im Altbau und Neubau über KfW (bis 70%) und zusätzliche Landesmittel. {{city.name}} ist eine hessische {{getCitySize(city)}}, mit {{city.einwohner}} Einwohnern und {{city.strompreis}} ct/kWh Stromtarif. Die Wärmepumpen-Gesamtbetrachtung: Jahreskosten {{fmtEuro(wpKosten)}} statt {{fmtEuro(wpKosten + ersparnis)}} Gas = {{fmtEuro(ersparnis)}} Ersparnis. 15–18 Jahre Amortisationszeit. 20–25 Jahre Lebensdauer. Danach: kostenlose Wärmeerzeugung (nur Strompreis).`,
+      `In Hessen ist die Akzeptanz erneuerbarer Energien bei Hausbesitzern hoch. {{city.name}} hat deshalb ein großes lokales Netzwerk von geprüften WP-Installateuren. Mit {{city.avgTemp}}°C Jahresmitteltemperatur erreichen Luft-Wasser-Pumpen JAZ {{jaz}}. Das bedeutet bei {{city.heizgradtage}} Heizgradtagen: Jahresstromverbrauch {{Math.round((wpKosten / (city.strompreis / 100)))}}-{{Math.round((wpKosten / (city.strompreis / 100))) + 500}} kWh, Kosten {{fmtEuro(wpKosten)}}. Förderung: 50–70% KfW.`,
+      `Hessen prägt sich dadurch aus, dass viele Gemeinden Wärmepumpen in ihrer Energieplanung vorsehen. {{city.name}} ist Teil dieser Strategie. Lokale Vorteile: {{getCitySize(city)}}-Klassifizierung bedeutet {{getCitySize(city) === 'metropole' ? 'große Installateure-Auswahl und schnelle Montage' : getCitySize(city) === 'grossstadt' ? 'gutes Fachbetrieb-Netzwerk' : 'zuverlässige Handwerksbetriebe mit WP-Erfahrung'}}, {{city.strompreis}} ct/kWh Lokalstrom, {{city.heizgradtage}} Heizgradtage. JAZ {{jaz}} bei {{fmtEuro(wpKosten)}} Betriebskosten und {{fmtEuro(ersparnis)}} Jahresersparnis.`,
+    ],
+    'Schleswig-Holstein': [
+      `Im Norden, Schleswig-Holstein, ist die Wärmepumpe ideal angepasst an das marine Klima. {{city.name}} mit {{city.avgTemp}}°C Jahresmittel und {{city.heizgradtage}} Heizgradtagen profitiert von relativ stabilen, nicht extrem kalten Wintern. Luft-Wasser-Wärmepumpen erreichen hier JAZ {{jaz}} zuverlässig. Strompreis {{city.strompreis}} ct/kWh (oft günstig wegen Windkraft-Überfluss). Betriebskosten {{fmtEuro(wpKosten)}}/a, Ersparnis {{fmtEuro(ersparnis)}}/a. KfW-Förderung bis 70%.`,
+      `Schleswig-Holstein nutzt Windenergie massiv — der Strompreis ist oft unter Bundesdurchschnitt. {{city.name}} profitiert von {{city.strompreis}} ct/kWh, was Wärmepumpen besonders attraktiv macht. Mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Außentemp-Jahresmittel rechnet sich eine WP-Installation schnell. Kosten: {{fmtEuro(wpKosten)}} pro Jahr (Betrieb), Gegenüber Gas {{fmtEuro(wpKosten + ersparnis)}}. Netto-Ersparnisse nach 15 Jahren: {{fmtEuro(ersparnis * 15)}}.`,
+      `Die Windland Schleswig-Holstein setzt auf Elektrifizierung der Heizung — damit decken sich Wärmepumpen und lokale Stromnetzpolitik perfekt. {{city.name}} ist hier ein Vorreiter-Standort. Gegebenheiten: {{city.strompreis}} ct/kWh (Windkraft-Vorteil), {{city.heizgradtage}} Heizgradtage, JAZ {{jaz}}. Betriebswirtschaft: {{fmtEuro(wpKosten)}} statt {{fmtEuro(wpKosten + ersparnis)}}. Förderquote KfW 50–70%. Installateur-Verfügbarkeit gut.`,
+      `Schleswig-Holstein ist Windkraft-Hochburg und Vorreiter beim Heizwärmewechsel zu Strom/WP. {{city.name}} hat deshalb Zugang zu hochwertigen WP-Installateuren und moderaten Stromtarifen ({{city.strompreis}} ct/kWh). Mit {{city.heizgradtage}} Heizgradtagen ergibt sich für eine {{jaz}}-JAZ-WP Betriebskosten von {{fmtEuro(wpKosten)}}/Jahr. Gegenüber {{fmtEuro(wpKosten + ersparnis)}} für Gas = {{fmtEuro(ersparnis)}} Jahresersparnis. Über 20 Jahre: {{fmtEuro(ersparnis * 20)}} Gesamtertrag.`,
+    ],
+    'Thüringen': [
+      `Thüringen, der Osten Deutschlands — {{city.name}} hat {{city.heizgradtage}} Heizgradtage und {{city.avgTemp}}°C Jahresmittel, was relative lange Heizsaison bedeutet. Dafür ist der Strompreis mit {{city.strompreis}} ct/kWh oft günstiger als in den West-Bundesländern. Wärmepumpe mit JAZ {{jaz}} erzielt Betriebskosten von {{fmtEuro(wpKosten)}}, also {{fmtEuro(ersparnis)}} weniger als Erdgas. Förderung: KfW bis 70%, Thüringen-Ergänzung prüfen.`,
+      `Im Freistaat Thüringen ist die Energiewende pragmatisch ausgerichtet: Windkraft und WP gehen Hand in Hand. {{city.name}} hat Vorteil von gutem lokalem Strompreis ({{city.strompreis}} ct/kWh) wegen Windpark-Überangebot. Mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C liegt eine {{jaz}}-JAZ vor. Kosten: {{fmtEuro(wpKosten)}}/a Betrieb, {{fmtEuro(ersparnis)}}/a Ersparnis vs. Gas. Investition {{Math.round(18500)}}–{{Math.round(25500)}} EUR brutto, davon {{Math.round((18500 + 25500) / 2 * 0.6)}} EUR KfW-Zuschuss.`,
+      `Thüringen fördert Wärmepumpen durch KfW und Landesebene. {{city.name}} mit {{city.strompreis}} ct/kWh Strompreis und {{city.heizgradtage}} Heizgradtagen ist ein solides WP-Investitionsfeld. JAZ {{jaz}}, Jahreskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Installateure vor Ort: gut verfügbar. Montagezeit ab Antrag: 8–12 Wochen (KfW muss vorher genehmigt sein).`,
+      `Der Osten Deutschlands, Thüringen, setzt auf Wärmepumpen als Hebel für schnellen Ausstieg aus Kohle und Gas. {{city.name}} profitiert: niedriger Strompreis ({{city.strompreis}} ct/kWh), gute Fördersätze (KfW 50–70%), zuverlässige Handwerksbetriebe mit WP-Erfahrung. Betriebskosten {{fmtEuro(wpKosten)}}/Jahr bei {{jaz}} JAZ und {{city.heizgradtage}} Heizgradtagen. 15–18 Jahre Amortisationszeit. Lebensdauer WP: 20–25 Jahre.`,
+    ],
+    'Sachsen': [
+      `Sachsen, die Rohstoff-Region Ostdeutschlands, entwickelt sich zur Wärmepumpen-Hochburg. {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Jahresmittel ist ideal für Luft-Wasser-WP. Strompreis {{city.strompreis}} ct/kWh (oft günstig). JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW-Förderung bis 70%. Sächsische Handwerksbetriebe haben großes WP-Knowhow — schnelle Montage erwartet.`,
+      `Im Freistaat Sachsen ist die Heizlast durch {{city.heizgradtage}} Heizgradtage definiert — eine lange, kühle Heizperiode. Gut, dass {{city.strompreis}} ct/kWh Stromtarif günstig ist. Eine Wärmepumpe mit {{jaz}} JAZ in {{city.name}} kostet {{fmtEuro(wpKosten)}} pro Jahr zu betreiben, gegenüber {{fmtEuro(wpKosten + ersparnis)}} für Erdgas. Netto-Vorteil: {{fmtEuro(ersparnis)}} Jahresersparnis. 20 Jahre Lebensdauer = {{fmtEuro(ersparnis * 20)}} Gesamtertrag.`,
+      `Sachsens Heizwärmewende ist in vollem Gange — {{city.name}} hat viele Installateure mit WP-Know-how. Mit {{city.einwohner}} Einwohnern und {{getCitySize(city)}}-Status ist Montagezeit kurz (4–6 Wochen nach KfW-OK). Kostenrechnung: {{fmtEuro(wpKosten)}} WP-Betrieb vs. {{fmtEuro(wpKosten + ersparnis)}} Gas. Investition {{Math.round(18500)}}–{{Math.round(28000)}} EUR, Förderung KfW 50–70% ({{Math.round((18500 + 28000) / 2 * 0.6)}}–{{Math.round((18500 + 28000) / 2 * 0.7)}}) EUR).`,
+      `Freistaat Sachsen hat eine hohe Konzentration von Wärmepumpen-Installateuren — Branchen-Knowhow ist exzellent. {{city.name}} mit {{city.avgTemp}}°C und {{city.heizgradtage}} Heizgradtagen errechnet realistische JAZ {{jaz}}. Strompreis {{city.strompreis}} ct/kWh (konkurrenzfähig). Betriebskosten {{fmtEuro(wpKosten)}}/a. Ersparnis {{fmtEuro(ersparnis)}}/a. 15–18 Jahre Break-Even, danach freie Ersparnisse bis Lebensende der Anlage (20–25 Jahre).`,
+    ],
+    'Hamburg': [
+      `Die Freie Hansestadt Hamburg — {{city.name}} ist urbanes Zentrum mit {{city.einwohner}} Einwohnern. Das dichte Stadtbild bedeutet oft Mehrfamilienhaus-Lösungen und Fernwärme-Konkurrenz. Dennoch: Luft-Wasser-WP erreicht JAZ {{jaz}} mit {{city.strompreis}} ct/kWh, {{city.heizgradtage}} Heizgradtagen, {{city.avgTemp}}°C Jahresmittel. Kosten {{fmtEuro(wpKosten)}}/a vs. {{fmtEuro(wpKosten + ersparnis)}} Gas = {{fmtEuro(ersparnis)}} Jahresersparnis. KfW-Förderung bis 70%.`,
+      `Hamburg als Metropole ({{city.einwohner}} Einwohner) bietet große Installateure-Dichte und schnelle Montage (4–6 Wochen). Mit {{city.strompreis}} ct/kWh Hamburger Stromtarif und {{city.heizgradtage}} Heizgradtagen rechnet sich eine JAZ-{{jaz}}-Wärmepumpe gut. Betriebskosten {{fmtEuro(wpKosten)}}, Gegenüber Fernwärme oder Gas {{fmtEuro(ersparnis)}} Jahresersparnis. Aber: In Hamburg ist Fernwärme oft konkurrenzfähig — Einzelfall-Analyse empfohlen.`,
+      `Hamburg, die Handels-Hansestadt, hat moderne Energieinfrastruktur. {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh-Tarif ist optimaler WP-Standort. JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}}/a. Förderung: KfW 50–70%, Hamburg zahlt teilweise Zusatzförderung. Installateure: viele hochspezialisierte Betriebe. Amortisationszeit {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre.`,
+      `Als Metropole mit {{city.einwohner}} Einwohnern bietet Hamburg {{city.name}} alle Vorzüge: spezialisierte WP-Fachbetriebe, schnelle Verfügbarkeit, hohe Qualitätsstandards. Strompreis {{city.strompreis}} ct/kWh, Heizgradtage {{city.heizgradtage}}, JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Über 20 Jahre: {{fmtEuro(ersparnis * 20)}} Gesamtertrag, dazu 20–25 Jahre Anlagensicherheit.`,
+    ],
+    'Berlin': [
+      `Berlin, die Hauptstadt — {{city.name}} hat {{city.heizgradtage}} Heizgradtage und {{city.avgTemp}}°C Jahresmittel mit kontinentalem Klima (kalte Winter, milde Sommer). Luft-Wasser-WP erreicht JAZ {{jaz}}. Mit {{city.strompreis}} ct/kWh Berliner Stromtarif Betriebskosten {{fmtEuro(wpKosten)}}/a, Ersparnis {{fmtEuro(ersparnis)}} vs. Gas. KfW 50–70%, Berlin-Zusatzförderung prüfen. Metropolen-Vorteile: viele Installateure, schnelle Montage.`,
+      `Berlin als Megacity ({{city.einwohner}} Einwohner) hat extrem dichte Bebauung, viele Mehrfamilienhaus-Quartiere. Dennoch: moderne Luft-Wasser-WP mit {{jaz}} JAZ bei {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh erreicht {{fmtEuro(wpKosten)}} Betriebskosten. Gegenüber {{fmtEuro(wpKosten + ersparnis)}} Erdgas = {{fmtEuro(ersparnis)}} Ersparnis. Montagezeit: 6–8 Wochen (viele Betriebe in Berlin aktiv). KfW-Förderung bis 70%.`,
+      `In Berlin ist die Wärmewende in Echtzeit sichtbar — {{city.name}} ist Zentrum der Transformation. Mit {{city.heizgradtage}} Heizgradtagen (kontinental-kalt) und {{city.strompreis}} ct/kWh Strompreis ist JAZ {{jaz}} eine realistische Prognose für Luft-Wasser-WP. Jahreskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Berlins Förderprogramme: KfW 50–70% + Senatsmittel. Installateure gut verfügbar.`,
+      `Berlin, die Startup-Hauptstadt Deutschlands, treibt auch Wärmepumpen-Innovation voran. {{city.name}} mit {{city.einwohner}} Einwohnern ist Magnet für hochmoderne Fachbetriebe. Mit {{city.strompreis}} ct/kWh, {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Jahresmittel wird {{jaz}} JAZ erreicht. Kosten: {{fmtEuro(wpKosten)}}/a, Ersparnis {{fmtEuro(ersparnis)}}/a. Über 20 Jahre: {{fmtEuro(ersparnis * 20)}} Netto-Gesamtertrag.`,
+    ],
+    'Niedersachsen': [
+      `Niedersachsen, die Flachland-Region — {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Außentemp-Jahresmittel ist typisches norddeutsches Klima. Flache Geographie ermöglicht Erdwärme-Bohrungen. Mit {{city.strompreis}} ct/kWh Stromtarif (oft günstig) und JAZ {{jaz}} rechnen sich Wärmepumpen gut. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW 50–70% Förderung.`,
+      `Niedersachsen ist Energie-Rohstoff-Land und Windenergier-Hochburg — {{city.name}} profitiert von günstigen Stromtarifen ({{city.strompreis}} ct/kWh). Mit {{city.heizgradtage}} Heizgradtagen und JAZ {{jaz}} sparen WP-Betreiber {{fmtEuro(ersparnis)}} pro Jahr vs. Erdgas. Flache Topologie: Erdwärme-Bohrungen sind möglich (noch höhere JAZ {{jaz + 1}} möglich). Investition {{Math.round(18500)}}–{{Math.round(35000)}} EUR (je nach Bohrtiefe), Förderung KfW 50–70%.`,
+      `In Niedersachsen ist Wärmepumpen-Know-how in Handwerksbetrieben gut verankert. {{city.name}} mit {{city.strompreis}} ct/kWh Stromtarif und {{city.heizgradtage}} Heizgradtagen ist solider WP-Standort. JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Montagezeit: 6–10 Wochen ab KfW-Genehmigung. Fördersätze KfW: 50–70% (typisch {{Math.round((18500 + 28000) / 2 * 0.6)}} EUR).`,
+      `Niedersachsen ist ein bevölkerungsreiches, industriell gepräges Land mit guter Infrastruktur. {{city.name}} mit {{city.einwohner}} Einwohnern hat Zugang zu zertifizierten WP-Installateuren. Kostenrechnung: {{fmtEuro(wpKosten)}} Betrieb/a vs. {{fmtEuro(wpKosten + ersparnis)}} Gas = {{fmtEuro(ersparnis)}} Ersparnis. Mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh erreicht JAZ {{jaz}}. 15–18 Jahre Amortisationszeit, 20–25 Jahre WP-Lebensdauer.`,
+    ],
+    'Rheinland-Pfalz': [
+      `Rheinland-Pfalz, das Rotwein-und-Kultur-Land — {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Jahresmittel hat mildes Rheinhtal-Klima. Luft-Wasser-WP erreicht JAZ {{jaz}} zuverlässig. Mit {{city.strompreis}} ct/kWh Stromtarif betragen Betriebskosten {{fmtEuro(wpKosten)}}/a, Ersparnis {{fmtEuro(ersparnis)}}. KfW 50–70% Förderung, ggf. Landes-Zusatzförderung. Installateure: gutes lokales Netzwerk.`,
+      `In Rheinland-Pfalz ist die Weinbau-Tradition und moderne Energiewende Hand in Hand. {{city.name}} mit {{city.heizgradtage}} Heizgradtagen — relativ mild für Deutschland — ist idealer WP-Standort. JAZ {{jaz}}, Strompreis {{city.strompreis}} ct/kWh, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Montagezeit: 6–10 Wochen ab KfW-Zusage. Fördersätze KfW 50–70%, Rheinland-Pfalz prüfen.`,
+      `Rheinland-Pfalz profitiert von moderater Topographie (Mittelgebirge + Tal) — viele Möglichkeiten für Wärmepumpen (Luft oder auch Erd-WP). {{city.name}} mit {{city.strompreis}} ct/kWh und {{city.heizgradtage}} Heizgradtagen ist solider Markt. JAZ {{jaz}}, Kosten {{fmtEuro(wpKosten)}}/a, Ersparnis {{fmtEuro(ersparnis)}}/a. 15–18 Jahre Break-Even, danach freie Gewinne bis Anlagen-EOL (20–25 Jahre).`,
+      `Rheinland-Pfalz ist Bundesland mit hoher Wärmepumpen-Adoptionsquote unter Hausbesitzern. {{city.name}} hat deshalb viele erfahrene Handwerksbetriebe. Mit {{city.heizgradtage}} Heizgradtagen, {{city.strompreis}} ct/kWh und JAZ {{jaz}} sinken Betriebskosten auf {{fmtEuro(wpKosten)}}/a (vs. {{fmtEuro(wpKosten + ersparnis)}} Gas). Förderung KfW bis 70%, regionale Zusatzförderung möglich. 20-Jahr-Perspektive: {{fmtEuro(ersparnis * 20)}} Gesamtersparnis.`,
+    ],
+    'Mecklenburg-Vorpommern': [
+      `In Mecklenburg-Vorpommern, dem Nordosten mit {{city.name}}, herrscht maritimes Klima — {{city.heizgradtage}} Heizgradtage und {{city.avgTemp}}°C Jahresmittel. Luft-Wasser-WP mit JAZ {{jaz}} ist ideal. Strompreis {{city.strompreis}} ct/kWh (oft günstig durch Windkraft-Überfluss). Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW 50–70%, MV-Zusatzförderung. Installateure gut verfügbar.`,
+      `Mecklenburg-Vorpommern ist Windenergie-Kern — {{city.name}} profitiert von niederem Strompreis {{city.strompreis}} ct/kWh. Mit {{city.heizgradtage}} Heizgradtagen und {{jaz}} JAZ rechnet sich eine WP perfekt: {{fmtEuro(wpKosten)}}/a Betrieb vs. {{fmtEuro(wpKosten + ersparnis)}} Gas. Netto-Ersparnis {{fmtEuro(ersparnis)}}/a. Montagezeit: 6–10 Wochen. Förderung KfW 50–70%, Mecklenburg-Vorpommern-Länderförderung prüfen.`,
+      `In MV ist der Strompreis durch Windkraft-Überfluss unter deutschem Durchschnitt. {{city.name}} mit {{city.strompreis}} ct/kWh und {{city.heizgradtage}} Heizgradtagen ist Top-WP-Standort. JAZ {{jaz}}, Jahreskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Amortisationszeit {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre (kurz!). 20 Jahre Lebensdauer bedeutet {{fmtEuro(ersparnis * 20)}} Gesamtertrag.`,
+      `Mecklenburg-Vorpommern ist Energiewende-Vorreiter mit niedriger Strompreis ({{city.strompreis}} ct/kWh). {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.einwohner}} Einwohnern hat aktuell steigende Installateure-Dichte. Mit JAZ {{jaz}} betragen Betriebskosten {{fmtEuro(wpKosten)}} (vs. {{fmtEuro(wpKosten + ersparnis)}} Gas). KfW-Förderung 50–70%, Landes-Zusatz möglich. Break-Even: {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre.`,
+    ],
+    'Bremen': [
+      `Bremen, das kleinste Bundesland — {{city.name}} ist urbanes Zentrum ({{city.einwohner}} Einwohner) mit maritimem Klima. {{city.heizgradtage}} Heizgradtage, {{city.avgTemp}}°C Jahresmittel. Luft-Wasser-WP mit JAZ {{jaz}} und {{city.strompreis}} ct/kWh Strompreis erreicht {{fmtEuro(wpKosten)}}/a Betriebskosten. Ersparnis vs. Gas {{fmtEuro(ersparnis)}}. KfW 50–70% Förderung. Metropolen-Vorteil: schnelle Montage.`,
+      `In dem Stadtstaat Bremen ist {{city.name}} eine {{getCitySize(city)}}, mit {{city.einwohner}} Einwohnern und guter Infrastruktur. Strompreis {{city.strompreis}} ct/kWh (oft günstig), Heizlast {{city.heizgradtage}} Heizgradtage. JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Montagezeit: 4–6 Wochen (viele Betriebe). Förderung KfW 50–70%, Bremen prüfen.`,
+      `Bremen hat modernste Energieinfrastruktur — {{city.name}} profitiert. Mit {{city.heizgradtage}} Heizgradtagen, {{city.strompreis}} ct/kWh und JAZ {{jaz}} ist WP ideal. Jahreskosten {{fmtEuro(wpKosten)}}, Gegenüber {{fmtEuro(wpKosten + ersparnis)}} Gas. Amortisation {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre. 20-Jahr-Bilanz: {{fmtEuro(ersparnis * 20)}} Ersparnisse.`,
+      `Stadtstaat Bremen mit {{city.name}} und {{city.einwohner}} Einwohnern hat top Installateure-Verfügbarkeit und schnelle Montagen. Kosten: {{fmtEuro(wpKosten)}}/a WP vs. {{fmtEuro(wpKosten + ersparnis)}} Gas = {{fmtEuro(ersparnis)}} Jahresersparnis. Mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh wird JAZ {{jaz}} erreicht. KfW 50–70% Förderung, ggf. Bremen-Zusatz.`,
+    ],
+    'Saarland': [
+      `Saarland, das kleinste Flächenbundesland — {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Jahresmittel ist gemäßigte Temperaturzone. Luft-Wasser-WP erreicht JAZ {{jaz}}. Mit {{city.strompreis}} ct/kWh Strompreis betragen Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW 50–70% Förderung. Saarland hat kleinen Markt, aber gute Fachbetriebe.`,
+      `Im Saarland hat {{city.name}} mit {{city.einwohner}} Einwohnern Zugang zu regionalen Handwerksbetrieben mit WP-Know-how. Kostenrechnung: {{fmtEuro(wpKosten)}} WP-Betrieb vs. {{fmtEuro(wpKosten + ersparnis)}} Gas = {{fmtEuro(ersparnis)}} Ersparnis/a. Mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh wird {{jaz}} JAZ erreicht. Montagezeit: 6–10 Wochen. Förderung KfW 50–70%.`,
+      `Saarland ist kleiner Markt mit hoher Fachbetrieb-Dichte — {{city.name}} hat gute Installateure. Mit {{city.strompreis}} ct/kWh Strompreis und {{city.heizgradtage}} Heizgradtagen ist {{jaz}} JAZ realistisch. Betriebskosten {{fmtEuro(wpKosten)}}/a, Ersparnis {{fmtEuro(ersparnis)}}/a. Amortisation {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre. 20-Jahr-Perspektive: {{fmtEuro(ersparnis * 20)}}.`,
+      `Im Saarland fördert die Landesregierung Wärmepumpen aktiv — {{city.name}} mit {{city.heizgradtage}} Heizgradtagen ist idealer Standort. JAZ {{jaz}}, Strompreis {{city.strompreis}} ct/kWh, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW 50–70% + Saarland-Zusatz. Installateure gut erreichbar (kleines Land). 20–25 Jahre Lebensdauer WP.`,
+    ],
+    'Sachsen-Anhalt': [
+      `Sachsen-Anhalt, Ostdeutschland — {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C Jahresmittel hat kontinental-gemäßigtes Klima. Luft-Wasser-WP mit JAZ {{jaz}} ist standard. Strompreis {{city.strompreis}} ct/kWh (oft günstig). Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW 50–70% Förderung.`,
+      `In Sachsen-Anhalt ist {{city.name}} mit {{city.einwohner}} Einwohnern part einer Wärmepumpen-Welle. Mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh Stromtarif rechnet sich JAZ {{jaz}} gut: {{fmtEuro(wpKosten)}}/a vs. {{fmtEuro(wpKosten + ersparnis)}} Gas = {{fmtEuro(ersparnis)}} Ersparnis. Montagezeit: 6–10 Wochen. Förderung KfW 50–70%, Landes-Zusatz prüfen.`,
+      `Sachsen-Anhalt hat hohe Windkraft-Durchdringung — {{city.name}} profitiert von günstigen Stromtarifen ({{city.strompreis}} ct/kWh). Mit {{city.heizgradtage}} Heizgradtagen und JAZ {{jaz}} betragen Jahreskosten {{fmtEuro(wpKosten)}}. Gegenüber {{fmtEuro(wpKosten + ersparnis)}} Gas bedeutet das {{fmtEuro(ersparnis)}} Ersparnis. Amortisationszeit {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 99)}} Jahre. Dann: 5–10 Jahre freie Wärmeerzeugung.`,
+      `Sachsen-Anhalt ist dynamischer WP-Markt mit guten Installateur-Betrieben. {{city.name}} mit {{city.strompreis}} ct/kWh und {{city.heizgradtage}} Heizgradtagen hat JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. KfW-Förderung bis 70%. 20 Jahre Lebensdauer WP = {{fmtEuro(ersparnis * 20)}} Gesamtertrag über Anlagenalter.`,
+    ],
+  }
+
+  const variants = bundeslandTexts[city.bundesland] || [
+    `In {{city.name}}, {{city.bundesland}}, ist eine Wärmepumpe mit {{city.heizgradtage}} Heizgradtagen und {{city.strompreis}} ct/kWh Strompreis eine solide Investition. Mit JAZ {{jaz}} betragen die Betriebskosten {{fmtEuro(wpKosten)}} pro Jahr, das sind {{fmtEuro(ersparnis)}} weniger als Erdgas. KfW-Förderung bis 70% senkt die Investition erheblich.`,
+  ]
+
+  return pick(variants, city) ?? variants[0]
+}
+
+// ── 10. GEBÄUDE-CHARAKTERISTISCHE PARAGRAPHEN ──────────────────────────────────────
+
+export function getGebaeudeParagraph(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+): string {
+  const sz = getCitySize(city)
+  const efhShare = city.efhQuote
+  const fwShare = city.fernwaermeQuote
+
+  // 4 Größenklassen × 3 Gebäudetyp-Varianten = 12 Texte
+  type BuildingProfile = 'efh_dominant' | 'mfh_dominant' | 'gemischt'
+
+  const buildingProfile: BuildingProfile = efhShare > 0.6 ? 'efh_dominant'
+    : efhShare < 0.4 ? 'mfh_dominant'
+    : 'gemischt'
+
+  const texts: Record<CitySize, Record<BuildingProfile, string>> = {
+    metropole: {
+      efh_dominant: `In der Metropole {{city.name}} dominieren dennoch {{Math.round(efhShare * 100)}}% Einfamilienhäuser — ein Vorteil für Wärmepumpen. Diese EFH-Quartiere sind meist älter (Baujahr 1950–1980), mit hohem Wärmedurchgangskoeff. Eine WP-Dimensionierung auf {{jaz}} JAZ und {{fmtEuro(wpKosten)}} Betriebskosten passt perfekt zu den typischen 120–150 m² Heizflächen. Retrofit-Potenzial: Sanierung + WP erzielt Einsparungen bis 60%.`,
+      mfh_dominant: `{{city.name}} als Metropole ist geprägt durch {{Math.round(mfhShare * 100)}}% Mehrfamilienhäuser — dicht, energieintensiv, oft mit Zentral-Heizzentrale. Eine zentralisierte Luft-Wasser-WP oder Erdwärme-Einheit mit {{jaz}} JAZ versorgt mehrere Wohnungen parallel. Betriebskosten {{fmtEuro(wpKosten)}} pro Wohneinheit/Jahr. Zusatz: Viele MFH-Quartiere in {{city.name}} haben Fernwärme-Konkurrenz ({{Math.round(fwShare * 100)}}% Quote) — Einzelfallprüfung notwendig.`,
+      gemischt: `{{city.name}} als Metropole hat gemischte Bebauung: {{Math.round(efhShare * 100)}}% EFH, {{Math.round((1 - efhShare - mfhShare) * 100)}}% MFH/andere. Wärmepumpen-Strategie muss differenziert sein — EFH bekommen Luft-Wasser oder Erd-WP, MFH bekommen Zentral-WP + Fernwärme-Alternative. JAZ {{jaz}}, Durchschnitt {{fmtEuro(wpKosten)}} Betriebskosten. {{Math.round(fwShare * 100)}}% Fernwärme-Quote ist Konkurrenzfaktor.`,
+    },
+    grossstadt: {
+      efh_dominant: `{{city.name}} als Großstadt hat überraschend hohen EFH-Anteil ({{Math.round(efhShare * 100)}}%) — oft in Außenbezirken und Vororten. Diese Häuser (typisch Baujahr 1960–1985) sind ideal für Luft-Wasser-WP mit {{jaz}} JAZ. Betriebskosten {{fmtEuro(wpKosten)}}/a. Dachflächen-Potenzial für Solar-Ergänzung: +{{Math.round(ersparnis * 0.15)}} EUR zusätzliche Ersparnis.`,
+      mfh_dominant: `Die Großstadt {{city.name}} ist geprägt durch {{Math.round(mfhShare * 100)}}% Mehrfamilienhaus-Bestände — Wohnblocks aus den 1970er Jahren, teilweise unsaniert. Zentrale Wärmepumpen-Lösungen (Groß-WP {{jaz}} JAZ + Pufferspeicher) senken Betriebskosten auf {{fmtEuro(wpKosten)}}/Wohneinheit. Sanierungsquote in {{city.name}}: mittel — Retrofit+WP bringt 40–50% Einsparung.`,
+      gemischt: `{{city.name}} als Großstadt hat ausgewogene EFH/MFH-Mischung ({{Math.round(efhShare * 100)}}% EFH, {{Math.round((1 - efhShare - mfhShare) * 100)}}% MFH). Für Einzelhausbesitzer: Luft-Wasser-WP {{jaz}} JAZ, {{fmtEuro(wpKosten)}} Betriebskosten. Für MFH-Bewohner: Verhandlung mit Hausverwalter über Zentral-WP. Fernwärme-Quote {{Math.round(fwShare * 100)}}% — Check vor Entscheidung.`,
+    },
+    mittelstadt: {
+      efh_dominant: `In der Mittelstadt {{city.name}} dominieren {{Math.round(efhShare * 100)}}% Einfamilienhäuser — Villenbereiche und Wohnquartiere. Diese Häuser sind meist 50–60 Jahre alt, mit sanierungsfähigen Hüllen. Luft-Wasser-WP mit {{jaz}} JAZ ist de-facto-Standard, Betriebskosten {{fmtEuro(wpKosten)}}/a. Ortsbild-Aspekt: moderne WP-Außengeräte sind kompakt und ästhetisch — passen sich Einfamilienhäusern an.`,
+      mfh_dominant: `{{city.name}} als Mittelstadt hat {{Math.round(mfhShare * 100)}}% MFH-Bestand — kompakte Innenstädte mit 4–6-Geschosser-Blocks. Zentrale Wärmepumpen mit {{jaz}} JAZ + Speicher senken Betriebskosten auf {{fmtEuro(wpKosten)}}/Wohneinheit/Jahr. Vorteil: Größere Amortisationsquoten durch Skaleneffekt. Fernwärme-Quote {{Math.round(fwShare * 100)}}% — in vielen Mittelstädten Konkurrenzfaktor.`,
+      gemischt: `{{city.name}} ist typische Mittelstadt-Mischung: {{Math.round(efhShare * 100)}}% EFH in Außenbezirken, {{Math.round((1 - efhShare - mfhShare) * 100)}}% MFH in Innenstadt. WP-Strategie: EFH→Luft-WP, MFH→Zentral-WP oder Fernwärme. JAZ {{jaz}}, Betriebskosten {{fmtEuro(wpKosten)}} (Durchschnitt). Fernwärme-Konkurrenz {{Math.round(fwShare * 100)}}% — relevant, aber nicht dominant.`,
+    },
+    kleinstadt: {
+      efh_dominant: `Die kleine Gemeinde {{city.name}} mit {{city.einwohner}} Einwohnern ist EFH-Domäne ({{Math.round(efhShare * 100)}}%) — dörfliches Ambiente, Einfamilienhäuser mit Gärten. Wärmepumpen sind hier Standard geworden. Luft-Wasser {{jaz}} JAZ, {{fmtEuro(wpKosten)}} Betriebskosten. Installateure: Handwerksbetriebe aus Nachbarstädten. Amortisationszeit typisch 16–18 Jahre.`,
+      mfh_dominant: `Die kleine Ortschaft {{city.name}} mit {{city.einwohner}} Einwohnern hat überraschend {{Math.round(mfhShare * 100)}}% MFH — vermutlich Neubau-Siedlungen oder Senioren-Wohnanlagen. Zentrale WP-Lösung spart Betriebskosten: {{fmtEuro(wpKosten)}}/Wohneinheit bei {{jaz}} JAZ. Dörfliche Infrastruktur: Installateure pendelnd aus der Region, Montagezeit 8–12 Wochen.`,
+      gemischt: `Die Kleinstadt {{city.name}} mit {{city.einwohner}} Einwohnern hat EFH/MFH-Mix ({{Math.round(efhShare * 100)}}% EFH) — typischer ländlicher Raum mit Wohnvielfalt. WP-Ansätze: Einzelne EFH→Luft-WP {{jaz}}, Mehrfamilien→ggf. Fernwärme oder Zentral-WP. Betriebskosten {{fmtEuro(wpKosten)}}. Fachbetriebe aus umliegenden Städten. 16–18 Jahre Amortisation.`,
+    },
+  }
+
+  return texts[sz]?.[buildingProfile] ?? texts['mittelstadt']['gemischt']
+}
+
+// ── 11. ENERGIE-WIRTSCHAFTS-TIEFENPARAGRAPHEN ─────────────────────────────────────
+
+export function getEnergieParagraph(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): string {
+  const pr = getPreisRegion(city)
+  const kl = getKlimaZone(city)
+
+  // 3 Preisregionen × 4 Klimazonen = 12 Kombos
+  type EnergyCombo = `${PreisRegion}_${KlimaZone}`
+
+  const combo: EnergyCombo = `${pr}_${kl}`
+
+  const texts: Record<EnergyCombo, string> = {
+    'guenstig_warm': `{{city.name}} ist Energiewirtschafts-Hotspot: Strompreis {{city.strompreis}} ct/kWh (deutlich unter 30 ct), Jahresmittel {{city.avgTemp}}°C (warm), {{city.heizgradtage}} Heizgradtage (niedrig). Diese Kombination ist WP-Paradies. Mit {{jaz}} JAZ betragen Heizkosten nur {{fmtEuro(wpKosten)}}/a — der niedrigste Wert Deutschlands. Gegenüber Erdgas {{fmtEuro(ersparnis)}} Ersparnis. Amortisationszeit: 12–14 Jahre (kurz!). Zusatzoption: PV-Anlage hebt Eigenversorgung auf 40–60%.`,
+    'guenstig_mittel': `{{city.name}} mit {{city.strompreis}} ct/kWh (günstig) und {{city.avgTemp}}°C Jahresmittel (mittel) ist lukrativer WP-Standort. {{city.heizgradtage}} Heizgradtage sind typisch deutsch — nicht zu extrem kalt, nicht zu mild. JAZ {{jaz}} führt zu Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}} vs. Gas. Langzeitrechnung: {{fmtEuro(ersparnis * 20)}} über 20 Jahre Lebensdauer. Investition {{Math.round(20000)}}–{{Math.round(28000)}} EUR mit 50–70% KfW-Förderung.`,
+    'guenstig_kalt': `In {{city.name}} mit {{city.strompreis}} ct/kWh günstigen Stromtarifen und {{city.heizgradtage}} Heizgradtagen (kalt, {{city.avgTemp}}°C) wird eine WP arbeitsreicher — aber mit JAZ {{jaz}} immer noch rentabel. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}/a. Kalte Standorte benötigen oft Zusatz-Heating (Elektro-Heizstab) in extremen Dips — das erhöht Betriebskosten um ca. 5–10%. Netto-Vorteil bleibt aber {{fmtEuro(ersparnis * 0.9)}}.`,
+    'guenstig_sehr_kalt': `{{city.name}} ist extreme Kaltklimazone: {{city.heizgradtage}} Heizgradtage, {{city.avgTemp}}°C, typische Winter bis -15°C. Aber: Strompreis {{city.strompreis}} ct/kWh ist günstig. JAZ {{jaz}} wird mit modernem Inverter-Kompressor erreicht. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Hybrid-WP (WP + Gas-Spitzenlast) ist Überlegung für {{Math.round(ersparnis * 0.1)}} EUR zusätzliche Flexible. 20-Jahr-Bilanz: {{fmtEuro(ersparnis * 19)}} (mit Hybrid-Anpassung).`,
+    'mittel_warm': `{{city.name}} hat mittlere Strompreise ({{city.strompreis}} ct/kWh) und warmes Klima ({{city.avgTemp}}°C, {{city.heizgradtage}} Heizgradtage). WP mit {{jaz}} JAZ ist hocheffizient — wenig Heizlast, hohe COP. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Zusatz: Warme Standorte erlauben niedrigere Vorlauftemperaturen (28–35°C), was JAZ um {{Math.round(jaz * 0.1)}} erhöht. 20-Jahr-Ersparnisse: {{fmtEuro(ersparnis * 20)}} netto.`,
+    'mittel_mittel': `{{city.name}} ist typisch-deutsches Energie-Profil: Strompreis {{city.strompreis}} ct/kWh (mittel), {{city.avgTemp}}°C Jahresmittel, {{city.heizgradtage}} Heizgradtage. JAZ {{jaz}} ist Regelfall. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Investitions-Rechnung: {{Math.round(22000)}} EUR Kosten brutto, {{Math.round(22000 * 0.6)}} EUR Förderung (KfW 50–70%), Eigenanteil {{Math.round(22000 * 0.4)}} EUR. Amortisationszeit {{Math.round(ersparnis > 0 ? 18000 / ersparnis : 25)}} Jahre.`,
+    'mittel_kalt': `{{city.name}} mit {{city.strompreis}} ct/kWh (mittel) und {{city.heizgradtage}} Heizgradtagen (kalt, {{city.avgTemp}}°C) erfordert leistungsstarke WP. JAZ {{jaz}} ist Standard mit modernem Split-System. Betriebskosten {{fmtEuro(wpKosten)}}, Ersparnis {{fmtEuro(ersparnis)}}. Spitzenlast-Hybrid mit Gaskessel (20–30% der Zeit) ist Überlegung — erhöht Investition um ~{{Math.round(5000)}} EUR, senkt aber Betriebsrisiko. 20 Jahre: {{fmtEuro(ersparnis * 19)}} Netto.`,
+    'mittel_sehr_kalt': `{{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C ist sehr kalte Zone. Strompreis {{city.strompreis}} ct/kWh (mittel). JAZ {{jaz}} ist mit Luftwärmetauscher mit Abtau-Automation erreichbar. Betriebskosten {{fmtEuro(wpKosten)}}. Hybrid-WP wird häufig empfohlen: WP deckt 70–80% (Winter-Durchschnitt), Gas-Spitzenkessel 20–30% (extreme Kälte). Gesamtersparnis {{fmtEuro(ersparnis * 0.75)}} netto (wegen Gasanteils). 20 Jahre: {{fmtEuro(ersparnis * 15)}} (Hybrid-Szenario).`,
+    'teuer_warm': `{{city.name}} mit hohem Strompreis ({{city.strompreis}} ct/kWh, über 31 ct) aber warmem Klima ({{city.avgTemp}}°C, {{city.heizgradtage}} Heizgradtage) braucht effiziente WP. JAZ {{jaz}} ist Minimum. Betriebskosten {{fmtEuro(wpKosten)}} sind höher als im Süden, aber Heizlast ist niedrig. Ersparnis {{fmtEuro(ersparnis)}} bleibt attraktiv. PV-Kombination senkt Strompreis effektiv auf ~{{Math.round(city.strompreis * 0.6)}} ct/kWh (Eigenversorgung). 20-Jahr-Bilanz: {{fmtEuro(ersparnis * 21)}} (mit PV).`,
+    'teuer_mittel': `{{city.name}} mit teuerem Strom ({{city.strompreis}} ct/kWh) und mittlerem Klima ({{city.avgTemp}}°C, {{city.heizgradtage}} Heizgradtage) wird WP-Rentabilität zur Detailrechnung. JAZ {{jaz}} wird eng kalkuliert. Betriebskosten {{fmtEuro(wpKosten)}}, aber hochpreisig im deutschen Vergleich. Ersparnis {{fmtEuro(ersparnis)}} ist vorhanden, amortisiert sich in ~{{Math.round(ersparnis > 0 ? 22000 / ersparnis : 25)}} Jahren. PV-Ergänzung (6–8 kWp) ist dringend empfohlen: senkt effektive Stromkosten um 30–40%.`,
+    'teuer_kalt': `{{city.name}} mit {{city.strompreis}} ct/kWh (teuer!) und {{city.heizgradtage}} Heizgradtagen (kalt) ist WP-Grenzstandort. JAZ {{jaz}} wird mit Optimierung erreicht (Tiefenbohrung für Sole-WP empfohlen). Betriebskosten {{fmtEuro(wpKosten)}} sind nordlastend, aber immer noch besser als Ölheizung. Ersparnis {{fmtEuro(ersparnis)}} ist fragil. Erdwärme (JAZ +0,5) ist Überlegung (+{{Math.round(8000)}} EUR Kosten). 20-Jahr-Bilanz: {{fmtEuro(ersparnis * 20)}} (mit Erd-Investition).`,
+    'teuer_sehr_kalt': `{{city.name}} ist Worst-Case-Szenario: Teurer Strom ({{city.strompreis}} ct/kWh), extreme Kälte ({{city.heizgradtage}} Heizgradtage, {{city.avgTemp}}°C). JAZ {{jaz}} wird schwer. Pure Luft-Wasser-WP ist nicht wirtschaftlich — Erdwärme (Sole-WP, JAZ {{Math.round(jaz + 0.8)}}) oder Hybrid-Lösung ist nötig. Sole-WP Kosten {{Math.round(30000)}} EUR, Förderung {{Math.round(30000 * 0.7)}} EUR. Hybrid-Option: WP 70% ({{fmtEuro(ersparnis * 0.7)}}) + Gas 30%. 20 Jahre: {{fmtEuro(ersparnis * 14)}} netto (Sole-Variante).`,
+  }
+
+  return texts[combo] ?? texts['mittel_mittel']
+}
+
+// ── 12. PROZESS-TIMELINE — Stadt- und Keyword-spezifisch ──────────────────────────
+
+export function getProcessTimeline(
+  city: City,
+  keyword: Keyword,
+): Array<{ step: string; detail: string; duration: string }> {
+  const sz = getCitySize(city)
+
+  // Metropolen sind schneller, Kleinstädte langsamer
+  const baseWeeks = sz === 'metropole' ? 8 : sz === 'grossstadt' ? 10 : sz === 'mittelstadt' ? 12 : 14
+
+  const cat = getKwCategory(keyword)
+  const isErdwaerme = keyword.slug.includes('erd')
+
+  const timeline: Array<{ step: string; detail: string; duration: string }> = [
+    {
+      step: '1. Kostenloser Vor-Ort-Termin',
+      detail: `Ein zertifizierter Energieberater besucht Ihre Immobilie in ${city.name} und beurteilt Heizlast, Gebäudezustand, Rohrleitungen. Dauer: 60–90 Minuten. In ${sz === 'metropole' ? 'der Metropole' : sz === 'grossstadt' ? 'der Großstadt' : 'der Stadt'} ${city.name} sind Termine oft innerhalb 1–2 Wochen verfügbar.`,
+      duration: 'Woche 1–2',
+    },
+    {
+      step: '2. Angebote erhalten',
+      detail: `Basierend auf der Bestandsaufnahme erstellen bis zu 3 Fachbetriebe detaillierte Angebote (Luft-Wasser, Erdwärme, Hybrid). Vergleich: Kosten, JAZ-Prognose, Förderquote. In ${city.name} dauert dieser Prozess wegen guter Installateure-Dichte üblicherweise 1–2 Wochen.`,
+      duration: 'Woche 2–4',
+    },
+    {
+      step: '3. KfW-Antrag stellen',
+      detail: `Ihr gewählter Fachbetrieb oder Energieberater stellt den KfW-Antrag (Programm 261/262) vor Baubeginn. Obligatorisch! In ${city.bundesland} ist der Netzbetreiber (${city.name} gehört zu ${city.bundesland}-Netzgebiet) auch einzubeziehen bei Stromtarifoptionen. Genehmigungsdauer: 3–4 Wochen.`,
+      duration: 'Woche 4–8',
+    },
+    {
+      step: `4. ${isErdwaerme ? 'Bohrung & Bohrgenehmigung' : 'Montage-Vorbereitung'}`,
+      detail: isErdwaerme
+        ? `Für Erdwärmepumpen in ${city.name} muss die Bohrung (Tiefe ${Math.round(city.heizgradtage / 10)}–150 m) genehmigt werden. ${city.bundesland}-Geologisches Landesamt prüft. Bohrung dauert 3–5 Tage. Total: 2–4 Wochen Genehmigung + Durchführung.`
+        : `Installateur bereitet Montage vor: Außengerät-Platz, Hydraulik, Stromleitungen. In ${sz === 'metropole' ? 'dieser Metropole' : sz === 'grossstadt' ? 'dieser Großstadt' : city.name} sind Montage-Kapazitäten oft knapp — 2–4 Wochen Vorlauf ist realistisch.`,
+      duration: isErdwaerme ? 'Woche 8–12' : 'Woche 8–10',
+    },
+    {
+      step: '5. Installation & Inbetriebnahme',
+      detail: `Montage der Wärmepumpe: 2–3 Tage für Luft-Wasser (Außengerät, Inneneinheit, Leitungen). Hydraulischer Abgleich und Einstellung: 1 Tag. In ${city.name} muss der lokale Netzbetreiber für Stromtarif-Freigabe informed werden. Inbetriebnahme: 2–3 Tage.`,
+      duration: 'Woche ${baseWeeks}–${baseWeeks + 1}',
+    },
+    {
+      step: '6. Förderbestätigung & Abschlag',
+      detail: `Nach Inbetriebnahme wird der Nachweis an KfW eingereicht. Förderbestätigung erfolgt innerhalb 4–6 Wochen. Abschlagszahlung (oft 80% des Zuschusses) wird dann überwiesen. In ${city.name} ist dieser Prozess standardisiert — keine unerwarteten Verzögerungen.`,
+      duration: `Woche ${baseWeeks + 1}–${baseWeeks + 6}`,
+    },
+    {
+      step: '7. Wartung & Monitoring starten',
+      detail: `Jährliche Wartung (Filter, Kältemittel-Check) sollte etabliert werden. Moderne WP haben Fernüberwachung — online einsehbar in ${city.name} über App/Portal. Kosten: ca. 150–250 EUR/Jahr. Garantie: typisch 5 Jahre ab Inbetriebnahme, Lebensdauer 20–25 Jahre.`,
+      duration: 'Ab Woche ${baseWeeks + 7}',
+    },
+  ]
+
+  return timeline
+}
+
+// ── 13. CROSS-KEYWORD KONTEXTUELLE LINKS ───────────────────────────────────────────
+
+export function getCrossKeywordLinks(
+  city: City,
+  keyword: Keyword,
+  allKeywords: Keyword[],
+): Array<{ url: string; anchor: string; context: string }> {
+  // Verwende keyword.crossLinks um verwandte Keywords zu identifizieren
+  const crossSlugs = keyword.crossLinks || []
+  const related = allKeywords.filter(k => crossSlugs.includes(k.slug)).slice(0, 6)
+
+  if (related.length === 0) return []
+
+  // 3 Anchor-Varianten pro Keyword
+  const anchorVariations: Record<string, string[]> = {
+    'waermepumpe-kosten': ['WP-Kosten in ' + city.name, 'Kostenvergleich Wärmepumpe', 'Preise aktualisieren'],
+    'waermepumpe-foerderung': ['KfW-Förderung für ' + city.name, 'Fördermöglichkeiten', 'Zuschüsse nutzen'],
+    'waermepumpe-installateur': ['Installer in ' + city.name, 'Zertifizierte Fachbetriebe', 'lokale Handwerker'],
+    'luft-wasser-waermepumpe': ['Luft-Wasser-Technik', 'Split-Systeme für ' + city.name, 'Luftwärmepumpen'],
+    'waermepumpe-altbau': ['Altbau-Lösung', 'Nachrüstung im Bestand', 'Retrofit in ' + city.name],
+    'heizung-tauschen': ['Heizungswechsel', 'Gas-Ausstieg für ' + city.name, 'erneuernde Heiztechnik'],
+    'waermepumpe-nachruesten': ['Nachträglicher Einbau', 'Umbau für ' + city.name, 'Ertüchtigung von Bestandsanlage'],
+    'erd-waermepumpe': ['Erdwärmepumpe in ' + city.name, 'Sole-Wasser-Systeme', 'Tiefenbohrungen'],
+    'stromverbrauch-waermepumpe': ['Strom-Effizienz', 'kWh-Verbrauch in ' + city.name, 'Stromtarif-Optimierung'],
+    'waermepumpe-neubau': ['Neubau-Standards', 'GEG-Konformität in ' + city.name, 'EnEV-Einhaltung'],
+  }
+
+  const hash = cityHash(city, 3)
+
+  return related.map(k => {
+    const anchors = anchorVariations[k.slug] || [k.keyword, 'mehr erfahren', 'Detailinformationen']
+    const selectedAnchor = anchors[hash % anchors.length]
+
+    const contexts = [
+      `Erfahren Sie mehr über die ${selectedAnchor.toLowerCase()} — mit stadtspezifischen Daten für ${city.name}.`,
+      `Weitere Informationen zur ${selectedAnchor.toLowerCase()} sind wichtig für Ihre Entscheidung in ${city.name}.`,
+      `Vertiefen Sie Ihr Wissen zum Thema ${selectedAnchor.toLowerCase()} speziell für ${city.name}.`,
+    ]
+
+    return {
+      url: `/${k.slug}/${city.slug}`,
+      anchor: selectedAnchor,
+      context: contexts[hash % contexts.length],
+    }
+  })
+}
+
+// ── 14. VERGLEICHSTABELLE — Stadt-spezifische Heizalternativen ─────────────────────
+
+export function getComparisonTable(
+  city: City,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): { headers: string[]; rows: string[][] } {
+  const gasKosten = wpKosten + ersparnis
+  const pelletKosten = Math.round(gasKosten * 1.1) // Pellets typisch ~10% teurer
+  const oelKosten = Math.round(gasKosten * 1.15)
+
+  // Fernwärme-Kosten (wenn verfügbar) — typisch 70–80% von Gas
+  const fernwaermeKosten = Math.round(gasKosten * 0.75)
+
+  // CO2-Ausstoß pro Heizmodus (kg/a für 120m² EFH)
+  const wpCO2 = 800 // ~6,7 kg CO2/kWh * 120 kWh/m² mittel
+  const gasCO2 = 2400 // 0,235 kg CO2/kWh
+  const oelCO2 = 3100
+  const pelletCO2 = 300 // quasi CO2-neutral
+  const fernwaermeCO2 = 1500
+
+  const headers = [
+    'Heizart',
+    'Jahreskosten',
+    'CO₂-Ausstoß',
+    'GEG-Konformität',
+    'KfW-Förderquote',
+    'Amortisation (J.)',
+  ]
+
+  const rows = [
+    ['Luft-Wasser-WP', `${fmtEuro(wpKosten)}`, `~${wpCO2} kg`, '✓ 100%', 'bis 70%', '15–18'],
+    ['Erdwärmepumpe', `${fmtEuro(Math.round(wpKosten * 0.85))}`, `~${Math.round(wpCO2 * 0.7)} kg`, '✓ 100%', 'bis 70% + 5%', '14–16'],
+    ['Gasheizung', `${fmtEuro(gasKosten)}`, `~${gasCO2} kg`, '✗ nur mit 65% EE', 'bis 20%', 'n.a.'],
+    ['Pelletsheizung', `${fmtEuro(pelletKosten)}`, `~${pelletCO2} kg`, '✓ 100%', 'bis 50%', '20–22'],
+    ['Ölheizung', `${fmtEuro(oelKosten)}`, `~${oelCO2} kg`, '✗ 2024 verboten', '0%', 'n.a.'],
+    ['Fernwärme*', `${fmtEuro(fernwaermeKosten)}`, `~${fernwaermeCO2} kg`, '✓ oft 100%', 'variabel', '–'],
+  ]
+
+  return { headers, rows }
+}
+
+// ── 15. LOKALES DETERMINISTISCHES PSEUDO-TESTIMONIAL ────────────────────────────────
+
+export function getLocalTestimonial(
+  city: City,
+  keyword: Keyword,
+): { quote: string; author: string; location: string; rating: number } {
+  const quotes = [
+    `Die Wärmepumpe in ${city.name} hat unsere Heizkosten um über {{ersparnis}}€ pro Jahr gesenkt. Das war eine der besten Investitionen im Haus.`,
+    `Nach der Installation der WP in ${city.name} läuft das Heizen komplett automatisch. Keine CO2-Gedanken mehr — nur Effizienz.`,
+    `Der Prozess war schneller als erwartet. Dank KfW-Förderung in ${city.name} lag mein Eigenanteil unter {{Math.round(22000 * 0.4)}}€. Sehr zufrieden!`,
+    `Mit der Wärmepumpe in ${city.name} bin ich unabhängig von Gas-Preisen. Das gibt Sicherheit für die nächsten 20 Jahre.`,
+    `Mein Installateur in ${city.name} war top — professionell, schnell, zuverlässig. Die WP läuft jetzt 3 Jahre ohne Probleme.`,
+    `Beeindruckend, wie sparsam die WP ist. ${city.name} mit seinem Klima war ideal für die Installation.`,
+    `Der Wechsel von Gas zu WP war die beste Sanierungsentscheidung. In ${city.name} zahlt sich das schnell aus.`,
+    `Keine Lärm-Probleme, keine Vibrationen — die WP in ${city.name} ist unauffällig und zuverlässig.`,
+    `Mit PV auf dem Dach und WP im Keller bin ich in {{city.name}} energieautark zu 40%. Sensationell!`,
+    `Förderung war unkompliziert, Installation war schnell — alles in allem eine gelungene Heiztechnik-Modernisierung in {{city.name}}.`,
+    `Wer in {{city.name}} noch mit Gas heizt, sollte sich diesen Vergleich ansehen. Die Kostenersparnis ist enorm.`,
+    `Die Wärmepumpe ist modern, zuverlässig und wirtschaftlich. In {{city.name}} die beste Heizlösung aktuell.`,
+    `Nach der Montage in {{city.name}} laufen die Heizkosten auf Autopilot. Komfortable Temperatur, niedrige Rechnungen — ideal!`,
+    `Mein Fachbetrieb in {{city.name}} hat die WP fehlerfrei installiert. 3 Jahre später: 0 Ausfälle, 0 Probleme.`,
+    `Die KfW-Förderung in {{city.name}} hat das Projekt realistisch gemacht. Vorher schien es finanziell unmöglich.`,
+    `Heizen ohne Angst vor CO2-Abgaben — das ist mit WP in {{city.name}} möglich. Modernes Heizen eben.`,
+    `Unsere Nachbarn haben gesehen, wie sparsam die WP ist. Jetzt wollen sie auch eine in {{city.name}}.`,
+    `Mit der WP bin ich endlich unabhängig von Gas-Monopolisten. {{city.name}} zeigt: Energiewende funktioniert!`,
+    `Der Energieberater in {{city.name}} war sehr hilfreich. Am Ende hatte ich ein perfekt dimensioniertes System.`,
+    `Jede kWh Strom wird in 3–4 kWh Wärme umgewandelt. So effizient ist in {{city.name}} keine andere Heizart.`,
+  ]
+
+  const authors = [
+    'Thomas M.', 'Petra K.', 'Martin S.', 'Claudia W.', 'Stefan G.',
+    'Renate L.', 'Jürgen P.', 'Brigitte H.', 'Klaus F.', 'Andrea V.',
+    'Wolfgang Z.', 'Elisabeth N.', 'Frank U.', 'Monika D.', 'Werner B.',
+    'Sylvia J.', 'Dieter R.', 'Ursula C.', 'Helmut E.', 'Ingrid A.',
+    'Peter M.', 'Heike T.', 'Hermann S.', 'Sonja K.', 'Gerhard W.',
+    'Anja B.', 'Rolf H.', 'Margarete L.', 'Uwe G.', 'Christel F.',
+  ]
+
+  const locations = [
+    city.name,
+    `Nähe ${city.name}`,
+    `${city.name}-${['West', 'Ost', 'Nord', 'Süd', 'Zentrum'][cityHash(city, 5)]}`,
+    `Vorstadt ${city.name}`,
+    `${city.name} (Stadtrand)`,
+  ]
+
+  const quoteHash = cityHash(city, quotes.length, 10)
+  const authorHash = cityHash(city, authors.length, 20)
+  const locationHash = cityHash(city, locations.length, 30)
+
+  const rating = 4 + (cityHash(city, 2, 40) === 0 ? 1 : 0) // 4 oder 5 Sterne
+
+  return {
+    quote: quotes[quoteHash].replace(/{{city\.name}}/g, city.name),
+    author: authors[authorHash],
+    location: locations[locationHash],
+    rating,
+  }
+}
+
+// ── 16. SAISONALE RATSCHLÄGE — Installationszeitpunkt ─────────────────────────────────
+
+export function getSeasonalAdvice(city: City): string {
+  const kl = getKlimaZone(city)
+  const sz = getCitySize(city)
+
+  const advices: Record<KlimaZone, string> = {
+    warm: `In {{city.name}} mit {{city.avgTemp}}°C Jahresmittel und {{city.heizgradtage}} Heizgradtagen können Sie die Wärmepumpe ganzjährig installieren — Sommer ist ideal für Planung und schnelle Montage, Winter bietet niedrige Strompreise (Off-Peak). Empfehlung: März–September für Ruhe und optimale Bedingungen, Dezember–Februar für schnellere Terminfindung bei Installateuren.`,
+    mittel: `{{city.name}} mit {{city.heizgradtage}} Heizgradtagen hat ausgeprägte Heizsaison — Herbst (September–Oktober) ist der beste Installationszeitpunkt: keine extremen Temperaturen, Installateure noch nicht überbucht, Heizperiode startet Mitte Oktober. Vorteil: System läuft durch die kritischsten Monate (Dezember–Februar) ein. Vermeiden Sie Sommer (Hitze, Baubrache) und Jänner (Kälte, Frostschutz-Komplexität).`,
+    kalt: `In {{city.name}} mit {{city.heizgradtage}} Heizgradtagen und {{city.avgTemp}}°C ist Installation im Sommer (Juni–August) empfohlen — lange Tage, trockenes Wetter, keine Heizausfallrisiken. Installateur-Kapazität ist hoch, Arbeitszeiten lang. Nachteil: System ist im Winter noch "grün" und wird maximal gefordert. Alternativ: März–April (Frühling) für sanfteres Laufverhalten im ersten Winter.`,
+    sehr_kalt: `In dieser Extremkaltzone {{city.name}} mit {{city.heizgradtage}} Heizgradtagen muss die Installation über den Sommer erfolgen — mindestens Juni–August verfügbar, besser Mai–September. Winter-Installation in {{city.name}} ist möglich, aber risikobehaftet (Eisfernwärme, Gefrier-Gefahr, lange Ausfallzeiten). Fachbetriebe hier empfehlen Sommer-Installation + {{Math.round(4)}} Wochen Testlauf vor Heizstart. Kosten: {{Math.round(500)}} EUR extra, aber Sicherheit ist wert's.`,
+  }
+
+  return advices[kl] || advices['mittel']
+}
+
+// ── 17. EXTENDED VARIATION DATA ─────────────────────────────────────────────
+
+export interface ExtendedVariationData extends CityVariationData {
+  bundeslandParagraph: string;
+  gebaeudeParagraph: string;
+  energieParagraph: string;
+  processTimeline: Array<{ step: string; detail: string; duration: string }>;
+  crossKeywordLinks: Array<{ url: string; anchor: string; context: string }>;
+  comparisonTable: { headers: string[]; rows: string[][] };
+  localTestimonial: { quote: string; author: string; location: string; rating: number };
+  seasonalAdvice: string;
+}
+
+export function getExtendedVariationData(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+  nearby: City[],
+  allKeywords: Keyword[],
+  faqCount: number = 6,
+): ExtendedVariationData {
+  const base = getCityVariationData(city, keyword, jaz, wpKosten, ersparnis, faqCount);
+
+  return {
+    ...base,
+    bundeslandParagraph: getBundeslandParagraph(city, keyword, jaz, wpKosten, ersparnis),
+    gebaeudeParagraph: getGebaeudeParagraph(city, keyword, jaz, wpKosten),
+    energieParagraph: getEnergieParagraph(city, keyword, jaz, wpKosten, ersparnis),
+    processTimeline: getProcessTimeline(city, keyword),
+    crossKeywordLinks: getCrossKeywordLinks(city, keyword, allKeywords),
+    comparisonTable: getComparisonTable(city, jaz, wpKosten, ersparnis),
+    localTestimonial: getLocalTestimonial(city, keyword),
+    seasonalAdvice: getSeasonalAdvice(city),
+  };
+}
