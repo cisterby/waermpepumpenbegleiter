@@ -101,8 +101,7 @@ for (let i = 0; i < keywords.length; i++) {
   const urls = [];
 
   for (const city of sortedCities) {
-    // Tier 4 Keywords × Kleinstädte (<20k) → noindex → nicht in Sitemap
-    if (kw.tier >= 4 && city.einwohner < 20000) continue;
+    // Alle Keywords × alle Städte indexieren — kein Tier-Filter
 
     let priority, changefreq;
     if (city.einwohner > 100000) {

@@ -118,9 +118,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const url   = `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}`;
 
-  // Crawl-Budget-Steuerung: Tier 4 Keywords für kleine Städte (<20k) noindex
-  // → verhindert Thin Content im Index, spart Crawl-Budget
-  const shouldIndex = !(keyword.tier >= 4 && city.einwohner < 20000);
+  // Alle Seiten indexieren — kein Tier-Filter
+  const shouldIndex = true;
 
   return {
     title,
