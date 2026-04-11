@@ -87,7 +87,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
   if (submitted) {
     return (
-      <div className="bg-[#E8F5EE] border border-[#3DA16A]/40 rounded-2xl p-8">
+      <div className="bg-[#E8F5EE] border border-[#3DA16A]/40 rounded-2xl p-8" aria-live="polite" aria-label="Bestätigung des Antragsformulars">
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-[#1A4731] rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle size={32} className="text-white" />
@@ -143,7 +143,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+    <form onSubmit={(e) => e.preventDefault()} role="form" aria-label="Kostenlose Wärmepumpen-Beratung anfordern" className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
       {/* Header */}
       <div className="bg-[#1A4731] px-6 py-5">
         <p className="text-[#D97706] text-xs font-bold uppercase tracking-wider mb-1">
@@ -196,13 +196,18 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
 
-              {/* Wohnfläche */}
-              <div className="mb-5">
-                <label className="block font-semibold text-[#1C2B2B] text-sm mb-2">
+              <fieldset className="border-0 p-0 m-0">
+                <legend className="sr-only">Gebäudedaten</legend>
+
+                  {/* Wohnfläche */}
+                <div className="mb-5">
+                <label htmlFor="flaeche-range" className="block font-semibold text-[#1C2B2B] text-sm mb-2">
                   Wohnfläche: <span className="text-[#1A4731] font-mono">{flaeche} m²</span>
                 </label>
-                <input type="range" min={60} max={350} step={10} value={flaeche}
+                <input id="flaeche-range" type="range" min={60} max={350} step={10} value={flaeche}
                   onChange={e => setFlaeche(+e.target.value)}
+                  aria-label="Wohnfläche in Quadratmetern"
+                  aria-valuetext={`${flaeche} Quadratmeter`}
                   className="w-full accent-wp-green" />
                 <div className="flex justify-between text-xs text-[#7A9E8E] mt-1">
                   <span>60 m²</span><span className="text-[#1A4731]">Ø 120 m²</span><span>350 m²</span>
@@ -240,6 +245,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
                   ))}
                 </div>
               </div>
+              </fieldset>
 
               <button onClick={() => canStep1 && setStep(2)} disabled={!canStep1}
                 className={`w-full min-h-[48px] py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
@@ -251,50 +257,55 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
           )}
 
           {/* SCHRITT 2: Kontakt */}
+
           {step === 2 && (
             <motion.div key="step2"
               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
 
-              <div className="space-y-4 mb-6">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Vorname *</label>
-                    <input type="text" value={vorname} onChange={e => setVorname(e.target.value)}
-                      placeholder="Max" autoComplete="given-name"
-                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
+              <fieldset className="border-0 p-0 m-0">
+                <legend className="sr-only">Kontaktdaten</legend>
+
+                <div className="space-y-4 mb-6">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label htmlFor="vorname" className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Vorname *</label>
+                      <input id="vorname" type="text" value={vorname} onChange={e => setVorname(e.target.value)}
+                        placeholder="Max" autoComplete="given-name"
+                        className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
+                    </div>
+                    <div>
+                      <label htmlFor="nachname" className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Nachname *</label>
+                      <input id="nachname" type="text" value={nachname} onChange={e => setNachname(e.target.value)}
+                        placeholder="Mustermann" autoComplete="family-name"
+                        className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Nachname *</label>
-                    <input type="text" value={nachname} onChange={e => setNachname(e.target.value)}
-                      placeholder="Mustermann" autoComplete="family-name"
+                    <label htmlFor="email" className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">E-Mail-Adresse *</label>
+                    <input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)}
+                      placeholder="max@beispiel.de" autoComplete="email"
                       className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label htmlFor="telefon" className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Telefon <span className="font-normal text-[#7A9E8E]">(optional)</span></label>
+                      <input id="telefon" type="tel" value={telefon} onChange={e => setTelefon(e.target.value)}
+                        placeholder="0176 12345678" autoComplete="tel"
+                        className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
+                    </div>
+                    <div>
+                      <label htmlFor="plz" className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">PLZ *</label>
+                      <input id="plz" type="text" value={plz} onChange={e => setPlz(e.target.value.slice(0, 5))}
+                        placeholder="10115" maxLength={5} inputMode="numeric"
+                        className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">E-Mail-Adresse *</label>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                    placeholder="max@beispiel.de" autoComplete="email"
-                    className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">Telefon <span className="font-normal text-[#7A9E8E]">(optional)</span></label>
-                    <input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)}
-                      placeholder="0176 12345678" autoComplete="tel"
-                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-[#1C2B2B] mb-1.5">PLZ *</label>
-                    <input type="text" value={plz} onChange={e => setPlz(e.target.value.slice(0, 5))}
-                      placeholder="10115" maxLength={5} inputMode="numeric"
-                      className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm text-[#1C2B2B] focus:border-[#1A4731] focus:outline-none transition-colors" />
-                  </div>
-                </div>
-              </div>
+              </fieldset>
 
               {error && (
-                <p className="text-red-600 text-sm mb-4 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>
+                <p id="error-message" className="text-red-600 text-sm mb-4 bg-red-50 border border-red-200 rounded-lg px-3 py-2" role="alert">{error}</p>
               )}
 
               <div className="flex gap-3">
@@ -303,6 +314,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
                   Zurück
                 </button>
                 <button onClick={() => canStep2 && submit()} disabled={!canStep2 || submitting}
+                  aria-describedby={error ? "error-message" : undefined}
                   className={`flex-1 min-h-[48px] py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
                     canStep2 && !submitting ? 'bg-[#D97706] text-white hover:bg-amber-700' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                   }`}>
@@ -339,6 +351,6 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
         </AnimatePresence>
       </div>
-    </div>
+    </form>
   );
 }

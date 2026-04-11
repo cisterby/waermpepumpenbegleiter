@@ -69,7 +69,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
 
       {/* HERO */}
       <section className="relative flex items-center overflow-hidden" style={{ minHeight: '90vh' }}>
-        <Image src={heroImg} alt={'Wärmepumpe ' + city.name} className="absolute inset-0 w-full h-full object-cover" fill priority />
+        <Image src={heroImg} alt={'Wärmepumpe ' + city.name} className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(4,14,8,0.98) 0%, rgba(4,14,8,0.95) 30%, rgba(4,14,8,0.88) 52%, rgba(4,14,8,0.50) 70%, rgba(4,14,8,0.08) 100%)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(4,14,8,0.60) 0%, rgba(4,14,8,0.30) 45%, transparent 68%)' }} />
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
@@ -140,7 +140,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
             <div className="hidden lg:flex justify-end">
               <div className="w-full max-w-[420px] bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                 <div className="relative h-52">
-                  <Image src={sideImg} alt={'Wärmepumpe ' + city.name} className="w-full h-full object-cover" fill priority />
+                  <Image src={sideImg} alt={'Wärmepumpe ' + city.name} className="w-full h-full object-cover" fill priority sizes="(max-width: 768px) 0, 420px" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-[#0A1910]/15" />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between">
                     <div className="bg-white/95 rounded-lg px-3 py-2">
@@ -242,7 +242,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               <h2 className="text-3xl font-bold text-gray-900 mb-4">{h2s.klimadaten}</h2>
               <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.klimadaten}</p>
               <div className="relative rounded-2xl overflow-hidden mb-6 h-48">
-                <Image src={pickImg(STRIP_IMGS, city.lat, city.lng, 10)} alt={'Klimadaten ' + city.name} className="w-full h-full object-cover" fill loading="lazy" />
+                <Image src={pickImg(STRIP_IMGS, city.lat, city.lng, 10)} alt={'Klimadaten ' + city.name} className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 70vw" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(10,25,16,0.78) 0%, rgba(10,25,16,0.3) 100%)' }} />
                 <div className="absolute inset-0 flex items-center px-7 gap-8">
                   {[
@@ -286,7 +286,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
 
             {/* CO2 Strip */}
             <div className="relative overflow-hidden rounded-2xl">
-              <Image src={stripImg} alt="Waermepumpe Umwelt" className="w-full h-64 object-cover" fill loading="lazy" />
+              <Image src={stripImg} alt="Waermepumpe Umwelt" className="w-full h-64 object-cover" fill loading="lazy" sizes="100vw" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,60,30,0.90) 0%, rgba(26,71,49,0.82) 100%)' }} />
               <div className="absolute inset-0 flex items-center px-8 gap-12">
                 {[
@@ -323,7 +323,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               <h2 className="text-3xl font-bold text-gray-900 mb-4">{h2s.foerderung}</h2>
               <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.foerderung}</p>
               <div className="relative rounded-xl overflow-hidden mb-5 h-36">
-                <Image src={IMG_FOERDERUNG} alt="KfW Foerderung beantragen" className="w-full h-full object-cover" fill loading="lazy" />
+                <Image src={IMG_FOERDERUNG} alt="KfW Foerderung beantragen" className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 70vw" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(10,25,16,0.85) 0%, rgba(10,25,16,0.45) 100%)' }} />
                 <div className="absolute inset-0 flex items-center px-6 gap-8">
                   {['1. KfW-Antrag', '2. Genehmigung', '3. Installation', '4. Auszahlung'].map((step, i) => (
@@ -440,7 +440,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
             {/* Experten-Box */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 flex gap-5">
               <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#E8F5EE] relative">
-                <Image src={IMG_TEAM} alt="Bastian Saupe" className="object-cover object-top" fill />
+                <Image src={IMG_TEAM} alt="Bastian Saupe" className="object-cover object-top" fill sizes="56px" />
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
@@ -795,7 +795,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
       {/* AKTUALITAETSBLOCK 2026 */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <div className="relative rounded-2xl overflow-hidden mb-8 h-44">
-          <Image src={pickImg(STRIP_IMGS, city.lat, city.lng, 30)} alt="Wärmepumpe 2026" className="w-full h-full object-cover" fill loading="lazy" />
+          <Image src={pickImg(STRIP_IMGS, city.lat, city.lng, 30)} alt="Wärmepumpe 2026" className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 70vw" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,25,16,0.92) 0%, rgba(10,25,16,0.55) 100%)' }} />
           <div className="absolute inset-0 flex items-center px-8">
             <div>
@@ -858,7 +858,7 @@ function WPKostenRechner({ city }: { city: CityPageRouterProps['city'] }) {
   return (
     <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
       <div className="relative h-36 overflow-hidden">
-        <Image src={IMG_KOSTEN} alt="WP Kostenrechner" className="w-full h-full object-cover" fill priority />
+        <Image src={IMG_KOSTEN} alt="WP Kostenrechner" className="w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0 bg-[#1B5E37]/85" />
         <div className="absolute inset-0 flex items-center px-8">
           <div>

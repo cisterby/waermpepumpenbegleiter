@@ -322,7 +322,7 @@ export default function Ratgeber() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
         />
         <div className="relative h-80 overflow-hidden">
-          <Image src={article.img} alt={article.title} className="w-full h-full object-cover" fill priority />
+          <Image src={article.img} alt={article.title} className="w-full h-full object-cover" fill priority sizes="100vw" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,21,16,0.85) 0%, rgba(10,21,16,0.3) 100%)' }} />
           <div className="absolute inset-0 flex items-end px-6 pb-10">
             <div className="max-w-3xl">

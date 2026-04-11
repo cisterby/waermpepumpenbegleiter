@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description: desc,
-    alternates: { canonical: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}` },
+    alternates: { canonical: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`, languages: { 'de-DE': `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}` } },
     openGraph: {
       title, description: desc, type: 'article', locale: 'de_DE',
       url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`,

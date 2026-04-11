@@ -149,7 +149,7 @@ export default function Home(){
 
       {/* ── HERO ── */}
       <section style={{position:'relative',minHeight:'100vh',display:'flex',alignItems:'center',overflow:'hidden',paddingTop:72}}>
-        <Image src={IMGS.hero} alt="Einfamilienhaus mit moderner Wärmepumpe" fill className="object-cover" style={{zIndex:0}} priority />
+        <Image src={IMGS.hero} alt="Einfamilienhaus mit moderner Wärmepumpe" fill className="object-cover" style={{zIndex:0}} priority sizes="100vw" />
         <div style={{position:'absolute',inset:0,zIndex:1,background:'linear-gradient(105deg,rgba(10,25,16,.94) 0%,rgba(10,25,16,.85) 45%,rgba(10,25,16,.3) 100%)'}}/>
         <div className="c" style={{position:'relative',zIndex:2,width:'100%',padding:'96px 40px 80px'}}>
           <div className="hero-g" style={{display:'grid',gridTemplateColumns:'54% 46%',gap:60,alignItems:'center'}}>
@@ -191,7 +191,7 @@ export default function Home(){
             <div className="hero-card" style={{display:'flex',justifyContent:'flex-end'}}>
               <div style={{width:'100%',maxWidth:420,background:'white',borderRadius:16,overflow:'hidden',boxShadow:SHL,animation:'float 6s ease-in-out infinite'}}>
                 <div style={{position:'relative',height:230}}>
-                  <Image src={IMGS.wp1} alt="Haus mit Wärmepumpe" fill className="object-cover" loading="lazy" />
+                  <Image src={IMGS.wp1} alt="Haus mit Wärmepumpe" fill className="object-cover" loading="lazy" sizes="(max-width: 768px) 0, 420px" />
                   <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%)'}}/>
                   <div style={{position:'absolute',bottom:16,left:16,right:16,display:'flex',justifyContent:'space-between'}}>
                     <div style={{background:'rgba(255,255,255,.95)',borderRadius:8,padding:'8px 12px'}}>
@@ -409,7 +409,7 @@ export default function Home(){
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
                 <div style={{height:160,overflow:'hidden',position:'relative'}}>
-                  <Image src={s.img} alt={s.title} fill className="object-cover" loading="lazy" />
+                  <Image src={s.img} alt={s.title} fill className="object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                   <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.45) 100%)'}}/>
                   <div style={{position:'absolute',top:12,left:12,background:s.accent,color:'white',fontFamily:'Outfit,sans-serif',fontSize:11,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'4px 10px',borderRadius:100}}>{s.badge}</div>
                   <div style={{position:'absolute',bottom:12,left:16,fontFamily:'Outfit,sans-serif',fontSize:32,fontWeight:800,color:'rgba(255,255,255,.2)',lineHeight:1}}>{s.n}</div>
@@ -576,7 +576,7 @@ export default function Home(){
             <div className={'fu '+(foerdRef.v?'fv':'')} style={{transitionDelay:'.15s'}}>
               <div style={{borderRadius:16,overflow:'hidden',boxShadow:SHL}}>
                 <div style={{position:'relative',height:190}}>
-                  <Image src={IMGS.money} alt="Wärmepumpe Kostenrechner" fill className="object-cover" loading="lazy" />
+                  <Image src={IMGS.money} alt="Wärmepumpe Kostenrechner" fill className="object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                   <div style={{position:'absolute',inset:0,background:'rgba(27,94,55,.65)'}}/>
                   <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center'}}>
                     <div style={{fontFamily:'Outfit,sans-serif',fontSize:17,fontWeight:700,color:'rgba(255,255,255,.8)',marginBottom:4}}>Beispiel: 120 m² EFH</div>
@@ -681,7 +681,7 @@ export default function Home(){
                 onMouseEnter={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='translateY(-3px)';d.style.boxShadow=SHL}}
                 onMouseLeave={e=>{const d=e.currentTarget as HTMLDivElement;d.style.transform='';d.style.boxShadow=SH}}>
                 <div style={{position:'relative',height:180}}>
-                  <Image src={t.img} alt={t.type} fill className="object-cover" loading="lazy" />
+                  <Image src={t.img} alt={t.type} fill className="object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw" />
                   <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 60%)'}}/>
                   {t.hi&&<div style={{position:'absolute',top:0,left:0,right:0,background:G,padding:'5px 16px',fontSize:11,fontWeight:700,color:'white',fontFamily:'Outfit,sans-serif',letterSpacing:'.06em',textTransform:'uppercase',textAlign:'center'}}>Meistgewählt · Stiftung Warentest 2,0 (Gut)</div>}
                   <div style={{position:'absolute',bottom:10,right:12}}>

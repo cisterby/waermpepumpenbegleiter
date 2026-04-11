@@ -93,7 +93,7 @@ export default function WaermepumpeKostenTemplate({
       {/* FAQ Schema */}
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <Image src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" fill priority />
+        <Image src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(10,25,16,0.97) 0%, rgba(10,25,16,0.88) 52%, rgba(10,25,16,0.35) 100%)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
