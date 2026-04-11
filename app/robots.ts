@@ -25,6 +25,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/'],
       },
     ],
-    sitemap: 'https://xn--wrmepumpenbegleiter-gwb.de/sitemap-index.xml',
+    sitemap: 'https://xn--wrmepumpenbegleiter-gwb.de/sitemap.xml',
   };
 }
