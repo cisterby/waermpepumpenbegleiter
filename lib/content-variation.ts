@@ -1153,6 +1153,9 @@ export interface ExtendedVariationData extends CityVariationData {
   heizkoerperCheck: ReturnType<typeof getHeizkoerperCheck>;
   stromtarifOptimierung: ReturnType<typeof getStromtarifOptimierung>;
   keywordDeepContent: ReturnType<typeof getKeywordDeepContent>;
+  enhancedCTA: ReturnType<typeof getEnhancedCTA>;
+  videoPlaceholder: ReturnType<typeof getVideoPlaceholder>;
+  socialProofData: ReturnType<typeof getSocialProofData>;
 }
 
 // ── 18. INLINE-CONTEXTUAL-LINKS — natürliche Links im Fließtext ────────────────
@@ -1627,6 +1630,126 @@ export function getKeywordDeepContent(
   return variants[hash % variants.length];
 }
 
+// ── 19. ENHANCED CTA VARIATIONS — 8 CTAs pro Kategorie ────────────────────────
+
+export function getEnhancedCTA(city: City, keyword: Keyword, ersparnis: number, foerdSatz: number): {
+  headline: string; subline: string; button: string; urgencyBadge?: string
+} {
+  const cat = getKwCategory(keyword);
+  const hash = cityHash(city, 8, 200);
+
+  const ctas: Record<string, Array<{ headline: string; subline: string; button: string; urgencyBadge?: string }>> = {
+    kosten: [
+      { headline: `${Math.round(ersparnis)} € weniger Heizkosten`, subline: `Jährlich in ${city.name} sparen`, button: 'Kostenlos vergleichen', urgencyBadge: `${foerdSatz}% Förderung sichern` },
+      { headline: 'Preis-Check in 2 Minuten', subline: `Was kostet eine WP in ${city.name}?`, button: '3 Angebote anfordern' },
+      { headline: `Heizkosten halbieren`, subline: `${city.name}: von Gas auf WP wechseln`, button: 'Jetzt Ersparnis berechnen', urgencyBadge: 'Förderung noch verfügbar' },
+      { headline: `Eigenanteil ab ${Math.round(25000 * (1 - foerdSatz/100)).toLocaleString('de-DE')} €`, subline: `Nach ${foerdSatz}% KfW-Förderung`, button: 'Angebot starten', urgencyBadge: 'Preisgarantie' },
+      { headline: 'Versteckte Kosten vermeiden', subline: 'Vollständige Angebote vergleichen', button: 'Kostenlos prüfen lassen' },
+      { headline: `${Math.round(ersparnis * 20).toLocaleString('de-DE')} € in 20 Jahren`, subline: `Gesamtersparnis in ${city.name}`, button: 'Jetzt starten' },
+      { headline: 'Was kostet Ihre Wärmepumpe?', subline: `Lokale Preise für ${city.name}`, button: 'Preis erfahren →' },
+      { headline: `Bis ${foerdSatz}% geschenkt`, subline: `KfW-Zuschuss für ${city.name}`, button: 'Förderung berechnen' },
+    ],
+    foerderung: [
+      { headline: `${foerdSatz}% Förderung sichern`, subline: `KfW-Zuschuss für ${city.name}`, button: 'Förderung berechnen', urgencyBadge: 'Antrag vor Baubeginn!' },
+      { headline: `Bis ${Math.round(30000 * foerdSatz / 100).toLocaleString('de-DE')} € Zuschuss`, subline: 'Nicht rückzahlbar', button: 'Förderhöhe prüfen' },
+      { headline: 'KfW-Antrag begleiten lassen', subline: 'Kein Fehler, kein Geldverlust', button: 'Kostenlos anfragen', urgencyBadge: 'Vor Baubeginn beantragen' },
+      { headline: '+5% iSFP-Bonus nutzen?', subline: `Extra-Förderung für ${city.name}`, button: 'Bonus-Check starten' },
+      { headline: 'Förder-Kombi maximieren', subline: `${city.bundesland} + KfW + iSFP`, button: 'Optionen prüfen' },
+      { headline: `Eigenanteil: nur ${Math.round(25000 * (1 - foerdSatz/100)).toLocaleString('de-DE')} €`, subline: `Bei ${foerdSatz}% Förderung`, button: 'Antrag starten' },
+      { headline: 'Förderung 2026 gesichert?', subline: 'Aktuelle Konditionen prüfen', button: 'Jetzt prüfen →' },
+      { headline: 'Kein Geld verschenken', subline: `Max. Förderung für ${city.name}`, button: 'Beratung starten' },
+    ],
+    installateur: [
+      { headline: `Fachbetrieb in ${city.name}`, subline: 'HWK-geprüft & KfW-registriert', button: '3 Angebote erhalten', urgencyBadge: '4-10 Wochen Wartezeit' },
+      { headline: 'Lokale Meisterbetriebe', subline: `Geprüfte Partner in ${city.name}`, button: 'Betriebe vergleichen' },
+      { headline: 'Wartezeit verkürzen', subline: 'Jetzt Kapazität sichern', button: 'Anfrage starten', urgencyBadge: 'Heizsaison planen' },
+      { headline: 'Angebote ohne Druckverkauf', subline: 'Herstellerunabhängig vergleichen', button: 'Kostenlos anfragen' },
+      { headline: `${city.bundesland}-Betriebe anfragen`, subline: 'Lokale Expertise nutzen', button: 'Jetzt vermitteln lassen' },
+      { headline: '3 Angebote, 48 Stunden', subline: 'Geprüfte Betriebe vergleichen', button: 'Vergleich starten →' },
+      { headline: 'Den richtigen Installateur finden', subline: `KfW-LuL-registriert in ${city.name}`, button: 'Partner finden' },
+      { headline: 'Vollständige Angebote', subline: 'Inkl. Hydraulik + Elektrik + KfW', button: 'Jetzt vergleichen' },
+    ],
+    vergleich: [
+      { headline: 'WP vs. Gas — der Faktencheck', subline: `Für ${city.name} berechnet`, button: 'Vergleich starten' },
+      { headline: `${Math.round(ersparnis)} €/Jahr sparen`, subline: 'Wärmepumpe schlägt Gas', button: 'Jetzt wechseln', urgencyBadge: 'CO₂-Preis steigt' },
+      { headline: 'GEG-konform heizen', subline: `Optionen für ${city.name}`, button: 'Optionen vergleichen' },
+      { headline: 'Hybridheizung oder reine WP?', subline: 'Individuelle Beratung', button: 'Beratung starten' },
+      { headline: 'Zukunftssicher heizen', subline: 'Unabhängig von Gaspreisen', button: 'Jetzt umsteigen →' },
+      { headline: `Heizungstausch in ${city.name}`, subline: 'Alle Optionen auf einen Blick', button: 'Kostenlos beraten lassen' },
+      { headline: 'Beste Heizung für Ihr Haus?', subline: `Lokale Analyse für ${city.name}`, button: 'Analyse starten' },
+      { headline: `Ab ${foerdSatz}% Förderung`, subline: 'Jetzt ist der beste Zeitpunkt', button: 'Angebot einholen' },
+    ],
+    technik: [
+      { headline: `JAZ ${(city.avgTemp > 10 ? 3.8 : city.avgTemp > 8 ? 3.5 : 3.2).toFixed(1)} in ${city.name}`, subline: 'Berechnet nach VDI 4650', button: 'Technik-Check starten' },
+      { headline: 'Heizlast berechnen lassen', subline: 'DIN EN 12831 — kostenlos', button: 'Berechnung anfordern' },
+      { headline: 'Richtig dimensioniert?', subline: 'Überdimensionierung vermeiden', button: 'Prüfung starten' },
+      { headline: 'PV + WP kombinieren', subline: `${city.avgSunHours ?? 1600} Sonnenstunden nutzen`, button: 'Kombi-Angebot holen' },
+      { headline: 'Welche WP für Ihr Haus?', subline: `Luft, Sole oder Wasser in ${city.name}`, button: 'Typ-Beratung starten' },
+      { headline: 'Vorlauftemperatur optimieren', subline: 'Hydraulischer Abgleich inklusive', button: 'Beratung starten →' },
+      { headline: 'Technik verstehen', subline: 'Ehrliche Beratung ohne Verkaufsdruck', button: 'Kostenlos beraten lassen' },
+      { headline: 'Smart Grid Ready?', subline: 'SG-Ready WP + dynamischer Tarif', button: 'Optionen prüfen' },
+    ],
+    allgemein: [
+      { headline: `Wärmepumpe für ${city.name}`, subline: 'Kostenlos & unverbindlich', button: '3 Angebote erhalten', urgencyBadge: `${foerdSatz}% Förderung` },
+      { headline: 'Jetzt Heizkosten senken', subline: `${Math.round(ersparnis)} €/Jahr Ersparnis`, button: 'Angebot anfordern' },
+      { headline: 'Der erste Schritt', subline: 'Kostenlose Erstberatung', button: 'Beratung starten' },
+      { headline: `${city.name} heizt grün`, subline: 'Machen Sie mit', button: 'Jetzt starten →', urgencyBadge: 'GEG-konform' },
+      { headline: 'In 48 Stunden 3 Angebote', subline: 'Von lokalen Meisterbetrieben', button: 'Kostenlos vergleichen' },
+      { headline: 'Heizen ohne Reue', subline: 'Unabhängig. Gefördert. Günstig.', button: 'Angebot starten' },
+      { headline: `${foerdSatz}% Förderung nutzen`, subline: `Jetzt in ${city.name}`, button: 'Förderung prüfen' },
+      { headline: 'Wärmepumpe lohnt sich', subline: `Beweis für ${city.name}`, button: 'Rechner starten →' },
+    ],
+  };
+
+  const variants = ctas[cat] ?? ctas.allgemein;
+  return variants[hash % variants.length];
+}
+
+// ── 20. VIDEO PLACEHOLDER DATA ────────────────────────────────────────────────
+
+export function getVideoPlaceholder(city: City, keyword: Keyword): {
+  title: string; description: string; thumbnailAlt: string; duration: string;
+} {
+  const cat = getKwCategory(keyword);
+  const hash = cityHash(city, 4, 300);
+
+  const videos: Record<string, Array<{ title: string; description: string; thumbnailAlt: string; duration: string }>> = {
+    kosten: [
+      { title: `Was kostet eine Wärmepumpe in ${city.name}? Alle Kosten erklärt`, description: `Komplette Kostenaufstellung für eine Luft-Wasser-WP in ${city.name}: Gerät, Montage, Hydraulik, Elektrik — und welche Förderung Sie abziehen können.`, thumbnailAlt: `Video: Wärmepumpe Kosten ${city.name}`, duration: '8:24' },
+      { title: `Wärmepumpe Kosten ${city.name}: Was Installateure nicht erzählen`, description: `Versteckte Kostenpositionen, die in Angeboten fehlen: hydraulischer Abgleich, Fundament, Elektroinstallation. So vergleichen Sie richtig.`, thumbnailAlt: `Video: Versteckte WP-Kosten ${city.name}`, duration: '6:45' },
+      { title: `${Math.round(25000 * 0.5).toLocaleString('de-DE')} € für eine Wärmepumpe? So geht's`, description: `Mit ${city.bundesland}-Förderung und KfW-Zuschuss den Eigenanteil halbieren — Schritt-für-Schritt-Anleitung.`, thumbnailAlt: `Video: WP-Förderung ${city.name}`, duration: '10:12' },
+      { title: `Wärmepumpe Amortisation: Ab wann lohnt es sich in ${city.name}?`, description: `Rechenbeispiel mit lokalen Strom- und Gaspreisen für ${city.name}. Ab welchem Jahr ist die WP günstiger?`, thumbnailAlt: `Video: WP Amortisation ${city.name}`, duration: '7:30' },
+    ],
+    allgemein: [
+      { title: `Wärmepumpe ${city.name}: Alles was Sie wissen müssen`, description: `Funktionsweise, Kosten, Förderung und Installation — der komplette Guide für Hausbesitzer in ${city.name}.`, thumbnailAlt: `Video: Wärmepumpe Guide ${city.name}`, duration: '12:15' },
+      { title: `Wärmepumpe im Altbau in ${city.name} — geht das?`, description: `80% der Bestandsgebäude sind WP-geeignet. Wir zeigen, worauf Sie in ${city.name} achten müssen.`, thumbnailAlt: `Video: WP Altbau ${city.name}`, duration: '9:33' },
+      { title: `GEG 2026: Was Hausbesitzer in ${city.name} jetzt tun müssen`, description: `Die 65%-Regel, Fristen, Ausnahmen — und warum die Wärmepumpe die einfachste Lösung ist.`, thumbnailAlt: `Video: GEG Pflichten ${city.name}`, duration: '7:48' },
+      { title: `Wärmepumpe + PV in ${city.name}: Die perfekte Kombination`, description: `Mit ${city.avgSunHours ?? 1600} Sonnenstunden/Jahr erzeugen Sie Ihren WP-Strom teilweise selbst.`, thumbnailAlt: `Video: WP + PV ${city.name}`, duration: '8:55' },
+    ],
+  };
+
+  const categoryVideos = videos[cat] ?? videos.allgemein;
+  return categoryVideos[hash % categoryVideos.length];
+}
+
+// ── 21. SOCIAL PROOF COUNTER DATA ─────────────────────────────────────────────
+
+export function getSocialProofData(city: City, keyword: Keyword): {
+  anfragenGesamt: number; anfragenStadt: number; letzteAnfrage: string; zufriedenheit: number;
+} {
+  const hash = cityHash(city, 100, 400);
+  const baseCount = 12450 + hash * 37;
+  const cityCount = 23 + cityHash(city, 180, 401);
+  const hoursAgo = 1 + cityHash(city, 23, 402);
+
+  return {
+    anfragenGesamt: baseCount,
+    anfragenStadt: cityCount,
+    letzteAnfrage: `vor ${hoursAgo} Stunden`,
+    zufriedenheit: 94 + cityHash(city, 5, 403),
+  };
+}
+
 export function getExtendedVariationData(
   city: City,
   keyword: Keyword,
@@ -1638,6 +1761,7 @@ export function getExtendedVariationData(
   faqCount: number = 6,
 ): ExtendedVariationData {
   const base = getCityVariationData(city, keyword, jaz, wpKosten, ersparnis, faqCount);
+  const foerdSatz = 55; // KfW-Förderung standard 55%
 
   return {
     ...base,
@@ -1657,5 +1781,8 @@ export function getExtendedVariationData(
     heizkoerperCheck: getHeizkoerperCheck(city, keyword),
     stromtarifOptimierung: getStromtarifOptimierung(city, jaz, wpKosten),
     keywordDeepContent: getKeywordDeepContent(city, keyword, jaz, wpKosten, ersparnis),
+    enhancedCTA: getEnhancedCTA(city, keyword, ersparnis, foerdSatz),
+    videoPlaceholder: getVideoPlaceholder(city, keyword),
+    socialProofData: getSocialProofData(city, keyword),
   };
 }

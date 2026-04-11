@@ -329,6 +329,56 @@ export default function CityKeywordPage({ params }: Props) {
     })),
   } : null;
 
+  // WebPage schema with dateModified — E-E-A-T + freshness signal
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}#webpage`,
+    url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}`,
+    name: fillTemplate(keyword.titleTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    datePublished: '2024-09-15',
+    dateModified: '2026-04-01',
+    inLanguage: 'de-DE',
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/#website',
+      name: 'Wärmepumpenbegleiter',
+      url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+    },
+    author: {
+      '@type': 'Person',
+      name: 'Bastian Saupe',
+      jobTitle: 'Energieberater (HWK)',
+      url: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
+    },
+    reviewedBy: {
+      '@type': 'Person',
+      name: 'Bastian Saupe',
+      jobTitle: 'Energieberater (HWK)',
+      hasCredential: {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Energieberater',
+        recognizedBy: {
+          '@type': 'Organization',
+          name: 'Handwerkskammer',
+        },
+      },
+    },
+    about: {
+      '@type': 'Thing',
+      name: keyword.keyword.replace('[Stadt]', city.name),
+    },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.featured-snippet'],
+    },
+    mainContentOfPage: {
+      '@type': 'WebPageElement',
+      cssSelector: '.main-content',
+    },
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -336,6 +386,7 @@ export default function CityKeywordPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateRatingSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
       {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
       <CityPageRouter keyword={keyword} city={city} jaz={jaz} calc={calc} foerd={foerd} nearby={nearby} h1={h1} />

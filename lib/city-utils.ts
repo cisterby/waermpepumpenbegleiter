@@ -109,6 +109,7 @@ export function buildLocalBusinessSchema(keywordSlug: string, city: City) {
     '@type': 'LocalBusiness',
     name: `Wärmepumpen-Beratung ${city.name}`,
     url: `https://xn--wrmepumpenbegleiter-gwb.de/${keywordSlug}/${city.slug}`,
+    foundingDate: '2024-01-15',
     address: {
       '@type': 'PostalAddress',
       addressLocality: city.name,

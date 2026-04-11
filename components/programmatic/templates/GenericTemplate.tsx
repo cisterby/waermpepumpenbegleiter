@@ -7,10 +7,11 @@ import { ChevronDown, ArrowRight, CheckCircle, TrendingDown, Shield, Sun } from 
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
 // ── Keyword-Kategorien → spezifischer Hauptinhalt ────────────────────────────
 
@@ -235,6 +236,9 @@ export default function GenericTemplate({
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
+  const videoData = getVideoPlaceholder(city, keyword);
+  const socialProof = getSocialProofData(city, keyword);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
@@ -330,8 +334,32 @@ export default function GenericTemplate({
             </div>
           )}
 
+          {/* Inhaltsverzeichnis — bessere UX für lange Seiten */}
+          <nav className="bg-white border border-gray-200 rounded-xl p-5 mb-8 shadow-sm" aria-label="Inhaltsverzeichnis">
+            <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-3">Inhaltsverzeichnis</p>
+            <ol className="space-y-1.5 text-sm">
+              {[
+                { label: fillTemplate(keyword.featuredSnippetQuestions[1] ?? `${kw} in ${city.name}`, city, jaz), id: 'hauptinhalt' },
+                { label: `Wärmepumpe in ${city.bundesland}`, id: 'bundesland' },
+                { label: `Energiekosten-Analyse ${city.name}`, id: 'energiekosten' },
+                { label: `Wärmepumpen-Rechner`, id: 'rechner' },
+                { label: `PV + Wärmepumpe Kombination`, id: 'pv-kombination' },
+                { label: `Heizkörper-Check`, id: 'heizkoerper' },
+                { label: `Regionaler Vergleich`, id: 'vergleich' },
+                { label: `FAQ — Häufige Fragen`, id: 'faq' },
+              ].map((item, i) => (
+                <li key={i}>
+                  <a href={`#${item.id}`} className="flex items-center gap-2 text-[#4A6358] hover:text-[#1A4731] transition-colors py-0.5">
+                    <span className="text-[#3DA16A] font-mono text-xs font-bold">{i + 1}.</span>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
           {/* Keyword-spezifischer Hauptinhalt (2. Paragraph aus content-variation) */}
-          <h2 className="font-bold text-[#1C2B2B] mb-4" style={{ fontSize: 'clamp(22px,2.5vw,34px)' }}>
+          <h2 id="hauptinhalt" className="font-bold text-[#1C2B2B] mb-4" style={{ fontSize: 'clamp(22px,2.5vw,34px)' }}>
             {fillTemplate(keyword.featuredSnippetQuestions[1] ?? `${kw} in ${city.name} — was Sie wissen müssen`, city, jaz)}
           </h2>
           <div className="space-y-4 mb-8">
@@ -380,14 +408,14 @@ export default function GenericTemplate({
           ))}
                     {/* Bundesland & Gebäudekontext */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-gray-900">Wärmepumpe in {city.bundesland} — {city.name} im Fokus</h2>
+            <h2 id="bundesland" className="text-2xl font-bold text-gray-900">Wärmepumpe in {city.bundesland} — {city.name} im Fokus</h2>
             <p className="text-[#4A6358] leading-relaxed">{bundeslandText}</p>
             <p className="text-[#4A6358] leading-relaxed">{gebaeudeText}</p>
           </div>
 
           {/* Energie & Wirtschaftlichkeit Deep-Dive */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-gray-900">Energiekosten-Analyse für {city.name}</h2>
+            <h2 id="energiekosten" className="text-2xl font-bold text-gray-900">Energiekosten-Analyse für {city.name}</h2>
             <p className="text-[#4A6358] leading-relaxed">{energieText}</p>
             {/* Vergleichstabelle */}
             <div className="overflow-x-auto">
@@ -410,6 +438,12 @@ export default function GenericTemplate({
                 </tbody>
               </table>
             </div>
+          </div>
+
+          {/* ── Inline Rechner — interaktives Widget ── */}
+          <div className="my-10">
+            <h2 id="rechner" className="text-2xl font-bold text-[#1A4731] mb-4">Wärmepumpen-Rechner für {city.name}</h2>
+            <InlineCalculator city={city} jaz={jaz} foerdSatz={foerd.gesamtSatz} />
           </div>
 
           {/* Kundenstimme */}
@@ -469,6 +503,44 @@ export default function GenericTemplate({
             <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
           </div>
 
+          {/* ── Video-Empfehlung — Engagement-Signal ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+            <div className="relative bg-gradient-to-br from-[#1A4731] to-[#0A1910] aspect-video flex items-center justify-center cursor-pointer group">
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+              <div className="relative z-10 text-center">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
+                  <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <p className="text-white font-bold text-sm">{videoData.title}</p>
+                <p className="text-white/60 text-xs mt-1">{videoData.duration} Min.</p>
+              </div>
+            </div>
+            <div className="p-4">
+              <p className="text-[#4A6358] text-sm leading-relaxed">{videoData.description}</p>
+            </div>
+          </div>
+
+          {/* ── Social Proof Counter — Vertrauenssignal ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div>
+                <p className="text-[#1A4731] font-bold text-2xl">{socialProof.anfragenGesamt.toLocaleString('de-DE')}+</p>
+                <p className="text-gray-500 text-xs">Anfragen bundesweit</p>
+              </div>
+              <div>
+                <p className="text-[#1A4731] font-bold text-2xl">{socialProof.anfragenStadt}+</p>
+                <p className="text-gray-500 text-xs">Anfragen in {city.name}</p>
+              </div>
+              <div>
+                <p className="text-[#D97706] font-bold text-2xl">{socialProof.zufriedenheit}%</p>
+                <p className="text-gray-500 text-xs">Zufriedenheit</p>
+              </div>
+              <div>
+                <p className="text-[#3DA16A] font-bold text-2xl">{socialProof.letzteAnfrage}</p>
+                <p className="text-gray-500 text-xs">Letzte Anfrage</p>
+              </div>
+            </div>
+          </div>
 
           {/* ── Keyword-spezifischer Tiefeninhalt ── */}
           <div className="space-y-5">
@@ -480,7 +552,7 @@ export default function GenericTemplate({
 
           {/* ── PV + Wärmepumpe Kombination ── */}
           <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-5">
-            <h2 className="text-xl font-bold text-[#1A4731]">{pvWP.title}</h2>
+            <h2 id="pv-kombination" className="text-xl font-bold text-[#1A4731]">{pvWP.title}</h2>
             {pvWP.paragraphs.map((p, i) => (
               <p key={i} className="text-[#4A6358] text-sm leading-relaxed">{p}</p>
             ))}
@@ -497,7 +569,7 @@ export default function GenericTemplate({
 
           {/* ── Heizkörper-Kompatibilitäts-Check ── */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#1A4731]">{heizkoerper.title}</h2>
+            <h2 id="heizkoerper" className="text-xl font-bold text-[#1A4731]">{heizkoerper.title}</h2>
             <p className="text-[#4A6358] text-base leading-relaxed">{heizkoerper.paragraph}</p>
             <div className="grid gap-2">
               {heizkoerper.checklist.map((item, i) => (
@@ -525,7 +597,7 @@ export default function GenericTemplate({
           {/* ── Nachbarschaftsvergleich ── */}
           {nearby.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-[#1A4731]">Regionaler Vergleich: {city.name} vs. Umland</h2>
+              <h2 id="vergleich" className="text-xl font-bold text-[#1A4731]">Regionaler Vergleich: {city.name} vs. Umland</h2>
               <p className="text-[#4A6358] text-base leading-relaxed">{nachbarVergleich.paragraph}</p>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm border-collapse">
@@ -610,13 +682,13 @@ export default function GenericTemplate({
             </div>
           )}
           {/* FAQ */}
-          <h2 className="font-bold text-[#1C2B2B] mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
+          <h2 id="faq" className="font-bold text-[#1C2B2B] mb-5 mt-10" style={{ fontSize: 'clamp(20px,2.5vw,30px)' }}>
             {h2s.faq}
           </h2>
           <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm mb-8">
             {faqs.map((faq, i) => (
               <details key={i} className="group border-b border-gray-200 last:border-0">
-                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
+                <summary className="w-full flex items-center justify-between gap-3 px-5 py-4 min-h-[48px] cursor-pointer list-none hover:bg-[#F8F9FA]/50 transition-colors">
                   <span className="font-semibold text-[#1C2B2B] text-sm leading-snug">{faq.q}</span>
                   <ChevronDown size={16} className="text-[#7A9E8E] shrink-0 group-open:rotate-180 transition-transform" />
                 </summary>
@@ -634,7 +706,7 @@ export default function GenericTemplate({
               <div className="flex flex-wrap gap-2">
                 {nearby.map(n => (
                   <Link key={n.slug} href={`/${keyword.slug}/${n.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                    className="px-4 py-2.5 min-h-[44px] flex items-center bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {n.name}
                   </Link>
                 ))}
@@ -645,7 +717,7 @@ export default function GenericTemplate({
               <div className="flex flex-wrap gap-2">
                 {crossKeywords.map(kw2 => kw2 && (
                   <Link key={kw2.slug} href={`/${kw2.slug}/${city.slug}`}
-                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
+                    className="px-4 py-2.5 min-h-[44px] flex items-center bg-white border border-gray-200 rounded-lg text-sm text-[#4A6358] hover:text-[#1A4731] hover:border-[#1A4731] transition-colors">
                     {kw2.keyword.replace('[Stadt]', city.name)}
                   </Link>
                 ))}
@@ -657,9 +729,12 @@ export default function GenericTemplate({
         {/* RIGHT — Sticky */}
         <div className="sticky top-24 space-y-4">
           <div className="bg-[#1A4731] rounded-2xl p-6 shadow-2xl">
-            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-1">{ctaVariation.headline}</p>
+            {enhancedCta.urgencyBadge && (
+              <span className="inline-block bg-[#D97706] text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{enhancedCta.urgencyBadge}</span>
+            )}
+            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-1">{enhancedCta.headline}</p>
             <p className="font-mono font-bold text-white text-4xl leading-none mb-0.5">{fmtEuro(calc.ersparnis)}</p>
-            <p className="text-white/75 text-xs mb-5">jährliche Ersparnis in {city.name} vs. Erdgas</p>
+            <p className="text-white/75 text-xs mb-5">{enhancedCta.subline}</p>
             <div className="space-y-2 mb-5">
               {[
                 { l: 'Heizkosten heute', v: fmtEuro(calc.altKosten) + '/J', c: 'text-[#D97706]' },
@@ -675,8 +750,8 @@ export default function GenericTemplate({
               ))}
             </div>
             <a href="/rechner"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#D97706] text-white rounded-xl font-bold text-sm hover:bg-amber-700 transition-colors mb-2">
-              Kostenloses Angebot <ArrowRight size={15} />
+              className="flex items-center justify-center gap-2 w-full min-h-[48px] py-3.5 bg-[#D97706] text-white rounded-xl font-bold text-sm hover:bg-amber-700 transition-colors mb-2">
+              {enhancedCta.button} <ArrowRight size={15} />
             </a>
             <p className="text-white/70 text-xs text-center">Kostenlos · Unverbindlich · Kein Spam</p>
           </div>
