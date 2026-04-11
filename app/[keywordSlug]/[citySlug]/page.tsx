@@ -1,0 +1,278 @@
+// app/[keywordSlug]/[citySlug]/page.tsx
+// ISR-Strategie: Nur Top-Seiten pre-builden, Rest on-demand (cached)
+// Buildzeit: ~2 Min statt ~17 Min | SEO: identisch zu SSG
+
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import citiesData from '@/lib/cities.json';
+import { KEYWORDS, getKeywordBySlug, fillTemplate } from '@/lib/keywords';
+import { getCityBySlug, getNearbyCity } from '@/lib/cities';
+import { estimateJAZ, buildBreadcrumbSchema, buildLocalBusinessSchema } from '@/lib/city-utils';
+import type { City } from '@/lib/city-utils';
+import { calcBetriebskosten, calcFoerderung } from '@/lib/calculations';
+import CityPageRouter from '@/components/programmatic/CityPageRouter';
+
+interface Props {
+  params: { keywordSlug: string; citySlug: string };
+}
+
+// dynamicParams = true → unbekannte Routen werden on-demand gerendert + gecacht
+// Google bekommt volles HTML — identisch zu SSG aus SEO-Sicht
+export const dynamicParams = true;
+
+// ISR: Seiten nach 30 Tagen neu generieren (Preise, Förderinfos aktuell halten)
+export const revalidate = 2592000;
+
+// Pre-builden: nur Tier 1 Keywords × Top 50 Städte = 250 Seiten
+// → ~2 Min Buildzeit statt 17 Min
+export async function generateStaticParams() {
+  const cities = citiesData as City[];
+
+  // Top 50 Städte nach Einwohnerzahl (die meisten Suchanfragen)
+  const topCities = [...cities]
+    .sort((a, b) => b.einwohner - a.einwohner)
+    .slice(0, 50);
+
+  // Nur Tier 1 Keywords (höchstes Suchvolumen)
+  const tier1 = KEYWORDS.filter(k => k.tier === 1);
+
+  return tier1.flatMap((kw) =>
+    topCities.map((city) => ({
+      keywordSlug: kw.slug,
+      citySlug:    city.slug,
+    }))
+  );
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const keyword = getKeywordBySlug(params.keywordSlug);
+  const city    = (citiesData as City[]).find(c => c.slug === params.citySlug);
+  if (!keyword || !city) return {};
+
+  const jaz   = estimateJAZ(city);
+  const calc  = calcBetriebskosten(120, '1979_1994', 'erdgas', {
+    strompreisCtKwh: city.strompreis,
+    gaspreisCtKwh:   city.gaspreis,
+    avgTemp:         city.avgTemp,
+  });
+  const title = fillTemplate(keyword.titleTemplate, city, jaz, calc.wpKosten, calc.ersparnis);
+  const desc  = fillTemplate(keyword.metaTemplate,  city, jaz, calc.wpKosten, calc.ersparnis);
+  const url   = `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}`;
+
+  // Crawl-Budget-Steuerung: Tier 4 Keywords für kleine Städte (<20k) noindex
+  // → verhindert Thin Content im Index, spart Crawl-Budget
+  const shouldIndex = !(keyword.tier >= 4 && city.einwohner < 20000);
+
+  return {
+    title,
+    description: desc,
+    alternates: { canonical: url },
+    openGraph: {
+      title, description: desc, url,
+      type: 'website', locale: 'de_DE',
+    },
+    twitter: { card: 'summary_large_image', title, description: desc },
+    robots: {
+      index: shouldIndex,
+      follow: true, // follow immer true — Links trotzdem vererben
+      googleBot: {
+        index: shouldIndex,
+        follow: true,
+        'max-snippet': -1,
+        'max-image-preview': 'large' as const,
+      },
+    },
+  };
+}
+
+export default function CityKeywordPage({ params }: Props) {
+  const keyword = getKeywordBySlug(params.keywordSlug);
+  const city    = (citiesData as City[]).find(c => c.slug === params.citySlug);
+
+  // 404 nur wenn Keyword oder Stadt komplett unbekannt
+  if (!keyword || !city) notFound();
+
+  const jaz    = estimateJAZ(city);
+  const calc   = calcBetriebskosten(120, '1979_1994', 'erdgas', {
+    strompreisCtKwh: city.strompreis,
+    gaspreisCtKwh:   city.gaspreis,
+    avgTemp:         city.avgTemp,
+  });
+  const foerd  = calcFoerderung({
+    investitionskosten:    25000,
+    isSelfOccupied:        true,
+    hasOldFossilHeating:   true,
+    einkommenUnter40k:     false,
+    hasNaturalRefrigerant: false,
+    usesErdwaermeOrWasser: false,
+  });
+  const nearby = getNearbyCity(city, 6);
+  const h1     = fillTemplate(keyword.h1Template, city, jaz, calc.wpKosten, calc.ersparnis);
+
+  const breadcrumbSchema = buildBreadcrumbSchema(keyword.slug, keyword.keyword.replace('[Stadt]', '').trim(), city);
+  const localBizSchema   = buildLocalBusinessSchema(keyword.slug, city);
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: (keyword.faqPool ?? []).slice(0, 4).map(item => ({
+      '@type': 'Question',
+      name: fillTemplate(item.q, city, jaz, calc.wpKosten, calc.ersparnis),
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: fillTemplate(item.a, city, jaz, calc.wpKosten, calc.ersparnis),
+      },
+    })),
+  };
+  // Service Schema (keyword-spezifisch) — PDF Anforderung #6
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}#service`,
+    name: keyword.keyword.replace('[Stadt]', city.name).trim(),
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    serviceType: 'Wärmepumpen-Vermittlung',
+    areaServed: {
+      '@type': 'City',
+      name: city.name,
+      containedInPlace: {
+        '@type': 'State',
+        name: city.bundesland,
+      },
+    },
+    provider: {
+      '@type': 'Organization',
+      '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/#organization',
+      name: 'Wärmepumpenbegleiter.de',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'EUR',
+      description: 'Kostenlose Vermittlung an geprüfte Wärmepumpen-Fachbetriebe',
+    },
+  };
+
+
+
+  // Product schema for kaufen/kosten keywords (shows price in SERPs)
+  const productSchema = ['waermepumpe-kaufen','waermepumpe-kosten','waermepumpe-preise'].includes(keyword.slug) ? {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `Wärmepumpe für ${city.name}`,
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    brand: { '@type': 'Brand', name: 'Wärmepumpenbegleiter' },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'EUR',
+      lowPrice: Math.round(foerd.eigenanteil * 0.85),
+      highPrice: Math.round(foerd.eigenanteil * 1.4),
+      offerCount: 3,
+      availability: 'https://schema.org/InStock',
+      areaServed: { '@type': 'City', name: city.name },
+    },
+    additionalProperty: [
+      { '@type': 'PropertyValue', name: 'KfW-Förderquote', value: `${foerd.gesamtSatz}%` },
+      { '@type': 'PropertyValue', name: 'JAZ', value: String(jaz) },
+      { '@type': 'PropertyValue', name: 'Betriebskosten', value: `${calc.wpKosten}€/Jahr` },
+    ],
+  } : null;
+  // HowTo Schema — für Ablauf-Keywords
+  const HOWTO_KEYWORDS: Record<string, { name: string; steps: string[] }> = {
+    'waermepumpe-installation': {
+      name: `Wärmepumpe installieren in ${city.name} — Schritt für Schritt`,
+      steps: [
+        `KfW-Antrag stellen — vor Auftragserteilung, zwingend`,
+        `Fachbetrieb beauftragen — KfW-LuL-registrierter Meisterbetrieb in ${city.name}`,
+        `Außeneinheit aufstellen — Standort, Kernbohrung, Kältemittelleitungen`,
+        `Hydraulischen Abgleich durchführen — KfW-Pflicht, €500–1.500`,
+        `Wärmepumpe in Betrieb nehmen — F-Gas-Protokoll, KfW-Dokumentation`,
+      ],
+    },
+    'waermepumpe-montage': {
+      name: `Wärmepumpe montieren in ${city.name} — 3-Tage-Plan`,
+      steps: [
+        `Tag 1: Außeneinheit aufstellen, Kernbohrung (60–80 mm), Kältemittelleitungen verlegen`,
+        `Tag 2: Kältemittelkreis befüllen (F-Gas-Zertifikat Pflicht), Pufferspeicher anschließen, Elektroinstallation`,
+        `Tag 3: Hydraulischer Abgleich (KfW-Pflicht), Heizungsprogrammierung, Inbetriebnahme, KfW-Protokoll`,
+      ],
+    },
+    'waermepumpe-nachruesten': {
+      name: `Wärmepumpe nachrüsten in ${city.name} — Ablauf`,
+      steps: [
+        `Vorlauftemperatur prüfen — unter 70°C: Standard-WP, bis 70°C: Hochtemperatur-WP`,
+        `KfW-Antrag stellen — vor Auftragserteilung in ${city.name}`,
+        `Hydraulischen Abgleich durchführen — senkt Vorlauftemperatur um 5–10°C`,
+        `Pufferspeicher und Starkstrom vorbereiten — 200–500 l, 3×16A`,
+        `Wärmepumpe montieren und in Betrieb nehmen — 2–3 Tage`,
+      ],
+    },
+    'erdwaermepumpe': {
+      name: `Erdwärmepumpe in ${city.name} installieren — Genehmigung & Ablauf`,
+      steps: [
+        `Hydrogeologisches Gutachten einholen — Pflicht in ${city.bundesland} vor Tiefenbohrung`,
+        `Wasserrechtliche Genehmigung beantragen — Untere Wasserbehörde ${city.bundesland}, 4–8 Wochen`,
+        `KfW-Antrag stellen — vor Auftragserteilung, +5% Bonus für Erdwärme automatisch`,
+        `Tiefenbohrung & Installation — 2–3 Tage, Bohrprotokoll für KfW-Nachweis erforderlich`,
+      ],
+    },
+    'heizung-tauschen': {
+      name: `Heizung tauschen in ${city.name} — GEG-konformer Ablauf`,
+      steps: [
+        `Heizsystem prüfen — welche Option ist GEG-konform in ${city.name}?`,
+        `KfW-Antrag stellen — zwingend vor Auftragserteilung`,
+        `Fachbetrieb beauftragen — KfW-LuL-registrierter Betrieb in ${city.bundesland}`,
+        `Alte Heizung demontieren, neue WP installieren — 2–3 Tage Montage`,
+        `Hydraulischen Abgleich und Inbetriebnahme — KfW-Verwendungsnachweis einreichen`,
+      ],
+    },
+  };
+
+  const howToData = HOWTO_KEYWORDS[keyword.slug];
+  const howToSchema = howToData ? {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: howToData.name,
+    description: fillTemplate(keyword.metaTemplate, city, jaz, calc.wpKosten, calc.ersparnis),
+    image: {
+      '@type': 'ImageObject',
+      url: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200`,
+      width: 1200,
+      height: 630,
+    },
+    step: howToData.steps.map((text, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: text.split(' — ')[0] ?? text,
+      text,
+      image: {
+        '@type': 'ImageObject',
+        url: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800`,
+      },
+    })),
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'EUR',
+      value: `${Math.round(foerd.eigenanteil)}`,
+    },
+  } : null;
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBizSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
+      {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
+      <CityPageRouter
+        city={city}
+        keyword={keyword}
+        calc={calc}
+        foerd={foerd}
+        jaz={jaz}
+        nearby={nearby}
+        h1={h1}
+      />
+    </>
+  );
+}

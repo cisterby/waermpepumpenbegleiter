@@ -1,0 +1,215 @@
+// app/layout.tsx
+import './globals.css';
+import type { Metadata } from 'next';
+import { Outfit, DM_Sans, JetBrains_Mono } from 'next/font/google';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+
+// Font-Optimierung: nur tatsächlich genutzte Weights laden
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+  weight: ['400', '500', '600', '700'], // 800 entfernt — wird nicht genutzt
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-dm-sans',
+  weight: ['400', '500'],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jetbrains',
+  weight: ['500', '700'], // 600 entfernt — nur für Preise/Zahlen gebraucht
+});
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#1B5E37',
+};
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Wärmepumpenbegleiter.de – Kostenlose WP-Vermittlung in Deutschland',
+    template: '%s | Wärmepumpenbegleiter.de',
+  },
+  description:
+    'Wir finden den besten Wärmepumpen-Installateur in Ihrer Region – kostenlos, herstellerunabhängig, ohne Verkaufsdruck. Bis zu 3 Angebote vergleichen.',
+  keywords: ['Wärmepumpe', 'Wärmepumpe installieren', 'Wärmepumpe Kosten', 'Wärmepumpe Förderung', 'KfW Wärmepumpe', 'Wärmepumpe Installateur', 'Heizung tauschen'],
+  metadataBase: new URL('https://xn--wrmepumpenbegleiter-gwb.de'),
+  alternates: { canonical: 'https://xn--wrmepumpenbegleiter-gwb.de' },
+  openGraph: {
+    type: 'website',
+    locale: 'de_DE',
+    url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+    siteName: 'Wärmepumpenbegleiter.de',
+    title: 'Wärmepumpenbegleiter.de – Kostenlose WP-Vermittlung',
+    description:
+      'Wir finden den besten Wärmepumpen-Installateur in Ihrer Region – kostenlos, herstellerunabhängig, ohne Verkaufsdruck.',
+    images: [{
+      url: 'https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Wärmepumpenbegleiter.de',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
+// ── Schema: Organization (E-E-A-T) ──────────────────────────────────────────
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/#organization',
+  name: 'Wärmepumpenbegleiter.de',
+  url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://xn--wrmepumpenbegleiter-gwb.de/logo.png',
+    width: 280,
+    height: 60,
+  },
+  description:
+    'Wärmepumpenbegleiter.de ist ein unabhängiges Wärmepumpen-Vermittlungsportal. Wir verbinden Hausbesitzer kostenlos mit geprüften Wärmepumpen-Installateuren in ihrer Region.',
+  foundingDate: '2025',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Zum Ried 3',
+    postalCode: '06688',
+    addressLocality: 'Weißenfels',
+    addressCountry: 'DE',
+  },
+  areaServed: { '@type': 'Country', name: 'Deutschland' },
+  email: 'info@xn--wrmepumpenbegleiter-gwb.de',
+  telephone: '+49-176-32987455',
+  sameAs: [
+    'https://www.webflott.de',
+    'https://www.instagram.com/waermepumpenbegleiter',
+    'https://www.facebook.com/waermepumpenbegleiter',
+    'https://www.linkedin.com/company/waermepumpenbegleiter',
+  ],
+  founder: {
+    '@type': 'Person',
+    name: 'Bastian Saupe',
+    url: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
+    sameAs: 'https://www.webflott.de',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'Kundenservice',
+    availableLanguage: 'German',
+    telephone: '+49-176-32987455',
+    email: 'info@xn--wrmepumpenbegleiter-gwb.de',
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
+  },
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'Webflott',
+    url: 'https://www.webflott.de',
+  },
+  knowsAbout: [
+    'Wärmepumpen',
+    'Luft-Wasser-Wärmepumpen',
+    'KfW-Förderung BEG',
+    'Gebäudeenergiegesetz GEG',
+    'Heizungssanierung',
+    'Energiewende',
+    'Wärmepumpenvermittlung',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Wärmepumpen-Vermittlungsleistungen',
+    itemListElement: [{
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Kostenlose Wärmepumpen-Vermittlung',
+        description: 'Wir vermitteln kostenlos an geprüfte Wärmepumpen-Installationsbetriebe in Deutschland.',
+      },
+      price: '0',
+      priceCurrency: 'EUR',
+    }],
+  },
+};
+
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns#bastian-saupe',
+  name: 'Bastian Saupe',
+  jobTitle: 'Gründer & Geschäftsführer',
+  description: 'Gründer von Wärmepumpenbegleiter.de und Webflott. Spezialist für programmatische SEO-Portale und digitale Lead-Generierung in der Energiebranche.',
+  knowsAbout: ['Wärmepumpen', 'KfW-Förderung BEG', 'GEG', 'Energiewende', 'Digitale Vermittlungsportale'],
+  worksFor: { '@type': 'Organization', name: 'Wärmepumpenbegleiter.de', url: 'https://xn--wrmepumpenbegleiter-gwb.de' },
+  sameAs: ['https://www.webflott.de'],
+  url: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/#website',
+  url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+  name: 'Wärmepumpenbegleiter.de',
+  description: 'Unabhängiges Wärmepumpen-Vermittlungsportal für Deutschland',
+  publisher: { '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/#organization' },
+  inLanguage: 'de-DE',
+  copyrightYear: 2026,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://xn--wrmepumpenbegleiter-gwb.de/rechner?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="de" className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        {/* preconnect für Google Fonts wird von next/font automatisch gehandhabt */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+      </head>
+      <body className={`${dmSans.className} antialiased bg-[#F8F9FA] text-[#1C2B2B]`}>
+        <Navigation />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
+}
