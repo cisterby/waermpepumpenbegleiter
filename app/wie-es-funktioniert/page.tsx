@@ -1,5 +1,4 @@
 // app/wie-es-funktioniert/page.tsx
-'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Clock, Shield, Zap, Phone } from 'lucide-react';
@@ -76,12 +75,30 @@ const howToSchema = {
   ],
 };
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Wärmepumpen-Vermittlung & Begleitung',
+  description: 'Kostenlose Wärmepumpen-Vermittlung mit Fachbetriebs-Matching und KfW-Antrag-Unterstützung',
+  provider: {
+    '@type': 'Organization',
+    name: 'Wärmepumpenbegleiter.de',
+    url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+  },
+  areaServed: 'DE',
+  serviceType: 'Heat Pump Installation & Consulting',
+};
+
 export default function WieEsFunktioniertPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
 
       {/* Hero */}
@@ -114,7 +131,23 @@ export default function WieEsFunktioniertPage() {
                 <div className="h-px flex-1" style={{ background: step.color, opacity: 0.2 }} />
               </div>
               <h2 className="text-[#1C2B2B] text-2xl font-bold mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{step.title}</h2>
-              <p className="text-[#4A6358] leading-relaxed mb-5">{step.desc}</p>
+              <p className="text-[#4A6358] leading-relaxed mb-5">
+                {i === 0 && (
+                  <>
+                    {step.desc} <Link href="/waermepumpe-beratung" className="text-[#1A4731] font-semibold hover:underline">Mehr zur Beratung</Link>.
+                  </>
+                )}
+                {i === 1 && (
+                  <>
+                    {step.desc} <Link href="/waermepumpe-fachbetrieb" className="text-[#1A4731] font-semibold hover:underline">Unsere Fachbetriebs-Kriterien</Link>.
+                  </>
+                )}
+                {i === 2 && (
+                  <>
+                    {step.desc} <Link href="/waermepumpe-foerderung" className="text-[#1A4731] font-semibold hover:underline">KfW-Förderinfo</Link>.
+                  </>
+                )}
+              </p>
               <ul className="space-y-2.5">
                 {step.bullets.map(b => (
                   <li key={b} className="flex items-center gap-2.5 text-sm text-[#1C2B2B] font-medium">
@@ -149,6 +182,32 @@ export default function WieEsFunktioniertPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Top-Städte */}
+      <section className="max-w-5xl mx-auto px-6 py-12">
+        <h2 className="text-[#1C2B2B] text-2xl font-bold mb-6 text-center" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          Wärmepumpen-Vermittlung in Top-Städten
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
+          {[
+            { name: 'Berlin', slug: 'berlin' },
+            { name: 'München', slug: 'muenchen' },
+            { name: 'Hamburg', slug: 'hamburg' },
+            { name: 'Köln', slug: 'koeln' },
+            { name: 'Frankfurt a.M.', slug: 'frankfurt-am-main' },
+            { name: 'Stuttgart', slug: 'stuttgart' },
+            { name: 'Düsseldorf', slug: 'duesseldorf' },
+            { name: 'Dortmund', slug: 'dortmund' },
+            { name: 'Essen', slug: 'essen' },
+            { name: 'Leipzig', slug: 'leipzig' },
+          ].map(city => (
+            <Link key={city.slug} href={`/waermepumpe-beratung/${city.slug}`}
+              className="px-4 py-3 bg-[#1A4731]/8 border border-[#1A4731]/20 rounded-lg text-[#1C2B2B] font-medium text-sm hover:bg-[#1A4731]/15 hover:border-[#1A4731]/40 transition-all text-center">
+              {city.name}
+            </Link>
+          ))}
         </div>
       </section>
 

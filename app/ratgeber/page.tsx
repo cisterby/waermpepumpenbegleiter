@@ -47,7 +47,7 @@ Die KfW-Bundesförderung (Programm 458) gewährt einen nicht rückzahlbaren Zusc
 
 **Was jetzt konkret zu tun ist**
 
-Erstens: Prüfen Sie ob Ihre Gemeinde Großstadt über 100.000 Einwohner ist — dann gilt GEG-Frist 30. Juni 2026. Zweitens: Planen Sie Vorlauf ein — vier bis zwölf Wochen für Installateur und KfW-Antrag. Drittens: KfW-Antrag zwingend vor Vertragsabschluss stellen. Viertens: Mindestens drei vollständige Angebote von LuL-registrierten Betrieben vergleichen. Fünftens: Prüfen Sie ob ein Individueller Sanierungsfahrplan sinnvoll ist — das bringt 5 Prozent Bonus zusätzlich bei nur 60 bis 140 Euro Eigenanteil.
+Erstens: Prüfen Sie ob Ihre Gemeinde Großstadt über 100.000 Einwohner ist — dann gilt GEG-Frist 30. Juni 2026. Zweitens: Planen Sie Vorlauf ein — vier bis zwölf Wochen für Installateur und KfW-Antrag. Drittens: KfW-Antrag zwingend vor Vertragsabschluss stellen (mehr unter Waermepumpen-Foerderung). Viertens: Mindestens drei vollständige Angebote von LuL-registrierten Betrieben vergleichen. Fünftens: Prüfen Sie ob ein Individueller Sanierungsfahrplan sinnvoll ist — das bringt 5 Prozent Bonus zusätzlich bei nur 60 bis 140 Euro Eigenanteil.
 
 **Häufige Fragen zur GEG-Frist**
 
@@ -84,7 +84,7 @@ Förderfähig: Gerät, Montage, hydraulischer Abgleich (Pflicht), Elektroinstall
 
 **LuL-Registrierung: Nicht jeder darf den Antrag stellen**
 
-Nur Betriebe mit Lieferant-und-Leistungserbringer-Registrierung im KfW-Portal dürfen Anträge stellen. Ohne LuL: keine Förderung, egal wie gut die Arbeit ist. Immer nach der LuL-Nummer fragen. Alle unsere Partnerbetriebe sind registriert.
+Nur Betriebe mit Lieferant-und-Leistungserbringer-Registrierung im KfW-Portal dürfen Anträge stellen. Ohne LuL: keine Förderung, egal wie gut die Arbeit ist. Immer nach der LuL-Nummer fragen. Alle unsere Partnerbetriebe sind registriert und geprüft — mehr dazu unter Waermepumpen-Fachbetrieb.
 
 **iSFP-Bonus: 5 Prozent mehr mit Sanierungsfahrplan**
 
@@ -174,7 +174,7 @@ Altbau umfasst eine enorme Bandbreite. Entscheidend ist nicht das Baujahr sonder
 
 **Die Vorlauftemperatur entscheidet**
 
-Altbauheizungen laufen oft mit 65 bis 80 Grad. WP arbeiten am effizientesten bei 35 bis 45 Grad. Drei Lösungswege: (1) Hochtemperatur-WP wie Viessmann Vitocal 252-A oder Stiebel Eltron WPL arbeiten bis 70 Grad Vorlauf — kompatibel mit nahezu allen Bestandsheizkörpern. (2) Hydraulischer Abgleich senkt die nötige Vorlauftemperatur um 5 bis 15 Grad. (3) Gezielter Austausch einzelner unterdimensionierter Heizkörper — meist nur ein oder zwei im ganzen Haus.
+Altbauheizungen laufen oft mit 65 bis 80 Grad. WP arbeiten am effizientesten bei 35 bis 45 Grad. Drei Lösungswege: (1) Hochtemperatur-WP wie Viessmann Vitocal 252-A oder Stiebel Eltron WPL arbeiten bis 70 Grad Vorlauf — kompatibel mit nahezu allen Bestandsheizkörpern. (2) Hydraulischer Abgleich senkt die nötige Vorlauftemperatur um 5 bis 15 Grad. (3) Gezielter Austausch einzelner unterdimensionierter Heizkörper — meist nur ein oder zwei im ganzen Haus. Lokale Fachbetriebe in großen Städten wie Berlin und München haben spezielle Erfahrung mit Altbausanierungen — lesen Sie mehr unter Waermepumpe-Altbau.
 
 **Hydraulischer Abgleich: KfW-Pflicht und Game-Changer**
 
@@ -474,6 +474,36 @@ export default function Ratgeber() {
                 className="flex items-center gap-2 p-3 bg-wp-bg border border-wp-border rounded-xl text-sm text-[#1C2B2B] hover:text-[#1A4731] hover:border-wp-green transition-all">
                 <span>{icon}</span>
                 <span className="font-medium">{label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Beliebte Städte für Wärmepumpen */}
+        <div className="mt-14 mb-10">
+          <h2 className="font-heading font-bold text-[#1C2B2B] text-xl mb-2">
+            Wärmepumpen in beliebten deutschen Städten
+          </h2>
+          <p className="text-[#1C2B2B]3 text-sm mb-6">
+            Lokale Fachbetriebs-Vermittlung, KfW-Förderung und regionale Wärmeplanung für Ihre Stadt.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {[
+              ['Berlin', 'waermepumpe-beratung/berlin'],
+              ['München', 'waermepumpe-beratung/muenchen'],
+              ['Hamburg', 'waermepumpe-beratung/hamburg'],
+              ['Köln', 'waermepumpe-beratung/koeln'],
+              ['Frankfurt', 'waermepumpe-beratung/frankfurt-am-main'],
+              ['Stuttgart', 'waermepumpe-beratung/stuttgart'],
+              ['Düsseldorf', 'waermepumpe-beratung/duesseldorf'],
+              ['Dortmund', 'waermepumpe-beratung/dortmund'],
+              ['Essen', 'waermepumpe-beratung/essen'],
+              ['Leipzig', 'waermepumpe-beratung/leipzig'],
+            ].map(([city, slug]) => (
+              <Link key={slug} href={`/${slug}`}
+                className="flex items-center justify-between p-3 bg-white border border-wp-border rounded-xl text-sm text-[#1C2B2B] hover:bg-[#1A4731]/5 hover:border-wp-green transition-all font-medium">
+                {city}
+                <ArrowRight size={14} className="text-[#1A4731]" />
               </Link>
             ))}
           </div>

@@ -1,5 +1,4 @@
 // app/ueber-uns/page.tsx
-'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Users, Award, MapPin, Phone } from 'lucide-react';
@@ -112,10 +111,10 @@ export default function UeberUnsPage() {
             </h2>
             <div className="space-y-4 text-[#4A6358] leading-relaxed">
               <p>
-                Die Wärmepumpe ist die beste Antwort auf steigende Energiepreise, CO₂-Kosten und GEG-Anforderungen. Aber der Weg dahin ist kompliziert: KfW-Anträge, Installateur-Auswahl, Heizlastberechnung, Förderrichtlinien.
+                Die Wärmepumpe ist die beste Antwort auf steigende Energiepreise, CO₂-Kosten und <Link href="/ratgeber" className="text-[#1A4731] font-semibold hover:underline">GEG-Anforderungen</Link>. Aber der Weg dahin ist kompliziert: KfW-Anträge, Installateur-Auswahl, Heizlastberechnung, Förderrichtlinien.
               </p>
               <p>
-                Wir nehmen Hausbesitzern genau diese Komplexität ab. Kostenlos. Herstellerunabhängig. Mit lokalem Wissen für 733 Städte in ganz Deutschland.
+                Wir nehmen Hausbesitzern genau diese Komplexität ab. Kostenlos. Herstellerunabhängig. Mit lokalem Wissen für 733 Städte in ganz Deutschland. Erfahren Sie <Link href="/wie-es-funktioniert" className="text-[#1A4731] font-semibold hover:underline">wie unser Vermittlungsprozess funktioniert</Link>.
               </p>
             </div>
             <div className="mt-7 space-y-3">
@@ -131,7 +130,7 @@ export default function UeberUnsPage() {
               <div className="space-y-3 text-white/75 text-sm">
                 <p><strong>Bastian Saupe:</strong> Gründer von Webflott, Spezialist für programmgesteuerte SEO-Portale und digitale Lead-Generierung in der Energiebranche. Expertise: KfW-Förderung, GEG, Energiewende.</p>
                 <p><strong>Philip Lindner:</strong> Mitgründer und Geschäftsführer von Webflott. Fachkompetenz in digitalen Geschäftsmodellen für die Energiewende und Vermittlungsportale.</p>
-                <p className="text-white/50 text-xs">Gegründet 2025 als unabhängiges Vermittlungsportal für alle Bundesländer.</p>
+                <p className="text-white/50 text-xs">Gegründet 2025 als unabhängiges Vermittlungsportal für alle Bundesländer. Tätig in über 733 Städten deutschlandweit — von <Link href="/waermepumpe-beratung/berlin" className="text-[#4CAF7D] hover:text-white hover:underline">Berlin</Link> bis <Link href="/waermepumpe-beratung/muenchen" className="text-[#4CAF7D] hover:text-white hover:underline">München</Link>.</p>
               </div>
             </div>
           </div>
@@ -202,6 +201,29 @@ export default function UeberUnsPage() {
               Kostenlos anfragen
               <ArrowRight size={15} />
             </Link>
+          </div>
+        </section>
+
+        {/* Reichweite nach Städten */}
+        <section>
+          <div className="text-center mb-10">
+            <span className="text-[#1A4731] font-semibold text-xs uppercase tracking-widest mb-3 block">Unsere Reichweite</span>
+            <h2 className="text-[#1C2B2B] text-3xl font-bold font-display">In deutschen Großstädten aktiv</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { name: 'Wärmepumpe Berlin', slug: 'waermepumpe-beratung/berlin' },
+              { name: 'Wärmepumpe München', slug: 'waermepumpe-beratung/muenchen' },
+              { name: 'Wärmepumpe Hamburg', slug: 'waermepumpe-beratung/hamburg' },
+              { name: 'Wärmepumpe Köln', slug: 'waermepumpe-beratung/koeln' },
+              { name: 'Wärmepumpe Frankfurt', slug: 'waermepumpe-beratung/frankfurt-am-main' },
+              { name: 'Wärmepumpe Stuttgart', slug: 'waermepumpe-beratung/stuttgart' },
+            ].map(city => (
+              <Link key={city.slug} href={`/${city.slug}`}
+                className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow text-center">
+                <p className="text-[#1C2B2B] font-semibold text-sm">{city.name}</p>
+              </Link>
+            ))}
           </div>
         </section>
 

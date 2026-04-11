@@ -9,7 +9,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { getKlimazone, estimateJAZ } from '@/lib/city-utils';
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 
 // Image pools
@@ -57,6 +57,12 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
     const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
     const videoData = getVideoPlaceholder(city, keyword);
     const socialProof = getSocialProofData(city, keyword);
+
+  // E-E-A-T: section timestamps & methodology
+  const extendedData = {
+    sectionTimestamps: getSectionTimestamps(),
+    methodologyExplainer: getMethodologyExplainer(city, keyword, jaz),
+  };
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F6F4' }}>
@@ -179,6 +185,26 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
           </div>
         </div>
       </div>
+
+      {/* BREADCRUMB NAV */}
+      <nav aria-label="Breadcrumb" className="max-w-5xl mx-auto px-6 pt-4 pb-2">
+        <ol className="flex flex-wrap items-center gap-1 text-xs text-[#7A9E8E]" itemScope itemType="https://schema.org/BreadcrumbList">
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <a itemProp="item" href="/"><span itemProp="name">Start</span></a>
+            <meta itemProp="position" content="1" />
+          </li>
+          <li className="mx-1">›</li>
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <a itemProp="item" href={`/${keyword.slug}`} className="hover:text-[#1A4731]"><span itemProp="name">{keyword.keyword.replace(' [Stadt]', '')}</span></a>
+            <meta itemProp="position" content="2" />
+          </li>
+          <li className="mx-1">›</li>
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <span itemProp="name">{city.name}</span>
+            <meta itemProp="position" content="3" />
+          </li>
+        </ol>
+      </nav>
 
       {/* MAIN */}
       <div className="max-w-7xl mx-auto px-6 py-14">
@@ -650,6 +676,27 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
                 <span>• CO₂-Preis: BEHG §10, Brennstoffemissionshandel</span>
               </div>
             </div>
+
+            {/* ── Methodik & Datenquellen ── */}
+            {extendedData?.methodologyExplainer && (
+              <section className="bg-gradient-to-br from-[#F0FDF4] to-white rounded-2xl border border-[#BBF7D0] p-6 lg:p-8 mb-8">
+                <h2 id="methodik" className="font-heading font-bold text-[#1C2B2B] text-xl lg:text-2xl mb-4">
+                  {extendedData.methodologyExplainer.heading}
+                </h2>
+                {extendedData.methodologyExplainer.paragraphs.map((p, i) => (
+                  <p key={i} className="text-[#4A6358] text-sm leading-relaxed mb-3">{p}</p>
+                ))}
+                <div className="grid sm:grid-cols-2 gap-3 mt-4">
+                  {extendedData.methodologyExplainer.standards.map((s, i) => (
+                    <div key={i} className="bg-white rounded-lg p-3 border border-gray-200">
+                      <div className="font-semibold text-[#1C2B2B] text-xs mb-1">{s.name}</div>
+                      <div className="text-[#7A9E8E] text-xs">{s.description}</div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[#7A9E8E] text-xs mt-4 italic">{extendedData.methodologyExplainer.disclaimer}</p>
+              </section>
+            )}
 
             {/* FAQ */}
             <section>

@@ -329,6 +329,26 @@ export default function GenericTemplate({
         </div>
       </div>
 
+      {/* BREADCRUMB NAV */}
+      <nav aria-label="Breadcrumb" className="max-w-5xl mx-auto px-6 pt-4 pb-2">
+        <ol className="flex flex-wrap items-center gap-1 text-xs text-[#7A9E8E]" itemScope itemType="https://schema.org/BreadcrumbList">
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <a itemProp="item" href="/"><span itemProp="name">Start</span></a>
+            <meta itemProp="position" content="1" />
+          </li>
+          <li className="mx-1">›</li>
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <a itemProp="item" href={`/${keyword.slug}`} className="hover:text-[#1A4731]"><span itemProp="name">{kw}</span></a>
+            <meta itemProp="position" content="2" />
+          </li>
+          <li className="mx-1">›</li>
+          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+            <span itemProp="name">{city.name}</span>
+            <meta itemProp="position" content="3" />
+          </li>
+        </ol>
+      </nav>
+
       {/* MAIN */}
       <div className="max-w-5xl mx-auto px-6 py-14 grid lg:grid-cols-[1fr_340px] gap-10 items-start">
 
