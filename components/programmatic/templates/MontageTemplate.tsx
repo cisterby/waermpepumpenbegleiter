@@ -6,10 +6,15 @@ import { ChevronDown, CheckCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent } from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+import TableOfContents from '@/components/programmatic/TableOfContents';
+import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
+import SocialProofBar from '@/components/programmatic/SocialProofBar';
+import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
+import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
 // Image pools (city-hash varied, no duplicate content risk)
 const HERO_IMGS = ['https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=85', 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85', 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=1920&q=85'];
@@ -103,6 +108,9 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+    const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
+    const videoData = getVideoPlaceholder(city, keyword);
+    const socialProof = getSocialProofData(city, keyword);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
@@ -545,7 +553,13 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
       <div id="angebot" className="bg-[#1A4731] py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="font-bold text-white text-2xl mb-2 text-center">Wie bekomme ich 3 kostenlose Angebote für {city.name} — in 2 Minuten?</h2>
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+                      {/* ── Inline Rechner ── */}
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-[#1A4731] mb-3">Schnellrechner für {city.name}</h3>
+              <InlineCalculator city={city} jaz={jaz} foerdSatz={foerd.gesamtSatz} />
+            </div>
+
+<LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
@@ -675,7 +689,24 @@ export default function MontageTemplate({ city, keyword, calc, foerd, jaz, nearb
 
         </div>
       </div>
-      <AuthorBox keywordSlug={keyword.slug} />
+                  {/* ── Social Proof Counter ── */}
+            <SocialProofBar
+              anfragenGesamt={socialProof.anfragenGesamt}
+              anfragenStadt={socialProof.anfragenStadt}
+              letzteAnfrage={socialProof.letzteAnfrage}
+              zufriedenheit={socialProof.zufriedenheit}
+              cityName={city.name}
+            />
+
+            {/* ── Video-Empfehlung ── */}
+            <VideoPlaceholder
+              title={videoData.title}
+              description={videoData.description}
+              thumbnailAlt={videoData.thumbnailAlt}
+              duration={videoData.duration}
+            />
+
+<AuthorBox keywordSlug={keyword.slug} />
         <div className="mt-6 text-xs text-[#7A9E8E]">KfW BEG 458 · F-Gas-Verordnung · DWD Klimadaten {city.name} · Stand März 2026</div>
       </div>
     </div>

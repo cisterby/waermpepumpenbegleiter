@@ -31,6 +31,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     name: title,
     description: desc,
     url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`,
+    dateModified: '2026-04-01',
+    author: {
+      '@type': 'Organization',
+      name: 'Wärmepumpenbegleiter',
+      url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+    },
     about: {
       '@type': 'Service',
       name: keyword.keyword.replace('[Stadt]', '').trim(),
@@ -43,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: desc,
     alternates: { canonical: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}` },
     openGraph: {
-      title, description: desc, type: 'website', locale: 'de_DE',
+      title, description: desc, type: 'article', locale: 'de_DE',
       url: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}`,
       images: [{
         url: 'https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png',
@@ -51,6 +57,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         height: 630,
         alt: title,
       }],
+      publishedTime: '2026-01-01T00:00:00Z',
+      modifiedTime: '2026-04-01T00:00:00Z',
     },
     twitter: {
       card: 'summary_large_image',
@@ -332,6 +340,11 @@ export default function PillarPage({ params }: Props) {
     .sort((a, b) => b.einwohner - a.einwohner)
     .slice(0, 30);
 
+  // Mittelgroße Städte (Platz 31–100) für erweiterte Anzeige
+  const mediumCities = [...cities]
+    .sort((a, b) => b.einwohner - a.einwohner)
+    .slice(30, 100);
+
   // Alle Städte alphabetisch für die vollständige Liste
   const allCitiesByState = cities.reduce((acc, city) => {
     if (!acc[city.bundesland]) acc[city.bundesland] = [];
@@ -416,6 +429,27 @@ export default function PillarPage({ params }: Props) {
             ))}
           </div>
         </div>
+
+        {/* Mittelgroße Städte */}
+        {mediumCities.length > 0 && (
+          <div className="mb-14">
+            <h2 className="font-bold text-[#1C2B2B] text-xl mb-2">
+              {kw} — Mittelgroße und regionale Städte
+            </h2>
+            <p className="text-[#4A6358] text-sm mb-6">
+              Weitere {mediumCities.length} Städte — regionale Zentren mit hohem Suchvolumen.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+              {mediumCities.slice(0, 70).map(city => (
+                <a key={city.slug} href={`/${keyword.slug}/${city.slug}`}
+                  className="group bg-white rounded-lg p-2 border border-gray-200 hover:border-[#1A4731] text-center transition-all">
+                  <span className="font-semibold text-[#1C2B2B] text-xs group-hover:text-[#1A4731] transition-colors block truncate">{city.name}</span>
+                  <p className="text-[#7A9E8E] text-[10px]">{(city.einwohner / 1000).toFixed(0)}k</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Cross-Keywords */}
         {crossKeywords.length > 0 && (

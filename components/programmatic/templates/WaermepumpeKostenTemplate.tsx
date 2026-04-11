@@ -8,10 +8,15 @@ import { ArrowRight, CheckCircle, AlertTriangle, TrendingUp, Calculator } from '
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent } from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+import TableOfContents from '@/components/programmatic/TableOfContents';
+import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
+import SocialProofBar from '@/components/programmatic/SocialProofBar';
+import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
+import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
 const IMG_HERO   = 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80';
 const IMG_MONEY  = 'https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=900&q=80';
@@ -67,6 +72,9 @@ export default function WaermepumpeKostenTemplate({
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+    const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
+    const videoData = getVideoPlaceholder(city, keyword);
+    const socialProof = getSocialProofData(city, keyword);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
@@ -805,7 +813,13 @@ export default function WaermepumpeKostenTemplate({
           </div>
 
           <div id="angebot">
-            <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+                        {/* ── Inline Rechner ── */}
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-[#1A4731] mb-3">Schnellrechner für {city.name}</h3>
+              <InlineCalculator city={city} jaz={jaz} foerdSatz={foerd.gesamtSatz} />
+            </div>
+
+<LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
           </div>
         </div>
       </div>
@@ -864,7 +878,24 @@ export default function WaermepumpeKostenTemplate({
 
         </div>
       </div>
-          <AuthorBox keywordSlug={keyword.slug} />
+                      {/* ── Social Proof Counter ── */}
+            <SocialProofBar
+              anfragenGesamt={socialProof.anfragenGesamt}
+              anfragenStadt={socialProof.anfragenStadt}
+              letzteAnfrage={socialProof.letzteAnfrage}
+              zufriedenheit={socialProof.zufriedenheit}
+              cityName={city.name}
+            />
+
+            {/* ── Video-Empfehlung ── */}
+            <VideoPlaceholder
+              title={videoData.title}
+              description={videoData.description}
+              thumbnailAlt={videoData.thumbnailAlt}
+              duration={videoData.duration}
+            />
+
+<AuthorBox keywordSlug={keyword.slug} />
 
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {[

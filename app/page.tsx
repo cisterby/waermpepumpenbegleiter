@@ -106,6 +106,16 @@ export default function Home(){
           { '@type': 'Question', name: 'Muss ich bei Auftragserteilung einen Vertrag mit wärmepumpenbegleiter.de abschließen?', acceptedAnswer: { '@type': 'Answer', text: 'Nein. Ihre Anfrage, alle Angebote und das Erstgespräch sind vollständig unverbindlich. Einen Vertrag schließen Sie ausschließlich mit dem Installateur Ihrer Wahl — nicht mit uns.' }},
         ]
       })}} />
+      {/* Organization Schema mit dateModified */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Wärmepumpenbegleiter',
+        url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+        dateModified: '2026-04-01T00:00:00Z',
+        sameAs: ['https://xn--wrmepumpenbegleiter-gwb.de'],
+        description: 'Kostenlose Vermittlung von geprüften Wärmepumpen-Fachbetrieben in 733 deutschen Städten mit bis zu 70% KfW-Förderung.',
+      })}} />
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet"/>
@@ -771,6 +781,38 @@ export default function Home(){
           </div>
         </div>
       </section>
+      {/* ── Top-Keywords: Die wichtigsten Übersichtsseiten ── */}
+      <section className="sec" style={{background:'white',borderBottom:'1px solid #E5EFE9'}}>
+        <div className="c" style={{maxWidth:1100,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:32}}>
+            <div style={{display:'inline-block',background:'#E8F5EE',color:'#1B5E37',fontSize:11,fontWeight:700,letterSpacing:'0.12em',textTransform:'uppercase',padding:'4px 14px',borderRadius:20,marginBottom:12}}>
+              Top-Themen
+            </div>
+            <h2 style={{fontSize:'clamp(22px,2.5vw,32px)',fontWeight:800,color:'#0F2419',margin:0}}>
+              Die 3 wichtigsten Übersichtsseiten
+            </h2>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:16}}>
+            {[
+              {title:'Wärmepumpe',slug:'waermepumpe',desc:'Alle Informationen: Kosten, Förderung, Funktionsweise, Abläufe, Hersteller und lokale Installateur-Vermittlung.'},
+              {title:'Wärmepumpe Kosten',slug:'waermepumpe-kosten',desc:'Vollständige Kostenübersicht für alle Typen — Luft-WP, Sole-WP, Wasser-WP mit Installation und laufenden Kosten.'},
+              {title:'Wärmepumpe Förderung',slug:'waermepumpe-foerderung',desc:'KfW-Zuschüsse bis 70%, Bundesland-Programme, Antragsprozess und maximale Förderbeträge 2026.'},
+            ].map(({title,slug,desc})=>(
+              <a key={slug} href={`/${slug}`}
+                style={{display:'flex',flexDirection:'column',gap:10,padding:20,background:'#F8FFFE',border:'2px solid #E5EFE9',borderRadius:14,textDecoration:'none',transition:'all .2s'}}
+                onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='#1B5E37';el.style.boxShadow='0 4px 20px rgba(27,94,55,.1)';el.style.background='white'}}
+                onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='#E5EFE9';el.style.boxShadow='none';el.style.background='#F8FFFE'}}>
+                <div style={{fontSize:18,fontWeight:700,color:'#1B5E37'}}>{title}</div>
+                <p style={{fontSize:14,color:'#4B5563',margin:0,lineHeight:1.6}}>{desc}</p>
+                <div style={{marginTop:8,fontSize:13,fontWeight:600,color:'#1B5E37',display:'flex',alignItems:'center',gap:4}}>
+                  Zu {title} → <span style={{fontSize:16}}>→</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Keyword-Hub: Links zu allen 22 Themen-Seiten ── */}
       <section className="sec" style={{background:'#F8FFFE',borderTop:'1px solid #E5EFE9'}}>
         <div className="c" style={{maxWidth:1100,margin:'0 auto'}}>
@@ -779,7 +821,7 @@ export default function Home(){
               Alle Themen
             </div>
             <h2 style={{fontSize:'clamp(22px,2.5vw,32px)',fontWeight:800,color:'#0F2419',margin:0}}>
-              Ihr Ratgeber für jedes Wärmepumpen-Thema
+              Weitere Ratgeber-Artikel und Übersichtsseiten
             </h2>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:10}}>

@@ -7,6 +7,16 @@ const nextConfig = {
   // Brotli/Gzip compression
   compress: true,
 
+  // SWC minification for faster builds and smaller output
+  swcMinify: true,
+
+  // Remove console logs in production (keep errors)
+  compiler: {
+    removeConsole: {
+      exclude: ['error'],
+    },
+  },
+
   // Modern image formats
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -19,6 +29,11 @@ const nextConfig = {
     ],
     // Unsplash-Bilder über Next.js Image Proxy optimieren
     minimumCacheTTL: 2592000, // 30 Tage
+  },
+
+  // Optimize CSS (experimental in 13.5.1)
+  experimental: {
+    // optimizeCss: true, // requires 'critters' package — disabled for now
   },
 
   // Trailing Slash konsistent halten (kein Duplicate Content)

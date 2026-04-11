@@ -9,7 +9,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { getKlimazone, estimateJAZ } from '@/lib/city-utils';
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from '@/lib/calculations';
-import { getRotatingFAQs, getIntroParagraphs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent } from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 
 // Image pools
@@ -48,6 +48,9 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+    const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
+    const videoData = getVideoPlaceholder(city, keyword);
+    const socialProof = getSocialProofData(city, keyword);
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F6F4' }}>

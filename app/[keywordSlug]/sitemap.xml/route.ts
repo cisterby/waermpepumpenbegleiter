@@ -30,11 +30,16 @@ export async function GET(
     return true;
   });
 
-  const urls = indexableCities.map(city => {
-    const priority = getSitemapPriority(city, keyword.sitemapPriority);
+  const urls = indexableCities.map((city, index) => {
+    // Tier-based priority: Top 50 cities (tier 1) = 0.9, next 100 (tier 2) = 0.7, rest = 0.5
+    let basePriority = 0.5; // Default for rest
+    if (index < 50) basePriority = 0.9;
+    else if (index < 150) basePriority = 0.7;
+
+    const priority = Math.min(basePriority, 1.0);
     return `  <url>
     <loc>${base}/${keyword.slug}/${city.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>2026-04-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${priority}</priority>
   </url>`;

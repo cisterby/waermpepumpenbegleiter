@@ -30,6 +30,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  minimumScale: 1,
   themeColor: '#1B5E37',
 };
 
@@ -191,7 +192,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de" className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* preconnect für Google Fonts wird von next/font automatisch gehandhabt */}
+        {/* Performance optimizations */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+        {/* Schema.org structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

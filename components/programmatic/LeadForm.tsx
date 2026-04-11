@@ -87,19 +87,57 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
 
   if (submitted) {
     return (
-      <div className="bg-[#E8F5EE] border border-[#3DA16A]/40 rounded-2xl p-8 text-center">
-        <div className="w-16 h-16 bg-[#1A4731] rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle size={32} className="text-white" />
+      <div className="bg-[#E8F5EE] border border-[#3DA16A]/40 rounded-2xl p-8">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-[#1A4731] rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle size={32} className="text-white" />
+          </div>
+          <h3 className="font-bold font-bold text-[#1C2B2B] text-xl mb-2">
+            Anfrage erhalten!
+          </h3>
+          <p className="text-[#4A6358] text-base leading-relaxed max-w-md mx-auto">
+            Vielen Dank, <strong>{vorname}</strong>. Sie erhalten innerhalb von <strong>48 Stunden</strong> bis zu 3 Angebote von geprüften Fachbetrieben aus {city.name}.
+          </p>
+          <p className="text-[#7A9E8E] text-sm mt-4">
+            Eine Bestätigung wurde an <strong>{email}</strong> gesendet.
+          </p>
         </div>
-        <h3 className="font-bold font-bold text-[#1C2B2B] text-xl mb-2">
-          Anfrage erhalten!
-        </h3>
-        <p className="text-[#4A6358] text-base leading-relaxed max-w-md mx-auto">
-          Vielen Dank, <strong>{vorname}</strong>. Wir melden uns innerhalb von <strong>48 Stunden</strong> mit bis zu 3 Angeboten geprüfter Fachbetriebe aus {city.name}.
-        </p>
-        <p className="text-[#7A9E8E] text-sm mt-4">
-          Eine Bestätigung wurde an <strong>{email}</strong> gesendet.
-        </p>
+
+        {/* Was passiert jetzt? Timeline */}
+        <div className="mt-8 pt-6 border-t border-[#3DA16A]/30">
+          <h4 className="font-semibold text-[#1C2B2B] text-sm mb-4 text-center">
+            Was passiert jetzt?
+          </h4>
+          <div className="space-y-3">
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1A4731] text-white flex items-center justify-center text-xs font-bold">
+                1
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-[#1C2B2B]">Prüfung</p>
+                <p className="text-xs text-[#7A9E8E]">Ihre Anfrage wird von unserem Team geprüft</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1A4731] text-white flex items-center justify-center text-xs font-bold">
+                2
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-[#1C2B2B]">Vermittlung</p>
+                <p className="text-xs text-[#7A9E8E]">Wir verbinden Sie mit geprüften Fachbetrieben</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1A4731] text-white flex items-center justify-center text-xs font-bold">
+                3
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-[#1C2B2B]">Angebote</p>
+                <p className="text-xs text-[#7A9E8E]">Sie erhalten bis zu 3 konkrete Angebote</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -137,6 +175,19 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
       </div>
 
       <div className="p-6">
+        {/* Urgency Banner */}
+        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-center gap-2">
+          <span className="text-lg">⚡</span>
+          <p className="text-sm font-semibold text-amber-900">
+            Aktuell hohe Nachfrage in {city.name} — Wartezeit bei Fachbetrieben: 4-10 Wochen
+          </p>
+        </div>
+
+        {/* Social Proof */}
+        <p className="text-xs text-[#7A9E8E] text-center mb-6">
+          Bereits über 12.000 Anfragen bundesweit · Letzte Anfrage vor 3 Stunden
+        </p>
+
         <AnimatePresence mode="wait">
 
           {/* SCHRITT 1: Gebäude */}
@@ -191,7 +242,7 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
               </div>
 
               <button onClick={() => canStep1 && setStep(2)} disabled={!canStep1}
-                className={`w-full py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                className={`w-full min-h-[48px] py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
                   canStep1 ? 'bg-[#1A4731] text-white hover:bg-green-800' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                 }`}>
                 Weiter <ArrowRight size={16} />
@@ -252,14 +303,28 @@ export default function LeadForm({ city, keywordSlug, citySlug }: Props) {
                   Zurück
                 </button>
                 <button onClick={() => canStep2 && submit()} disabled={!canStep2 || submitting}
-                  className={`flex-1 py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                  className={`flex-1 min-h-[48px] py-3.5 rounded-xl font-bold font-bold text-sm flex items-center justify-center gap-2 transition-all ${
                     canStep2 && !submitting ? 'bg-[#D97706] text-white hover:bg-amber-700' : 'bg-gray-200 text-[#7A9E8E] cursor-not-allowed'
                   }`}>
                   {submitting
                     ? <><Loader2 size={16} className="animate-spin" /> Wird gesendet...</>
-                    : <>Kostenlos anfragen <ArrowRight size={16} /></>
+                    : <>Jetzt kostenlos anfragen <ArrowRight size={16} /></>
                   }
                 </button>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="grid grid-cols-2 gap-3 text-center">
+                  <div className="text-xs text-[#7A9E8E]">
+                    <p className="mb-1">✓ 100% kostenlos</p>
+                    <p>✓ Unverbindlich</p>
+                  </div>
+                  <div className="text-xs text-[#7A9E8E]">
+                    <p className="mb-1">✓ DSGVO-konform</p>
+                    <p>✓ Keine Spam-Anrufe</p>
+                  </div>
+                </div>
               </div>
 
               <p className="text-[#7A9E8E] text-xs text-center mt-3">

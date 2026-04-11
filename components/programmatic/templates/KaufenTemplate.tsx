@@ -7,10 +7,15 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { estimateJAZ } from '@/lib/city-utils';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock , getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent } from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
+import TableOfContents from '@/components/programmatic/TableOfContents';
+import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
+import SocialProofBar from '@/components/programmatic/SocialProofBar';
+import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
+import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
 // Image pools (city-hash varied, no duplicate content risk)
 const HERO_IMGS = ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=85', 'https://images.unsplash.com/photo-1598228723793-52759bba239c?w=1920&q=85', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=85', 'https://images.unsplash.com/photo-1416331108676-a22ccbe8c3f1?w=1920&q=85'];
@@ -49,6 +54,9 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
   const heizkoerper = getHeizkoerperCheck(city, keyword);
   const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
   const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+    const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
+    const videoData = getVideoPlaceholder(city, keyword);
+    const socialProof = getSocialProofData(city, keyword);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
@@ -504,7 +512,13 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             ))}
           </div>
           {/* Formspree Form */}
-          <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
+                      {/* ── Inline Rechner ── */}
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-[#1A4731] mb-3">Schnellrechner für {city.name}</h3>
+              <InlineCalculator city={city} jaz={jaz} foerdSatz={foerd.gesamtSatz} />
+            </div>
+
+<LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
 
 
       {/* ── VISUELLER TRENNER ─────────────────────── */}
@@ -579,7 +593,24 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
 
         </div>
       </div>
-          <AuthorBox keywordSlug={keyword.slug} />
+                      {/* ── Social Proof Counter ── */}
+            <SocialProofBar
+              anfragenGesamt={socialProof.anfragenGesamt}
+              anfragenStadt={socialProof.anfragenStadt}
+              letzteAnfrage={socialProof.letzteAnfrage}
+              zufriedenheit={socialProof.zufriedenheit}
+              cityName={city.name}
+            />
+
+            {/* ── Video-Empfehlung ── */}
+            <VideoPlaceholder
+              title={videoData.title}
+              description={videoData.description}
+              thumbnailAlt={videoData.thumbnailAlt}
+              duration={videoData.duration}
+            />
+
+<AuthorBox keywordSlug={keyword.slug} />
           {/* Trust */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
