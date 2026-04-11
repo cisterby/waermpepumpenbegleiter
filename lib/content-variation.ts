@@ -1147,6 +1147,12 @@ export interface ExtendedVariationData extends CityVariationData {
   seasonalAdvice: string;
   inlineLinkedParagraph: string;
   lokaleTiefenanalyse: string;
+  pvWPKombination: ReturnType<typeof getPVWPKombination>;
+  roiTimeline: ReturnType<typeof getROITimeline>;
+  nachbarschaftsvergleich: ReturnType<typeof getNachbarschaftsvergleich>;
+  heizkoerperCheck: ReturnType<typeof getHeizkoerperCheck>;
+  stromtarifOptimierung: ReturnType<typeof getStromtarifOptimierung>;
+  keywordDeepContent: ReturnType<typeof getKeywordDeepContent>;
 }
 
 // ── 18. INLINE-CONTEXTUAL-LINKS — natürliche Links im Fließtext ────────────────
@@ -1289,6 +1295,338 @@ export function getLokaleTiefenanalyse(
   return paragraphs[hash % paragraphs.length];
 }
 
+// ── 20. PV+WP KOMBINATION — Solarsynergie mit stadtspezifischen Sonnenstunden ──
+
+export function getPVWPKombination(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): { title: string; paragraphs: string[]; stats: Array<{ label: string; value: string; detail: string }> } {
+  const pvKWp = 8;
+  const pvErtrag = Math.round(city.avgSunHours * pvKWp * 0.85);
+  const wpStrom = Math.round(wpKosten / (city.strompreis / 100));
+  const eigenverbrauch = Math.min(Math.round(pvErtrag * 0.35), wpStrom);
+  const eigenverbrauchQuote = Math.round(eigenverbrauch / wpStrom * 100);
+  const pvErsparnis = Math.round(eigenverbrauch * (city.strompreis / 100));
+  const wpMitPV = wpKosten - pvErsparnis;
+  const einspeiseverguetung = Math.round((pvErtrag - eigenverbrauch) * 0.082);
+  const pvInvest = pvKWp * 1200;
+  const pvAmortisation = Math.round(pvInvest / (pvErsparnis + einspeiseverguetung));
+  const hash = cityHash(city, 4);
+  const kl = getKlimaZone(city);
+
+  const titles = [
+    `PV + Wärmepumpe in ${city.name}: Die optimale Kombination`,
+    `Solarstrom für Ihre Wärmepumpe in ${city.name}`,
+    `Photovoltaik & Wärmepumpe in ${city.name} kombinieren`,
+    `Eigenverbrauch maximieren: PV + WP in ${city.name}`,
+  ];
+
+  const p1Variants = [
+    `${city.name} hat ${city.avgSunHours} Sonnenstunden pro Jahr — ${city.avgSunHours > 1650 ? 'überdurchschnittlich viel für Deutschland und ideal für eine PV-Anlage' : city.avgSunHours > 1500 ? 'ein solider Wert für eine wirtschaftliche PV-Anlage' : 'weniger als der Süddeutsche Schnitt, aber immer noch rentabel'}. Eine ${pvKWp}-kWp-Anlage auf Ihrem Dach in ${city.name} erzeugt ca. ${pvErtrag.toLocaleString('de-DE')} kWh Strom pro Jahr. Davon können bis zu ${eigenverbrauch.toLocaleString('de-DE')} kWh (${eigenverbrauchQuote}%) direkt von der Wärmepumpe verbraucht werden — Strom, den Sie nicht mehr für ${city.strompreis} ct/kWh kaufen müssen.`,
+    `Die Kombination aus Photovoltaik und Wärmepumpe ist in ${city.name} besonders attraktiv: ${city.avgSunHours} Sonnenstunden/Jahr ermöglichen eine Eigenverbrauchsquote von ${eigenverbrauchQuote}% des WP-Stroms. Bei ${city.strompreis} ct/kWh bedeutet das ${fmtEuro(pvErsparnis)} weniger Stromkosten pro Jahr für die Wärmepumpe. Dazu kommen ${fmtEuro(einspeiseverguetung)} Einspeisevergütung für den überschüssigen Solarstrom.`,
+    `Wer in ${city.name} eine Wärmepumpe plant, sollte eine PV-Anlage gleich mitdenken. Grund: Bei ${city.avgSunHours} Sonnenstunden erzeugt eine ${pvKWp}-kWp-Anlage ${pvErtrag.toLocaleString('de-DE')} kWh/Jahr. Die Wärmepumpe verbraucht ${wpStrom.toLocaleString('de-DE')} kWh/Jahr — ${eigenverbrauchQuote}% davon kann direkt vom eigenen Dach kommen. Das senkt die Heizkosten von ${fmtEuro(wpKosten)} auf nur ${fmtEuro(wpMitPV)}/Jahr.`,
+    `Photovoltaik in ${city.name}: ${city.avgSunHours} Sonnenstunden, ${pvErtrag.toLocaleString('de-DE')} kWh Ertrag bei ${pvKWp} kWp. In Kombination mit der Wärmepumpe (JAZ ${jaz}, ${wpStrom.toLocaleString('de-DE')} kWh Stromverbrauch) ergibt sich ein Eigenverbrauchsanteil von ${eigenverbrauchQuote}%. Die jährliche Ersparnis: ${fmtEuro(pvErsparnis)} weniger Netzstrom + ${fmtEuro(einspeiseverguetung)} Einspeisevergütung. Amortisation der PV-Anlage: ca. ${pvAmortisation} Jahre.`,
+  ];
+
+  const p2Variants = [
+    `Finanziell betrachtet: Die PV-Anlage kostet ca. ${fmtEuro(pvInvest)} (inkl. Montage, netto nach MwSt.-Befreiung seit 2023). Jährlicher Gewinn: ${fmtEuro(pvErsparnis)} Eigenverbrauch + ${fmtEuro(einspeiseverguetung)} Einspeisung = ${fmtEuro(pvErsparnis + einspeiseverguetung)}/Jahr. Amortisation in ${pvAmortisation} Jahren — danach läuft die Anlage 15+ Jahre auf reinen Gewinn. Über 25 Jahre Lebensdauer: ${fmtEuro((pvErsparnis + einspeiseverguetung) * 25)} Gesamtertrag.`,
+    `Die Wirtschaftlichkeit in ${city.name}: Eine ${pvKWp}-kWp-PV-Anlage senkt die WP-Betriebskosten um ${fmtEuro(pvErsparnis)}/Jahr. Gesamte Energiekosten (Heizung + Warmwasser) sinken auf ${fmtEuro(wpMitPV)}/Jahr — das sind ${fmtEuro(wpKosten + ersparnis - wpMitPV)} weniger als mit Gas. Investition PV: ${fmtEuro(pvInvest)}, amortisiert in ${pvAmortisation} Jahren. ${kl === 'warm' ? 'Der milde Standort begünstigt auch im Winter akzeptable PV-Erträge.' : kl === 'kalt' ? 'Im Winter sinken die PV-Erträge — ein Batteriespeicher kann die Eigenverbrauchsquote auf 50-65% steigern.' : 'Für höhere Eigenverbrauchsquoten empfiehlt sich ein 5-8 kWh Batteriespeicher.'}`,
+    `Kosten-Nutzen in ${city.name}: Ohne PV zahlen Sie ${fmtEuro(wpKosten)}/Jahr Strom für die WP. Mit PV sinkt das auf ${fmtEuro(wpMitPV)}/Jahr — eine Differenz von ${fmtEuro(pvErsparnis)}. Plus: ${fmtEuro(einspeiseverguetung)} Einspeisevergütung (8,2 ct/kWh für ${(pvErtrag - eigenverbrauch).toLocaleString('de-DE')} kWh Überschuss). Die PV-Anlage amortisiert sich in ${pvAmortisation} Jahren. Tipp: KfW fördert PV-Speicher separat über Programm 270.`,
+    `Rechenbeispiel für ${city.name}: WP-Strom ohne PV = ${fmtEuro(wpKosten)}/Jahr. WP-Strom mit ${pvKWp}-kWp-PV = ${fmtEuro(wpMitPV)}/Jahr. Einspeisevergütung für Überschuss = ${fmtEuro(einspeiseverguetung)}/Jahr. Netto-Heizkosten mit PV+WP: ${fmtEuro(wpMitPV - einspeiseverguetung)}/Jahr. Zum Vergleich: Gas kostet ${fmtEuro(wpKosten + ersparnis)}/Jahr — mit steigender Tendenz durch CO₂-Preis.`,
+  ];
+
+  const stats = [
+    { label: 'Sonnenstunden/Jahr', value: `${city.avgSunHours}`, detail: `${kl === 'warm' ? 'Überdurchschnittlich' : 'Solide'}` },
+    { label: 'PV-Ertrag', value: `${pvErtrag.toLocaleString('de-DE')} kWh`, detail: `${pvKWp} kWp Anlage` },
+    { label: 'Eigenverbrauch WP', value: `${eigenverbrauchQuote}%`, detail: `${eigenverbrauch.toLocaleString('de-DE')} kWh` },
+    { label: 'WP-Kosten mit PV', value: fmtEuro(wpMitPV), detail: `statt ${fmtEuro(wpKosten)}` },
+    { label: 'PV-Amortisation', value: `${pvAmortisation} Jahre`, detail: `bei ${fmtEuro(pvInvest)} Invest` },
+    { label: 'Gesamtersparnis/Jahr', value: fmtEuro(pvErsparnis + einspeiseverguetung), detail: 'Eigenverbrauch + Einspeisung' },
+  ];
+
+  return {
+    title: titles[hash % titles.length],
+    paragraphs: [p1Variants[hash % p1Variants.length], p2Variants[(hash + 1) % p2Variants.length]],
+    stats,
+  };
+}
+
+// ── 21. ROI-TIMELINE — Jahr-für-Jahr Wirtschaftlichkeitsprojektion ────────────
+
+export function getROITimeline(
+  city: City,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+  foerdersatz: number,
+): Array<{ year: number; label: string; wpKumuliert: number; gasKumuliert: number; differenz: number; highlight?: string }> {
+  const investition = 25000;
+  const eigenanteil = Math.round(investition * (1 - foerdersatz / 100));
+  const wartungWP = 300;
+  const wartungGas = 250;
+  const co2PreisStart = 55; // €/t in 2026
+  const gasVerbrauch = Math.round((wpKosten + ersparnis) / (city.gaspreis / 100)); // kWh Gas
+  const co2PerKwh = 0.000201; // t CO₂ per kWh Gas
+
+  const timeline: Array<{ year: number; label: string; wpKumuliert: number; gasKumuliert: number; differenz: number; highlight?: string }> = [];
+  let wpKum = eigenanteil; // Start: Eigenanteil als initiale Kosten
+  let gasKum = 0;
+
+  for (let y = 1; y <= 20; y++) {
+    const year = 2026 + y - 1;
+    const co2Preis = co2PreisStart + (y - 1) * 5; // +5€/t pro Jahr
+    const co2Kosten = Math.round(gasVerbrauch * co2PerKwh * co2Preis);
+    const gasJahr = wpKosten + ersparnis + wartungGas + co2Kosten;
+    const wpJahr = wpKosten + wartungWP;
+    const stromPreisAnstieg = Math.round(wpKosten * (1 + (y - 1) * 0.02)); // 2% jährlich
+    const gasPreisAnstieg = Math.round(gasJahr * (1 + (y - 1) * 0.03)); // 3% jährlich
+
+    wpKum += wpJahr;
+    gasKum += gasJahr;
+
+    let highlight: string | undefined;
+    if (wpKum <= gasKum && (y === 1 || (wpKum - wpJahr) > (gasKum - gasJahr))) {
+      highlight = 'Amortisationspunkt erreicht';
+    }
+    if (y === 5) highlight = '5-Jahres-Bilanz';
+    if (y === 10) highlight = '10-Jahres-Bilanz';
+    if (y === 15) highlight = '15-Jahres-Bilanz';
+    if (y === 20) highlight = '20-Jahres-Gesamtbilanz';
+
+    timeline.push({
+      year,
+      label: `Jahr ${y}`,
+      wpKumuliert: wpKum,
+      gasKumuliert: gasKum,
+      differenz: gasKum - wpKum,
+      highlight,
+    });
+  }
+
+  return timeline;
+}
+
+// ── 22. NACHBARSCHAFTSVERGLEICH — Kennzahlen im Vergleich mit Nachbarstädten ──
+
+export function getNachbarschaftsvergleich(
+  city: City,
+  nearby: City[],
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): { paragraph: string; table: { headers: string[]; rows: string[][] } } {
+  const hash = cityHash(city, 4);
+
+  const compareData = nearby.slice(0, 4).map(n => {
+    const nJaz = Math.round((3.5 + (n.avgTemp - 9.0) * 0.1) * 10) / 10;
+    const nBedarf = 120 * 160;
+    const nWpKosten = Math.round(nBedarf / nJaz * (n.strompreis / 100));
+    const nGasKosten = Math.round(nBedarf / 0.92 * (n.gaspreis / 100));
+    return {
+      name: n.name,
+      strompreis: n.strompreis,
+      gaspreis: n.gaspreis,
+      hgt: n.heizgradtage,
+      jaz: nJaz,
+      wpKosten: nWpKosten,
+      ersparnis: nGasKosten - nWpKosten,
+    };
+  });
+
+  const paragraphVariants = [
+    `Wie steht ${city.name} im regionalen Vergleich da? Mit ${city.strompreis} ct/kWh Strompreis ${city.strompreis < (compareData[0]?.strompreis || 30) ? 'günstiger' : 'teurer'} als ${compareData[0]?.name || 'die Nachbarstadt'} (${compareData[0]?.strompreis || '30'} ct/kWh). Die JAZ von ${jaz} in ${city.name} ${jaz > (compareData[0]?.jaz || 3.5) ? 'übertrifft' : 'liegt unter'} dem Nachbarwert von ${compareData[0]?.jaz || 3.5}. Das ergibt eine Jahresersparnis von ${fmtEuro(ersparnis)} — ${ersparnis > (compareData[0]?.ersparnis || 800) ? 'höher' : 'vergleichbar mit'} der Region.`,
+    `${city.name} vs. Umland: Strompreis ${city.strompreis} ct/kWh, Heizgradtage ${city.heizgradtage}, JAZ ${jaz}. ${compareData.length > 0 ? `Im Vergleich: ${compareData[0].name} hat ${compareData[0].hgt} HGT und JAZ ${compareData[0].jaz}${compareData.length > 1 ? `, ${compareData[1].name} hat ${compareData[1].hgt} HGT und JAZ ${compareData[1].jaz}` : ''}.` : ''} Die wirtschaftlichste WP-Installation in der Region? Das hängt vom Verhältnis Strompreis/JAZ ab — in ${city.name} liegt dieser bei ${(city.strompreis / jaz).toFixed(1)} ct/kWh effektiv.`,
+    `Regionaler Kostenvergleich: Eine Wärmepumpe in ${city.name} kostet im Betrieb ${fmtEuro(wpKosten)}/Jahr. ${compareData.length > 0 ? `In ${compareData[0].name} sind es ${fmtEuro(compareData[0].wpKosten)}/Jahr${compareData.length > 1 ? `, in ${compareData[1].name} ${fmtEuro(compareData[1].wpKosten)}/Jahr` : ''}.` : ''} Die Unterschiede ergeben sich aus Strompreis (${city.strompreis} vs. ${compareData[0]?.strompreis || '30'} ct/kWh) und Klimabedingungen (JAZ ${jaz} vs. ${compareData[0]?.jaz || '3.5'}).`,
+    `So schneidet ${city.name} im Vergleich mit der Region ab: Die Wärmepumpe spart hier ${fmtEuro(ersparnis)} pro Jahr gegenüber Gas. ${compareData.length > 1 ? `In ${compareData[0].name} sind es ${fmtEuro(compareData[0].ersparnis)}, in ${compareData[1].name} ${fmtEuro(compareData[1].ersparnis)}.` : ''} ${ersparnis > 900 ? 'Überdurchschnittlich — der Standort ist für eine WP besonders attraktiv.' : 'Ein solider Wert im regionalen Vergleich.'}`,
+  ];
+
+  const headers = ['Stadt', 'Strompreis', 'HGT', 'JAZ', 'WP-Kosten/a', 'Ersparnis/a'];
+  const rows: string[][] = [
+    [city.name + ' ★', `${city.strompreis} ct`, `${city.heizgradtage}`, `${jaz}`, fmtEuro(wpKosten), fmtEuro(ersparnis)],
+    ...compareData.map(d => [d.name, `${d.strompreis} ct`, `${d.hgt}`, `${d.jaz}`, fmtEuro(d.wpKosten), fmtEuro(d.ersparnis)]),
+  ];
+
+  return {
+    paragraph: paragraphVariants[hash % paragraphVariants.length],
+    table: { headers, rows },
+  };
+}
+
+// ── 23. HEIZKÖRPER-KOMPATIBILITÄT — Bestandsheizung-Check pro Gebäudetyp ──────
+
+export function getHeizkoerperCheck(
+  city: City,
+  keyword: Keyword,
+): { title: string; paragraph: string; checklist: Array<{ item: string; status: 'ok' | 'pruefen' | 'upgrade'; detail: string }> } {
+  const sz = getCitySize(city);
+  const hash = cityHash(city, 6);
+
+  const titles = [
+    `Heizkörper-Check für ${city.name}: Ist Ihr Haus WP-ready?`,
+    `Bestandsanalyse ${city.name}: Passen Ihre Heizkörper zur Wärmepumpe?`,
+    `Vorlauftemperatur & Heizkörper in ${city.name} — das müssen Sie wissen`,
+  ];
+
+  const paragraphs = [
+    `Die größte Sorge beim Heizungstausch in ${city.name}: „Reichen meine Heizkörper für eine Wärmepumpe?" Die Antwort ist in den meisten Fällen ja. Moderne Luft-Wasser-Wärmepumpen arbeiten effizient bis 70°C Vorlauftemperatur. Ein hydraulischer Abgleich (€500–1.500, KfW-förderfähig) senkt die nötige Vorlauftemperatur oft um 5–10°C und verbessert die JAZ. ${sz === 'metropole' || sz === 'grossstadt' ? `In ${city.name} sind viele Gebäude aus den 1960er–1980er Jahren mit überdimensionierten Heizkörpern ausgestattet — ein Vorteil für die WP, da sie bei niedrigerer Vorlauftemperatur genug Wärme abgeben.` : `In ${city.name} überwiegen ${city.efhQuote > 60 ? 'Einfamilienhäuser' : 'gemischte Gebäudetypen'} — häufig mit Heizkörpern, die für die Wärmepumpe gut geeignet sind.`}`,
+    `Heizkörper und Wärmepumpe in ${city.name}: Der Schlüssel ist die Vorlauftemperatur. Bei ${city.normAussentemp}°C Norm-Außentemperatur (DIN EN 12831) benötigt ein typisches ${city.efhQuote > 60 ? 'Einfamilienhaus' : 'Gebäude'} in ${city.name} zwischen 45°C und 65°C Vorlauf — abhängig von Baujahr und Dämmstandard. Faustregel: Gebäude ab 1990 mit Standardheizkörpern → kein Heizkörpertausch nötig. Vor 1980 → hydraulischer Abgleich und ggf. einzelne Heizkörper in Bad/Wohnzimmer vergrößern. Fußbodenheizung → ideal, Vorlauf 30–35°C, JAZ steigt auf ${(Number(city.avgTemp > 9 ? 3.8 : 3.5) + 0.3).toFixed(1)}.`,
+    `In ${city.name} gibt es typischerweise drei Gebäudesituationen: (1) Neubau/Sanierung mit Fußbodenheizung → WP sofort einsetzbar, maximale Effizienz. (2) Bestandsbau 1980–2010 mit Flachheizkörpern → meist kompatibel, hydraulischer Abgleich empfohlen. (3) Altbau vor 1980 mit Rippenheizkörpern → Einzelfallprüfung nötig, oft reicht der Tausch von 2–3 Heizkörpern in kritischen Räumen. Unsere Partnerbetriebe in ${city.name} führen vor Ort eine kostenlose Bestandsaufnahme durch.`,
+    `WP-Tauglichkeitscheck für ${city.name}: Ihre Bestandsheizung gibt Auskunft. Wenn Ihre aktuelle Gasheizung auf 55°C oder weniger Vorlauf eingestellt ist, ist Ihr Haus WP-ready ohne Heizkörpertausch. Bei 60–70°C → hydraulischer Abgleich + ggf. einzelne Heizkörper. Über 70°C → Sanierung empfohlen (aber auch hier gibt es Hochtemperatur-WP bis 75°C). In ${city.name} liegt der typische Vorlauf bei ${city.heizgradtage > 3400 ? '55–65°C' : city.heizgradtage > 3000 ? '50–60°C' : '45–55°C'}.`,
+    `${city.name}: Die häufigste Frage unserer Kunden ist „Muss ich alle Heizkörper tauschen?" In 85% der Fälle lautet die Antwort: Nein. ${sz === 'kleinstadt' ? 'In kleineren Städten wie ' + city.name + ' dominieren Einfamilienhäuser — oft mit großzügig dimensionierten Heizkörpern, die bei reduziertem Vorlauf ausreichend heizen.' : 'Die Gebäudestruktur in ' + city.name + ' ist gemischt, aber die meisten Bestandsbauten sind WP-tauglich.'} Der hydraulische Abgleich ist in jedem Fall Pflicht für die KfW-Förderung — und eine lohnende Investition.`,
+    `Fußbodenheizung vs. Heizkörper in ${city.name}: Bei Fußbodenheizung (Vorlauf 30–35°C) erreicht die WP eine Top-JAZ von ${(Number(city.avgTemp > 9 ? 3.8 : 3.5) + 0.3).toFixed(1)}. Bei Flachheizkörpern (Vorlauf 45–55°C) sinkt die JAZ auf ca. ${Number(city.avgTemp > 9 ? 3.5 : 3.2).toFixed(1)} — immer noch wirtschaftlich bei ${city.strompreis} ct/kWh. Nur alte Rippenheizkörper (>65°C Vorlauf) können die Effizienz merklich senken. Lösung: Heizkörper in 2–3 Räumen vergrößern — Kosten ca. €1.000–2.500, KfW-förderfähig als Umfeldmaßnahme.`,
+  ];
+
+  const checklist = [
+    { item: 'Fußbodenheizung vorhanden', status: 'ok' as const, detail: 'Ideal — Vorlauf 30-35°C, maximale JAZ' },
+    { item: 'Flachheizkörper (ab 1990)', status: 'ok' as const, detail: 'In der Regel kompatibel bei 45-55°C Vorlauf' },
+    { item: 'Ältere Kompaktheizkörper', status: 'pruefen' as const, detail: 'Hydraulischer Abgleich empfohlen — oft ausreichend' },
+    { item: 'Rippenheizkörper (Guss)', status: 'pruefen' as const, detail: 'Einzelne Räume ggf. nachrüsten — Badezimmer, Wohnzimmer' },
+    { item: 'Vorlauf aktuell >65°C', status: 'upgrade' as const, detail: 'Heizkörper vergrößern oder Hochtemperatur-WP wählen' },
+    { item: `Hydraulischer Abgleich ${city.name}`, status: 'pruefen' as const, detail: 'KfW-Pflicht — senkt Vorlauf um 5-10°C, verbessert JAZ' },
+  ];
+
+  return {
+    title: titles[hash % titles.length],
+    paragraph: paragraphs[hash % paragraphs.length],
+    checklist,
+  };
+}
+
+// ── 24. STROMTARIF-OPTIMIERUNG — WP-Tarife & SG-Ready pro Stadt ──────────────
+
+export function getStromtarifOptimierung(
+  city: City,
+  jaz: number,
+  wpKosten: number,
+): { paragraph: string; tips: Array<{ tip: string; ersparnis: string }> } {
+  const hash = cityHash(city, 5);
+  const wpStrom = Math.round(wpKosten / (city.strompreis / 100));
+  const wpTarifPreis = Math.round(city.strompreis * 0.82 * 10) / 10; // ~18% günstiger
+  const wpTarifErsparnis = Math.round(wpStrom * (city.strompreis - wpTarifPreis) / 100);
+  const sgReadyErsparnis = Math.round(wpStrom * 0.15 * (city.strompreis / 100) * 0.5); // 15% des Stroms zu 50% Preis
+
+  const paragraphs = [
+    `In ${city.name} zahlen Sie aktuell ${city.strompreis} ct/kWh Haushaltsstrom. Für Wärmepumpen bieten viele Versorger spezielle WP-Tarife an — typisch ${wpTarifPreis} ct/kWh (ca. 18% günstiger). Voraussetzung: separater Zähler und Lastabwurfvereinbarung (der Versorger darf die WP bis zu 3×2h/Tag abschalten — in der Praxis kaum spürbar dank Pufferspeicher). Bei ${wpStrom.toLocaleString('de-DE')} kWh WP-Stromverbrauch spart das ${fmtEuro(wpTarifErsparnis)}/Jahr. Der zweite Zähler kostet ca. €80/Jahr Grundgebühr — rechnet sich ab ca. 4.000 kWh WP-Verbrauch, was in ${city.name} problemlos erreicht wird.`,
+    `Stromkosten-Optimierung für Wärmepumpenbesitzer in ${city.name}: Drei Hebel reduzieren Ihre Betriebskosten. Erstens: WP-Sondertarif (${wpTarifPreis} ct/kWh statt ${city.strompreis} ct/kWh — Ersparnis ${fmtEuro(wpTarifErsparnis)}/Jahr). Zweitens: SG-Ready-Funktion nutzen (die WP heizt bevorzugt zu günstigen Börsenstromzeiten — Ersparnis ${fmtEuro(sgReadyErsparnis)}/Jahr). Drittens: PV-Eigenverbrauch maximieren (${city.avgSunHours} Sonnenstunden in ${city.name} bieten Potenzial). Alle drei Maßnahmen zusammen können die WP-Kosten um 25–35% senken.`,
+    `WP-Tarif in ${city.name}: Die meisten Grundversorger und alternativen Anbieter in ${city.bundesland} bieten Wärmepumpentarife an. Der typische Preis liegt bei ${wpTarifPreis} ct/kWh — ${(city.strompreis - wpTarifPreis).toFixed(1)} ct günstiger als Haushaltsstrom. Bei Ihrem geschätzten WP-Verbrauch von ${wpStrom.toLocaleString('de-DE')} kWh/Jahr ergibt das ${fmtEuro(wpTarifErsparnis)} Ersparnis. Voraussetzung: Ein separater Stromzähler (Kosten: €200–400 Installation + ca. €80/Jahr). Ab dem zweiten Jahr rechnet sich die Investition.`,
+    `Intelligentes Heizen in ${city.name}: Moderne Wärmepumpen mit SG-Ready-Schnittstelle nutzen flexible Stromtarife. Wenn der Börsenstrompreis niedrig ist (typisch nachts und mittags), heizt die WP den Pufferspeicher auf — und verbraucht weniger teuren Spitzenlaststrom. In ${city.name} können SG-Ready-WP-Besitzer ${fmtEuro(sgReadyErsparnis)}/Jahr zusätzlich sparen. Kombiniert mit einem WP-Sondertarif (${wpTarifPreis} ct/kWh) sinken die jährlichen Heizkosten auf unter ${fmtEuro(Math.round(wpKosten * 0.75))}.`,
+    `Energiemanagement in ${city.name}: Drei Strategien für minimale WP-Betriebskosten. (1) WP-Stromtarif: ${wpTarifPreis} ct/kWh statt ${city.strompreis} ct/kWh = ${fmtEuro(wpTarifErsparnis)} Ersparnis. (2) Smart Grid: SG-Ready-WP + dynamischer Tarif = ${fmtEuro(sgReadyErsparnis)} extra. (3) PV-Kombination: ${city.avgSunHours} Sonnenstunden × 8 kWp = ca. ${Math.round(city.avgSunHours * 8 * 0.85 * 0.35).toLocaleString('de-DE')} kWh Eigenverbrauch. Gesamtpotenzial: 30–40% Betriebskostensenkung gegenüber Normaltarif.`,
+  ];
+
+  const tips = [
+    { tip: `WP-Sondertarif beantragen (${wpTarifPreis} ct/kWh)`, ersparnis: `${fmtEuro(wpTarifErsparnis)}/Jahr` },
+    { tip: 'SG-Ready-Funktion aktivieren (Smart Grid)', ersparnis: `${fmtEuro(sgReadyErsparnis)}/Jahr` },
+    { tip: 'Separaten WP-Zähler installieren lassen', ersparnis: 'Voraussetzung für WP-Tarif' },
+    { tip: 'Pufferspeicher dimensionieren (300-500l)', ersparnis: 'Flexibilität für Lastverschiebung' },
+    { tip: `PV-Anlage (${city.avgSunHours} Sonnenstd. in ${city.name})`, ersparnis: `bis ${fmtEuro(Math.round(city.avgSunHours * 8 * 0.85 * 0.35 * city.strompreis / 100))}/Jahr` },
+  ];
+
+  return {
+    paragraph: paragraphs[hash % paragraphs.length],
+    tips,
+  };
+}
+
+// ── 25. KEYWORD-SPEZIFISCHER TIEFENINHALT — 300+ Wörter pro Keyword-Kategorie ──
+
+export function getKeywordDeepContent(
+  city: City,
+  keyword: Keyword,
+  jaz: number,
+  wpKosten: number,
+  ersparnis: number,
+): { heading: string; paragraphs: string[] } {
+  const cat = getKwCategory(keyword);
+  const hash = cityHash(city, 3);
+  const gasKosten = wpKosten + ersparnis;
+  const sz = getCitySize(city);
+
+  const content: Record<KwCategory, { heading: string; paragraphs: string[] }[]> = {
+    kosten: [
+      {
+        heading: `Vollkosten-Analyse: Wärmepumpe in ${city.name} — was kostet wirklich was?`,
+        paragraphs: [
+          `Die Investitionskosten einer Wärmepumpe in ${city.name} setzen sich aus mehreren Komponenten zusammen, die in vielen Angeboten unvollständig aufgeführt werden. Das Wärmepumpengerät selbst (Luft-Wasser, Monoblock oder Split) kostet zwischen 10.000 und 18.000 €, abhängig von Hersteller, Leistungsklasse und Kältemittel. In ${city.name} empfehlen wir bei ${city.normAussentemp}°C Auslegungstemperatur eine Heizleistung von ${Math.round(120 * 160 / 2000)}-${Math.round(120 * 160 / 1800)} kW für ein 120-m²-Einfamilienhaus.`,
+          `Die Montagekosten in ${city.name} liegen bei 3.000 bis 6.000 € — ${sz === 'metropole' || sz === 'grossstadt' ? 'in der Großstadt eher am oberen Ende durch höhere Lohnkosten' : 'in dieser Region eher moderate Preise dank lokaler Betriebe ohne Großstadt-Aufschlag'}. Dazu kommen: Hydraulischer Abgleich (500–1.500 €, KfW-Pflicht), Elektroinstallation (800–1.500 €, oft wird ein Drehstromanschluss benötigt), Fundament/Stellfläche für Außeneinheit (200–800 €), und optional Pufferspeicher (800–2.500 € für 300–500 Liter). Die Gesamtinvestition für ${city.name}: 15.000–28.000 € brutto — nach KfW-Förderung ab ca. ${fmtEuro(Math.round(15000 * (1 - 0.55)))} Eigenanteil.`,
+          `Versteckte Kosten, die viele Angebote verschweigen: Erdarbeiten für Leitungsführung (200–600 €), Schallschutzmaßnahmen ${sz === 'metropole' ? '(in ' + city.name + ' besonders wichtig wegen dichter Bebauung — 300–1.000 €)' : '(in ' + city.name + ' meist unkompliziert — 0–500 €)'}, Demontage der alten Heizung (300–800 €), Anpassung der Heizungsrohre (500–2.000 € im Altbau). Unser Tipp: Fordern Sie immer ein Festpreisangebot inkl. aller Nebenkosten an. Unsere Partnerbetriebe in ${city.name} erstellen transparente Komplett-Angebote.`,
+        ]
+      },
+      {
+        heading: `Betriebskosten-Prognose ${city.name}: 2026 bis 2046`,
+        paragraphs: [
+          `Die laufenden Kosten einer Wärmepumpe in ${city.name} setzen sich zusammen aus Stromkosten (${fmtEuro(wpKosten)}/Jahr bei ${city.strompreis} ct/kWh und JAZ ${jaz}), Wartungskosten (200–400 €/Jahr) und Rücklagen für Reparaturen (Ø 100 €/Jahr). Gesamte jährliche Betriebskosten: ca. ${fmtEuro(wpKosten + 350)}.`,
+          `Zum Vergleich: Eine Gasheizung in ${city.name} kostet ${fmtEuro(gasKosten)}/Jahr Brennstoff + 250 €/Jahr Wartung + steigenden CO₂-Preis (2026: ${Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 55)} €, 2030: ${Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 100)} €). Der CO₂-Preis steigt von 55 €/t (2026) auf voraussichtlich 100+ €/t (2030). Gas wird also jedes Jahr teurer — Strom für WP nur moderat (+2%/Jahr). Die Schere öffnet sich zugunsten der Wärmepumpe. In 10 Jahren spart die WP in ${city.name} ca. ${fmtEuro(Math.round(ersparnis * 10 * 1.15))} gegenüber Gas (inflationsbereinigt).`,
+          `Lebensdauer und Gesamtkosten: Eine Luft-Wasser-WP hält 20–25 Jahre. Gesamtbetriebskosten über 20 Jahre in ${city.name}: ca. ${fmtEuro((wpKosten + 350) * 20)}. Eine Gasheizung (15 Jahre Lebensdauer, danach Ersatz nötig): ca. ${fmtEuro((gasKosten + 250) * 20 + 8000)} inkl. steigendem CO₂-Preis und einer Heizungserneuerung. Differenz über 20 Jahre: ca. ${fmtEuro(Math.round((gasKosten - wpKosten + 100) * 20 + 8000))} zugunsten der Wärmepumpe.`,
+        ]
+      },
+      {
+        heading: `Was kostet die Wärmepumpe nach Förderung in ${city.name}?`,
+        paragraphs: [
+          `Nach Abzug der KfW-Förderung bleiben in ${city.name} typischerweise 7.500 bis 14.000 € Eigenanteil. Das klingt viel — aber: Die Wärmepumpe spart ${fmtEuro(ersparnis)} pro Jahr an Heizkosten. Bei einem Eigenanteil von ${fmtEuro(Math.round(11000))} (Durchschnitt bei 55% Förderquote) amortisiert sich die Investition in ca. ${Math.round(11000 / ersparnis)} Jahren.`,
+          `Finanzierungsmöglichkeiten in ${city.name}: KfW-Ergänzungskredit (Programm 358/359, bis 120.000 €, ab 0,01% Zinsen bei Einkommensbonus), Modernisierungskredit der Hausbank (oft 2–4% Zinsen), Leasingmodelle einzelner Hersteller. Unser Tipp: Der KfW-Ergänzungskredit ist fast immer die günstigste Option. Voraussetzung: Bewilligung des Zuschussantrags (BEG 458). Unser Partnerbetrieb in ${city.name} übernimmt die Antragstellung.`,
+          `Steuerliche Aspekte: Handwerkerleistungen für die WP-Installation können zu 20% (max. 1.200 €/Jahr) von der Steuer abgesetzt werden — allerdings nur für den nicht geförderten Anteil. In ${city.name} lohnt es sich, mit dem Steuerberater zu sprechen, ob eine aufgeteilte Rechnung (geförderter + nicht geförderter Teil) steuerlich vorteilhafter ist.`,
+        ]
+      },
+    ],
+    foerderung: [
+      {
+        heading: `KfW-Förderung maximieren: Schritt-für-Schritt-Anleitung für ${city.name}`,
+        paragraphs: [
+          `Der wichtigste Satz zuerst: Der KfW-Antrag MUSS vor dem Abschluss eines Lieferungs- und Leistungsvertrags gestellt werden. Wer zuerst unterschreibt und dann beantragt, verliert den gesamten Zuschuss. In ${city.name} passiert das leider häufiger als nötig — oft aus Zeitdruck, weil der Installateur Kapazität frei hat. Unser Rat: Lassen Sie sich ein verbindliches Angebot erstellen (noch kein Auftrag!), stellen Sie den KfW-Antrag über das Zuschussportal, und beauftragen Sie erst nach Erhalt der Zuwendungsbescheinigung.`,
+          `Die Fördersätze für ${city.name} im Detail: 30% Grundförderung (jeder Eigentümer, Selbstnutzer oder Vermieter). + 20% Klima-Speed-Bonus (nur Selbstnutzer, die eine funktionsfähige Gas-, Öl- oder Kohleheizung ersetzen, die mindestens 20 Jahre alt ist ODER einen Gaskessel jeglichen Alters). + 30% Einkommensbonus (Selbstnutzer mit unter 40.000 € zu versteuerndem Haushaltseinkommen). + 5% Effizienz-Bonus (natürliche Kältemittel wie R290 oder Erdwärmepumpe). Maximum: 70% von max. 30.000 € förderfähigen Kosten = bis zu 21.000 € Zuschuss.`,
+          `${city.bundeslandFoerderung ? `Zusätzlich in ${city.bundesland}: Das Programm „${city.bundeslandFoerderung}" (${city.bundeslandFoerderungBetrag}) kann in bestimmten Fällen mit der KfW-Förderung kombiniert werden. Achtung: Doppelförderung für dieselbe Maßnahme ist nicht zulässig — aber für unterschiedliche Gewerke (z.B. KfW für WP, Landesförderung für PV-Speicher) oft möglich.` : `${city.bundesland} hat aktuell kein eigenes Landesprogramm für Wärmepumpen — die KfW-Bundesmittel sind aber großzügig genug. Einige Kommunen in ${city.bundesland} bieten zusätzliche Zuschüsse — fragen Sie bei Ihrer Stadtverwaltung in ${city.name} nach.`} Wir helfen Ihnen, die maximale Förderkombination für Ihre Situation in ${city.name} zu ermitteln.`,
+        ]
+      },
+    ],
+    installateur: [
+      {
+        heading: `So finden Sie den richtigen WP-Installateur in ${city.name}`,
+        paragraphs: [
+          `Die Qualität der Installation entscheidet über die Effizienz Ihrer Wärmepumpe in ${city.name}. Eine schlecht dimensionierte oder falsch installierte WP kann 20–30% weniger effizient arbeiten — das bedeutet ${fmtEuro(Math.round(wpKosten * 0.25))} mehr Stromkosten pro Jahr. Deshalb ist die Wahl des richtigen Fachbetriebs der wichtigste Schritt.`,
+          `Qualitätskriterien für WP-Installateure in ${city.name}: (1) Mindestens 10 dokumentierte WP-Installationen (fragen Sie nach Referenzen). (2) HWK-eingetragener Meisterbetrieb. (3) Registrierung als KfW-Lieferanten- und Leistungserbringer (LuL). (4) Haftpflichtversicherung für Installationsfehler. (5) Vollständige Angebote ohne versteckte Positionen. ${sz === 'metropole' || sz === 'grossstadt' ? `In ${city.name} gibt es genug Auswahl — vergleichen Sie mindestens 3 Angebote.` : `In ${city.name} und Umgebung sind die Kapazitäten begrenzter — buchen Sie frühzeitig.`}`,
+          `Wartezeiten in ${city.name}: Aktuell beträgt die durchschnittliche Wartezeit für einen WP-Installationstermin ${sz === 'metropole' ? '4–8 Wochen' : sz === 'grossstadt' ? '6–10 Wochen' : '8–14 Wochen'}. ${city.gegFrist <= '2026-12-31' ? `Besonders wichtig: Die GEG-Frist in ${city.name} rückt näher (${city.gegFrist.split('-').reverse().join('.')}). Wer jetzt anfrägt, sichert sich rechtzeitig Kapazität.` : `Die GEG-Frist in ${city.name} ist ${city.gegFrist.split('-').reverse().join('.')} — noch Zeit, aber die besten Betriebe sind oft weit im Voraus ausgebucht.`} Wir vermitteln Sie kostenlos an 3 geprüfte Fachbetriebe in ${city.name} und Umgebung.`,
+        ]
+      },
+    ],
+    technik: [
+      {
+        heading: `Technische Tiefenanalyse: Wärmepumpen-Effizienz in ${city.name}`,
+        paragraphs: [
+          `Die Effizienz einer Wärmepumpe in ${city.name} wird durch das lokale Klima bestimmt. Die Jahresmitteltemperatur von ${city.avgTemp}°C und die Norm-Außentemperatur von ${city.normAussentemp}°C (DIN EN 12831) ergeben eine standortspezifische Jahresarbeitszahl (JAZ) von ${jaz}. Diese JAZ berücksichtigt die gesamte Klimaverteilung — warme Tage (WP arbeitet sehr effizient mit COP >5) und kalte Tage (COP sinkt auf 2–3, aber kommt selten vor).`,
+          `Leistungskurve für ${city.name}: Bei 7°C Außentemperatur (häufigster Betriebspunkt) erreicht eine typische Luft-WP einen COP von 4,2–4,8. Bei 0°C sinkt der COP auf 3,0–3,5. Bei ${city.normAussentemp}°C (Auslegungsfall, 2–5 Tage/Jahr) liegt der COP bei 2,2–2,8. Die JAZ von ${jaz} ist der gewichtete Jahresdurchschnitt aller Betriebspunkte. ${city.avgTemp >= 10 ? `Der milde Standort ${city.name} begünstigt die Effizienz — die meiste Zeit arbeitet die WP im optimalen Bereich.` : city.avgTemp < 8 ? `Der kühlere Standort ${city.name} erfordert eine sorgfältige Dimensionierung — aber auch hier ist die WP die wirtschaftlichste Lösung.` : `${city.name} liegt im klimatischen Mittelfeld — ideale Bedingungen für eine Luft-Wasser-WP.`}`,
+          `Schallemissionen in ${city.name}: Moderne WP erzeugen 35–50 dB(A) in 3m Entfernung (vergleichbar mit einem Kühlschrank). ${sz === 'metropole' || sz === 'grossstadt' ? `In ${city.name} gelten TA-Lärm-Richtwerte von 35 dB(A) nachts in reinen Wohngebieten. Schallschutzmaßnahmen (Schallhaube, optimale Aufstellung) können nötig sein — unsere Betriebe kennen die lokalen Auflagen.` : `In ${city.name} sind Schallprobleme selten — die typischen Abstände zum Nachbarn reichen in der Regel aus.`} Tipp: Inverter-WP (modulierend) sind im Teillastbetrieb deutlich leiser als On/Off-Geräte.`,
+        ]
+      },
+    ],
+    vergleich: [
+      {
+        heading: `Heizungsvergleich ${city.name}: Alle Optionen auf dem Prüfstand`,
+        paragraphs: [
+          `Welche Heizung ist für ${city.name} die beste? Wir vergleichen alle GEG-konformen Optionen: Luft-Wasser-WP (JAZ ${jaz}, Kosten ${fmtEuro(wpKosten)}/Jahr, KfW bis 70%), Erdwärmepumpe (JAZ ~4,3, Kosten ${fmtEuro(Math.round(wpKosten * 0.8))}/Jahr, +5% KfW, aber Bohrung nötig), Fernwärme (verfügbar für ${city.fernwaermeQuote}% der Gebäude in ${city.name}, Preise abhängig vom Versorger), Pelletheizung (GEG-konform, aber Platzbedarf für Lager, Feinstaub-Diskussion), Hybridheizung (WP + Gas — teilweise GEG-konform, aber geringere Förderung).`,
+          `Für ${city.name} empfehlen wir in 85% der Fälle die Luft-Wasser-WP: Beste Kosten-Nutzen-Relation, höchste Förderung, kein Erdreich/Lager nötig, schnelle Installation. Die Erdwärmepumpe lohnt sich in ${city.name} bei großen Grundstücken und wenn maximale Effizienz gewünscht ist (JAZ ~4,3 statt ${jaz}). Fernwärme ist eine Option, wenn Ihr Gebäude in ${city.name} bereits angeschlossen ist (Fernwärmequote: ${city.fernwaermeQuote}%) — aber die Preise steigen und Sie sind vom Versorger abhängig.`,
+          `CO₂-Bilanz im Vergleich: Die Wärmepumpe in ${city.name} erzeugt ca. ${Math.round(wpKosten / (city.strompreis / 100) * 0.420)} kg CO₂/Jahr (dt. Strommix). Gas: ca. ${Math.round(gasKosten / (city.gaspreis / 100) * 0.201)} kg CO₂/Jahr. Öl: ca. ${Math.round(gasKosten * 1.15 / (city.oelpreis / 100) * 0.266)} kg CO₂/Jahr. Mit PV-Eigenverbrauch sinkt der CO₂-Ausstoß der WP auf unter ${Math.round(wpKosten / (city.strompreis / 100) * 0.420 * 0.6)} kg/Jahr. Die WP ist damit die klimafreundlichste Heiztechnologie — und wird durch den sinkenden CO₂-Gehalt des Strommixes jedes Jahr sauberer.`,
+        ]
+      },
+    ],
+    allgemein: [
+      {
+        heading: `Alles Wissenswerte zur Wärmepumpe in ${city.name}`,
+        paragraphs: [
+          `${city.name} (${city.bundesland}) mit ${city.einwohner.toLocaleString('de-DE')} Einwohnern ist ein ${sz === 'metropole' ? 'Metropolen-' : sz === 'grossstadt' ? 'Großstadt-' : sz === 'mittelstadt' ? 'Mittelstadt-' : 'Kleinstadt-'}Standort für Wärmepumpen. Die lokalen Rahmenbedingungen: ${city.avgTemp}°C Jahresdurchschnittstemperatur, ${city.heizgradtage} Heizgradtage, ${city.normAussentemp}°C Norm-Außentemperatur. Der Strompreis liegt bei ${city.strompreis} ct/kWh, Gas bei ${city.gaspreis} ct/kWh. Bei diesen Werten erreicht eine Luft-Wasser-WP JAZ ${jaz} — und spart ${fmtEuro(ersparnis)} pro Jahr gegenüber Erdgas.`,
+          `Der Wärmepumpenmarkt in ${city.bundesland}: 2025 wurden in Deutschland 299.000 Wärmepumpen installiert (+55% ggü. 2024). ${city.bundesland} liegt ${city.bundesland === 'Bayern' || city.bundesland === 'Baden-Württemberg' || city.bundesland === 'Nordrhein-Westfalen' ? 'bei den Installationszahlen vorne' : 'im soliden Mittelfeld'}. In ${city.name} steigt die Nachfrage spürbar — lokale Fachbetriebe berichten von ${sz === 'metropole' || sz === 'grossstadt' ? '30–50' : '10–20'} WP-Installationen pro Jahr. Wir verbinden Sie mit dem Betrieb, der Erfahrung mit Ihrem Gebäudetyp in ${city.name} hat.`,
+          `Warum jetzt? Drei Gründe für den WP-Umstieg in ${city.name} in 2026: (1) KfW-Förderung bis 70% — historisch hoch, nicht garantiert auf Dauer. (2) GEG-Frist in ${city.name}: ${city.gegFrist.split('-').reverse().join('.')} — wer rechtzeitig plant, vermeidet den Ansturm kurz vor Fristende. (3) Gas wird durch den CO₂-Preis jedes Jahr teurer (2026: +${Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 55)} €/Jahr CO₂-Abgabe, 2030: +${Math.round(gasKosten / (city.gaspreis / 100) * 0.000201 * 100)} €/Jahr). Die Wärmepumpe macht Sie unabhängig von fossilen Preisschwankungen.`,
+        ]
+      },
+    ],
+  };
+
+  const variants = content[cat] || content.allgemein;
+  return variants[hash % variants.length];
+}
+
 export function getExtendedVariationData(
   city: City,
   keyword: Keyword,
@@ -1313,5 +1651,11 @@ export function getExtendedVariationData(
     seasonalAdvice: getSeasonalAdvice(city),
     inlineLinkedParagraph: getInlineLinkedParagraph(city, keyword, jaz, wpKosten, ersparnis),
     lokaleTiefenanalyse: getLokaleTiefenanalyse(city, keyword, jaz, wpKosten, ersparnis),
+    pvWPKombination: getPVWPKombination(city, keyword, jaz, wpKosten, ersparnis),
+    roiTimeline: getROITimeline(city, jaz, wpKosten, ersparnis, 55),
+    nachbarschaftsvergleich: getNachbarschaftsvergleich(city, nearby, jaz, wpKosten, ersparnis),
+    heizkoerperCheck: getHeizkoerperCheck(city, keyword),
+    stromtarifOptimierung: getStromtarifOptimierung(city, jaz, wpKosten),
+    keywordDeepContent: getKeywordDeepContent(city, keyword, jaz, wpKosten, ersparnis),
   };
 }

@@ -6,7 +6,7 @@ import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Sta
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse } from '@/lib/content-variation';
+import { getRotatingFAQs, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getUniqueLocalParagraph, getNearbyLinkContext, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -80,6 +80,12 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const lokaleTiefenanalyse = getLokaleTiefenanalyse(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const pvWP = getPVWPKombination(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
+  const roiTimeline = getROITimeline(city, jaz, calc.wpKosten, calc.ersparnis, foerd.gesamtSatz);
+  const nachbarVergleich = getNachbarschaftsvergleich(city, nearby, jaz, calc.wpKosten, calc.ersparnis);
+  const heizkoerper = getHeizkoerperCheck(city, keyword);
+  const stromtarif = getStromtarifOptimierung(city, jaz, calc.wpKosten);
+  const deepContent = getKeywordDeepContent(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
@@ -568,6 +574,124 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </div>
           )}
 
+          {/* Keyword-spezifischer Tiefeninhalt */}
+          <div className="space-y-5">
+            <h2 className="text-2xl font-bold text-[#1A4731]">{deepContent.heading}</h2>
+            {deepContent.paragraphs.map((p, i) => (
+              <p key={i} className="text-[#4A6358] text-base leading-relaxed">{p}</p>
+            ))}
+          </div>
+
+          {/* PV + Wärmepumpe Kombination */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-5">
+            <h2 className="text-xl font-bold text-[#1A4731]">{pvWP.title}</h2>
+            {pvWP.paragraphs.map((p, i) => (
+              <p key={i} className="text-[#4A6358] text-sm leading-relaxed">{p}</p>
+            ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
+              {pvWP.stats.map((s, i) => (
+                <div key={i} className="bg-[#F2FAF5] rounded-lg p-3 text-center">
+                  <p className="text-[#1A4731] font-bold text-lg">{s.value}</p>
+                  <p className="text-[#4A6358] text-xs font-semibold">{s.label}</p>
+                  <p className="text-gray-400 text-xs">{s.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Heizkörper-Kompatibilitäts-Check */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#1A4731]">{heizkoerper.title}</h2>
+            <p className="text-[#4A6358] text-base leading-relaxed">{heizkoerper.paragraph}</p>
+            <div className="grid gap-2">
+              {heizkoerper.checklist.map((item, i) => (
+                <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-lg border ${
+                  item.status === 'ok' ? 'bg-green-50 border-green-200' :
+                  item.status === 'pruefen' ? 'bg-amber-50 border-amber-200' :
+                  'bg-red-50 border-red-200'
+                }`}>
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                    item.status === 'ok' ? 'bg-green-100 text-green-700' :
+                    item.status === 'pruefen' ? 'bg-amber-100 text-amber-700' :
+                    'bg-red-100 text-red-700'
+                  }`}>
+                    {item.status === 'ok' ? '✓' : item.status === 'pruefen' ? '?' : '✗'}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{item.item}</p>
+                    <p className="text-xs text-gray-500">{item.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Nachbarschaftsvergleich */}
+          {nearby.length > 0 && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-[#1A4731]">Regionaler Vergleich: {city.name} vs. Umland</h2>
+              <p className="text-[#4A6358] text-base leading-relaxed">{nachbarVergleich.paragraph}</p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="bg-[#1A4731] text-white">
+                      {nachbarVergleich.table.headers.map((h, i) => (
+                        <th key={i} className="px-3 py-2 text-left text-xs font-semibold">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {nachbarVergleich.table.rows.map((row, i) => (
+                      <tr key={i} className={i === 0 ? 'bg-[#F2FAF5] font-semibold' : i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                        {row.map((cell, j) => (
+                          <td key={j} className="px-3 py-2 text-xs text-gray-700 border-b border-gray-100">{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Stromtarif-Optimierung */}
+          <div className="bg-gradient-to-br from-[#1A4731] to-[#0A1910] rounded-2xl p-7 text-white space-y-4">
+            <h2 className="text-xl font-bold">Stromkosten senken: WP-Tarife für {city.name}</h2>
+            <p className="text-white/80 text-sm leading-relaxed">{stromtarif.paragraph}</p>
+            <div className="space-y-2 mt-3">
+              {stromtarif.tips.map((t, i) => (
+                <div key={i} className="flex items-center justify-between bg-white/10 rounded-lg px-4 py-2.5">
+                  <span className="text-white/90 text-xs">{t.tip}</span>
+                  <span className="text-[#D97706] font-bold text-xs whitespace-nowrap ml-3">{t.ersparnis}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ROI-Timeline */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-[#1A4731]">Wirtschaftlichkeit über 20 Jahre in {city.name}</h2>
+            <div className="space-y-2">
+              {roiTimeline.filter(r => r.highlight).map((r, i) => (
+                <div key={i} className="flex items-center gap-4 bg-white rounded-lg border border-gray-200 px-4 py-3">
+                  <div className="w-14 text-center">
+                    <p className="text-[#1A4731] font-bold text-sm">{r.label}</p>
+                    <p className="text-gray-400 text-xs">{r.year}</p>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-gray-800">{r.highlight}</p>
+                    <p className="text-xs text-gray-500">
+                      WP kumuliert: {r.wpKumuliert.toLocaleString('de-DE')} € · Gas kumuliert: {r.gasKumuliert.toLocaleString('de-DE')} €
+                    </p>
+                  </div>
+                  <div className={`text-right ${r.differenz > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                    <p className="font-bold text-sm">{r.differenz > 0 ? '+' : ''}{r.differenz.toLocaleString('de-DE')} €</p>
+                    <p className="text-xs">Vorteil WP</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
           {/* Quellenangaben & Datengrundlage */}
           <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
             <h3 className="text-sm font-bold text-gray-700 mb-2">Quellenangaben & Datengrundlage</h3>
