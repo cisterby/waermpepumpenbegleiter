@@ -6,19 +6,38 @@ const navLinks = [
   { href: '/wie-es-funktioniert', label: 'Wie es funktioniert' },
   { href: '/rechner', label: 'Rechner' },
   { href: '/ratgeber', label: 'Ratgeber' },
+  { href: '/faq', label: 'FAQ' },
   { href: '/ueber-uns', label: 'Über uns' },
   { href: '/kontakt', label: 'Kontakt' },
 ];
 
-const topCities = [
+const topCitiesNord = [
   { name: 'Berlin',     slug: 'berlin' },
   { name: 'Hamburg',    slug: 'hamburg' },
+  { name: 'Hannover',   slug: 'hannover' },
+  { name: 'Bremen',     slug: 'bremen' },
+  { name: 'Kiel',       slug: 'kiel' },
+];
+const topCitiesSued = [
   { name: 'München',    slug: 'muenchen' },
-  { name: 'Köln',       slug: 'koeln' },
-  { name: 'Frankfurt',  slug: 'frankfurt-am-main' },
   { name: 'Stuttgart',  slug: 'stuttgart' },
+  { name: 'Nürnberg',   slug: 'nuernberg' },
+  { name: 'Augsburg',   slug: 'augsburg' },
+  { name: 'Freiburg',   slug: 'freiburg-im-breisgau' },
+];
+const topCitiesWest = [
+  { name: 'Köln',       slug: 'koeln' },
   { name: 'Düsseldorf', slug: 'duesseldorf' },
+  { name: 'Frankfurt',  slug: 'frankfurt-am-main' },
+  { name: 'Dortmund',   slug: 'dortmund' },
+  { name: 'Bonn',       slug: 'bonn' },
+];
+const topCitiesOst = [
   { name: 'Leipzig',    slug: 'leipzig' },
+  { name: 'Dresden',    slug: 'dresden' },
+  { name: 'Erfurt',     slug: 'erfurt' },
+  { name: 'Rostock',    slug: 'rostock' },
+  { name: 'Potsdam',    slug: 'potsdam' },
 ];
 
 const rechtliches = [
@@ -156,22 +175,32 @@ export default function Footer({ keywordSlug }: { keywordSlug?: string }) {
             </ul>
           </div>
 
-          {/* Cities */}
+          {/* Cities by region */}
           <div>
             <h4 className="text-white font-semibold text-xs uppercase tracking-widest mb-4">
-              Große Städte
+              Städte
             </h4>
-            <ul className="space-y-3">
-              {topCities.map(city => (
-                <li key={city.slug}>
-                  <Link href={`/${keywordSlug || 'waermepumpe'}/${city.slug}`}
-                    className="text-sm transition-colors"
-                    style={{ color: 'rgba(255,255,255,0.85)' }}>
-                    {city.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {[
+              { label: 'Nord', cities: topCitiesNord },
+              { label: 'Süd', cities: topCitiesSued },
+              { label: 'West', cities: topCitiesWest },
+              { label: 'Ost', cities: topCitiesOst },
+            ].map(region => (
+              <div key={region.label} className="mb-3">
+                <p className="text-[10px] uppercase tracking-widest mb-1.5" style={{ color: 'rgba(255,255,255,0.45)' }}>{region.label}</p>
+                <ul className="space-y-1.5">
+                  {region.cities.map(city => (
+                    <li key={city.slug}>
+                      <Link href={`/${keywordSlug || 'waermepumpe'}/${city.slug}`}
+                        className="text-sm transition-colors hover:text-white"
+                        style={{ color: 'rgba(255,255,255,0.85)' }}>
+                        {city.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
           {/* Legal */}

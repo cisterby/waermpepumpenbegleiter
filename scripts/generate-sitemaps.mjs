@@ -71,6 +71,7 @@ const staticUrls = [
   urlEntry(`${DOMAIN}/ratgeber`, 0.8, 'weekly'),
   urlEntry(`${DOMAIN}/ueber-uns`, 0.8, 'monthly'),
   urlEntry(`${DOMAIN}/kontakt`, 0.7, 'monthly'),
+  urlEntry(`${DOMAIN}/faq`, 0.8, 'weekly'),
 ];
 
 // 22 Pillar Pages

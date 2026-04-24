@@ -30,15 +30,16 @@ export const revalidate = 2592000;
 export async function generateStaticParams() {
   const cities = citiesData as City[];
 
-  // Top 50 Städte nach Einwohnerzahl (die meisten Suchanfragen)
+  // Top 150 Städte nach Einwohnerzahl — deckt ~80% des Suchvolumens ab
   const topCities = [...cities]
     .sort((a, b) => b.einwohner - a.einwohner)
-    .slice(0, 50);
+    .slice(0, 150);
 
-  // Nur Tier 1 Keywords (höchstes Suchvolumen)
-  const tier1 = KEYWORDS.filter(k => k.tier === 1);
+  // Tier 1 + Tier 2 Keywords (höchstes Suchvolumen)
+  // → 11 Keywords × 150 Städte = 1.650 pre-rendered Seiten
+  const highTierKWs = KEYWORDS.filter(k => k.tier <= 2);
 
-  return tier1.flatMap((kw) =>
+  return highTierKWs.flatMap((kw) =>
     topCities.map((city) => ({
       keywordSlug: kw.slug,
       citySlug:    city.slug,
