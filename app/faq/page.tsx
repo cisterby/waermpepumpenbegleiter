@@ -149,6 +149,11 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     siteName: 'Wärmepumpenbegleiter',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Häufige Fragen zur Wärmepumpe (FAQ) 2026',
+    description: 'Antworten auf die 20 häufigsten Fragen zu Wärmepumpen: Kosten, Förderung, Technik, GEG und mehr.',
+  },
   robots: { index: true, follow: true },
 };
 

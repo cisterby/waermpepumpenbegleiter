@@ -401,9 +401,19 @@ export default function PillarPage({ params }: Props) {
     about: { '@type': 'Service', name: kw, areaServed: { '@type': 'Country', name: 'Deutschland' } },
   };
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://xn--wrmepumpenbegleiter-gwb.de' },
+      { '@type': 'ListItem', position: 2, name: kw, item: `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* HERO */}
       <div className="bg-[#1A4731] py-16 px-6">
         <div className="max-w-5xl mx-auto">

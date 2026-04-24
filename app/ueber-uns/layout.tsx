@@ -1,15 +1,47 @@
 // app/ueber-uns/layout.tsx
 import type { Metadata } from 'next';
 
+const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+const title = 'Über uns — Wärmepumpenbegleiter.de | Webflott GbR';
+const description =
+  'Wärmepumpenbegleiter.de ist ein unabhängiges Vermittlungsportal von Webflott. Wir verbinden Hausbesitzer kostenlos mit geprüften WP-Fachbetrieben in ihrer Region.';
+
 export const metadata: Metadata = {
-  title: 'Über uns — Wärmepumpenbegleiter.de | Webflott',
-  description: 'Wärmepumpenbegleiter.de ist ein unabhängiges Vermittlungsportal von Webflott. Wir verbinden Hausbesitzer kostenlos mit geprüften WP-Fachbetrieben in ihrer Region.',
+  title,
+  description,
   alternates: {
-    canonical: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
+    canonical: `${BASE}/ueber-uns`,
+    languages: { 'de-DE': `${BASE}/ueber-uns` },
   },
+  openGraph: {
+    title,
+    description,
+    url: `${BASE}/ueber-uns`,
+    type: 'website',
+    locale: 'de_DE',
+    siteName: 'Wärmepumpenbegleiter',
+  },
+  twitter: { card: 'summary_large_image', title, description },
   robots: { index: true, follow: true },
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Startseite', item: BASE },
+    { '@type': 'ListItem', position: 2, name: 'Über uns', item: `${BASE}/ueber-uns` },
+  ],
+};
+
+export default function UeberUnsLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }
