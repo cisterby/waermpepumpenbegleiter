@@ -6,7 +6,7 @@ import { ChevronDown, CheckCircle, XCircle } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getImageAltTexts} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -94,12 +94,13 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
     const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
     const videoData = getVideoPlaceholder(city, keyword);
     const socialProof = getSocialProofData(city, keyword);
+  const altTexts = getImageAltTexts(city, keyword, jaz);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       <div className="relative min-h-[60vh] flex items-center overflow-hidden">
-        <Image src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={h1}
-          className="absolute inset-0 w-full h-full object-cover" fill priority />
+        <Image src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={altTexts.hero}
+          className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1910]/90 via-[#0A1910]/70 to-[#0A1910]/20" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-24">
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
@@ -569,10 +570,11 @@ export default function AltbauTemplate({ city, keyword, calc, foerd, jaz, nearby
       <div className="relative rounded-2xl overflow-hidden my-8" style={{ height: '180px' }}>
         <Image
           src={pickImg(SEC1_IMGS, city.lat, city.lng, 5)}
-          alt={`${keyword.keyword.replace('[Stadt]', city.name)} Übersicht`}
+          alt={altTexts.secondary}
           className="w-full h-full object-cover"
           fill
           loading="lazy"
+          sizes="100vw"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.88) 0%, rgba(10,25,16,0.45) 60%, rgba(10,25,16,0.15) 100%)' }} />
         <div className="absolute inset-y-0 left-0 flex items-center px-8">

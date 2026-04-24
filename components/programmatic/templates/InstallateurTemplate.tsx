@@ -6,7 +6,7 @@ import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Sta
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getImageAltTexts} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -98,13 +98,14 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
     const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
     const videoData = getVideoPlaceholder(city, keyword);
     const socialProof = getSocialProofData(city, keyword);
+  const altTexts = getImageAltTexts(city, keyword, jaz);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* ══ HERO ══════════════════════════════════════════════ */}
       <div className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <Image src={IMGS.hero} alt={`Wärmepumpe Installateur ${city.name}`}
-          className="absolute inset-0 w-full h-full object-cover" fill priority />
+        <Image src={IMGS.hero} alt={altTexts.hero}
+          className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0"
           style={{ background: 'linear-gradient(115deg,rgba(10,25,16,.97) 0%,rgba(10,25,16,.88) 55%,rgba(10,25,16,.5) 100%)' }} />
 
@@ -233,7 +234,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
               <div className="relative rounded-2xl overflow-hidden h-56">
-                <Image src={IMGS.worker} alt={`Wärmepumpe Installateur in ${city.name}`} className="w-full h-full object-cover" fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
+                <Image src={IMGS.worker} alt={altTexts.secondary} className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.85) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-bold text-sm mb-1">Geprüfter Fachbetrieb</p>
@@ -322,7 +323,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="relative rounded-2xl overflow-hidden h-48 sm:h-full min-h-48">
-                <Image src={IMGS.pump} alt={`Wärmepumpen-Installation in ${city.name} – Installateur Checkliste`} className="w-full h-full object-cover" fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
+                <Image src={IMGS.pump} alt={altTexts.comparison} className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.80) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-4 left-4">
                   <p className="text-white font-bold text-sm">Vollständige Angebote</p>
@@ -414,7 +415,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
                 ))}
               </div>
               <div className="relative rounded-2xl overflow-hidden">
-                <Image src={IMGS.outdoor} alt={`Luft-Wasser-Wärmepumpe Installation ${city.name}`} className="w-full h-full object-cover" fill style={{ minHeight: 280 }} sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
+                <Image src={IMGS.outdoor} alt={altTexts.process} className="w-full h-full object-cover" fill loading="lazy" style={{ minHeight: 280 }} sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,16,.85) 0%, transparent 50%)' }} />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-bold text-sm mb-1">Fertige Installation</p>

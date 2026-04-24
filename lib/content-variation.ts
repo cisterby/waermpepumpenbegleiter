@@ -389,6 +389,54 @@ export function getTrustBarItems(city: City, keyword: Keyword, jaz: number, ersp
   ];
 }
 
+// ── 4c. IMAGE ALT TEXTS (city-specific, context-rich variations) ───────────────
+
+/** Kontextuelle, stadtspezifische Image-Alt-Texte — vermeidet Duplicate-Alt-Text-Muster */
+export function getImageAltTexts(city: City, keyword: Keyword, jaz: number): {
+  hero: string;
+  secondary: string;
+  comparison: string;
+  process: string;
+} {
+  const hash = cityHash(city, 4, 900);
+  const kw = keyword.keyword.replace('[Stadt]', city.name);
+
+  const heroPool = [
+    `${kw}: Wärmepumpe-Außeneinheit vor einem Einfamilienhaus in ${city.name}, ${city.bundesland}`,
+    `Luft-Wasser-Wärmepumpe installiert in ${city.name} — JAZ ${jaz} bei ${city.avgTemp}°C Jahresmittel`,
+    `Fachgerechte Wärmepumpen-Installation an einem Wohnhaus in ${city.name}`,
+    `Moderne Wärmepumpe für ein Eigenheim in ${city.name}, ${city.bundesland} — effizient heizen mit JAZ ${jaz}`,
+  ];
+
+  const secondaryPool = [
+    `Energieberater prüft Wärmepumpen-Angebot für ein Haus in ${city.name}`,
+    `Hydraulischer Abgleich bei einer WP-Installation in ${city.name}`,
+    `KfW-Förderantrag für Wärmepumpe — Beispiel aus ${city.name}`,
+    `Fachbetrieb installiert Wärmepumpe in ${city.name}, ${city.bundesland}`,
+  ];
+
+  const comparisonPool = [
+    `Kostenvergleich Wärmepumpe vs. Gas in ${city.name}: ${city.strompreis} ct/kWh Strom vs. ${city.gaspreis} ct/kWh Gas`,
+    `Heizkostenvergleich für ${city.name} — Wärmepumpe mit JAZ ${jaz} spart deutlich`,
+    `Energiekosten-Tabelle für Hausbesitzer in ${city.name}, ${city.bundesland}`,
+    `Amortisationsrechnung Wärmepumpe für ein Einfamilienhaus in ${city.name}`,
+  ];
+
+  const processPool = [
+    `3-Schritte-Prozess zur Wärmepumpe in ${city.name}: Anfrage, Angebote, Installation`,
+    `Ablauf einer WP-Installation in ${city.name} — von der Planung bis zur Inbetriebnahme`,
+    `So funktioniert die kostenlose WP-Vermittlung in ${city.name}`,
+    `Zeitplan für eine Wärmepumpen-Installation in ${city.name}: 6–12 Wochen gesamt`,
+  ];
+
+  return {
+    hero: heroPool[hash],
+    secondary: secondaryPool[cityHash(city, secondaryPool.length, 901)],
+    comparison: comparisonPool[cityHash(city, comparisonPool.length, 902)],
+    process: processPool[cityHash(city, processPool.length, 903)],
+  };
+}
+
 // ── Haupt-Export ──────────────────────────────────────────────────────────────
 
 export interface CityVariationData {

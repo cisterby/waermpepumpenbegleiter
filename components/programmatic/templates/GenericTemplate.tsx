@@ -8,7 +8,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { getVariantByHash } from '@/lib/ab-testing';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getTrustBarItems, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getTrustBarItems, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange, getImageAltTexts } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -256,6 +256,7 @@ export default function GenericTemplate({
   const caseStudy = getCaseStudy(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const gegCountdown = getGEGCountdown(city);
   const laermschutz = getLaermschutzInfo(city);
+  const altTexts = getImageAltTexts(city, keyword, jaz);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans" data-ab-cta={ctaVariantAB}>
@@ -263,9 +264,9 @@ export default function GenericTemplate({
       <div className="relative min-h-[52vh] flex items-end overflow-hidden">
         <Image
           src={pickImg(HERO_IMGS, city.lat, city.lng, 0)}
-          alt={h1}
+          alt={altTexts.hero}
           className="absolute inset-0 w-full h-full object-cover"
-          fill priority
+          fill priority sizes="100vw"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.25) 100%)' }} />
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
@@ -455,6 +456,7 @@ export default function GenericTemplate({
               )}
             </div>
             <p className="text-[#4A6358] leading-relaxed">{bundeslandText}</p>
+            <h3 className="text-lg font-semibold text-[#1C2B2B] mt-6 mb-2">Gebäudestruktur & Eignung in {city.name}</h3>
             <p className="text-[#4A6358] leading-relaxed">{gebaeudeText}</p>
           </div>
 
@@ -470,12 +472,14 @@ export default function GenericTemplate({
             </div>
             <p className="text-[#4A6358] leading-relaxed">{energieText}</p>
             {/* Vergleichstabelle */}
+            <h3 className="text-lg font-semibold text-[#1C2B2B] mt-6 mb-3">Heizsysteme im Kostenvergleich — {city.name}</h3>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border-collapse">
+              <table className="w-full text-sm border-collapse" aria-label={`Heizsysteme im Kostenvergleich für ${city.name}`}>
+                <caption className="sr-only">Vergleich der jährlichen Heizkosten verschiedener Heizsysteme in {city.name}</caption>
                 <thead>
                   <tr className="bg-[#1A4731] text-white">
                     {comparison.headers.map((h, i) => (
-                      <th key={i} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
+                      <th key={i} scope="col" className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -483,7 +487,9 @@ export default function GenericTemplate({
                   {comparison.rows.map((row, ri) => (
                     <tr key={ri} className={ri === 0 ? 'bg-emerald-50 font-semibold' : 'bg-white'}>
                       {row.map((cell, ci) => (
-                        <td key={ci} className="px-4 py-3 border-b border-gray-100 text-gray-700">{cell}</td>
+                        ci === 0
+                          ? <th key={ci} scope="row" className="px-4 py-3 border-b border-gray-100 text-gray-700 text-left font-semibold">{cell}</th>
+                          : <td key={ci} className="px-4 py-3 border-b border-gray-100 text-gray-700">{cell}</td>
                       ))}
                     </tr>
                   ))}
@@ -595,6 +601,7 @@ export default function GenericTemplate({
             {pvWP.paragraphs.map((p, i) => (
               <p key={i} className="text-[#4A6358] text-sm leading-relaxed">{p}</p>
             ))}
+            <h3 className="text-lg font-semibold text-[#1C2B2B] mt-2 mb-1">PV-Ertrag & Einsparung auf einen Blick</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
               {pvWP.stats.map((s, i) => (
                 <div key={i} className="bg-[#F2FAF5] rounded-lg p-3 text-center">
@@ -653,11 +660,12 @@ export default function GenericTemplate({
               </div>
               <p className="text-[#4A6358] text-base leading-relaxed">{nachbarVergleich.paragraph}</p>
               <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
+                <table className="w-full text-sm border-collapse" aria-label={`Regionaler Vergleich: ${city.name} und Nachbarstädte`}>
+                  <caption className="sr-only">Vergleich von Wärmepumpen-Kennzahlen zwischen {city.name} und umliegenden Städten</caption>
                   <thead>
                     <tr className="bg-[#1A4731] text-white">
                       {nachbarVergleich.table.headers.map((h, i) => (
-                        <th key={i} className="px-3 py-2 text-left text-xs font-semibold">{h}</th>
+                        <th key={i} scope="col" className="px-3 py-2 text-left text-xs font-semibold">{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -665,7 +673,9 @@ export default function GenericTemplate({
                     {nachbarVergleich.table.rows.map((row, i) => (
                       <tr key={i} className={i === 0 ? 'bg-[#F2FAF5] font-semibold' : i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                         {row.map((cell, j) => (
-                          <td key={j} className="px-3 py-2 text-xs text-gray-700 border-b border-gray-100">{cell}</td>
+                          j === 0
+                            ? <th key={j} scope="row" className="px-3 py-2 text-xs text-gray-700 border-b border-gray-100 text-left font-semibold">{cell}</th>
+                            : <td key={j} className="px-3 py-2 text-xs text-gray-700 border-b border-gray-100">{cell}</td>
                         ))}
                       </tr>
                     ))}
@@ -736,15 +746,15 @@ export default function GenericTemplate({
             <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{caseStudy.building}</p>
             <div className="space-y-3">
               <div>
-                <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Ausgangslage</p>
+                <h3 className="text-sm font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Ausgangslage</h3>
                 <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.situation}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Lösung</p>
+                <h3 className="text-sm font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Lösung</h3>
                 <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.solution}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Ergebnis</p>
+                <h3 className="text-sm font-bold text-[#7A9E8E] uppercase tracking-wider mb-1">Ergebnis</h3>
                 <p className="text-[#4A6358] text-sm leading-relaxed">{caseStudy.result}</p>
               </div>
             </div>
@@ -779,19 +789,21 @@ export default function GenericTemplate({
           <div className="space-y-4 cv-auto">
             <h2 className="text-xl font-bold text-[#1A4731]">{wartung.title}</h2>
             <p className="text-[#4A6358] text-base leading-relaxed">{wartung.paragraph}</p>
+            <h3 className="text-lg font-semibold text-[#1C2B2B] mt-4 mb-2">Wartungskosten im Überblick</h3>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border-collapse">
+              <table className="w-full text-sm border-collapse" aria-label="Wartungskosten einer Wärmepumpe">
+                <caption className="sr-only">Übersicht der regelmäßigen Wartungsposten, Intervalle und Kosten für Wärmepumpen</caption>
                 <thead>
                   <tr className="bg-[#1A4731] text-white">
-                    <th className="px-4 py-2.5 text-left text-xs font-semibold">Posten</th>
-                    <th className="px-4 py-2.5 text-left text-xs font-semibold">Intervall</th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold">Kosten</th>
+                    <th scope="col" className="px-4 py-2.5 text-left text-xs font-semibold">Posten</th>
+                    <th scope="col" className="px-4 py-2.5 text-left text-xs font-semibold">Intervall</th>
+                    <th scope="col" className="px-4 py-2.5 text-right text-xs font-semibold">Kosten</th>
                   </tr>
                 </thead>
                 <tbody>
                   {wartung.kostenTabelle.map((row, i) => (
                     <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-4 py-2.5 text-gray-700 text-xs">{row.posten}</td>
+                      <th scope="row" className="px-4 py-2.5 text-gray-700 text-xs text-left font-normal">{row.posten}</th>
                       <td className="px-4 py-2.5 text-gray-500 text-xs">{row.intervall}</td>
                       <td className="px-4 py-2.5 text-right text-gray-700 text-xs font-semibold">{row.kosten}</td>
                     </tr>
@@ -805,20 +817,22 @@ export default function GenericTemplate({
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-[#1A4731]">{garantie.title}</h2>
             <p className="text-[#4A6358] text-base leading-relaxed">{garantie.paragraph}</p>
+            <h3 className="text-lg font-semibold text-[#1C2B2B] mt-4 mb-2">Garantieleistungen der Hersteller</h3>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border-collapse">
+              <table className="w-full text-sm border-collapse" aria-label="Garantievergleich der WP-Hersteller">
+                <caption className="sr-only">Garantielaufzeiten für Gerät und Verdichter verschiedener Wärmepumpen-Hersteller</caption>
                 <thead>
                   <tr className="bg-[#1A4731] text-white">
-                    <th className="px-3 py-2.5 text-left text-xs font-semibold">Hersteller</th>
-                    <th className="px-3 py-2.5 text-center text-xs font-semibold">Gerät</th>
-                    <th className="px-3 py-2.5 text-center text-xs font-semibold">Verdichter</th>
-                    <th className="px-3 py-2.5 text-left text-xs font-semibold">Tipp</th>
+                    <th scope="col" className="px-3 py-2.5 text-left text-xs font-semibold">Hersteller</th>
+                    <th scope="col" className="px-3 py-2.5 text-center text-xs font-semibold">Gerät</th>
+                    <th scope="col" className="px-3 py-2.5 text-center text-xs font-semibold">Verdichter</th>
+                    <th scope="col" className="px-3 py-2.5 text-left text-xs font-semibold">Tipp</th>
                   </tr>
                 </thead>
                 <tbody>
                   {garantie.vergleich.map((row, i) => (
                     <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-3 py-2.5 text-gray-900 text-xs font-semibold">{row.hersteller}</td>
+                      <th scope="row" className="px-3 py-2.5 text-gray-900 text-xs font-semibold text-left">{row.hersteller}</th>
                       <td className="px-3 py-2.5 text-center text-gray-700 text-xs">{row.geraet}</td>
                       <td className="px-3 py-2.5 text-center text-gray-700 text-xs">{row.verdichter}</td>
                       <td className="px-3 py-2.5 text-gray-500 text-xs">{row.tipp}</td>

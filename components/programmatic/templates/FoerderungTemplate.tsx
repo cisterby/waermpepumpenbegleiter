@@ -5,7 +5,7 @@ import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Info } from 'lucid
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getImageAltTexts} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -81,6 +81,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
     const enhancedCta = getEnhancedCTA(city, keyword, calc.ersparnis, foerd.gesamtSatz);
     const videoData = getVideoPlaceholder(city, keyword);
     const socialProof = getSocialProofData(city, keyword);
+  const altTexts = getImageAltTexts(city, keyword, jaz);
 
   return (
     <>
@@ -89,7 +90,7 @@ export default function FoerderungTemplate({ city, keyword, calc, foerd, jaz, ne
 
       {/* HERO */}
       <section className="relative min-h-[55vh] flex items-end overflow-hidden">
-        <Image src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={'Wärmepumpe Förderung ' + city.name} className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
+        <Image src={pickImg(HERO_IMGS, city.lat, city.lng, 0)} alt={altTexts.hero} className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,25,16,0.95) 0%, rgba(10,25,16,0.80) 50%, rgba(10,25,16,0.30) 100%)' }} />
         <div className="relative z-10 w-full pt-28 pb-14 px-6">
           <div className="max-w-5xl mx-auto">

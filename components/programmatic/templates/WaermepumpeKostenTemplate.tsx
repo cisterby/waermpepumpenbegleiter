@@ -8,7 +8,7 @@ import { ArrowRight, CheckCircle, AlertTriangle, TrendingUp, Calculator } from '
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange, getImageAltTexts} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -86,13 +86,14 @@ export default function WaermepumpeKostenTemplate({
     sectionTimestamps: getSectionTimestamps(),
     methodologyExplainer: getMethodologyExplainer(city, keyword, jaz),
   };
+  const altTexts = getImageAltTexts(city, keyword, jaz);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans">
       {/* FAQ Schema */}
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
-        <Image src={IMG_HERO} alt={h1} className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
+        <Image src={IMG_HERO} alt={altTexts.hero} className="absolute inset-0 w-full h-full object-cover" fill priority sizes="100vw" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(110deg, rgba(10,25,16,0.97) 0%, rgba(10,25,16,0.88) 52%, rgba(10,25,16,0.35) 100%)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 w-full py-28">
@@ -225,8 +226,8 @@ export default function WaermepumpeKostenTemplate({
           {/* ── BILD + STANDORTDATEN ── */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="relative rounded-2xl overflow-hidden h-64">
-              <Image src={IMG_HOUSE} alt={`Wärmepumpe Kosten ${city.name}`}
-                className="w-full h-full object-cover" fill />
+              <Image src={IMG_HOUSE} alt={altTexts.secondary}
+                className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               <div className="absolute inset-0 bg-[#1A4731]/60 flex items-end p-5">
                 <div>
                   <p className="font-bold text-white text-base">{city.name} · JAZ {jazLuft}</p>
@@ -377,8 +378,8 @@ export default function WaermepumpeKostenTemplate({
           {/* ── BILD + BETRIEBSKOSTEN ── */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="relative rounded-2xl overflow-hidden h-60">
-              <Image src={IMG_MONEY} alt={`WP Betriebskosten ${city.name}`}
-                className="w-full h-full object-cover" fill />
+              <Image src={IMG_MONEY} alt={altTexts.comparison}
+                className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 25%, rgba(10,25,16,0.88) 100%)' }} />
               <div className="absolute bottom-5 left-5 right-5">
                 <p className="font-extrabold text-white text-xl mb-1">Betriebskosten {city.name}</p>
@@ -476,8 +477,8 @@ export default function WaermepumpeKostenTemplate({
                 </div>
               </div>
               <div className="relative rounded-2xl overflow-hidden h-64 sm:h-auto min-h-[200px]">
-                <Image src={IMG_WORKER} alt={`KfW Förderung WP ${city.name}`}
-                  className="w-full h-full object-cover" fill />
+                <Image src={IMG_WORKER} alt={altTexts.process}
+                  className="w-full h-full object-cover" fill loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
                 <div className="absolute inset-0 bg-[#1A4731]/60 flex items-end p-5">
                   <div>
                     <p className="text-[rgba(255,255,255,0.55)] text-xs font-bold uppercase tracking-wider mb-1">Typisch für {city.name}</p>
