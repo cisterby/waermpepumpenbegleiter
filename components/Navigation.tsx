@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: '/wie-es-funktioniert', label: 'Wie es funktioniert' },
   { href: '/rechner',             label: 'Rechner' },
   { href: '/ratgeber',            label: 'Ratgeber' },
+  { href: '/faq',                 label: 'FAQ' },
   { href: '/ueber-uns',           label: 'Über uns' },
 ];
 

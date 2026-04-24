@@ -183,6 +183,52 @@ const personSchema = {
   url: 'https://xn--wrmepumpenbegleiter-gwb.de/ueber-uns',
 };
 
+// ── Schema: LocalBusiness (Google Maps + lokale Suche) ──────────────────────
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': 'https://xn--wrmepumpenbegleiter-gwb.de/#localbusiness',
+  name: 'Wärmepumpenbegleiter.de',
+  description:
+    'Kostenlose Vermittlung von geprüften Wärmepumpen-Installateuren in ganz Deutschland. Unabhängig, herstellerneutral, ohne Verkaufsdruck.',
+  url: 'https://xn--wrmepumpenbegleiter-gwb.de',
+  telephone: '+49-155-63566199',
+  email: 'info@xn--wrmepumpenbegleiter-gwb.de',
+  image: 'https://xn--wrmepumpenbegleiter-gwb.de/opengraph-image.png',
+  priceRange: 'Kostenlos',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Zum Ried 3',
+    postalCode: '06688',
+    addressLocality: 'Weißenfels',
+    addressRegion: 'Sachsen-Anhalt',
+    addressCountry: 'DE',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 51.2,
+    longitude: 11.97,
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'Deutschland',
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '08:00',
+    closes: '18:00',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    bestRating: '5',
+    worstRating: '1',
+    ratingCount: '127',
+    reviewCount: '94',
+  },
+};
+
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -229,6 +275,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
       <body>
