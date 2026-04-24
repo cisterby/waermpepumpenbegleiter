@@ -6,13 +6,13 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getRegionalPriceRange} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 import TableOfContents from '@/components/programmatic/TableOfContents';
 import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
-import SocialProofBar from '@/components/programmatic/SocialProofBar';
+// import SocialProofBar from '@/components/programmatic/SocialProofBar';
 import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
 import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
@@ -31,6 +31,7 @@ const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
 /* LW_VS_SW moved inside component */
 
 export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const preisRange = getRegionalPriceRange(city);
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -70,9 +71,8 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
     `Warum sind Luft-WP so dominant in ${city.name}? Keine Erdarbeiten nötig, keine Genehmigung, Montage in 1–3 Tagen. Hochtemperatur-Varianten bis 70°C Vorlauf sind für die meisten Bestandsgebäude in ${city.bundesland} geeignet. JAZ ${jaz} → ${fmtEuro(calc.ersparnis)}/Jahr Ersparnis in ${city.name}.`,
     `Luft-Wasser-WP ${city.name}: JAZ ${jazHT}–${jazFBH} je nach Vorlauftemperatur. Bei ${city.avgTemp}°C Jahresmittel ist die Luft-WP die wirtschaftlichste und am schnellsten installierbare Heizlösung. 92% Marktanteil in Deutschland 2024.`,
     `${city.name} (${city.bundesland}): Mit ${city.normAussentemp}°C Normaußentemperatur und ${city.avgTemp}°C Jahresmittel erreicht eine Luft-WP JAZ ${jaz}. Betriebskosten ${fmtEuro(calc.wpKosten)}/Jahr — ${fmtEuro(calc.ersparnis)} günstiger als Gas. Propan-Geräte (R290) liefern +5% KfW-Bonus.`,
-    `Luft-WP vs. Sole-WP ${city.name}: Luft-WP: günstiger (${fmtEuro(18000)}–${fmtEuro(28000)}), schnelle Montage, JAZ ${jaz}. Sole-WP: teurer (€22–35k), JAZ ${Math.min(jaz + 1.0, 5.5).toFixed(1)}, aber +5% KfW immer. Für die meisten in ${city.name}: Luft-WP optimal.`,
+    `Luft-WP vs. Sole-WP ${city.name}: Luft-WP: günstiger (€${preisRange.lwpVon.toLocaleString('de-DE')}–€${preisRange.lwpBis.toLocaleString('de-DE')}), schnelle Montage, JAZ ${jaz}. Sole-WP: teurer (€${preisRange.erdVon.toLocaleString('de-DE')}–€${preisRange.erdBis.toLocaleString('de-DE')}), JAZ ${Math.min(jaz + 1.0, 5.5).toFixed(1)}, aber +5% KfW immer. Für die meisten in ${city.name}: Luft-WP optimal.`,
   ];
-
 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
@@ -82,12 +82,10 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
 
   const nearbyLinks = getNearbyLinkContext(city, nearby, keyword, jaz);
 
-
   const bundeslandText = getBundeslandParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -169,7 +167,7 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
               {fillTemplate('Luftwärmepumpe in {stadt} — Kosten, Effizienz und Eignung', city, jaz)}
             </h2>
             <p className="text-[#4A6358] text-base leading-relaxed">
-              Eine Luftwärmepumpe in <strong>{city.name}</strong> ({city.bundesland}) erreicht bei {city.avgTemp}°C Jahresmitteltemperatur eine JAZ von {jaz}. Das entspricht Heizkosten von {fmtEuro(calc.wpKosten)}/Jahr für ein 120 m² EFH — statt {fmtEuro(calc.altKosten)}/Jahr mit Gas. 92% aller neu installierten WP in Deutschland sind Luft-Wasser-WP: günstiger, schneller und ohne Erdarbeiten.
+              Eine Luftwärmepumpe in <strong>{city.name}</strong> ({city.bundesland}) kostet €{preisRange.lwpVon.toLocaleString('de-DE')}–€{preisRange.lwpBis.toLocaleString('de-DE')} und erreicht bei {city.avgTemp}°C Jahresmitteltemperatur eine JAZ von {jaz}. Das entspricht Heizkosten von {fmtEuro(calc.wpKosten)}/Jahr für ein 120 m² EFH — statt {fmtEuro(calc.altKosten)}/Jahr mit Gas. 92% aller neu installierten WP in Deutschland sind Luft-Wasser-WP: günstiger, schneller und ohne Erdarbeiten.
             </p>
           </div>
 
@@ -299,27 +297,6 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
             </div>
           </div>
 
-          {/* Kundenstimme */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <div className="flex items-center gap-1 mb-3">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <span key={i} className="text-[#D97706] text-lg">★</span>
-              ))}
-            </div>
-            <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-              „{testimonial.quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                {testimonial.author.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-              </div>
-            </div>
-          </div>
-
           {/* Verwandte Themen */}
           {crossLinks.length > 0 && (
             <div className="space-y-4">
@@ -356,7 +333,6 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
             <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
           </div>
 
-          
           {/* H3 + FAQ */}
           {faqs.length > 0 && (
             <div className="p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
@@ -572,7 +548,6 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-  
 
       {/* ── VERWANDTE THEMEN ─────────────────────────── */}
       {crossKeywords.length > 0 && (
@@ -742,13 +717,15 @@ export default function LuftwaermepumpeTemplate({ city, keyword, calc, foerd, ja
               <span className="inline-block bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
             </div>
 
-            <SocialProofBar
-              anfragenGesamt={socialProof.anfragenGesamt}
-              anfragenStadt={socialProof.anfragenStadt}
-              letzteAnfrage={socialProof.letzteAnfrage}
-              zufriedenheit={socialProof.zufriedenheit}
-              cityName={city.name}
-            />
+            {/* Social Proof Bar — Commented out (now uses honest data sources instead of fake metrics) */}
+            {/*             <SocialProofBar */}
+            {/*               anfragenGesamt={socialProof.anfragenGesamt} */}
+            {/*               anfragenStadt={socialProof.anfragenStadt} */}
+            {/*               letzteAnfrage={socialProof.letzteAnfrage} */}
+            {/*               zufriedenheit={socialProof.zufriedenheit} */}
+            {/*               cityName={city.name} */}
+            {/*             /> */}
+            {/* */ }
 
             {/* ── Video-Empfehlung ── */}
             <VideoPlaceholder

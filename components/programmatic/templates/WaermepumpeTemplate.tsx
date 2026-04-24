@@ -9,7 +9,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { getKlimazone, estimateJAZ } from '@/lib/city-utils';
 import { calcBetriebskosten, calcFoerderung, fmtEuro, fmtKwh } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getIntroParagraphs, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 
 // Image pools
@@ -22,6 +22,7 @@ const IMG_KOSTEN = 'https://images.unsplash.com/photo-1611117775350-ac3950990985
 const pickImg = (arr: string[], lat: number, lng: number, salt = 0) => arr[Math.abs(Math.round(lat * 7 + lng * 13 + salt)) % arr.length];
 
 export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h1, nearby }: CityPageRouterProps) {
+  const preisRange = getRegionalPriceRange(city);
   const heroImg = pickImg(HERO_IMGS, city.lat, city.lng, 0);
   const sideImg = pickImg(SIDE_IMGS, city.lat, city.lng, 1);
   const stripImg = pickImg(STRIP_IMGS, city.lat, city.lng, 2);
@@ -37,7 +38,6 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -220,7 +220,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               </h2>
               <p className="text-gray-600 leading-relaxed text-[15px]">
                 Eine <strong>Luft-Wasser-Wärmepumpe</strong> kostet in {city.name} inklusive Installation zwischen{' '}
-                <strong>€18.000 und €28.000</strong> brutto. Nach KfW-Förderung (typisch 50–55%) reduziert sich der
+                <strong>€{preisRange.lwpVon.toLocaleString('de-DE')} und €{preisRange.lwpBis.toLocaleString('de-DE')}</strong> brutto. Nach KfW-Förderung (typisch 50–55%) reduziert sich der
                 Eigenanteil auf <strong>{fmtEuro(foerd.eigenanteil)}</strong>. Die jaehrliche Ersparnis gegenueber
                 Erdgas betraegt bei einem 120 m² EFH ca.{' '}
                 <strong>{fmtEuro(calc.ersparnis)} pro Jahr</strong> — bei {city.strompreis} ct/kWh Strompreis und{' '}
@@ -489,26 +489,6 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               </div>
             </section>
 
-            {/* Kundenstimme */}
-            <section className="bg-white rounded-2xl border border-gray-200 p-7">
-              <div className="flex items-center gap-1 mb-3">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <span key={i} className="text-[#D97706] text-lg">★</span>
-                ))}
-              </div>
-              <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-                „{testimonial.quote}"
-              </blockquote>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                  {testimonial.author.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                  <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-                </div>
-              </div>
-            </section>
 
             {/* Verwandte Themen */}
             {crossLinks.length > 0 && (
@@ -771,7 +751,7 @@ export default function WaermepumpeTemplate({ city, keyword, jaz, calc, foerd, h
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-5">
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Warum Waermepumpenbegleiter?</p>
-                {['Herstellerunabhängig seit 2025', 'Alle Betriebe HWK-geprüft', 'KfW-Antrag-Begleitung inklusive', 'Lokale Meisterbetriebe in ' + city.name, '100% kostenlos für Hausbesitzer'].map(t => (
+                {getTrustBarItems(city, keyword, jaz, calc.ersparnis).map(t => (
                   <div key={t} className="flex items-center gap-2 text-sm text-gray-700 py-1.5 border-b border-gray-100 last:border-0">
                     <CheckCircle size={14} className="text-[#1B5E37] flex-shrink-0" />{t}
                   </div>

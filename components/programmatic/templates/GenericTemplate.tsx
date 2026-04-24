@@ -8,7 +8,7 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { getVariantByHash } from '@/lib/ab-testing';
-import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getLocalTestimonial, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo, getSectionTimestamps, getMethodologyExplainer } from '@/lib/content-variation';
+import { getRotatingFAQs, getIntroParagraphs, getCTAVariation, getEnhancedCTA, getKwCategory, cityHash, getDynamicH2s, getSectionIntros, getActualityBlock, getBundeslandParagraph, getGebaeudeParagraph, getEnergieParagraph, getComparisonTable, getSeasonalAdvice, getCrossKeywordLinks, getInlineLinkedParagraph, getLokaleTiefenanalyse, getPVWPKombination, getROITimeline, getNachbarschaftsvergleich, getHeizkoerperCheck, getStromtarifOptimierung, getTrustBarItems, getKeywordDeepContent, getVideoPlaceholder, getSocialProofData, getFinanzierungsOptionen, getWartungsInfo, getGarantieInfo, getCaseStudy, getGEGCountdown, getLaermschutzInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange } from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
@@ -19,6 +19,7 @@ import InlineCalculator from '@/components/programmatic/InlineCalculator';
 function getKwMainContent(city: CityPageRouterProps['city'], keyword: CityPageRouterProps['keyword'], jaz: number, calc: CityPageRouterProps['calc'], foerd: CityPageRouterProps['foerd']) {
   const cat = getKwCategory(keyword);
   const fmtK = (n: number) => n.toLocaleString('de-DE') + ' €';
+  const preisRange = getRegionalPriceRange(city);
   const pvErtrag = Math.round(city.avgSunHours * 8 * 0.85);
   const pvErsparnis = Math.round(Math.min(pvErtrag * 0.65, Math.round(120 * 160 / jaz)) * (city.strompreis / 100));
   const gegFristFormatted = city.gegFrist.split('-').reverse().join('.');
@@ -27,9 +28,9 @@ function getKwMainContent(city: CityPageRouterProps['city'], keyword: CityPageRo
   // 5 Hash-Varianten pro Kategorie für den Einleitungsabsatz
   const introsByCategory: Record<string, string[]> = {
     kosten: [
-      `Eine Wärmepumpe kostet in ${city.name} komplett (Gerät + Montage + Hydraulik + Elektrik) zwischen €18.000 und €28.000 brutto. Bei ${city.strompreis} ct/kWh lokalem Strompreis und JAZ ${jaz} sinken die jährlichen Heizkosten auf ${fmtK(calc.wpKosten)} — das sind ${fmtK(calc.ersparnis)} weniger als mit Erdgas.`,
+      `Eine Wärmepumpe kostet in ${city.name} komplett (Gerät + Montage + Hydraulik + Elektrik) zwischen €${preisRange.lwpVon.toLocaleString('de-DE')} und €${preisRange.lwpBis.toLocaleString('de-DE')} brutto. Bei ${city.strompreis} ct/kWh lokalem Strompreis und JAZ ${jaz} sinken die jährlichen Heizkosten auf ${fmtK(calc.wpKosten)} — das sind ${fmtK(calc.ersparnis)} weniger als mit Erdgas.`,
       `Der Eigenanteil nach KfW-Förderung (${foerd.gesamtSatz}%) beträgt in ${city.name} ab ${fmtK(foerd.eigenanteil)}. Was viele Angebote weglassen: Hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Fundament (€300–800) und Elektroinstallation (€500–1.500). Wir stellen sicher, dass alle 3 Angebote vollständig sind.`,
-      `Preis für die häufigste Wärmepumpe in ${city.name}: Luft-Wasser-WP 10 kW — ca. €22.000 brutto, nach 50% KfW-Förderung: ab ${fmtK(Math.round(22000 * 0.50))} Eigenanteil. Amortisation bei ${fmtK(calc.ersparnis)}/Jahr Ersparnis: ca. ${calc.amortisationJahre} Jahre.`,
+      `Preis für die häufigste Wärmepumpe in ${city.name}: Luft-Wasser-WP 10 kW — ca. €${preisRange.lwpVon.toLocaleString('de-DE')} brutto, nach 50% KfW-Förderung: ab ${fmtK(Math.round(preisRange.lwpVon * 0.50))} Eigenanteil. Amortisation bei ${fmtK(calc.ersparnis)}/Jahr Ersparnis: ca. ${calc.amortisationJahre} Jahre.`,
       `Die versteckten Kostenunterschiede zwischen Angeboten in ${city.name} liegen nicht am Gerät, sondern an der Installation: Montageaufwand, hydraulischer Abgleich und Elektrik können je nach Betrieb um 20–40% variieren. Wir vergleichen kostenlos.`,
       `Beim Strompreis ${city.strompreis} ct/kWh in ${city.name} und JAZ ${jaz} kostet eine kWh WP-Wärme nur ${(city.strompreis / jaz).toFixed(1)} ct — günstiger als jede andere Heizoption. Über 20 Jahre Laufzeit summiert sich das auf ${fmtK(calc.ersparnis * 20)} Gesamtersparnis.`,
     ],
@@ -211,6 +212,7 @@ export default function GenericTemplate({
   // A/B testing: Assign variant for CTA text experiment
   const ctaVariantAB = getVariantByHash('cta_text', city.slug);
 
+  const preisRange = getRegionalPriceRange(city);
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
@@ -235,7 +237,6 @@ export default function GenericTemplate({
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -497,26 +498,6 @@ export default function GenericTemplate({
             <InlineCalculator city={city} jaz={jaz} foerdSatz={foerd.gesamtSatz} />
           </div>
 
-          {/* Kundenstimme */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <div className="flex items-center gap-1 mb-3">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <span key={i} className="text-[#D97706] text-lg">★</span>
-              ))}
-            </div>
-            <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-              „{testimonial.quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                {testimonial.author.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-              </div>
-            </div>
-          </div>
 
           {/* Verwandte Themen */}
           {crossLinks.length > 0 && (
@@ -571,8 +552,8 @@ export default function GenericTemplate({
             </div>
           </div>
 
-          {/* ── Social Proof Counter — Vertrauenssignal ── */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+          {/* Social Proof Counter — Commented out (now uses honest data sources instead of fake metrics) */}
+          {/* <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
               <div>
                 <p className="text-[#1A4731] font-bold text-2xl">{socialProof.anfragenGesamt.toLocaleString('de-DE')}+</p>
@@ -591,7 +572,7 @@ export default function GenericTemplate({
                 <p className="text-gray-500 text-xs">Letzte Anfrage</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* ── Keyword-spezifischer Tiefeninhalt ── */}
           <div className="space-y-5">
@@ -1036,7 +1017,7 @@ export default function GenericTemplate({
 
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
             <p className="text-xs font-bold text-[#7A9E8E] uppercase tracking-wider mb-3">Warum Wärmepumpenbegleiter?</p>
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
+            {getTrustBarItems(city, keyword, jaz, calc.ersparnis).map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
                 <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>

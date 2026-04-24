@@ -6,13 +6,13 @@ import { ChevronDown } from 'lucide-react';
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getRegionalPriceRange} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 import TableOfContents from '@/components/programmatic/TableOfContents';
 import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
-import SocialProofBar from '@/components/programmatic/SocialProofBar';
+// import SocialProofBar from '@/components/programmatic/SocialProofBar';
 import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
 import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
@@ -30,6 +30,7 @@ const pickImg = (arr: string[], lat: number, lng: number, salt = 0) =>
 /* VERSTECKTE_KOSTEN moved inside component */
 
 export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby, h1 }: CityPageRouterProps) {
+  const preisRange = getRegionalPriceRange(city);
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -64,12 +65,11 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
   const eigenanteilMax = Math.round(30000 * (1 - foerd.gesamtSatz / 100));
 
   const intros = [
-    `WP-Preise ${city.name} 2026: Luft-WP €12.000–€28.000, nach ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) noch €${eigenanteilMin.toLocaleString('de-DE')}–€${eigenanteilMax.toLocaleString('de-DE')} Eigenanteil. Versteckte Kosten (Elektro, Puffer, Entsorgung) machen oft 15–25% der Gesamtrechnung aus.`,
+    `WP-Preise ${city.name} 2026: Luft-WP €${preisRange.lwpVon.toLocaleString('de-DE')}–€${preisRange.lwpBis.toLocaleString('de-DE')}, nach ${foerd.gesamtSatz}% KfW (${fmtEuro(foerd.zuschuss)}) noch €${eigenanteilMin.toLocaleString('de-DE')}–€${eigenanteilMax.toLocaleString('de-DE')} Eigenanteil. Versteckte Kosten (Elektro, Puffer, Entsorgung) machen oft 15–25% der Gesamtrechnung aus.`,
     `Wärmepumpe ${city.name}: Gesamtkosten Luft-WP inkl. aller Nebenkosten: ${fmtEuro(foerd.eigenanteil)} Eigenanteil nach KfW. JAZ ${jaz} → Betriebskosten ${fmtEuro(calc.wpKosten)}/Jahr. Amortisation: ${calc.amortisationJahre} Jahre.`,
-    `Preisvergleich ${city.name} (${city.bundesland}): Luft-WP ab €12.000, Sole-WP €22.000+. Nach ${foerd.gesamtSatz}% KfW = Eigenanteil ${fmtEuro(foerd.eigenanteil)}. Achtung: Angebote ohne Heizlastberechnung immer ablehnen.`,
-    `Was kostet eine WP in ${city.name}? Gerät + Montage + Nebenkosten (Elektro, Puffer, Entsorgung) = €15.000–€32.000 vor Förderung. ${foerd.gesamtSatz}% KfW deckt ${fmtEuro(foerd.zuschuss)} ab. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
+    `Preisvergleich ${city.name} (${city.bundesland}): Luft-WP ab €${preisRange.lwpVon.toLocaleString('de-DE')}, Sole-WP €${preisRange.erdVon.toLocaleString('de-DE')}+. Nach ${foerd.gesamtSatz}% KfW = Eigenanteil ${fmtEuro(foerd.eigenanteil)}. Achtung: Angebote ohne Heizlastberechnung immer ablehnen.`,
+    `Was kostet eine WP in ${city.name}? Gerät + Montage + Nebenkosten (Elektro, Puffer, Entsorgung) = €${preisRange.lwpVon.toLocaleString('de-DE')}–€${preisRange.lwpBis.toLocaleString('de-DE')} vor Förderung. ${foerd.gesamtSatz}% KfW deckt ${fmtEuro(foerd.zuschuss)} ab. Eigenanteil: ${fmtEuro(foerd.eigenanteil)}.`,
   ];
-
 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
@@ -79,12 +79,10 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
 
   const nearbyLinks = getNearbyLinkContext(city, nearby, keyword, jaz);
 
-
   const bundeslandText = getBundeslandParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -157,7 +155,7 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
               {fillTemplate('Was kostet eine Wärmepumpe in {stadt}? — Preisübersicht 2026', city, jaz)}
             </h2>
             <p className="text-[#4A6358] text-base leading-relaxed">
-              Eine Luft-Wasser-WP in <strong>{city.name}</strong> kostet inklusive Montage und Nebenkosten €12.000–€28.000. Nach {foerd.gesamtSatz}% KfW-Förderung ({fmtEuro(foerd.zuschuss)}) verbleibt ein Eigenanteil von {fmtEuro(foerd.eigenanteil)}. Sole-WP (Erdwärme) kostet €22.000–€38.000, hat aber höhere Effizienz (JAZ {(jaz + 1.0).toFixed(1)}) und immer +5% KfW-Bonus.
+              Eine Luft-Wasser-WP in <strong>{city.name}</strong> kostet inklusive Montage und Nebenkosten €{preisRange.lwpVon.toLocaleString('de-DE')}–€{preisRange.lwpBis.toLocaleString('de-DE')}. Nach {foerd.gesamtSatz}% KfW-Förderung ({fmtEuro(foerd.zuschuss)}) verbleibt ein Eigenanteil von {fmtEuro(foerd.eigenanteil)}. Sole-WP (Erdwärme) kostet €{preisRange.erdVon.toLocaleString('de-DE')}–€{preisRange.erdBis.toLocaleString('de-DE')}, hat aber höhere Effizienz (JAZ {(jaz + 1.0).toFixed(1)}) und immer +5% KfW-Bonus.
             </p>
           </div>
 
@@ -253,7 +251,7 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
             <p className="text-[#4A6358] text-base leading-relaxed mb-4">{si.kosten}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
               {[
-                ['€12.000–€28.000','Luft-WP gesamt'],
+                [`€${preisRange.lwpVon.toLocaleString('de-DE')}–€${preisRange.lwpBis.toLocaleString('de-DE')}`,'Luft-WP gesamt'],
                 [fmtEuro(foerd.zuschuss),'KfW-Zuschuss (' + foerd.gesamtSatz + '%)'],
                 [fmtEuro(foerd.eigenanteil),'Eigenanteil'],
                 [fmtEuro(calc.wpKosten)+'/J.','Betriebskosten'],
@@ -298,27 +296,6 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
             </div>
           </div>
 
-          {/* Kundenstimme */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <div className="flex items-center gap-1 mb-3">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <span key={i} className="text-[#D97706] text-lg">★</span>
-              ))}
-            </div>
-            <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-              „{testimonial.quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                {testimonial.author.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-              </div>
-            </div>
-          </div>
-
           {/* Verwandte Themen */}
           {crossLinks.length > 0 && (
             <div className="space-y-4">
@@ -355,7 +332,6 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
             <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
           </div>
 
-          
           {faqs.length > 0 && (
             <div className="p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
               <h3 className="font-bold text-[#1C2B2B] text-lg mb-2">{faqs[0].q}</h3>
@@ -561,7 +537,6 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
-  
 
       {/* ── VERWANDTE THEMEN ─────────────────────────── */}
       {crossKeywords.length > 0 && (
@@ -719,13 +694,15 @@ export default function PreiseTemplate({ city, keyword, calc, foerd, jaz, nearby
               <span className="inline-block bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
             </div>
 
-            <SocialProofBar
-              anfragenGesamt={socialProof.anfragenGesamt}
-              anfragenStadt={socialProof.anfragenStadt}
-              letzteAnfrage={socialProof.letzteAnfrage}
-              zufriedenheit={socialProof.zufriedenheit}
-              cityName={city.name}
-            />
+            {/* Social Proof Bar — Commented out (now uses honest data sources instead of fake metrics) */}
+            {/*             <SocialProofBar */}
+            {/*               anfragenGesamt={socialProof.anfragenGesamt} */}
+            {/*               anfragenStadt={socialProof.anfragenStadt} */}
+            {/*               letzteAnfrage={socialProof.letzteAnfrage} */}
+            {/*               zufriedenheit={socialProof.zufriedenheit} */}
+            {/*               cityName={city.name} */}
+            {/*             /> */}
+            {/* */ }
 
             {/* ── Video-Empfehlung ── */}
             <VideoPlaceholder

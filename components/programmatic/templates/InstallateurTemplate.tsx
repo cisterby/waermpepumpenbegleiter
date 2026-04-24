@@ -6,13 +6,13 @@ import { ChevronDown, ArrowRight, CheckCircle, AlertTriangle, Clock, Shield, Sta
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 import TableOfContents from '@/components/programmatic/TableOfContents';
 import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
-import SocialProofBar from '@/components/programmatic/SocialProofBar';
+// import SocialProofBar from '@/components/programmatic/SocialProofBar';
 import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
 import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
@@ -71,7 +71,6 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
     `Die Verbraucherzentrale empfiehlt: Mindestens 3 Vergleichsangebote einholen, alle Positionen einzeln ausweisen lassen und nur KfW-LuL-registrierte Betriebe beauftragen. In ${city.name} holen wir diese Angebote für Sie kostenlos ein — in 48 Stunden, vollständig vergleichbar.`,
   ];
 
-
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
   const uniqueParagraph = getUniqueLocalParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const nearbyLinks = getNearbyLinkContext(city, nearby, keyword, jaz);
@@ -80,7 +79,6 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -523,27 +521,6 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
             </div>
           </div>
 
-          {/* Kundenstimme */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <div className="flex items-center gap-1 mb-3">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <span key={i} className="text-[#D97706] text-lg">★</span>
-              ))}
-            </div>
-            <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-              „{testimonial.quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                {testimonial.author.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-              </div>
-            </div>
-          </div>
-
           {/* Verwandte Themen */}
           {crossLinks.length > 0 && (
             <div className="space-y-4">
@@ -855,13 +832,15 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
               <span className="inline-block bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
             </div>
 
-            <SocialProofBar
-              anfragenGesamt={socialProof.anfragenGesamt}
-              anfragenStadt={socialProof.anfragenStadt}
-              letzteAnfrage={socialProof.letzteAnfrage}
-              zufriedenheit={socialProof.zufriedenheit}
-              cityName={city.name}
-            />
+            {/* Social Proof Bar — Commented out (now uses honest data sources instead of fake metrics) */}
+            {/*             <SocialProofBar */}
+            {/*               anfragenGesamt={socialProof.anfragenGesamt} */}
+            {/*               anfragenStadt={socialProof.anfragenStadt} */}
+            {/*               letzteAnfrage={socialProof.letzteAnfrage} */}
+            {/*               zufriedenheit={socialProof.zufriedenheit} */}
+            {/*               cityName={city.name} */}
+            {/*             /> */}
+            {/* */ }
 
             {/* ── Video-Empfehlung ── */}
             <VideoPlaceholder
@@ -873,7 +852,7 @@ export default function InstallateurTemplate({ city, keyword, calc, foerd, jaz, 
 
 <AuthorBox keywordSlug={keyword.slug} />
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
-            {['HWK-geprüfte Meisterbetriebe', 'KfW-LuL-Registrierung', 'Heizlastberechnung inklusive', `Lokal in ${city.name}`, '100% kostenlos für Sie'].map(t => (
+            {getTrustBarItems(city, keyword, jaz, calc.ersparnis).map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
                 <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>

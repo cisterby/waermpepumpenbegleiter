@@ -8,13 +8,13 @@ import { ArrowRight, CheckCircle, AlertTriangle, TrendingUp, Calculator } from '
 import type { CityPageRouterProps } from '@/components/programmatic/CityPageRouter';
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo, getSectionTimestamps, getMethodologyExplainer, getRegionalPriceRange} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 import TableOfContents from '@/components/programmatic/TableOfContents';
 import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
-import SocialProofBar from '@/components/programmatic/SocialProofBar';
+// import SocialProofBar from '@/components/programmatic/SocialProofBar';
 import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
 import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
@@ -26,6 +26,7 @@ const IMG_WORKER = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd
 export default function WaermepumpeKostenTemplate({
   city, keyword, calc, foerd, jaz, nearby, h1,
 }: CityPageRouterProps) {
+  const preisRange = getRegionalPriceRange(city);
   const crossKeywords = keyword.crossLinks.map(s => getKeywordBySlug(s)).filter(Boolean);
   const h2s = getDynamicH2s(city, keyword, jaz);
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -44,12 +45,11 @@ export default function WaermepumpeKostenTemplate({
 
   // 4 stadtspezifische Intro-Varianten
   const intros = [
-    `Eine Luft-Wasser-Wärmepumpe kostet in ${city.name} (${city.bundesland}) inklusive Gerät, Montage, hydraulischem Abgleich und Elektroinstallation zwischen €18.000 und €28.000 brutto. Nach KfW-Förderung (${foerd.gesamtSatz}%) reduziert sich Ihr Eigenanteil auf ${fmtEuro(foerd.eigenanteil)}. Bei ${city.strompreis} ct/kWh Strompreis und JAZ ${jazLuft} beträgt die jährliche Ersparnis gegenüber Ihrer Gasheizung ${fmtEuro(ersparnisLuft)}.`,
+    `Eine Luft-Wasser-Wärmepumpe kostet in ${city.name} (${city.bundesland}) inklusive Gerät, Montage, hydraulischem Abgleich und Elektroinstallation zwischen €${preisRange.lwpVon.toLocaleString('de-DE')} und €${preisRange.lwpBis.toLocaleString('de-DE')} brutto. Nach KfW-Förderung (${foerd.gesamtSatz}%) reduziert sich Ihr Eigenanteil auf ${fmtEuro(foerd.eigenanteil)}. Bei ${city.strompreis} ct/kWh Strompreis und JAZ ${jazLuft} beträgt die jährliche Ersparnis gegenüber Ihrer Gasheizung ${fmtEuro(ersparnisLuft)}.`,
     `In ${city.name} mit ${city.heizgradtage.toLocaleString('de-DE')} Heizgradtagen und ${city.avgTemp}°C Jahresmitteltemperatur arbeitet eine Wärmepumpe mit JAZ ${jazLuft}. Bei ${city.strompreis} ct/kWh Strom und ${city.gaspreis} ct/kWh Gas (aktuell) sparen Sie ${fmtEuro(ersparnisLuft)}/Jahr — das Gerät amortisiert sich nach ${calc.amortisationJahre} Jahren.`,
-    `Was kostet eine Wärmepumpe wirklich in ${city.name}? Gerätepreis (€8.000–15.000), Montage (€3.000–6.000), hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Elektroinstallation (€500–1.500) und Fundament (€300–800). Gesamt: €14.000–28.000. Abzüglich ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.eigenanteil)} Eigenanteil.`,
+    `Was kostet eine Wärmepumpe wirklich in ${city.name}? Gerätepreis (€${Math.round(preisRange.lwpVon * 0.4)}-${Math.round(preisRange.lwpBis * 0.5)}), Montage (€3.000–6.000), hydraulischer Abgleich (€500–1.500, KfW-Pflicht), Elektroinstallation (€500–1.500) und Fundament (€300–800). Gesamt: €${preisRange.lwpVon.toLocaleString('de-DE')}–€${preisRange.lwpBis.toLocaleString('de-DE')}. Abzüglich ${foerd.gesamtSatz}% KfW = ${fmtEuro(foerd.eigenanteil)} Eigenanteil.`,
     `${city.bundesland}: ${foerd.gesamtSatz}% KfW-Förderung = ${fmtEuro(foerd.zuschuss)} nicht rückzahlbarer Zuschuss für Hausbesitzer in ${city.name}. Jahresarbeitszahl ${jazLuft} bei ${city.normAussentemp}°C Normaußentemperatur. Betriebskosten Wärmepumpe: ${fmtEuro(calc.wpKosten)}/Jahr — gegenüber ${fmtEuro(calc.altKosten)}/Jahr Gas.`,
   ];
-
 
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
@@ -61,7 +61,6 @@ export default function WaermepumpeKostenTemplate({
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -567,27 +566,6 @@ export default function WaermepumpeKostenTemplate({
             </div>
           </div>
 
-          {/* Kundenstimme */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <div className="flex items-center gap-1 mb-3">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <span key={i} className="text-[#D97706] text-lg">★</span>
-              ))}
-            </div>
-            <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-              „{testimonial.quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                {testimonial.author.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-              </div>
-            </div>
-          </div>
-
           {/* Verwandte Themen */}
           {crossLinks.length > 0 && (
             <div className="space-y-4">
@@ -877,7 +855,6 @@ export default function WaermepumpeKostenTemplate({
         </div>
       </div>
 
-
       {/* ── AKTUALITÄTSBLOCK 2026 ─────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 py-10">
         <h2 className="font-bold text-[#1C2B2B] text-xl mb-6">
@@ -975,13 +952,15 @@ export default function WaermepumpeKostenTemplate({
               <span className="inline-block bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
             </div>
 
-            <SocialProofBar
-              anfragenGesamt={socialProof.anfragenGesamt}
-              anfragenStadt={socialProof.anfragenStadt}
-              letzteAnfrage={socialProof.letzteAnfrage}
-              zufriedenheit={socialProof.zufriedenheit}
-              cityName={city.name}
-            />
+            {/* Social Proof Bar — Commented out (now uses honest data sources instead of fake metrics) */}
+            {/*             <SocialProofBar */}
+            {/*               anfragenGesamt={socialProof.anfragenGesamt} */}
+            {/*               anfragenStadt={socialProof.anfragenStadt} */}
+            {/*               letzteAnfrage={socialProof.letzteAnfrage} */}
+            {/*               zufriedenheit={socialProof.zufriedenheit} */}
+            {/*               cityName={city.name} */}
+            {/*             /> */}
+            {/* */ }
 
             {/* ── Video-Empfehlung ── */}
             <VideoPlaceholder
@@ -994,13 +973,7 @@ export default function WaermepumpeKostenTemplate({
 <AuthorBox keywordSlug={keyword.slug} />
 
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
-            {[
-              'Herstellerunabhängig',
-              'HWK-geprüfte Betriebe',
-              'KfW-Begleitung inklusive',
-              `Lokal in ${city.name}`,
-              '100% kostenlos',
-            ].map(t => (
+            {getTrustBarItems(city, keyword, jaz, calc.ersparnis).map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
                 <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>

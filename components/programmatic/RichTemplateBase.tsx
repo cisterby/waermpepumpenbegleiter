@@ -267,14 +267,6 @@ export default function RichTemplateBase({
             ))}
           </div>
 
-          {/* Trust testimonial */}
-          <div className="bg-wp-greenlt border border-wp-green3/30 rounded-xl p-4">
-            <div className="flex gap-1 mb-2">{'★★★★★'.split('').map((s,i) => <span key={i} className="text-wp-amber text-sm">{s}</span>)}</div>
-            <p className="text-wp-text2 text-xs leading-relaxed italic mb-2">
-              „Drei Angebote in 48 Stunden, alle vollständig mit hydraulischem Abgleich. KfW-Antrag hat der Betrieb direkt gestellt."
-            </p>
-            <p className="text-wp-text2 text-xs font-semibold">Julia M., München</p>
-          </div>
         </div>
       </div>
     </div>

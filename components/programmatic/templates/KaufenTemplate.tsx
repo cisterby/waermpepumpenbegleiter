@@ -7,13 +7,13 @@ import type { CityPageRouterProps } from '@/components/programmatic/CityPageRout
 import { fillTemplate, getKeywordBySlug } from '@/lib/keywords';
 import { fmtEuro } from '@/lib/calculations';
 import { estimateJAZ } from '@/lib/city-utils';
-import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLocalTestimonial, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
+import {cityHash, getActualityBlock, getBundeslandParagraph, getCaseStudy, getComparisonTable, getCrossKeywordLinks, getDynamicH2s, getEnergieParagraph, getEnhancedCTA, getFinanzierungsOptionen, getGEGCountdown, getGarantieInfo, getGebaeudeParagraph, getHeizkoerperCheck, getInlineLinkedParagraph, getKeywordDeepContent, getLaermschutzInfo, getLokaleTiefenanalyse, getNachbarschaftsvergleich, getNearbyLinkContext, getPVWPKombination, getROITimeline, getRotatingFAQs, getSeasonalAdvice, getSectionIntros, getSocialProofData, getStromtarifOptimierung, getTrustBarItems, getUniqueLocalParagraph, getVideoPlaceholder, getWartungsInfo} from '@/lib/content-variation';
 import { KEYWORDS } from '@/lib/keywords';
 import LeadForm from '@/components/programmatic/LeadForm';
 import AuthorBox from '@/components/programmatic/AuthorBox';
 import TableOfContents from '@/components/programmatic/TableOfContents';
 import VideoPlaceholder from '@/components/programmatic/VideoPlaceholder';
-import SocialProofBar from '@/components/programmatic/SocialProofBar';
+// import SocialProofBar from '@/components/programmatic/SocialProofBar';
 import EnhancedCTASidebar from '@/components/programmatic/EnhancedCTASidebar';
 import InlineCalculator from '@/components/programmatic/InlineCalculator';
 
@@ -31,19 +31,16 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
   const si   = getSectionIntros(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const faqs = getRotatingFAQs(city, keyword, jaz, calc.wpKosten, calc.ersparnis, 6);
 
-
   const act = getActualityBlock(city, keyword, jaz, calc.wpKosten, foerd.eigenanteil);
 
   const uniqueParagraph = getUniqueLocalParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
 
   const nearbyLinks = getNearbyLinkContext(city, nearby, keyword, jaz);
 
-
   const bundeslandText = getBundeslandParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
   const inlineLinkedParagraph = getInlineLinkedParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
@@ -199,7 +196,6 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
   const gebaeudeText = getGebaeudeParagraph(city, keyword, jaz, calc.wpKosten);
   const energieText = getEnergieParagraph(city, keyword, jaz, calc.wpKosten, calc.ersparnis);
   const comparison = getComparisonTable(city, jaz, calc.wpKosten, calc.ersparnis);
-  const testimonial = getLocalTestimonial(city, keyword);
   const seasonalText = getSeasonalAdvice(city);
   const crossLinks = getCrossKeywordLinks(city, keyword, KEYWORDS);
 
@@ -260,27 +256,6 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             </div>
           </div>
 
-          {/* Kundenstimme */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <div className="flex items-center gap-1 mb-3">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <span key={i} className="text-[#D97706] text-lg">★</span>
-              ))}
-            </div>
-            <blockquote className="text-gray-700 text-base italic leading-relaxed mb-4">
-              „{testimonial.quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center text-[#1B5E37] font-bold text-sm">
-                {testimonial.author.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">{testimonial.author}</p>
-                <p className="text-gray-500 text-xs">{testimonial.location} · Vermittelt über Wärmepumpenbegleiter.de</p>
-              </div>
-            </div>
-          </div>
-
           {/* Verwandte Themen */}
           {crossLinks.length > 0 && (
             <div className="space-y-4">
@@ -317,7 +292,6 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             <p className="text-[#78350F] text-sm leading-relaxed">{seasonalText}</p>
           </div>
 
-          
           {/* H3 Featured Snippet */}
           {faqs.length > 0 && (
             <div className="mb-6 p-5 bg-[#F2FAF5] border border-gray-200l rounded-2xl">
@@ -497,7 +471,6 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               </div>
             </div>
           </div>
-        
 
         {/* STICKY SIDEBAR */}
         <div id="angebot" className="sticky top-24 space-y-4">
@@ -525,7 +498,6 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
             </div>
 
 <LeadForm city={city} keywordSlug={keyword.slug} citySlug={city.slug} />
-
 
       {/* ── VISUELLER TRENNER ─────────────────────── */}
       <div className="relative rounded-2xl overflow-hidden my-8" style={{ height: '180px' }}>
@@ -643,13 +615,15 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
               <span className="inline-block bg-white/80 text-gray-700 text-xs px-3 py-1.5 rounded-lg border border-blue-100">📏 {laermschutz.abstand}</span>
             </div>
 
-            <SocialProofBar
-              anfragenGesamt={socialProof.anfragenGesamt}
-              anfragenStadt={socialProof.anfragenStadt}
-              letzteAnfrage={socialProof.letzteAnfrage}
-              zufriedenheit={socialProof.zufriedenheit}
-              cityName={city.name}
-            />
+            {/* Social Proof Bar — Commented out (now uses honest data sources instead of fake metrics) */}
+            {/*             <SocialProofBar */}
+            {/*               anfragenGesamt={socialProof.anfragenGesamt} */}
+            {/*               anfragenStadt={socialProof.anfragenStadt} */}
+            {/*               letzteAnfrage={socialProof.letzteAnfrage} */}
+            {/*               zufriedenheit={socialProof.zufriedenheit} */}
+            {/*               cityName={city.name} */}
+            {/*             /> */}
+            {/* */ }
 
             {/* ── Video-Empfehlung ── */}
             <VideoPlaceholder
@@ -662,7 +636,7 @@ export default function KaufenTemplate({ city, keyword, calc, foerd, jaz, nearby
 <AuthorBox keywordSlug={keyword.slug} />
           {/* Trust */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
-            {['Herstellerunabhängig', 'HWK-geprüfte Betriebe', 'KfW-Begleitung inklusive', `Lokal in ${city.name}`, '100% kostenlos'].map(t => (
+            {getTrustBarItems(city, keyword, jaz, calc.ersparnis).map(t => (
               <div key={t} className="flex items-center gap-2 py-1.5 border-b border-gray-200 last:border-0 text-xs text-[#4A6358]">
                 <CheckCircle size={12} className="text-[#1A4731] shrink-0" />{t}
               </div>

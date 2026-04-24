@@ -453,43 +453,6 @@ export function ProcessTimelineSection({ city, keyword, jaz, wpKosten, ersparnis
   );
 }
 
-// ── 7. TESTIMONIAL SECTION ────────────────────────────────────────────────────
-// Social proof with star rating and quote
-
-export function TestimonialSection({ city, keyword, jaz, wpKosten, ersparnis }: SharedProps) {
-  // Placeholder testimonial (in production: fetch from database or CMS)
-  const testimonial = {
-    name: 'Klaus W.',
-    location: city.name,
-    rating: 5,
-    quote: `Die ganze Begleitung von Anfrage bis KfW-Auszahlung war reibungslos. Der Betrieb in ${city.name} war zuverlässig, und wir sparen jetzt ${fmtEuro(ersparnis)} pro Jahr. Super Service!`,
-  };
-
-  return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-      {/* Stars */}
-      <div className="flex justify-center gap-1 mb-4">
-        {Array.from({ length: testimonial.rating }).map((_, i) => (
-          <Star key={i} size={20} className="fill-[#D97706] text-[#D97706]" />
-        ))}
-      </div>
-
-      {/* Quote */}
-      <blockquote className="text-lg text-gray-700 font-medium mb-4 italic leading-relaxed">
-        "{testimonial.quote}"
-      </blockquote>
-
-      {/* Author */}
-      <div className="mb-2">
-        <p className="font-semibold text-gray-900">{testimonial.name}</p>
-        <p className="text-sm text-gray-500">{testimonial.location}</p>
-      </div>
-
-      {/* Attribution */}
-      <p className="text-xs text-gray-400">Vermittelt über Wärmepumpenbegleiter.de</p>
-    </div>
-  );
-}
 
 // ── 8. TRUST BAR SECTION ──────────────────────────────────────────────────────
 // Data sources trust bar with two variants
