@@ -1,7 +1,6 @@
 // app/ueber-uns/layout.tsx
 import type { Metadata } from 'next';
-
-const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+import { BASE } from '@/lib/constants';
 const title = 'Über uns — Wärmepumpenbegleiter.de | Webflott GbR';
 const description =
   'Wärmepumpenbegleiter.de ist ein unabhängiges Vermittlungsportal von Webflott. Wir verbinden Hausbesitzer kostenlos mit geprüften WP-Fachbetrieben in ihrer Region.';
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: `${BASE}/ueber-uns`,
-    languages: { 'de-DE': `${BASE}/ueber-uns` },
   },
   openGraph: {
     title,

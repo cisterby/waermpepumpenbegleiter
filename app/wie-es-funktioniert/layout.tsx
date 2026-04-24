@@ -1,7 +1,6 @@
 // app/wie-es-funktioniert/layout.tsx
 import type { Metadata } from 'next';
-
-const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+import { BASE } from '@/lib/constants';
 const title = 'Wie funktioniert Wärmepumpenbegleiter.de? — In 3 Schritten zum Angebot';
 const description =
   'In 3 Schritten zur kostenlosen WP-Vermittlung: Anfrage stellen, 3 Angebote erhalten, Fachbetrieb wählen. Kostenlos für Hausbesitzer, DSGVO-konform.';
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: `${BASE}/wie-es-funktioniert`,
-    languages: { 'de-DE': `${BASE}/wie-es-funktioniert` },
   },
   openGraph: {
     title,

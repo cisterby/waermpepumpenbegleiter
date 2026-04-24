@@ -50,7 +50,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const keyword = getKeywordBySlug(params.keywordSlug);
   const city    = (citiesData as City[]).find(c => c.slug === params.citySlug);
-  if (!keyword || !city) return {};
+  if (!keyword || !city) notFound();
 
   const jaz   = estimateJAZ(city);
   const calc  = calcBetriebskosten(120, '1979_1994', 'erdgas', {
@@ -111,10 +111,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ` · WP-Betriebskosten: ${Math.round(calc.wpKosten)}€/Jahr vs. Altanlage · ${populationDesc}`,
   ];
 
-  // Append variation and truncate to 160 chars max for meta description
+  // Append variation and truncate to 160 chars max at word boundary
   let desc = baseDesc + metaSuffixes[hash];
   if (desc.length > 160) {
-    desc = desc.substring(0, 157) + '…';
+    desc = desc.substring(0, 157);
+    const lastSpace = desc.lastIndexOf(' ');
+    if (lastSpace > 120) desc = desc.substring(0, lastSpace);
+    desc += '…';
   }
 
   const url   = `https://xn--wrmepumpenbegleiter-gwb.de/${keyword.slug}/${city.slug}`;
@@ -125,7 +128,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description: desc,
-    alternates: { canonical: url, languages: { 'de-DE': url } },
+    alternates: { canonical: url },
     openGraph: {
       title, description: desc, url,
       type: 'website', locale: 'de_DE',

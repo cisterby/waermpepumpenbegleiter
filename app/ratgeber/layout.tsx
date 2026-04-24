@@ -1,7 +1,6 @@
 // app/ratgeber/layout.tsx
 import type { Metadata } from 'next';
-
-const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+import { BASE } from '@/lib/constants';
 const title = 'Wärmepumpen-Ratgeber 2026 — Kosten, Förderung, Installation';
 const description =
   'Ausführlicher WP-Ratgeber 2026: Kosten (ab €9.000 nach KfW), Förderung bis 70%, Altbau-Eignung, GEG-Reform und mehr. Kostenlos & herstellerunabhängig.';
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: `${BASE}/ratgeber`,
-    languages: { 'de-DE': `${BASE}/ratgeber` },
   },
   openGraph: {
     title,

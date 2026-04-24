@@ -1,8 +1,7 @@
 // app/faq/page.tsx — Dedizierte FAQ-Seite mit FAQPage-Schema
 import type { Metadata } from 'next';
 import Link from 'next/link';
-
-const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+import { BASE } from '@/lib/constants';
 
 const FAQ_ITEMS = [
   // Kosten & Förderung
@@ -139,7 +138,6 @@ export const metadata: Metadata = {
   description: 'Antworten auf die 20 häufigsten Fragen zu Wärmepumpen: Kosten, KfW-Förderung 2026, Altbau-Eignung, GEG-Pflichten, JAZ-Werte, Installation und Stromverbrauch.',
   alternates: {
     canonical: `${BASE}/faq`,
-    languages: { 'de-DE': `${BASE}/faq` },
   },
   openGraph: {
     title: 'Häufige Fragen zur Wärmepumpe (FAQ) 2026',

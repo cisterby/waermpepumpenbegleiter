@@ -1,7 +1,6 @@
 // app/kontakt/layout.tsx
 import type { Metadata } from 'next';
-
-const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+import { BASE } from '@/lib/constants';
 const title = 'Wärmepumpe anfragen — Kostenlose Beratung & 3 Angebote';
 const description = 'Kostenloses WP-Angebot anfordern: Baujahr, Heizung, Kontaktdaten eingeben — und bis zu 3 Angebote geprüfter Fachbetriebe aus Ihrer Region in 48 Stunden erhalten.';
 
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: `${BASE}/kontakt`,
-    languages: { 'de-DE': `${BASE}/kontakt` },
   },
   openGraph: {
     title,

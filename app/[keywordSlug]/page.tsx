@@ -14,13 +14,16 @@ interface Props {
   params: { keywordSlug: string };
 }
 
+// dynamicParams = false → unbekannte keywordSlugs bekommen automatisch HTTP 404
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return KEYWORDS.map(kw => ({ keywordSlug: kw.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const keyword = getKeywordBySlug(params.keywordSlug);
-  if (!keyword) return {};
+  if (!keyword) notFound();
 
   const keywordName = keyword.keyword.replace('[Stadt]', '').trim();
   const cityCount = (citiesData as City[]).length;
@@ -56,7 +59,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: desc,
     alternates: {
       canonical: canonicalUrl,
-      languages: { 'de-DE': canonicalUrl }
     },
     openGraph: {
       title,

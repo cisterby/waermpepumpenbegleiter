@@ -1,7 +1,6 @@
 // app/rechner/layout.tsx
 import type { Metadata } from 'next';
-
-const BASE = 'https://xn--wrmepumpenbegleiter-gwb.de';
+import { BASE } from '@/lib/constants';
 const title = 'Wärmepumpen-Rechner 2026 — Kosten, Förderung & Ersparnis berechnen';
 const description =
   'Berechnen Sie in 30 Sekunden Ihre Wärmepumpen-Kosten, KfW-Förderung (bis 70 %) und jährliche Ersparnis gegenüber Gas, Öl oder Nachtspeicher. Kostenlos & unverbindlich.';
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: `${BASE}/rechner`,
-    languages: { 'de-DE': `${BASE}/rechner` },
   },
   openGraph: {
     title,
